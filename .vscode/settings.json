@@ -46,5 +46,45 @@
         "statusBarItem.prominentBackground": "#dbbeff",
         "statusBarItem.remoteBackground": "#1e0051",
         "statusBarItem.remoteForeground": "#a782ff"
-    }
+    },
+    "colorize.colorized_colors": [
+        "BROWSERS_COLORS",
+        "HEXA",
+        "RGB",
+        "HSL",
+        "ARGB",
+    ],
+    "colorize.colorized_variables": [
+        "CSS",
+        "LESS",
+        "SASS",
+        "STYLUS"
+    ],
+    "colorize.decoration_type": "background",
+    "colorize.enable_search_variables": true,
+    "colorize.include": [
+        "**/*.css",
+        "**/*.scss",
+        "**/*.sass",
+        "**/*.less",
+        "**/*.styl",
+        "**/*.py"
+    ],
+    "colorize.languages": [
+        "css",
+        "sass",
+        "scss",
+        "less",
+        "postcss",
+        "sss",
+        "stylus",
+        "xml",
+        "svg",
+        "python",
+        "markdown",
+        "HTML",
+        "xhtml"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true
 }

@@ -1,9 +1,10 @@
+"""Purpose: Color class to parse colors for a gradient."""
+
 import colorsys
 import re
 from enum import Enum
 from typing import Tuple
 
-from cheap_repr import normal_repr, register_repr
 from rich.box import SQUARE
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
@@ -11,9 +12,7 @@ from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
 from rich.console import Console, RenderResult
 from rich.table import Table
-from rich.terminal_theme import MONOKAI
 from rich.text import Text
-from snoop import snoop
 
 from gradient._rich import get_rich_color, rich_table
 from gradient._x11 import get_x11_color, x11_table
@@ -24,7 +23,7 @@ RGB_REGEX = re.compile(r"^r?g?b?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$")
 
 
 class Mode(Enum):
-    """A color mode."""
+    """A color mode. Used to determine how a color was parsed."""
 
     NAMED = "named"
     HEX = "hex"
@@ -32,13 +31,64 @@ class Mode(Enum):
     X11 = "x11"
     RICH = "rich"
 
+    def __repr__(self) -> str:
+        """Return a representation of the color mode."""
+        return f"Mode.{self.value.upper()}"
+
+    def __rich_repr__(self) -> Text:
+        """Return a rich text representation of the color mode."""
+        mode = Text("Mode", style="bold italic purple")
+        dot = Text(".", style="bold.white")
+        value: str = self.value.upper()
+        formatted_value = Text(value, style="bold lime")
+        rich_repr = Text.assemble(mode, dot, formatted_value)
+        return rich_repr
+
     def __rich__(self) -> Text:
         """Return a rich text representation of the color mode."""
         return str(self.value).upper()
 
 
 class Color:
-    """A color."""
+    """A color parsed from a string. Colors can be parsed from:
+        - The Named Colors:
+            - `magenta`
+            - `violet`
+            - `purple`
+            - `blue`
+            - `lightblue`
+            - `cyan`
+            - `lime`
+            - `yellow`
+            - `orange`
+            - `red`
+        - Hex Colors:
+            - Six digit hex color codes - `#ff00ff`
+            - Three digit hex color codes - `#0f0`
+        - RGB Colors:
+            - `rgb(255, 0, 255)`
+        - X11 colors:
+            - `magenta`,
+            - 'deepskyblue'
+        - Or any of the `rich` library's standard colors:
+            - `skyblue1`,
+            - `bright_red`
+
+        Attributes:\n\t
+            `value` (RichColor): The color value.\n\t
+            `mode` (Mode): The color mode.\n\t
+            `rgb` (str): The RGB string.\n\t
+            `rgb_tuple` (Tuple[int, int, int]): The RGB string as a tuple of integers.\n\t
+            `hex` (str): The hex string.\n\t
+            `style` (str): A style with the color as the foreground.\n\t
+            `bg_style` (str): A readable style with the color as the background.\n\t
+
+
+    ---
+
+        For an example of possible colors enter the following in a terminal:
+        \t`python -m gradient.color.`
+    """
 
     @property
     def value(self) -> RichColor:
@@ -126,7 +176,15 @@ class Color:
     )
 
     def __init__(self, color: str) -> bool:
-        """Initialize the color."""
+        """A color parsed from a string.
+
+        Args:
+            color (str): A color string. Can be a named color, hex color,
+                rgb color, x11 color, or rich color.
+
+        Raises:
+            ColorParseError: If the color cannot be parsed.
+        """
         self._original = color
         if color in self.COLORS:
             index = self.COLORS.index(color)
@@ -291,9 +349,6 @@ class Color:
             return "#000000"
 
 
-register_repr(Color)(normal_repr)
-
-
 def named_table() -> Columns:
     """Return a table of named colors."""
     colors = []
@@ -307,11 +362,7 @@ def library_tables() -> Columns:
     return Columns(rich_table(), x11_table())
 
 
-register_repr(Color)(normal_repr)
-
 if __name__ == "__main__":
-    from rich.panel import Panel
-
     console = Console(theme=GradientTheme())
 
     console.line()
