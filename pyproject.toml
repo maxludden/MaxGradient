@@ -9,6 +9,7 @@ authors = [
 dependencies = [
     "rich>=13.3.5",
     "pydantic>=1.10.7",
+    "lorem-text>=2.1",
 ]
 requires-python = ">=3.9"
 readme = "README.md"

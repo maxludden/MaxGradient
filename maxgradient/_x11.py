@@ -473,7 +473,7 @@ def get_x11_rgb_colors() -> Tuple[str, ...]:
 @lru_cache(maxsize=10)
 def get_x11_color(color: str) -> str:
     """Parse rich colors for color"""
-    x11_regex = re.compile(r"rgb\(\d{1,3},\d{1,3},\d{1,3}\)")
+    X11_REGEX = re.compile(r"rgb\(\d{1,3},\d{1,3},\d{1,3}\)")
     if color in get_x11_colors():
         index = get_x11_colors().index(color)
         rgb = get_x11_rgb_colors()[index]
@@ -505,6 +505,7 @@ def get_title() -> Text:
 
 def x11_table() -> Table:
     from rich.table import Table
+
     title = get_title()
     table = Table(title=title, show_header=True, header_style="bold.magenta")
     table.add_column("Example")
@@ -527,7 +528,8 @@ def x11_table() -> Table:
 
 if __name__ == "__main__":
     from rich.console import Console
-    from gradient.theme import GradientTheme
+
+    from maxgradient.theme import GradientTheme
 
     console = Console(theme=GradientTheme(), record=True)
     console.print(x11_table(), justify="center")

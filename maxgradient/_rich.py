@@ -9,7 +9,7 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from gradient.theme import GradientTheme
+from maxgradient.theme import GradientTheme
 
 RICH: Tuple[str, ...] = (
     "black",

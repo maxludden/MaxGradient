@@ -14,7 +14,7 @@ from rich.text import Text
 from rich.theme import Theme
 from rich.traceback import install as install_traceback
 
-from gradient.theme import GradientTheme
+from maxgradient.theme import GradientTheme
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
@@ -171,8 +171,6 @@ class GradientConsole(Console, metaclass=Singleton):
 
     def __repr__(self) -> str:
         return f"<GradientConsole width={self.width} {self._color_system!s}>"
-
-
 
     @staticmethod
     def formatted_console() -> Text:

@@ -6,7 +6,7 @@ from rich.style import Style, StyleType
 from rich.table import Table
 from rich.theme import Theme
 
-from gradient.default_styles import GRADIENT_STYLES, styles_table
+from maxgradient.default_styles import GRADIENT_STYLES, styles_table
 
 
 class GradientTheme(Theme):
@@ -20,9 +20,8 @@ class GradientTheme(Theme):
     styles: Dict[str, Style]
 
     def __init__(
-        self,
-        styles: Optional[Mapping[str, StyleType]] = None,
-        inherit: bool = True) -> None:
+        self, styles: Optional[Mapping[str, StyleType]] = None, inherit: bool = True
+    ) -> None:
         super().__init__(styles=styles, inherit=True)
         self.styles = GRADIENT_STYLES.copy() if inherit else {}
         if styles is not None:

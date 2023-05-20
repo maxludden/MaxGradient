@@ -16,11 +16,11 @@ from rich.console import Console, RenderResult
 from rich.table import Table
 from rich.text import Text
 
-from gradient._rich import get_rich_color, rich_table
-from gradient._x11 import get_x11_color, x11_table
-from gradient.theme import GradientTheme
+from maxgradient._rich import get_rich_color, rich_table
+from maxgradient._x11 import get_x11_color, x11_table
+from maxgradient.theme import GradientTheme
 
-HEX_REGEX = re.compile(r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
+HEX_REGEX = re.compile(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
 RGB_REGEX = re.compile(r"^r?g?b?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$")
 
 
@@ -188,13 +188,20 @@ class Color:
             ColorParseError: If the color cannot be parsed.
         """
         self._original = color
-        if color in self.COLORS:
+
+        if isinstance(color, Color):
+            self.value = color.value
+            self.mode = color.mode
+            return
+
+        elif color in self.COLORS:
             index = self.COLORS.index(color)
             rgb = self.RGB[index]
             rgb_tuple = self.rgb_to_tuple(rgb)
             triplet = ColorTriplet(*rgb_tuple)
             self.value = RichColor.from_triplet(triplet)
             self.mode = Mode.NAMED
+            return
 
         elif get_x11_color(color):
             rgb = get_x11_color(color)
@@ -202,6 +209,7 @@ class Color:
             triplet = ColorTriplet(*rgb_tuple)
             self.value = RichColor.from_triplet(triplet)
             self.mode = Mode.X11
+            return
 
         elif get_rich_color(color):
             rgb = get_rich_color(color)
@@ -209,16 +217,22 @@ class Color:
             triplet = ColorTriplet(*rgb_tuple)
             self.value = RichColor.from_triplet(triplet)
             self.mode = Mode.RICH
+            return
 
-        elif HEX_REGEX.match(color):
+        elif HEX_REGEX.match(str(color)):
             rgb = self.hex_to_rgb(color)
             rgb_tuple = self.rgb_to_tuple(rgb)
             triplet = ColorTriplet(*rgb_tuple)
             self.value = RichColor.from_triplet(triplet)
             self.mode = Mode.HEX
+            return
 
-        elif RGB_REGEX.match(color):
-            self.make_color(mode=Mode.RGB, rgb=color)
+        elif RGB_REGEX.match(str(color)):
+            rgb_tuple = self.rgb_to_tuple(color)
+            triplet = ColorTriplet(*rgb_tuple)
+            self.value = RichColor.from_triplet(triplet)
+            self.mode = Mode.RGB
+            return
 
         else:
             raise ColorParseError(f"Invalid color: {color}")
@@ -258,9 +272,9 @@ class Color:
         table.add_column(
             "value", style=f"bold {self.style} on #000000", justify="center"
         )
-        table.add_row("Original", self._original.capitalize())
+        table.add_row("Original", str(self._original).capitalize())
         table.add_row("Mode", self.mode)
-        table.add_row("HEX", self.hex)
+        table.add_row("HEX", str(self.hex).upper())
         table.add_row("RGB", self.value.triplet.rgb)
         return table
 
@@ -277,8 +291,10 @@ class Color:
         Raises:
             ValueError: If the RGB string is invalid.
         """
-        pattern = r"r?g?b?\((\d+),\s*(\d+),\s*(\d+)\)"
-        match = re.search(pattern, rgb_string)
+        if isinstance(rgb_string, tuple):
+            rgb_string = f"rgb({rgb_string[0]}, {rgb_string[1]}, {rgb_string[2]})"
+        RGB_REGEX = re.compile(r"r?g?b?\((\d+),\s*(\d+),\s*(\d+)\)")
+        match = RGB_REGEX.match(rgb_string)
         if match:
             red = match.group(1)
             green = match.group(2)
@@ -309,7 +325,7 @@ class Color:
         O2 = f"[bold #00ff00]o[/]"
         R1 = f"[bold #00ffff]r[/]"
         style = self.style
-        NAME = f"[bold italic {style}]{self._original.capitalize()}[/]"
+        NAME = f"[bold italic {style}]{str(self._original).capitalize()}[/]"
         colors = [C1, O1, L1, O2, R1, LESS, NAME, GREATER]
         markup = "".join(colors)
         return Text.from_markup(markup)
