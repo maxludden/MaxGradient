@@ -1,0 +1,18 @@
+
+[project]
+name = "MaxGradient"
+version = "0.1.0"
+description = "A library to make printing gradient color to the terminal a lot easier. Think `lolcat` but utilizing python's `rich` library so you can use it anywhere."
+authors = [
+    {name = "maxludden", email = "dev@maxludden.com"},
+]
+dependencies = [
+    "rich>=13.3.5",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
