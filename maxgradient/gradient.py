@@ -1,22 +1,18 @@
 """Defines the Gradient class which is used to print text with a gradient. It inherits from the Rich Text class."""
 import re
-from io import StringIO
-from time import sleep
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import cpu_count
 from typing import Any, Dict, List, Optional, Tuple
 
 from cheap_repr import normal_repr, register_repr
 from lorem_text import lorem
-from rich.columns import Columns
-from rich.console import Console, JustifyMethod, OverflowMethod, RenderableType
+from numpy import array_split
+from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
-from rich.layout import Layout
-from rich.live import Live
 from rich.panel import Panel
 from rich.style import Style, StyleType
-from rich.table import Table
 from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
-from snoop import spy
 
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
@@ -25,11 +21,14 @@ from maxgradient.theme import GradientTheme
 DEFAULT_JUSTIFY: "JustifyMethod" = "default"
 DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
-VERBOSE: bool = False
 
 
 console = Console(theme=GradientTheme())
 install_rich_traceback(console=console)
+
+
+class NotEnoughColors(Exception):
+    pass
 
 
 class Gradient(Text):
@@ -61,16 +60,7 @@ class Gradient(Text):
             verbose(`bool`): Whether to print verbose output. Defaults to False.
     """
 
-    __slots__ = [
-        "_colors",
-        "invert",
-        "color_sample",
-        "hues",
-        "_G_INDEX",
-        "_G_LENGTH",
-        "_REMAINDER",
-        "verbose",
-    ]
+    __slots__ = ["_colors", "invert", "color_sample", "hues"]
 
     def __init__(
         self,
@@ -88,18 +78,20 @@ class Gradient(Text):
         end: str = "\n",
         tab_size: Optional[int] = 8,
         spans: Optional[List[Span]] = None,
-        verbose: bool = VERBOSE,
+        concurrent: bool = True
     ) -> None:
-        # Ignore gradients if the text is empty or only whitespaces.
+        """Initialize the Gradient class."""
         match = WHITESPACE_REGEX.match(text)
         if match:
             text = Text.from_markup(match.group(0))
             return
 
-        # Parse Text
+        # Text entered
         if isinstance(text, Text):
             spans = text._spans
             text = text.plain
+
+        # Style
         self.style = style
 
         # Initialize Text
@@ -115,14 +107,14 @@ class Gradient(Text):
         )
 
         # text
-        sanitized_text = strip_control_codes(text)
-        self._length = len(sanitized_text)
+        sanitized_text: str = strip_control_codes(text)
+        self._length: int = len(sanitized_text)
 
         # invert
-        self.invert = invert
+        self.invert: bool = invert
 
         # Color Sample
-        self.color_sample = color_sample
+        self.color_sample: bool = color_sample
         if self.color_sample:
             self._text = "█" * self._length
 
@@ -154,452 +146,132 @@ class Gradient(Text):
 
         # ensure that the gradient renderable is sufficiently long\
         # to display the gradient correctly.
-        self.clamp_colors()
-        self._spans = self.generate_spans(verbose=False)
+        if self._length < self.hues:
+            msg = (
+                "The entered text is to short to display the number of colors entered."
+            )
+            raise NotEnoughColors(f"{msg} Please enter more text or fewer colors.")
 
-    def __repr__(self) -> str:
-        """Return repr(self)."""
-        return f"<Gradient {self._text!r} {self._spans!r}>"
+        if concurrent:
+            spans = self.concurrent_gradient_spans()
+        else:
+            spans = []
+            for tuple in self.gradient.spans():
+                start: int = tuple[0]
+                substring: str = tuple[1]
+                color1: Color = tuple[2]
+                color2: Color = tuple[3]
+                spans.append(self.gradient_spans(start, substring, color1, color2))
+        self._spans = self.simplify_spans(spans)
 
-    def calculate_G_LENGTH(self, verbose: bool = VERBOSE) -> Tuple[int, int]:
-        """Calculate the length of the gradient.
+    def substring_indexes(self) -> List[Tuple[int, int]]:
+        """Determine the indexes of the text to split the into \
+            substrings for multi-colored gradients."""
+        num_of_substrings = len(self._colors) - 1
+        substring_sizes = array_split(range(self._length), num_of_substrings)
+        substring_indexes: List[Tuple[int, int]] = []
+        for substring_size in substring_sizes:
+            start = substring_size[0]
+            end = substring_size[-1]
+            substring_indexes.append((start, end))
+        return substring_indexes
 
-        Args:
-            verbose(`bool`): Whether to print verbose output. Defaults to False.
+    def substrings(self) -> List[str]:
+        """Split the text into substrings for multi-colored gradients."""
+        substring_indexes = self.substring_indexes()
+        substrings: List[str] = []
+        for start, end in substring_indexes:
+            substrings.append(self._text[start:end])
+        return substrings
 
-        Returns:
-            Tuple[int, int]: the length of the gradient as well as the integer remainder.
-        """
-        TEXT_LEN = self._length
-        if verbose:
-            console.log(f"Text Length: [bold #0ff]{TEXT_LEN}[/]")
+    def gradient_tuples(self) -> List[Tuple[str, Color, Color]]:
+        """Generate a list of tuples that contain chunked strings and \
+            their corresponding colors."""
+        indexes = self.substring_indexes()
+        substrings = self.substrings()
+        gradient_tuples: List[Tuple[int, str, Color, Color]] = []
 
-        GRADIENTS = self.hues - 1
-        if verbose:
-            console.log(f"Number of Gradients: [bold #0ff]{GRADIENTS}[/]")
+        for (
+            index,
+            substring,
+        ) in enumerate(substrings):
+            start = indexes[index][0]
+            color = self._colors[index]
+            next_color = self._colors[index + 1]
+            gradient_tuples.append((start, substring, color, next_color))
+        return gradient_tuples
 
-        self._G_LENGTH = TEXT_LEN // GRADIENTS  # floor (int) division
-        self._REMAINDER = TEXT_LEN % GRADIENTS  # division remainder
-        if verbose:
-            console.log(f"Gradient Length: [bold #0ff]{self._G_LENGTH}[/]")
-            console.log(f"Gradient Remainder: [bold dim #ff0]{self._REMAINDER}[/]")
-        return self._G_LENGTH, self._REMAINDER
-
-    def calculate_gradient_start(self) -> int:
-        """Calculate the start index of the given gradient."""
-        return self._G_INDEX * self._G_LENGTH
-
-    def calculate_gradient_end(self, start: int) -> int:
-        """Calculate the end index of the given gradient.
-
-        Args:
-            start(`int`): The start index of the gradient.
-        """
-        end = start + self._G_LENGTH
-        if self._REMAINDER is not None:
-            if self._G_INDEX < self._REMAINDER:
-                end += 1
-            if self._G_INDEX == self._REMAINDER:
-                end = self._length
-        return end
-
-    def get_substring(self, start: int, end: int) -> str:
-        """Return a substring of the given text.
-
-        Args:
-            start(`int`): The start index of the substring.
-            end(`int`): The end index of the substring.
-
-        Returns:
-            str: The indicated substring.
-
-        Raises:
-            IndexError: If the start index is less than `0` or greater than the length of the text.
-            IndexError: If the end index is less than `0` or greater than the length of the text.
-            IndexError: If the end index is greater than the length of the text.
-            ValueError: If the start index is greater than the end index.
-        """
-        TEXT = "".join(self._text)
-        assert start >= 0, IndexError(
-            f"Invalid Start Index: ({start}) Valid values must be greater than or equal to `0`."
-        )
-        assert end >= 0, IndexError(
-            f"Invalid End Index: ({end}) Valid values must be greater than or equal to `0`."
-        )
-        assert end <= len(TEXT), IndexError(
-            f"Invalid End Index: ({end}) Valid values range from  `0` to the length of the text ({self._length})."
-        )
-        assert start < end, ValueError(
-            f"Invalid indexes: The start index ({start}) must be less than the end index ({end})."
-        )
-        return TEXT[start:end]
-
-    def generate_spans(self, verbose: bool = False) -> List[Span]:
-        """Generate tuples with the enumerated tuple of start and end index of each span"""
-        if verbose:
-            _console = Console(theme=GradientTheme())
-            install_rich_traceback(console=_console)
-
+    @staticmethod
+    def gradient_spans(gradient_tuple: Tuple[int, str, Color, Color]
+    ) -> List[Span]:
+        """Generate a list of spans for a substring."""
+        start = gradient_tuple[1]
+        substring = gradient_tuple[2]
+        color1 = gradient_tuple[3]
+        color2 = gradient_tuple[4]
         spans: List[Span] = []
+        length = len(substring)
+
+        def generate_span_style(self, color: Color) -> Style:
+            """Generate a style with the specified color."""
+            if self.style is None or self.style == "_null":
+                self.style = Style(color=color)
+                return self.style
+            if not isinstance(color, Color):
+                color = Color(color)
+            if isinstance(self.style, str):
+                self.style = Style.parse(self.style)
+            elif isinstance(self.style, Style):
+                style_def = str(self.style)
+                self.style = Style.parse(f"{style_def} {str(color)}")
+                return self.style
+            else:
+                raise TypeError(
+                    f"Unable to combine style (`{self.style}`) and color (`{color})`)"
+                )
+
+        r1, g1, b1 = color1.rgb
+        r2, g2, b2 = color2.rgb
+        dr = r2 - r1
+        dg = g2 - g1
+        db = b2 - b1
+
         span_start = 0
-        GRADIENTS: int = len(self._colors) - 1
-        self._G_LENGTH, self._REMAINDER = self.calculate_G_LENGTH()
+        for index, char in enumerate(substring):
+            blend = index / length
+            span_start = start + span_start + index
+            span_color = f"#{int(r1 + dr * blend):02X}{int(g1 + dg * blend):02X}{int(b1 + db * blend):02X}"
+            span_style = generate_span_style(span_color)
+            root_span_start = start + span_start
+            current_span = Span(span_start, span_start + 1, span_style)
+            spans.append(current_span)
 
-        # Loop through each gradient & generate the start and end indexes
-        for self._G_INDEX in range(GRADIENTS):
-            gradient_start = self.calculate_gradient_start()
-            gradient_end = self.calculate_gradient_end(gradient_start)
-
-            if self._G_INDEX < GRADIENTS:
-                color1 = self._colors[self._G_INDEX]
-                r1, g1, b1 = color1.rgb_tuple
-                color2 = self._colors[self._G_INDEX + 1]
-                r2, g2, b2 = color2.rgb_tuple
-                dr = r2 - r1
-                dg = g2 - g1
-                db = b2 - b1
-                if verbose:
-                    self.log_deltas(color1, color2, gradient_start, gradient_end)
-
-            span_start = 0
-            for span_index in range(self._G_LENGTH):
-                blend = span_index / self._G_LENGTH  # floating point division
-                span_start = gradient_start + span_index
-                span_color = f"#{int(r1 + dr * blend):02X}{int(g1 + dg * blend):02X}{int(b1 + db * blend):02X}"
-                span_style = self.generate_span_style(span_color)
-                current_span = Span(span_start, span_start + 1, span_style)
-                spans.append(current_span)
-                if verbose:
-                    _console.log(current_span)
         return spans
 
-    def clamp_colors(self) -> None:
-        """Limit the number of colors (`self._colors`) in a gradient to at most one color per two characters.
-        This function is used to treat edge cases where the color count exceeds that
-        limit causing the last several characters in the message to be the same color
-        or have no color at all."""
-        length = len("".join(self._text))
-        hues = len(self._colors)
-        if hues > length // 2:
-            self._colors = self._colors[::2]
+    def concurrent_gradient_spans(self) -> List[Span]:
+        """Generate the spans for the gradient concurrently.
 
-    def generate_span_style(self, color: Color) -> Style:
-        """Generate a style with the specified color."""
-        if self.style is None or self.style == "_null":
-            self.style = Style(color=color)
-            return self.style
-        if not isinstance(color, Color):
-            color = Color(color)
-        if isinstance(self.style, str):
-            self.style = Style.parse(self.style)
-        elif isinstance(self.style, Style):
-            style_def = str(self.style)
-            self.style = Style.parse(f"{style_def} {str(color)}")
-            return self.style
-        else:
-            raise TypeError(
-                f"Unable to combine style (`{self.style}`) and color (`{color})`)"
-            )
-
-    def log_deltas(
-        self, color1: Color, color2: Color, gradient_start: int, gradient_end: int
-    ) -> None:
-        """Log the deltas between each color in a gradient.
-
-        Args:
-            color1(`Color`): The first color in the gradient.
-            color2(`Color`): The second color in the gradient.
-            gradient_start(`int`): The start index of the gradient.
-            gradient_end(`int`): The end index of the gradient.
+        Returns:
+            List[Span]: The gradient spans.
         """
+        workers = cpu_count() - 1
+        _gradient_tuples = self.gradient_tuples()
 
-        # Initialize table instance
-        gradient_table = Table(show_header=False, expand=False)
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            future = executor.submit(
+                self.gradient_spans,
+                _gradient_tuples
+            )
+            return future.result()
 
-        # Columns
-        gradient_table.add_column("Attributes", justify="left", style="bold cyan")
-        gradient_table.add_column("Values", justify="left", style="bold italic magenta")
-        gradient_table.add_column("Description", justify="left", style="dim white")
-
-        # Rows
-        gradient_table.add_row(
-            "Gradient Index",
-            f"{self._G_INDEX}",
-            "The index of the gradient.",
-        )
-        gradient_table.add_row(
-            "Gradient Start",
-            f"{gradient_start}",
-            "The start index of the gradient.",
-        )
-        gradient_table.add_row(
-            "Gradient End",
-            f"{gradient_end}",
-            "The end index of the gradient.",
-        )
-        gradient_table.add_row(
-            "Color 1",
-            f"[bold {color1.hex}]{color1}[/]",
-            "The first color of the gradient.",
-        )
-        gradient_table.add_row(
-            "Color 2",
-            f"[bold {color2.hex}]{color2}[/]",
-            "The second color of the gradient.",
-        )
-        console.log(gradient_table)
-
-    # End of Gradient Class
-
-
-def _color(plural: bool = True, capital: bool = False) -> Gradient:
-    """The word `color` in a random gradient."""
-    if plural:
-        word = "colors"
-    else:
-        word = "color"
-    if capital:
-        word = word.capitalize()
-    return Gradient(word)
-
-
-# @snoop
-def gradient_examples_table(console: Console = Console(theme=GradientTheme())) -> Table:
-    """Generate several examples of gradients.
-
-    Args:
-        console(`Console`): The console instance to use for rendering.
-
-    Returns:
-        `List[Layout]`: A list of Layout instances.
-    """
-
-    console.line(3)
-    console.rule(title=Gradient("Gradient Examples"))
-    console.line(2)
-
-
-def format_value(variable: str) -> Text:
-    """Format a variable.
-
-    Args:
-        variable(`str`): The variable to format.
-
-    Returns:
-        `Text`: The formatted variable.
-    """
-    # Boolean Variables
-    if variable == "True" or variable == "False":
-        style = "bold #5f00ff"
-        if variable == "True":
-            return Text("True", style=style)
-        return Text("False", style=style)
-
-    # Attempt to parse `variable` as a color
-    try:
-        color = Color(variable)
-        return Text(f'"{variable}"', style=f"bold {color.hex}")
-
-    # Format `variable`` as a string
-    except ColorParseError as cpe:
-        return Text(f'"{variable}"', style="#E0E781")
-    except ValueError as ve:
-        return Text(f'"{variable}"', style="#E0E781")
-    except TypeError as te:
-        return Text(f'"{variable}"', style="#E0E781")
-    except Exception as e:
-        return Text(f'"{variable}"', style="#E0E781")
-
-
-def format_list(list: List[str]) -> Text:
-    """Format a list of strings.
-
-    Args:
-        list(`List[str]`): The list to format.
-
-    Returns:
-        `Text`: The formatted list.
-    """
-    formatted_list = [Text("[", style="bold #ffbbff")]
-    COMMA = Text(", ", style="#cccccc")
-    num_of_items = len(list)
-
-    for index, item in enumerate(list, start=1):
-        formatted_list.append(format_value(item))
-        if index < num_of_items:
-            formatted_list.append(COMMA)
-    formatted_list.append(Text("]", style="bold #ffbbff"))
-    return Text.assemble(*formatted_list)
-
-
-def assignment(var: Optional[str] = "color") -> Text:
-    """Generate a formatted variable and its assignment operator.
-
-    Args:
-        var(`Optional[str]`): The variable name.
-
-    Returns:
-        `Text`: The formatted variable and its assignment operator.
-    """
-    return Text.assemble(
-        Text(var, style="italic #ff8800"),
-        Text(" = ", style="#FF0066"),
-    )
-
-
-def generate_subtitle(var: Optional[str] = "color", attr: List[str] = []) -> Text:
-    """Automate the generation of a subtitle for a gradient example.
-
-    Args:
-        attributes (str | List[str]): The Gradient attributes to emphasize.
-        variable (Optional[str], optional): The variable of the emphasized attributes. Defaults to "color".
-
-    Returns:
-        Text: The formatted and colored subtitle
-    """
-    # Format the variable
-    key = assignment(var)  # The variable and its assignment operator
-
-    # Format the attribute(s)
-    if len(attr) > 1:  # Multiple attributes
-        value = format_list(attr)
-
-    elif len(attr) == 1:  # Single attribute
-        value = format_value(attr[0])
-
-    return Text.assemble(key, value)
-
-
-def gradient_examples_table() -> Table:
-    """Generate several examples of gradients.
-
-    Returns:
-        Table: A table containing several examples of gradients.
-    """
-    TEXT = lorem.paragraphs(2)
-    example_table = Table.grid("col_1", "col_2", padding=(1, 4), expand=True)
-
-    RedYellow: List[str] = ["red", "orange", "yellow"]
-    subtitle_RedYellow = generate_subtitle("color", RedYellow)
-
-    example_table.add_row(
-        Panel(  # Panel 1 - Row 1 - Random Gradient
-            Gradient(TEXT),
-            title=Gradient("Random Gradient"),
-            subtitle=Text(
-                f"A random color gradient is used when no colors are specified.",
-                style="italic dim white",
-            ),
-            padding=(1, 4),
-            expand=True,
-        ),
-        Panel(  # Panel 2 - Row 1 - Red-orange-yellow Gradient
-            Gradient(TEXT, colors=["red", "orange", "yellow"]),
-            title=Gradient("Three Color Gradient"),
-            subtitle=subtitle_RedYellow,
-            padding=(1, 4),
-            expand=True,
-        ),
-    )
-
-    # X11 Colors
-    x11_colors: List[str] = ["darkgreen", "green", "deepskyblue", "indigo"]
-    subtitle_x11 = generate_subtitle("colors", x11_colors)
-
-    # HEX Colors
-    hex_colors: List[str] = ["#f0f", "#af00ff", "#5f00ff"]
-    subtitle_hex = generate_subtitle("colors", hex_colors)
-
-    example_table.add_row(
-        Panel(
-            Gradient(TEXT, colors=x11_colors),
-            title=Gradient("X11 Colors", colors=x11_colors),
-            subtitle=subtitle_x11,
-            padding=(1, 4),
-            expand=True,
-        ),
-        Panel(
-            Gradient(TEXT, colors=hex_colors),
-            title=Gradient("HEX Colors", colors=hex_colors),
-            subtitle=subtitle_hex,
-            padding=(1, 4),
-            expand=True,
-        ),
-    )
-
-    # RGB Colors
-    rgb_colors: List[str] = ["rgb(0,0,255)", "rgb(0,136,255)", "rgb(0,255,255)"]
-    subtitle_rainbow = generate_subtitle("rainbow", ["True"])
-
-    example_table.add_row(
-        Panel(
-            Gradient(TEXT, colors=rgb_colors),
-            title=Gradient("RGB Color Codes", colors=rgb_colors),
-            subtitle=generate_subtitle("colors", rgb_colors),
-            padding=(1, 4),
-            expand=True,
-        ),
-        Panel(
-            Gradient(TEXT, rainbow=True),
-            title=Gradient("Rainbow Gradient", rainbow=True),
-            subtitle=subtitle_rainbow,
-            padding=(1, 4),
-            expand=True,
-        ),
-    )
-    return example_table
-
-
-def explanation_1() -> Layout:
-    console = Console(theme=GradientTheme())
-    console.clear()
-    console.line(2)
-    examples_preface = "Gradients can be made in a number of types:"
-    random_example = "\n[bold lightblue]- [/bold lightblue]\
-[lime]1)[/] [bold white]When [/]\
-[#ff0000]no[/#ff0000]\
-[bold white] colors are specified, the text will have a [/]\
-[italic bold #00ffff]random gradient[/italic bold #00ffff]\
-[bold white] applied to it[/]."
-    named_example = "\n[bold lightblue]- [/]\
-[lime]2)[/] [bold white]When a list of color is provided, \
-The gradient will be generated from those.\n The vibrant spectrum \
-of colors that Gradient uses are:\n\n[/bold white]"
-    x11_example = "\n\n[bold lightblue]- [/]\
-[#00FF00]3)[/] [bold] \
-[#FFFFFF]Colors can also be parsed from X11 keywords such as:[/]\
-[#006400] `darkgreen`[/#006400],\
-[#008000] `green`[/#008000], \
-[#00BFFF]`deepskyblue`[/#00BFFF],\
-[bold #ffffff] or [/bold #ffffff]\
-[#4B0082] `indigo`[/#4B0082].[/bold]"
-    hex_example = "\n[bold lightblue]- [/]\
-[lime]4)[/] [bold] [white]Gradient may also be parsed \
-from [italic #00ffff]3[/] or [italic #00ffff]6[/] \
-digit hex color codes such as:[/]\
-[bold #ff00ff] `#f0f`[/],\
-[bold #af00ff] `af00ff`[/],\
-[bold #ffffff] or [/]\
-[bold #5f00ff]`#5f00ff`[/].[/bold]"
-    rgb_example = "\n[bold lightblue]- [/]\
-[lime]5)[/] [bold white]RGB Color code can be parsed from strings \
-[bold #0000ff]`rgb(0, 0, 255)`[/] \
-[bold white]or [/bold white]\
-[bold #0088ff]`(0,136,255)`[/],\
-or from tuples [#00ffff](0,255,255)[/]:"
-    console.print(examples_preface, justify="center")
-    console.print(random_example, justify="center")
-    explanations = [named_example, x11_example, hex_example, rgb_example]
-    for count in range(4):
-        console.print(explanations[count], justify="center")
-        if count == 0:
-            colors = [Color(color) for color in Color.COLORS]
-            console.print(Columns(colors, equal=True, expand=False), justify="center")
-
-
-register_repr(Panel)(normal_repr)
-
-if __name__ == "__main__":
-    console = Console(theme=GradientTheme())
-    # explanation_1()
-    console.print(gradient_examples_table(), justify="center")
+    def simplify_spans(self) -> List[Span]:
+        """Simplify the spans by combining spans with the same style."""
+        simplified_spans: List[Span] = []
+        for span in self._spans:
+            if simplified_spans:
+                last_span = simplified_spans[-1]
+                if span.style == last_span.style:
+                    last_span.end += 1
+                    continue
+            simplified_spans.append(span)
+        return simplified_spans

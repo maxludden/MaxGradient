@@ -13,7 +13,7 @@ from rich.style import Style, StyleType
 from rich.text import Text, TextType
 
 from maxgradient.color import Color
-from maxgradient.gradient import DEFAULT_JUSTIFY, Gradient
+from maxgradient.original_gradient import DEFAULT_JUSTIFY, Gradient
 
 
 class GradientPanel(Panel):
