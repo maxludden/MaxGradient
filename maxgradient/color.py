@@ -20,6 +20,8 @@ from maxgradient._rich import get_rich_color, rich_table
 from maxgradient._x11 import get_x11_color, x11_table
 from maxgradient.theme import GradientTheme
 
+ColorType = str | Tuple[int, int, int] | RichColor
+
 HEX_REGEX = re.compile(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
 RGB_REGEX = re.compile(r"^r?g?b?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$")
 
@@ -177,7 +179,7 @@ class Color:
         (255, 0, 0),
     )
 
-    def __init__(self, color: str) -> bool:
+    def __init__(self, color: ColorType) -> bool:
         """A color parsed from a string.
 
         Args:
@@ -192,6 +194,15 @@ class Color:
         if isinstance(color, Color):
             self.value = color.value
             self.mode = color.mode
+            return
+
+        elif isinstance(color, Tuple):
+            assert color[0] >= 0 and color[0] <= 255
+            assert color[1] >= 0 and color[1] <= 255
+            assert color[2] >= 0 and color[2] <= 255
+            triplet = ColorTriplet(*color)
+            self.value = RichColor.from_triplet(triplet)
+            self.mode = Mode.RGB
             return
 
         elif color in self.COLORS:
