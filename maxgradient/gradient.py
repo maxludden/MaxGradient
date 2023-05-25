@@ -33,6 +33,7 @@ install_rich_traceback(console=console)
 class NotEnoughColors(Exception):
     pass
 
+
 class GradientSubstring:
     """A substring of Gradient's text. A substring is used to define a \
         gradient, when a gradient spans more than two colors.
@@ -51,15 +52,16 @@ class GradientSubstring:
     """
 
     @property
-    def spans(self) -> List(Span):
+    def spans(self) -> List[Span]:
         """Return the substring's spans."""
         return self._spans
 
     @spans.setter
-    def spans(self, spans: List(Span)) -> None:
+    def spans(self, spans: List[Span]) -> None:
         """Set the substring's spans."""
         self._spans = spans
 
+    @snoop(watch_explode=('spans', 'text'))
     def __init__(
         self,
         text: str = "",
@@ -67,10 +69,12 @@ class GradientSubstring:
         color_start: Color = None,
         color_end: Color = None,
         style: StyleType = None,
-        spans: Optional[List[Span]] = None
-        ) -> None:
+        spans: Optional[List[Span]] = None,
+    ) -> None:
         """Initialize a gradient's substring and calculate
         it's gradient spans."""
+        if isinstance(text, List):
+            text = ''.join(text)
         sanitized_text: str = strip_control_codes(text)
         self._length: int = len(sanitized_text)
         self.text: str = sanitized_text
@@ -79,7 +83,10 @@ class GradientSubstring:
         self.color_end: Color = Color(color_end)
         if style:
             self.style: str = self.parse_style(style)
-        end_style = Style.parse(f"{self.style} {self.color_end.hex}")
+            end_style = Style.parse(f"{self.style} {self.color_end.hex}")
+        else:
+            self.style = Style()
+            end_style = Style(color=self.color_end.hex)
         self._spans: List[Span] = [Span(0, self._length, end_style)]
 
         spans = self.calculate_spans_concurrently()
@@ -92,10 +99,10 @@ class GradientSubstring:
     def __rich_repr__(self) -> Text:
         """Return the gradient's substring."""
         if len(self.text) > console.width / 2 - 2:
-            text =  self.text[: console.width / 2 - 5] + "..."
+            text = self.text[: console.width / 2 - 5] + "..."
         else:
             text = self.text
-        text = Text(f"\"{text}\"", style='bold white')
+        text = Text(f'"{text}"', style="bold white")
         hyphen = "[bold dim #cccccc] - [/]"
         colors = []
         for color in [self.start_color, self.end_color]:
@@ -103,11 +110,9 @@ class GradientSubstring:
             colors.append(f"[bold {color.hex}]{color._original.capitalize()}[/]")
         color_string = Text.from_markup(hyphen.join(colors))
         table = Table(
-            title="GradientSubstring",
-            show_header=False,
-            border_style = "bold #666666"
+            title="GradientSubstring", show_header=False, border_style="bold #666666"
         )
-        table.add_column("Attribute", style="i #5f00ff", justify='right')
+        table.add_column("Attribute", style="i #5f00ff", justify="right")
         table.add_column("Value", style="b #af00ff")
         table.add_row("Text", f"[bold #FDFDBD]{text}[/]")
         table.add_row("Start Index", f"[bold #00ffff]{self.start_index}[/]")
@@ -115,31 +120,31 @@ class GradientSubstring:
             "Color Start",
             Text(
                 self.color_start._original.capitalize(),
-                style=f"bold {self.color_start.hex}"
-            )
+                style=f"bold {self.color_start.hex}",
+            ),
         )
         table.add_row(
             "Color End",
             Text(
                 self.color_end._original.capitalize(),
-                style=f"bold {self.color_end.hex}"
-            )
+                style=f"bold {self.color_end.hex}",
+            ),
         )
         table.add_row("Style", str(self.style))
         return table
 
+    @snoop
     def calculate_spans_concurrently(self) -> None:
         """Calculate the gradient's spans concurrently."""
-        with ThreadPoolExecutor(max_workers={cpu_count()-1}) as executor:
-            result = executor.map(
-                self._calculate_span, range(self.length)
-            )
+        with ThreadPoolExecutor(max_workers=cpu_count() - 1) as executor:
+            result = executor.map(self._calculate_span, range(self._length))
         return list(result)
 
+    @snoop
     def _calculate_span(self, index: int) -> Span:
         """Calculate the gradient's span at the given index."""
         blend = index / self._length
-        span_start = self.index_start + index
+        span_start = self.start_index + index
         r1, g1, b1 = self.color_start.rgb_tuple
         r2, g2, b2 = self.color_end.rgb_tuple
         dr = r2 - r1
@@ -156,13 +161,18 @@ class GradientSubstring:
         if isinstance(style, Style):
             style = style.without_color
             style = str(style)
+            return style
+        elif style is None:
+            return ""
         else:
             try:
                 style = Style.parse(style).without_color
                 style = str(style)
+                return style
             except:
-                raise ValueError("Style must be a Style object or a string that can be parsed into a Style object.")
-        return style
+                raise ValueError(
+                    "Style must be a Style object or a string that can be parsed into a Style object."
+                )
 
     def simplify_spans(self, spans: List[Span]) -> List[Span]:
         """Simplify the spans by combining spans with the same style."""
@@ -178,6 +188,7 @@ class GradientSubstring:
                     simplified_spans.append(last_span)
                     last_span = span
         return simplified_spans
+register_repr(GradientSubstring)(normal_repr)
 
 class Gradient(Text):
     """Text with gradient color / style.
@@ -226,8 +237,7 @@ class Gradient(Text):
         no_wrap: Optional[bool] = None,
         end: str = "\n",
         tab_size: Optional[int] = 8,
-        spans: Optional[List[Span]] = None,
-        concurrent: bool = True,
+        spans: Optional[List[Span]] = None
     ) -> None:
         """Initialize the Gradient class."""
         match = WHITESPACE_REGEX.match(text)
@@ -241,18 +251,19 @@ class Gradient(Text):
             text = text.plain
 
         # Style
+        self.style: str = self.parse_style(style)
         self.style = style
 
         # Initialize Text
         super().__init__(
-            text=text,  #        #   self._text: List[str]
-            style=style,  #      #   self.style: StyleType
-            justify=justify,  #  #   self.justify: Optional[JustifyMethod]
-            overflow=overflow,  ##   self.overflow: Optional[OverflowMethod]
-            no_wrap=no_wrap,  #  #   self.no_wrap: Optional[bool]
-            end=end,  #          #   self.end: str
-            tab_size=tab_size,  ##   self.tab_size: Optional[int]
-            spans=spans,  #      #   self._spans: Optional[List[Span]]
+            text=text,
+            style=style,
+            justify=justify,
+            overflow=overflow,
+            no_wrap=no_wrap,
+            end=end,
+            tab_size=tab_size,
+            spans=spans,
         )
 
         # text
@@ -277,8 +288,7 @@ class Gradient(Text):
         self._colors: List[Color] = []
         if not rainbow:
             if colors is None:
-                self._colors = ColorList(
-                    self.hues, self.invert).color_list
+                self._colors = ColorList(self.hues, self.invert).color_list
                 # self._colors = color_list.color_list
             else:
                 for color in colors:
@@ -291,8 +301,7 @@ class Gradient(Text):
 
         else:
             self.hues = 10
-            self._colors = ColorList(
-                self.hues, self.invert).color_list
+            self._colors = ColorList(self.hues, self.invert).color_list
             # self._colors = color_list.color_list
 
         if self._length < self.hues:
@@ -301,35 +310,74 @@ class Gradient(Text):
             )
             raise NotEnoughColors(f"{msg} Please enter more text or fewer colors.")
 
-        if concurrent:
-            self.spans = self.concurrent_spans()
-        else:
-            self.spans = self.spans()
+        # gradient_spans
+        self._spans = self.generate_gradient_spans()
 
-    def spans(self) -> List(Span):
-        """Generate the gradient spans."""
+        # text substring
 
-    def generate_substring_indexes(self) -> List[Tuple[int, int]]:
-        """Chunk the text into equal parts based on the number of colors. Return a
-        list of tuples containing the start and end indexes of each chunk."""
+    def generate_gradient_spans(self) -> List[Span]:
+        """Separate the Gradient into substrings for each color gradient."""
         num_of_substrings = len(self._colors) - 1
         substring_sizes = array_split(range(self._length), num_of_substrings)
-        for substring_size in substring_sizes:
+
+        spans: List[Span] = []
+        for index, substring_size in enumerate(substring_sizes):
             start: int = substring_size[0]
             end: int = substring_size[-1]
-            yield start, end
+            substring = self._text[start:end]
+            color1 = self._colors[index]
+            color2 = self._colors[index + 1]
+            substring_spans = GradientSubstring(
+                text=substring,
+                start_index=start,
+                color_start = color1,
+                color_end = color2,
+                style = self.style).spans
+            if index == 0:
+                spans = substring_spans
+            else:
+                spans += substring_spans
+        return self.simplify_spans(spans)
 
-    def generate_substrings(self, substring_indexes: List[Tuple[int, int]]) -> List[str]:
-        """Generate the substrings for each color."""
-        for start, end in substring_indexes:
-            substring = self.plain[start:end]
-            yield substring
+    def simplify_spans(self, spans: List[Span]) -> List[Span]:
+        """Simplify the spans by combining spans with the same style."""
+        simplified_spans: List[Span] = []
+        for index, span in enumerate(spans):
 
-    def generate_start_colors(self) -> List(Color):
-        """Generate the start colors."""
-        start_colors: List[Color] = []
-        for color in self._colors:
-            yield color
+            if index == 0:
+                start = span.start
+                end = span.end
+                style = span.style
+                last_span = Span(start, end, style)
+            else:
+                if span.style == last_span.style:
+                    start = last_span.start
+                    last_span = Span(start, span.end, span.style)
+                else:
+                    simplified_spans.append(last_span)
+                    last_span = span
+        return simplified_spans
+
+    @staticmethod
+    def parse_style(style: StyleType) -> str:
+        if isinstance(style, Style):
+            style = style.without_color
+            style = str(style)
+            if 'none ' in style:
+                style = style.replace('none ', '')
+        elif style is None:
+            if 'none ' in style:
+                style = style.replace('none ', '')
+            style = Style.null()
+        else:
+            try:
+                style = Style.parse(style).without_color
+                style = str(style)
+                return style
+            except:
+                raise ValueError(
+                    "Style must be a Style object or a string that can be parsed into a Style object."
+                )
 
     def __repr__(self) -> str:
         """Return the representation of the Gradient class."""
@@ -371,6 +419,7 @@ class Gradient(Text):
 
 
 register_repr(Gradient)(normal_repr)
+register_repr(GradientSubstring)(normal_repr)
 
 if __name__ == "__main__":
     from rich.console import Console
@@ -384,4 +433,5 @@ if __name__ == "__main__":
     random_gradient_text: str = "Gradient is a Python library for creating \
 beautiful color gradients."
     random_gradient: Gradient = Gradient(random_gradient_text)
+    console.print(random_gradient, justify="center")
     console.print(random_gradient, justify="center")
