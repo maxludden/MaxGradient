@@ -36,6 +36,7 @@ install_rich_traceback(console=console)
 class NotEnoughColors(IndexError):
     """Custom exceptions raised when there are not enough characters to \
         create a gradient."""
+
     pass
 
 
@@ -56,7 +57,7 @@ class GradientSubstring(Text):
                 Defaults to None.\n\n
     """
 
-    # @snoop(watch=("end_style"))
+    @snoop(watch=("end_style"))
     def __init__(
         self,
         text: str = "",
@@ -110,7 +111,6 @@ class GradientSubstring(Text):
         initial_spans.extend(self.calculate_spans_concurrently())
         simplified_spans = self.simplify_spans(initial_spans)
         self._spans = simplified_spans
-
 
     @property
     def spans(self) -> List[Span]:
@@ -233,12 +233,14 @@ class GradientSubstring(Text):
         return simplified_spans
 
 
-
-@snoop
+# @snoop
 def example() -> None:
     console = Console(theme=GradientTheme())
     width = console.width
     TEXT = lorem.paragraph()
+    console.clear()
+    console.line(2)
+    console.print(Text(TEXT), justify="center", width=width * 0.8)
 
     console.print(
         GradientSubstring(
@@ -246,11 +248,12 @@ def example() -> None:
             start_index=0,
             color_start=Color("magenta"),
             color_end=Color("purple"),
-            style="bold italic"
+            style="bold italic",
         ),
         justify="center",
-        width = width * 0.8,
+        width=width * 0.8,
     )
+
 
 if __name__ == "__main__":
     example()
