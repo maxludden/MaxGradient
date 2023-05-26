@@ -2,8 +2,8 @@
 import re
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import cpu_count
-from typing import Any, Dict, List, Optional, Tuple
 from random import choice, randint
+from typing import Any, Dict, List, Optional, Tuple
 
 from cheap_repr import normal_repr, register_repr
 from lorem_text import lorem
@@ -11,6 +11,7 @@ from numpy import array_split
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
 from rich.panel import Panel
+from rich.pretty import Pretty
 from rich.repr import RichReprResult
 from rich.style import Style, StyleType
 from rich.table import Table
@@ -25,13 +26,16 @@ from maxgradient.theme import GradientTheme
 DEFAULT_JUSTIFY: "JustifyMethod" = "default"
 DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
+VERBOSE: bool = False
 
-
-console = Console(theme=GradientTheme())
+_console = Console()
+console = Console(theme=GradientTheme(), width=_console.width * 0.8)
 install_rich_traceback(console=console)
 
 
-class NotEnoughColors(Exception):
+class NotEnoughColors(IndexError):
+    """Custom exceptions raised when there are not enough characters to \
+        create a gradient."""
     pass
 
 
@@ -52,16 +56,7 @@ class GradientSubstring(Text):
                 Defaults to None.\n\n
     """
 
-    @property
-    def spans(self) -> List[Span]:
-        """Return the substring's spans."""
-        return self._spans
-
-    def spans(self, spans: List[Span]) -> None:
-        """Set the substring's spans."""
-        self._spans = spans
-
-    @snoop(watch=("end_style"))
+    # @snoop(watch=("end_style"))
     def __init__(
         self,
         text: str = "",
@@ -73,8 +68,9 @@ class GradientSubstring(Text):
         justify: JustifyMethod = DEFAULT_JUSTIFY,
         overflow: OverflowMethod = DEFAULT_OVERFLOW,
         no_wrap: bool = False,
-        end: str = "\n",
+        end: str = "",
         tab_size: int = 8,
+        verbose: bool = VERBOSE,
     ) -> None:
         """Initialize a gradient's substring and calculate
         it's gradient spans."""
@@ -85,48 +81,78 @@ class GradientSubstring(Text):
             overflow=overflow,
             no_wrap=no_wrap,
             end=end,
-            tab_size=tab_size
+            tab_size=tab_size,
         )
+        # Text
         if isinstance(text, List):
-            text = ''.join(text)
+            text = "".join(text)
         sanitized_text: str = strip_control_codes(text)
         self._length: int = len(sanitized_text)
         self.text: str = sanitized_text
+
+        # Start index
         self.start_index: int = start_index
+
+        # Colors
         self.color_start: Color = Color(color_start)
         self.color_end: Color = Color(color_end)
+
+        # Style
         if style:
-            console.log("if style:\n\n")
             self.style: str = self.parse_style(style)
             end_style = Style.parse(f"{self.style} {self.color_end.hex}")
-            console.log("end_style:", end_style)
         else:
-            console.log("if not style:\n\n")
             self.style = Style.null()
             end_style = Style(color=self.color_end.hex)
-            console.log("end_style:", end_style)
-        self._spans: List[Span] = [Span(0, self._length-1, end_style)]
 
-        spans = self.calculate_spans_concurrently()
-        self._spans = self.simplify_spans(spans)
+        # Spans
+        initial_spans: List[Span] = [Span(0, self._length - 1, end_style)]
+        initial_spans.extend(self.calculate_spans_concurrently())
+        simplified_spans = self.simplify_spans(initial_spans)
+        self._spans = simplified_spans
+
+
+    @property
+    def spans(self) -> List[Span]:
+        """Return the substring's spans."""
+        return self._spans
+
+    def spans(self, spans: List[Span]) -> None:
+        """Set the substring's spans."""
+        self._spans = spans
 
     def __repr__(self) -> str:
         """Return the substring's representation."""
-        return f"GradientSubstring(text={self.text}, start_index={self.start_index}, color_start={self.color_start}, color_end={self.color_end}, style={self.style}, spans={self.spans})"
+        strings = [
+            f"GradientSubstring",
+            f"<text={self.text}",
+            f"start_index={self.start_index}",
+            f"color_start={self.color_start}",
+            f"color_end={self.color_end}",
+            f"style={self.style}",
+            f"spans={self.spans}>",
+        ]
+        return str(", ").join(strings)
 
     def __rich_repr__(self) -> Text:
         """Return the gradient's substring."""
+
+        # Text (truncated if too long)
         if len(self.text) > console.width / 2 - 2:
             text = self.text[: console.width / 2 - 5] + "..."
         else:
             text = self.text
         text = Text(f'"{text}"', style="bold white")
+
+        # Colors
         hyphen = "[bold dim #cccccc] - [/]"
         colors = []
         for color in [self.start_color, self.end_color]:
             color = Color(color)
             colors.append(f"[bold {color.hex}]{color._original.capitalize()}[/]")
         color_string = Text.from_markup(hyphen.join(colors))
+
+        # Repr Table
         table = Table(
             title="GradientSubstring", show_header=False, border_style="bold #666666"
         )
@@ -151,14 +177,12 @@ class GradientSubstring(Text):
         table.add_row("Style", str(self.style))
         return table
 
-    # @snoop
     def calculate_spans_concurrently(self) -> None:
         """Calculate the gradient's spans concurrently."""
-        with ThreadPoolExecutor(max_workers=cpu_count() - 1) as executor:
+        with ThreadPoolExecutor(max_workers=3) as executor:
             result = executor.map(self._calculate_span, range(self._length))
         return list(result)
 
-    # @snoop
     def _calculate_span(self, index: int) -> Span:
         """Calculate the gradient's span at the given index."""
         blend = index / self._length
@@ -205,20 +229,28 @@ class GradientSubstring(Text):
                 else:
                     simplified_spans.append(last_span)
                     last_span = span
+        simplified_spans.append(last_span)
         return simplified_spans
 
-register_repr(GradientSubstring)(normal_repr)
 
+
+@snoop
+def example() -> None:
+    console = Console(theme=GradientTheme())
+    width = console.width
+    TEXT = lorem.paragraph()
+
+    console.print(
+        GradientSubstring(
+            text=TEXT,
+            start_index=0,
+            color_start=Color("magenta"),
+            color_end=Color("purple"),
+            style="bold italic"
+        ),
+        justify="center",
+        width = width * 0.8,
+    )
 
 if __name__ == "__main__":
-    console = Console(theme=GradientTheme())
-    colors = Color.COLORS
-    TEXT = lorem.paragraphs(2)
-    gradient = GradientSubstring(
-        text=TEXT,
-        start_index=0,
-        color_start=Color(choice(colors)),
-        color_end=Color(choice(colors)),
-        style="bold italic"
-    )
-    console.print(gradient)
+    example()
