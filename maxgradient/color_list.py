@@ -61,16 +61,32 @@ class ColorList(list):
     def get_last_color(self):
         return self.color_list[-1]
 
+    @classmethod
+    def colored_title(cls) -> Text:
+        """Returns `ColorList` title with colors applied."""
+        title = [
+            Text("C", style="bold.magenta"),
+            Text("o", style="bold.violet"),
+            Text("l", style="bold.purple"),
+            Text("o", style="bold.blue"),
+            Text("r", style="bold.lightblue"),
+            Text("L", style="bold.cyan"),
+            Text("i", style="bold.lime"),
+            Text("s", style="bold.yellow"),
+            Text("t", style="bold.orange"),
+        ]
+        return Text.assemble(*title)
+
     def __rich__(self) -> Table:
         table = Table(
-            title="Color List",
+            title=self.colored_title(),
             show_header=False,
             expand=False,
             padding=(0, 1),
         )
         for color in self.color_list:
             table.add_row(
-                Text(color._original.capitalize(), style=f"bold {color.bg_style}")
+                Text(str(color._original).capitalize(), style=f"bold {color.bg_style}")
             )
         return table
 
@@ -89,6 +105,6 @@ if __name__ == "__main__":
 
     last_color = color_list.get_last_color()
     console.print(
-        f"[{last_color.style}]Last Color:[/] [bold {last_color.bg_style}]{last_color._original.capitalize()}[/]",
+        f"[{last_color.style}]Last Color:[/] [bold {last_color.bg_style}]{str(last_color._original).capitalize()}[/]",
         justify="center",
     )
