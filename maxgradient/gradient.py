@@ -17,7 +17,7 @@ from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
 from snoop import pp, snoop
 
-from maxgradient.color import Color, ColorParseError
+from examples.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
 

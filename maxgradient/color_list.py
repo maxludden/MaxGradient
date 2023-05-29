@@ -5,7 +5,7 @@ from typing import List
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient.color import Color
+from examples.color import Color
 
 
 class ColorList(list):
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     from rich.console import Console
     from rich.style import Style
 
-    from maxgradient.color import Color
+    from examples.color import Color
     from maxgradient.theme import GradientTheme
 
     console = Console(theme=GradientTheme())

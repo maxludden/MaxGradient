@@ -1,6 +1,6 @@
 import re
 from functools import lru_cache
-from typing import Tuple
+from typing import Tuple, Optional
 
 from rich.style import Style
 from rich.table import Table
@@ -471,9 +471,8 @@ def get_x11_rgb_colors() -> Tuple[str, ...]:
 
 
 @lru_cache(maxsize=10)
-def get_x11_color(color: str) -> str:
-    """Parse rich colors for color"""
-    X11_REGEX = re.compile(r"rgb\(\d{1,3},\d{1,3},\d{1,3}\)")
+def get_x11_color(color: str) -> Optional[str]:
+    """Parse X11 colors for color"""
     if color in get_x11_colors():
         index = get_x11_colors().index(color)
         rgb = get_x11_rgb_colors()[index]

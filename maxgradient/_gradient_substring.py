@@ -19,7 +19,7 @@ from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
 from snoop import pp, snoop
 
-from maxgradient.color import Color, ColorParseError
+from examples.color import Color, ColorParseError, ColorType
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
 
@@ -28,8 +28,8 @@ DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 
-_console = Console()
-console = Console(theme=GradientTheme(), width=_console.width * 0.8)
+
+console = Console(theme=GradientTheme())
 install_rich_traceback(console=console)
 
 
@@ -60,11 +60,11 @@ class GradientSubstring(Text):
     @snoop(watch=("end_style"))
     def __init__(
         self,
-        text: str = "",
-        start_index: int = None,
-        color_start: Color = None,
-        color_end: Color = None,
-        style: StyleType = None,
+        text: str,
+        start_index: int,
+        color_start: Color,
+        color_end: Color,
+        style: StyleType,
         spans: Optional[List[Span]] = None,
         justify: JustifyMethod = DEFAULT_JUSTIFY,
         overflow: OverflowMethod = DEFAULT_OVERFLOW,

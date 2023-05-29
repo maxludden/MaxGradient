@@ -1,96 +1,565 @@
 {
-    "workbench.colorCustomizations": {
-        "editor.background": "#020202",
-        "panel.background": "#212121",
-        "sideBar.background": "#010101",
-        "sideBarSectionHeader.background": "#1a0056",
-        "sideBarSectionHeader.foreground": "#d699ff",
-        "sideBarSectionHeader.border": "#d699ff30",
-        "terminal.background": "#000000",
-        "activityBar.activeBorder": "#240078",
-        "activityBar.background": "#121212",
-        "activityBar.border": "#2e2e2e",
-        "activityBar.activeBackground": "#1e005171",
-        "activityBar.foreground": "#c0abff",
-        "activityBarBadge.background": "#d497ff",
-        "activityBarBadge.foreground": "#1e0051",
-        "list.errorForeground": "#ff9cde",
-        "list.warningForeground": "#ff0066b1",
-        "list.hoverBackground": "#1e0051",
-        "list.hoverForeground": "#dbbeff",
-        "list.activeSelectionBackground": "#1e0051",
-        "list.activeSelectionForeground": "#dbbeff",
-        "list.focusForeground": "#1e0051",
-        "list.focusBackground": "#dbbeff",
-        "list.inactiveFocusBackground": "#310046",
-        "list.deemphasizedForeground": "#dbbeff",
-        "list.inactiveSelectionBackground": "#1e0051",
-        "list.inactiveSelectionForeground": "#dbbeff",
-        "banner.background": "#121212",
-        "editor.findMatchBackground": "#0fefff89",
-        "editorInlayHint.parameterBackground": "#af00ff",
-        "scrollbarSlider.background": "#403444",
-        "scrollbarSlider.hoverBackground": "#9500ffaa",
-        "terminal.tab.activeBorder": "#af00ff",
-        "terminal.border": "#af00ff",
-        "panel.border": "#7300ff",
-        "panelTitle.activeBorder": "#ff00ff",
-        "panelTitle.activeForeground": "#dfa7ff",
-        "panelTitle.inactiveForeground": "#ffccff88",
-        "tab.activeBackground": "#110033",
-        "tab.activeForeground": "#ffaaff",
-        "tab.inactiveBackground": "#220055",
-        "tab.inactiveForeground": "#dddddd",
-        "statusBar.debuggingBackground": "#000000",
-        "statusBar.debuggingForeground": "#cccccc",
-        "statusBarItem.prominentBackground": "#dbbeff",
-        "statusBarItem.remoteBackground": "#1e0051",
-        "statusBarItem.remoteForeground": "#a782ff"
+    "git.enableSmartCommit": true,
+    "python.venvFolders": [
+      "~/.config/.pyenv/plugins/pyenv-virtualenvwrapper",
+      "~/.config/.pyenv/versions",
+      "~/dev/venvs/"
+    ],
+    "python.venvPath": "~/dev/venvs",
+    "cSpell.userWords": [
+      "greylock",
+      "maxbook",
+      "maxludden",
+      "TODOC",
+      "venvs",
+      "webcolors"
+    ],
+    "cSpell.customDictionaries": {
+      "project-words": {
+        "name": "Max's Dictionary",
+        "path": "/Users/maxludden/.cspell/maxDictionary.txt",
+        "description": "Words that Max uses a lot.",
+        "addWords": true
+      },
+      "custom": true, // Enable the `custom` dictionary
+      "internal-terms": true, // Disable the `internal-terms` dictionary
+      "python": true
     },
-    "colorize.colorized_colors": [
-        "BROWSERS_COLORS",
-        "HEXA",
-        "RGB",
-        "HSL",
-        "ARGB",
+    "[python]": {
+      "editor.formatOnType": true,
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": false,
+      "editor.formatOnSaveMode": "file",
+      "editor.suggest.preview": true,
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.colorDecorators": true,
+      "editor.parameterHints.cycle": true,
+      "editor.snippetSuggestions": "top",
+      "editor.trimAutoWhitespace": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    "git.ignoredRepositories": [
+      "/Users/maxludden/.vscode/extensions/stepsize.stepsize-1.0.15/resources/demo-repository"
+    ],
+    "terminal.integrated.env.osx": {
+      "FIG_NEW_SESSION": "1"
+    },
+    "editor.inlineSuggest.enabled": true,
+    "editor.accessibilitySupport": "off",
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "terminal.integrated.rightClickBehavior": "paste",
+    "syntax.highlightLanguages": [
+      "html",
+      "c",
+      "cpp",
+      "python",
+      "typescript",
+      "typescriptreact",
+      "javascript",
+      "go",
+      "rust",
+      "php",
+      "ruby",
+      "shellscript",
+      "ocaml",
+      "lua"
+    ],
+    "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "colorHelper.resident": true,
+    "workbench.colorTheme": "Dracula",
+    "terminal.integrated.bellDuration": 10000,
+    "terminal.integrated.cursorWidth": 1000,
+    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.persistentSessionScrollback": 10000,
+    // "python.logging.level": "debug",
+    "git.confirmSync": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "yaml.schemas": {
+      "file:///Users/maxludden/.vscode/extensions/docsmsft.docs-yaml-1.0.0/dist/toc.schema.json": "/toc\\.yml/i"
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "python.diagnostics.sourceMapsEnabled": true,
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.automationProfile.windows": null,
+    "terminal.external.windowsExec": "C:\\WINDOWS\\System32\\wsl.exe -d Ubuntu",
+    "terminal.integrated.profiles.windows": {
+      "PowerShell": {
+        "source": "PowerShell",
+        "icon": "terminal-powershell"
+      },
+      "Command Prompt": {
+        "path": "${env:windir}\\System32\\cmd.exe",
+        "args": [],
+        "icon": "terminal-cmd"
+      },
+      "Ubuntu": {
+        "path": "C:\\WINDOWS\\System32\\wsl.exe",
+        "args": [
+          "-d",
+          "Ubuntu"
+        ]
+      }
+    },
+    "cSpell.ignoreWords": [
+      "ARGB",
+      "HEXA",
+      "Ludden",
+      "Meslo",
+      "Scrollback",
+      "Sysnative",
+      "docsmsft",
+      "pyenv",
+      "pylint",
+      "stepsize",
+      "windir"
+    ],
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true,
+      "editor.action.formatDocument": true
+    },
+    "explorer.confirmDelete": false,
+    "CodeGPT.maxTokens": 900,
+    "projectManager.git.baseFolders": [
+      "max",
+      "/Users/maxludden/dev/py"
+    ],
+    "genieai.response.showNotification": true,
+    "markdown.styles": [
+      "styles/gradient.css"
+    ],
+    "github.copilot.enable": {
+      "*": true,
+      "yaml": false,
+      "plaintext": false,
+      "markdown": true,
+      "scminput": false,
+      "python": true
+    },
+    "errorLens.lintFilePaths": {
+      "eslint": [
+        "**/*.eslintrc.{js,cjs,yaml,yml,json}",
+        "**/*package.json"
+      ],
+      "Stylelint": [
+        "**/*.stylelintrc",
+        "**/*.stylelintrc.{cjs,js,json,yaml,yml}",
+        "**/*stylelint.config.{cjs,js}",
+        "**/*package.json"
+      ]
+    },
+    "remote.tunnels.access.hostNameOverride": "maxbook",
+    "editor.colorDecoratorsLimit": 800,
+    "python.defaultInterpreterPath": "/Users/maxludden/dev/venvs/gradient",
+    "explorer.confirmDragAndDrop": false,
+    "errorLens.excludeBySource": [
+      "Pylint(F0002:astroid-error)"
+    ],
+    "workbench.colorCustomizations": {
+      "editor.background": "#020202",
+      "panel.background": "#212121",
+      "sideBar.background": "#010101",
+      "sideBarSectionHeader.background": "#1a0056",
+      "sideBarSectionHeader.foreground": "#d699ff",
+      "sideBarSectionHeader.border": "#d699ff30",
+      "terminal.background": "#000000",
+      "activityBar.activeBorder": "#240078",
+      "activityBar.background": "#121212",
+      "activityBar.border": "#2e2e2e",
+      "activityBar.activeBackground": "#1e005171",
+      "activityBar.foreground": "#c0abff",
+      "activityBarBadge.background": "#d497ff",
+      "activityBarBadge.foreground": "#1e0051",
+      "list.errorForeground": "#ff9cde",
+      "list.warningForeground": "#ff0066b1",
+      "list.hoverBackground": "#1e0051",
+      "list.hoverForeground": "#dbbeff",
+      "list.activeSelectionBackground": "#1e0051",
+      "list.activeSelectionForeground": "#dbbeff",
+      "list.focusForeground": "#1e0051",
+      "list.focusBackground": "#dbbeff",
+      "list.inactiveFocusBackground": "#310046",
+      "list.deemphasizedForeground": "#dbbeff",
+      "list.inactiveSelectionBackground": "#1e0051",
+      "list.inactiveSelectionForeground": "#dbbeff",
+      "banner.background": "#121212",
+      "editor.findMatchBackground": "#0fefff89",
+      "editorInlayHint.parameterBackground": "#af00ff",
+      "scrollbarSlider.background": "#403444",
+      "scrollbarSlider.hoverBackground": "#9500ffaa",
+      "terminal.tab.activeBorder": "#af00ff",
+      "terminal.border": "#af00ff",
+      "panel.border": "#7300ff",
+      "panelTitle.activeBorder": "#ff00ff",
+      "panelTitle.activeForeground": "#bea7ff",
+      "panelTitle.inactiveForeground": "#ffccff88",
+      "tab.activeBackground": "#110033",
+      "tab.activeForeground": "#ffaaff",
+      "tab.inactiveBackground": "#220055",
+      "tab.inactiveForeground": "#dddddd",
+      "statusBar.background": "#3d2143",
+      "statusBar.foreground": "#907ab1",
+      "statusBar.debuggingBackground": "#000000",
+      "statusBar.debuggingForeground": "#cccccc",
+      "statusBarItem.prominentBackground": "#dbbeff",
+      "statusBarItem.remoteBackground": "#1e0051",
+      "statusBarItem.remoteForeground": "#a782ff"
+    },
+    "better-comments.tags": [
+      {
+        "tag": "!",
+        "color": "#FF0000",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": false,
+        "italic": false
+      },
+      {
+        "tag": "?",
+        "color": "#00ffff",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": true,
+        "italic": false
+      },
+      {
+        "tag": "#",
+        "color": "#114488",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": false,
+        "italic": false
+      },
+      {
+        "tag": "##",
+        "color": "#114488",
+        "strikethrough": false,
+        "underline": false,
+        "backgroundColor": "transparent",
+        "bold": true,
+        "italic": false
+      }
+    ],
+    "todohighlight.isEnable": true,
+    "todohighlight.isCaseSensitive": false,
+    "todohighlight.keywords": [
+  
+      {
+        "text": "white",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?white)\\b|\\b(#f{3,6)\\b|\\b(\\( ?255, *?255, *?255 ?\\))\\b"
+        },
+        "color": "#000000",
+        "bold": true,
+        "backgroundColor": "#ffffff",
+        "overviewRulerColor": "#ffffff",
+        "border": "1px solid #dddddd",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },			{
+        "text": "lightgrey",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?light_?gr[a|e]y)\\b|\\b(#dddddd)\\b|\\b(\\( ?68, *?68, *?68 ?\\))\\b"
+        },
+        "color": "#bbbbbb",
+        "bold": true,
+        "backgroundColor": "#888888",
+        "overviewRulerColor": "#888888",
+        "border": "1px solid #444444I2I",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "lightgrey",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?light_?gr[ae]y)\\b|\\b(#dddddd)\\b|\\b(\\( ?221, *?221, *?221 ?\\))\\b"
+        },
+        "color": "#000000",
+        "bold": true,
+        "backgroundColor": "#dddddd",
+        "overviewRulerColor": "#dddddd",
+        "border": "1px solid #444444",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "grey",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?_?gr[a|e]y)\\b|\\b(#888888)\\b|\\b(\\( ?68, *?68, *?68 ?\\))\\b"
+        },
+        "color": "#ffffff",
+        "bold": true,
+        "backgroundColor": "#888888",
+        "overviewRulerColor": "#888888",
+        "border": "1px solid #444444",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "darkgrey",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?dark_?gr[a|e]y)\\b|\\b(#444444)\\b|\\b(\\( ?68, *?68, *?68 ?\\))\\b"	
+        },
+        "color": "#ffffff",
+        "bold": true,
+        "backgroundColor": "#444444",
+        "overviewRulerColor": "#444444",
+        "border": "1px solid #444444",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "black",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?black)\\b|\\b(#000000)\\b|\\b(\\( 0, *?0, *?0 ?\\))\\b"
+        },
+        "color": "#ffffff",
+        "bold": true,
+        "backgroundColor": "#000000",
+        "overviewRulerColor": "#000000",
+        "border": "1px solid #444444",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "magenta",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?magenta)\\b|\\b(#ff00ff)\\b|\\b(\\( ?255, *?0, *?255 ?\\))\\b",
+        },
+        "color": "#000000",
+        "bold": true,
+        "backgroundColor": "#ff00ff",
+        "overviewRulerColor": "#ff00ff",
+        "border": "1px solid #af00ff",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "violet",
+        "regex": {
+          "pattern": "\\b(\\w*\\.?violet\\b|\\b(#af00ff)\\b|\\b(\\( ?175, *?0, *?255 ?\\))\\b"
+        },
+        "color": "#ffffff",
+        "bold": true,
+        "backgroundColor": "#af00ff",
+        "overviewRulerColor": "#af00ff",
+        "border": "1px solid #5f00ff",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "purple",
+        "regex": {
+          "pattern": "\\b(\\w*\\.?purple)\\b|\\b(#5f00ff)\\b|\\b(\\( ?95, *?0, *?255 ?\\))\\b"
+        },
+        "color": "#ffffff",
+        "bold": true,
+        "backgroundColor": "#5f00ff",
+        "overviewRulerColor": "#5f00ff",
+        "border": "1px solid #af00ff",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "blue",
+        "regex":{
+          "pattern": "\\b(\\.?_?d?e?l?t?a?_?blue\\d?)\\b|\\b(#0000ff)\\b|\\b(\\( ?0, *?0, *?255 ?\\))\\b"
+        },
+        "color": "#ffffff",
+        "bold": true,
+        "backgroundColor": "#0000ff",
+        "overviewRulerColor": "#0000ff",
+        "border": "1px solid #0088ff",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "lightblue",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?lightblue\\d?)\\b|\\b(#0088ff)\\b|\\b(\\( ?0, *?136, *?255 ?\\))\\b"
+        },
+        "color": "#ffffff",
+        "bold": true,
+        "backgroundColor": "#0088ff",
+        "overviewRulerColor": "#0088ff",
+        "border": "1px solid #0000ff",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "cyan",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?cyan)\\b|\\b(#00ffff)\\b|\\b(\\( ?0, *?255, *?255 ?\\))\\b"
+        },
+        "color": "#000011",
+        "bold": true,
+        "backgroundColor": "#00ffff",
+        "overviewRulerColor": "#00ffff",
+        "border": "1px solid #0088ff",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "lime",
+        "regex": {
+          "pattern": "\\b(\\w*\\.?lime\\d?)\\b|\\b(#00ff00)\\b|\\b(\\( ?0, *?255, *?0 ?\\))\\b"
+        },
+        "color": "#001100",
+        "bold": true,
+        "backgroundColor": "#00ff00",
+        "overviewRulerColor": "#00ff00",
+        "border": "1px solid #008800",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "delta_green",
+        "regex":{
+          "pattern": "\\b(\\w*\\.?delta_?green\\d?)\\b|\\b(#00ff00)\\b|\\b(\\( ?0, *?255, *?0 ?\\))\\b",
+        },
+        "color": "#001100",
+        "bold": true,
+        "backgroundColor": "#00ff00",
+        "border": "1px solid #008800",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "yellow",
+        "regex": {
+          "pattern": "\\b(\\w*\\.?yellow\\d?)\\b|\\b(#ffff00)\\b|\\b(\\( ?255, *?255, *?0 ?\\))\\b"
+        },
+        "color": "#111100",
+        "bold": true,
+        "backgroundColor": "#ffff00",
+        "overviewRulerColor": "#ffff00",
+        "border": "1px solid #888800",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "orange",
+        "regex": {
+          "pattern": "\\b(\\w*\\.?orange\\d?)\\b|\\b(#ff8800)\\b|\\b(\\( ?255, *?136, *?0 ?\\))\\b"
+        },
+        "color": "#111100",
+        "bold": true,
+        "backgroundColor": "#ff8800",
+        "overviewRulerColor": "#ff8800",
+        "border": "1px solid #884400",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      },
+      {
+        "text": "red",
+        "regex":{
+          "pattern": "\\b(red)\\b|\\b(bold\\.red)\\b|\\b(cs\\.red)\\b|\\b(style\\.red)\\b|\\b(#ff0000)\\b|\\b(\\( ?255, *?0, *?0 ?\\))\\b"
+        },
+        "color": "#ffeeee",
+        "bold": true,
+        "backgroundColor": "#ff0000",
+        "overviewRulerColor": "#ff0000",
+        "border": "1px solid #880000",
+        "borderRadius": "2px",
+        "isWholeLine": false
+      }
+    ],
+    "todohighlight.defaultStyle": {
+  
+      "color": "#ffffff",
+      "backgroundColor": "#af00ff",
+      "overviewRulerColor": "#af00ff",
+      "cursor": "block",
+      "border": "1px solid #5f00ff",
+      "borderRadius": "2px",
+      "isWholeLine": false
+      //other styling properties goes here ...
+    },
+    "todohighlight.include": [
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.html",
+      "**/*.css",
+      "**/*.scss",
+      "**/*.php",
+      "**/*.rb",
+      "**/*.txt",
+      "**/*.mdown",
+      "**/*.md",
+      "**/*.json",
+      "**/*.jsonc",
+      "**/*.py"
+    ],
+    "cSpell.enableFiletypes": [
+      "dotenv",
+      "gitignore",
+      "kivy",
+      "log",
+      "rainbow hover markup",
+      "shellscript",
+      "sqlite",
+      "ssh_config",
+      "toml",
+      "vb"
+    ],
+    "genieai.enableConversationHistory": true,
+    "genieai.telemetry.disable": false,
+    "pylint.interpreter": [
+      "/Users/maxludden/dev/venvs/gradient/bin/python"
+    ],
+    "pylint.importStrategy": "fromEnvironment",
+    "pylint.path": [
+      "/Users/maxludden/dev/venvs/gradient/bin/pylint"
+    ],
+    "vsicons.dontShowNewVersionMessage": true,
+    "editor.linkedEditing": true,
+    "files.exclude": {
+      "__pychache__": true
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "vscode-color-picker.languages": [
+      "json",
+      "jsonc",
+      "yaml",
+      "html",
+      "markdown",
+      "css",
+      "python",
+      "javascript",
+      "typescript"
     ],
     "colorize.colorized_variables": [
-        "CSS",
-        "LESS",
-        "SASS",
-        "STYLUS"
+      "LESS",
+      "CSS",
+      "SASS",
+      "STYLUS"
     ],
-    "colorize.decoration_type": "background",
-    "colorize.enable_search_variables": true,
-    "colorize.include": [
-        "**/*.css",
-        "**/*.scss",
-        "**/*.sass",
-        "**/*.less",
-        "**/*.styl",
-        "**/*.py"
-    ],
-    "colorize.languages": [
-        "css",
-        "sass",
-        "scss",
-        "less",
-        "postcss",
-        "sss",
-        "stylus",
-        "xml",
-        "svg",
-        "python",
-        "markdown",
-        "HTML",
-        "xhtml"
-    ],
-    "python.linting.enabled": true,
+    "editor.semanticTokenColorCustomizations": {
+  
+    },
+    "editor.fontFamily": "MesloLGS NF, Menlo, Monaco, 'Courier New', monospace",
+    "github.copilot.advanced": {
+      
+    },
     "python.linting.pylintEnabled": true,
-    "cSpell.ignoreWords": [
-        "amet"
-    ],
-    "cSpell.words": [
-        "laudantium"
-    ]
-}
+    "python.linting.enabled": true
+  }

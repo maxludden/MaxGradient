@@ -12,7 +12,7 @@ from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.text import Text, TextType
 
-from maxgradient.color import Color
+from examples.color import Color
 from maxgradient.original_gradient import DEFAULT_JUSTIFY, Gradient
 
 

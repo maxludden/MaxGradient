@@ -1,7 +1,7 @@
 # Purpose: Contains a tuple of all the colors that the Rich library supports.
 
 from functools import lru_cache
-from typing import Tuple
+from typing import Tuple, Optional
 
 from rich.color import Color as RichColor
 from rich.console import Console
@@ -646,7 +646,7 @@ def get_rich_rgb_colors() -> Tuple[str, ...]:
 
 
 @lru_cache(maxsize=10, typed=False)
-def get_rich_color(color: str) -> RichColor:
+def get_rich_color(color: str) -> Optional[str]:
     """Parse rich colors for color"""
     if color in get_rich_colors():
         index = get_rich_colors().index(color)
@@ -676,6 +676,11 @@ def get_title() -> Text:
 
 
 def rich_table() -> Table:
+    """Print a table of rich colors, hex, rgb, and example.s
+
+    Returns:
+        Table: Rich color table
+    """
     title = get_title()
     table = Table(title=title, show_header=True, header_style="bold.magenta")
     table.add_column("Example")
@@ -697,6 +702,8 @@ def rich_table() -> Table:
 
 
 def demo(save: bool) -> None:
+    """Print a rich color table."""
+    console = Console(theme=GradientTheme())
     if save:
         console = Console(theme=GradientTheme(), record=True)
         console.print(rich_table(), justify="center")
