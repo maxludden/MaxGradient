@@ -7,12 +7,9 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from cheap_repr import normal_repr, register_repr
 from lorem_text import lorem
-from numpy import array_split
+
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
-from rich.panel import Panel
-from rich.pretty import Pretty
-from rich.repr import RichReprResult
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
