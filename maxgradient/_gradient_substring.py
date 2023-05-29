@@ -49,12 +49,10 @@ class GradientSubstring(Text):
                 Defaults to None.\n\n
             color_end(`Color`): The color of the substring's last character. \
                 Defaults to None.\n\n
-            style(`StyleType`): The style of the substring. Defaults to None.
+            style(`StyleType`): The style of the substring. Defaults to None.\n\n
             spans(`Optional[List[Span]]`): A list of predefined style spans. \
                 Defaults to None.\n\n
     """
-
-    @snoop(watch=("end_style"))
     def __init__(
         self,
         text: str,
@@ -250,15 +248,13 @@ class GradientSubstring(Text):
         simplified_spans.append(last_span)  # type: ignore
         return simplified_spans
 
-
-# @snoop
 def example() -> None:
     console = Console(theme=GradientTheme())
     width = console.width
     TEXT = lorem.paragraph()
     console.clear()
     console.line(2)
-    console.print(Text(TEXT), justify="center", width=int(width * 0.8))
+    # console.print(Text(TEXT), justify="center", width=int(width * 0.8))
 
     console.print(
         GradientSubstring(
@@ -268,8 +264,7 @@ def example() -> None:
             color_end=Color("purple"),
             style="bold italic",
         ),
-        justify="center",
-        width=int(width * 0.8),
+        justify="center"
     )
 
 
