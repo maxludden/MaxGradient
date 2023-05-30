@@ -59,17 +59,24 @@ class GradientSubstring(Text):
         start_index: int,
         color_start: Color,
         color_end: Color,
-        style: StyleType,
+        style: str,
         spans: Optional[List[Span]] = None,
         justify: JustifyMethod = DEFAULT_JUSTIFY,
         overflow: OverflowMethod = DEFAULT_OVERFLOW,
         no_wrap: bool = False,
         end: str = "",
-        tab_size: int = 8,
-        verbose: bool = VERBOSE,
+        tab_size: int = 8
     ) -> None:
         """Initialize a gradient's substring and calculate
         it's gradient spans."""
+
+        # Text
+        if isinstance(text, List):
+            text = "".join(text)
+        sanitized_text: str = strip_control_codes(text)
+        self._length: int = len(sanitized_text)
+        self.text: str = sanitized_text
+
         super().__init__(
             text=text,
             style=style,
@@ -79,24 +86,23 @@ class GradientSubstring(Text):
             end=end,
             tab_size=tab_size,
         )
-        # Text
-        if isinstance(text, List):
-            text = "".join(text)
-        sanitized_text: str = strip_control_codes(text)
-        self._length: int = len(sanitized_text)
-        self.text: str = sanitized_text
 
         # Start index
-        self.start_index: int = start_index
+        self.start_index: int = int(start_index)
 
         # Colors
         self.color_start: Color = color_start
         self.color_end: Color = color_end
 
         # Style
+        end_style: Style = Style.null()
         if style:
-            self.style: str = self.parse_style(style)
-            end_style = Style.parse(f"{self.style} {self.color_end.hex}")
+            if isinstance(style, str):
+                self.style: str = self.parse_style(style) # type: ignore
+                end_style = Style.parse(f"{self.style} {self.color_end.hex}")
+            elif isinstance(style, Style):
+                self.style: str = style
+                end_style = Style.parse(f"{self.style} {self.color_end.hex}")
         else:
             self.style = Style.null()  # type: ignore
             end_style = Style(color=self.color_end.hex)
@@ -202,7 +208,7 @@ class GradientSubstring(Text):
     def _calculate_span(self, index: int) -> Span:
         """Calculate the gradient's span at the given index."""
         blend = index / self._length
-        span_start = self.start_index + index
+        span_start: int = self.start_index + index
         r1, g1, b1 = self.color_start.rgb_tuple
         r2, g2, b2 = self.color_end.rgb_tuple
         dr = r2 - r1

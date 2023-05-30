@@ -1,3 +1,4 @@
+# Ignore this file. It is a copy of the original gradient.py file from the maxgradient package.
 """Defines the Gradient class which is used to print text with a gradient. It inherits from the Rich Text class."""
 import re
 from io import StringIO
@@ -80,7 +81,7 @@ class Gradient(Text):
         invert: bool = False,
         hues: Optional[int] = None,
         color_sample: bool = False,
-        style: StyleType = None,
+        style: Optional[Style | str] = None,
         *,
         justify: Optional[JustifyMethod] = None,
         overflow: Optional[OverflowMethod] = None,
@@ -91,6 +92,12 @@ class Gradient(Text):
         verbose: bool = VERBOSE,
     ) -> None:
         # Ignore gradients if the text is empty or only whitespaces.
+        if isinstance(text, str):
+            text = text.strip()
+        elif isinstance(text, Text):
+            text = text.plain.strip()
+        elif text is None:
+            text = ""
         match = WHITESPACE_REGEX.match(text)
         if match:
             text = Text.from_markup(match.group(0))
@@ -105,7 +112,7 @@ class Gradient(Text):
         # Initialize Text
         super().__init__(
             text=text,  #        #   self._text: List[str]
-            style=style,  #      #   self.style: StyleType
+            style=style,  #  type: ignore    #   self.style: StyleType
             justify=justify,  #  #   self.justify: Optional[JustifyMethod]
             overflow=overflow,  ##   self.overflow: Optional[OverflowMethod]
             no_wrap=no_wrap,  #  #   self.no_wrap: Optional[bool]
@@ -141,7 +148,7 @@ class Gradient(Text):
             else:
                 for color in colors:
                     try:
-                        parsed_color = Color(color)
+                        parsed_color = Color(color)  # type: ignore
                         self._colors.append(parsed_color)
                     except:
                         print(f"Unable to parse color: {color}")
@@ -265,12 +272,12 @@ class Gradient(Text):
             for span_index in range(self._G_LENGTH):
                 blend = span_index / self._G_LENGTH  # floating point division
                 span_start = gradient_start + span_index
-                span_color = f"#{int(r1 + dr * blend):02X}{int(g1 + dg * blend):02X}{int(b1 + db * blend):02X}"
+                span_color = f"#{int(r1 + dr * blend):02X}{int(g1 + dg * blend):02X}{int(b1 + db * blend):02X}"  # type: ignore
                 span_style = self.generate_span_style(span_color)
                 current_span = Span(span_start, span_start + 1, span_style)
                 spans.append(current_span)
                 if verbose:
-                    _console.log(current_span)
+                    _console.log(current_span)  # type: ignore
         return spans
 
     def clamp_colors(self) -> None:
@@ -283,10 +290,12 @@ class Gradient(Text):
         if hues > length // 2:
             self._colors = self._colors[::2]
 
-    def generate_span_style(self, color: Color) -> Style:
+    def generate_span_style(self, color: Color | str) -> Style:  # type: ignore
         """Generate a style with the specified color."""
+        if isinstance(color, str):
+            color = Color(color)
         if self.style is None or self.style == "_null":
-            self.style = Style(color=color)
+            self.style = Style(color=color)  # type: ignore
             return self.style
         if not isinstance(color, Color):
             color = Color(color)
@@ -364,7 +373,7 @@ def _color(plural: bool = True, capital: bool = False) -> Gradient:
 
 
 # @snoop
-def gradient_examples_table(console: Console = Console(theme=GradientTheme())) -> Table:
+def gradient_examples_table(console: Console = Console(theme=GradientTheme())) -> Table:  # type: ignore
     """Generate several examples of gradients.
 
     Args:
@@ -442,7 +451,7 @@ def assignment(var: Optional[str] = "color") -> Text:
         `Text`: The formatted variable and its assignment operator.
     """
     return Text.assemble(
-        Text(var, style="italic #ff8800"),
+        Text(var, style="italic #ff8800"),  # type: ignore
         Text(" = ", style="#FF0066"),
     )
 
@@ -467,7 +476,7 @@ def generate_subtitle(var: Optional[str] = "color", attr: List[str] = []) -> Tex
     elif len(attr) == 1:  # Single attribute
         value = format_value(attr[0])
 
-    return Text.assemble(key, value)
+    return Text.assemble(key, value)  # type: ignore
 
 
 def gradient_examples_table() -> Table:
@@ -512,15 +521,15 @@ def gradient_examples_table() -> Table:
 
     example_table.add_row(
         Panel(
-            Gradient(TEXT, colors=x11_colors),
-            title=Gradient("X11 Colors", colors=x11_colors),
+            Gradient(TEXT, colors=x11_colors),  # type: ignore
+            title=Gradient("X11 Colors", colors=x11_colors),  # type: ignore
             subtitle=subtitle_x11,
             padding=(1, 4),
             expand=True,
         ),
         Panel(
-            Gradient(TEXT, colors=hex_colors),
-            title=Gradient("HEX Colors", colors=hex_colors),
+            Gradient(TEXT, colors=hex_colors),  # type: ignore
+            title=Gradient("HEX Colors", colors=hex_colors),  # type: ignore
             subtitle=subtitle_hex,
             padding=(1, 4),
             expand=True,
@@ -533,8 +542,8 @@ def gradient_examples_table() -> Table:
 
     example_table.add_row(
         Panel(
-            Gradient(TEXT, colors=rgb_colors),
-            title=Gradient("RGB Color Codes", colors=rgb_colors),
+            Gradient(TEXT, colors=rgb_colors),  # type: ignore
+            title=Gradient("RGB Color Codes", colors=rgb_colors),  # type: ignore
             subtitle=generate_subtitle("colors", rgb_colors),
             padding=(1, 4),
             expand=True,
@@ -550,7 +559,7 @@ def gradient_examples_table() -> Table:
     return example_table
 
 
-def explanation_1() -> Layout:
+def explanation_1() -> Layout:  # type: ignore
     console = Console(theme=GradientTheme())
     console.clear()
     console.line(2)
