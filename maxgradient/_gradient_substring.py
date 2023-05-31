@@ -6,7 +6,7 @@ from random import choice, randint
 from typing import Any, Dict, List, Optional, Tuple
 
 from cheap_repr import normal_repr, register_repr
-from lorem_text import lorem
+# from lorem_text import lorem
 
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
@@ -53,6 +53,7 @@ class GradientSubstring(Text):
             spans(`Optional[List[Span]]`): A list of predefined style spans. \
                 Defaults to None.\n\n
     """
+
     def __init__(
         self,
         text: str,
@@ -65,7 +66,7 @@ class GradientSubstring(Text):
         overflow: OverflowMethod = DEFAULT_OVERFLOW,
         no_wrap: bool = False,
         end: str = "",
-        tab_size: int = 8
+        tab_size: int = 8,
     ) -> None:
         """Initialize a gradient's substring and calculate
         it's gradient spans."""
@@ -98,7 +99,7 @@ class GradientSubstring(Text):
         end_style: Style = Style.null()
         if style:
             if isinstance(style, str):
-                self.style: str = self.parse_style(style) # type: ignore
+                self.style: str = self.parse_style(style)  # type: ignore
                 end_style = Style.parse(f"{self.style} {self.color_end.hex}")
             elif isinstance(style, Style):
                 self.style: str = style
@@ -254,7 +255,9 @@ class GradientSubstring(Text):
         simplified_spans.append(last_span)  # type: ignore
         return simplified_spans
 
+
 def example() -> None:
+    from lorem_text import lorem
     console = Console(theme=GradientTheme())
     width = console.width
     TEXT = lorem.paragraph()
@@ -270,7 +273,7 @@ def example() -> None:
             color_end=Color("purple"),
             style="bold italic",
         ),
-        justify="center"
+        justify="center",
     )
 
 

@@ -206,8 +206,6 @@
       "tab.activeForeground": "#ffaaff",
       "tab.inactiveBackground": "#220055",
       "tab.inactiveForeground": "#dddddd",
-      "statusBar.background": "#3d2143",
-      "statusBar.foreground": "#907ab1",
       "statusBar.debuggingBackground": "#000000",
       "statusBar.debuggingForeground": "#cccccc",
       "statusBarItem.prominentBackground": "#dbbeff",

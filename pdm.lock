@@ -325,7 +325,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 lock_version = "4.2"
 cross_platform = true
 groups = ["default", "cli", "dev"]
-content_hash = "sha256:b06aec98a110fb57084026796d2685f073fddbd1af729efdd96a73ebc3cc4c54"
+content_hash = "sha256:f2cf6efe7a527ce1a687402a3556f065bbaf4be513e808facffa9abd1a736f8b"
 
 [metadata.files]
 "asttokens 2.2.1" = [

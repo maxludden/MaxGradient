@@ -1,17 +1,17 @@
 """Defines the Gradient class which is used to print text with a gradient. It inherits from the Rich Text class."""
 import re
-from concurrent.futures import ThreadPoolExecutor, Future, as_completed
-from multiprocessing import cpu_count
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Mapping
+from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from itertools import repeat
+from multiprocessing import cpu_count
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple
 
 from cheap_repr import normal_repr, register_repr
 from lorem_text import lorem
 from numpy import array_split, ndarray
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
-from rich.pretty import Pretty
 from rich.panel import Panel
+from rich.pretty import Pretty
 from rich.repr import RichReprResult
 from rich.style import Style, StyleType
 from rich.table import Table
@@ -35,6 +35,7 @@ register_repr(Pretty)(normal_repr)
 register_repr(Text)(normal_repr)
 register_repr(GradientSubstring)(normal_repr)
 register_repr(Table)(normal_repr)
+
 
 class NotEnoughColors(Exception):
     pass
@@ -160,36 +161,44 @@ class Gradient(Text):
             self._colors = ColorList(self.hues, self.invert).color_list
             # self._colors = color_list.color_list
 
-        assert self._length > self.hues, "Text must be longer than the number of colors."
+        assert (
+            self._length > self.hues
+        ), "Text must be longer than the number of colors."
         self._spans = self.calculate_spans_concurrently()
 
-
         # substrings
+
     def calculate_spans_concurrently(self) -> List[Span]:
         num_of_gradients = self.hues - 1
-        substring_arrays: List[ndarray] = array_split(range(self._length), num_of_gradients)
-        substring_lists: List[List[int]] = [array.tolist() for array in substring_arrays]
+        substring_arrays: List[ndarray] = array_split(
+            range(self._length), num_of_gradients
+        )
+        substring_lists: List[List[int]] = [
+            array.tolist() for array in substring_arrays
+        ]
         spans: List[Span] = []
         for main_index, substring_list in enumerate(substring_lists):
             color_1 = self._colors[main_index]
             color_2 = self._colors[main_index + 1]
             styles = self.style
-            args = zip(substring_list, repeat(self._length), repeat(color_1), repeat(color_2), repeat(styles))
+            args = zip(
+                substring_list,
+                repeat(self._length),
+                repeat(color_1),
+                repeat(color_2),
+                repeat(styles),
+            )
 
             with ThreadPoolExecutor(max_workers=cpu_count() - 1) as executor:
-                future_results = executor.map(self._calculate_span, *args)
+                future_results = executor.submit(self._calculate_span, *args)
 
                 for result in future_results:
                     spans.append(result)
         return spans
-    
+
     def _calculate_span(
-        self,
-        index: int,
-        length: int,
-        color_1: Color,
-        color_2: Color,
-        style: str) -> Span:
+        self, index: int, length: int, color_1: Color, color_2: Color, style: str
+    ) -> Span:
         """Calculate a span."""
         blend = index / length
         r1, g1, b1 = color_1.rgb_tuple

@@ -11,6 +11,8 @@ dependencies = [
     "pydantic>=1.10.7",
     "lorem-text>=2.1",
     "numpy>=1.24.3",
+    "snoop>=0.4.3",
+    "cheap-repr>=0.5.1",
 ]
 requires-python = ">=3.9"
 readme = "README.md"
