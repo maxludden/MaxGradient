@@ -1,13 +1,13 @@
 """Defines the Gradient class which is used to print text with a gradient. It inherits from the Rich Text class."""
 import re
-from concurrent.futures import Future, ThreadPoolExecutor, as_completed
+from concurrent.futures import Future, ProcessPoolExecutor, as_completed
 from itertools import repeat
 from multiprocessing import cpu_count
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple
 
 from cheap_repr import normal_repr, register_repr
 from lorem_text import lorem
-from numpy import array_split, ndarray
+from numpy import arange, array_split, ndarray
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
 from rich.panel import Panel
@@ -21,6 +21,7 @@ from snoop import pp, snoop
 
 from examples.color import Color, ColorParseError
 from maxgradient._gradient_substring import GradientSubstring
+from maxgradient._utilities import debug
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
 
@@ -70,9 +71,9 @@ class Gradient(Text):
             verbose(`bool`): Whether to print verbose output. Defaults to False.
     """
 
-    __slots__ = ["_colors", "invert", "color_sample", "hues"]
+    __slots__ = ["_text""_colors", "invert", "hues", "_style"]
 
-    # @snoop(watch=("gradient_spans", "substrings"))
+    @snoop(watch=("gradient_spans", "substrings"))
     def __init__(
         self,
         text: Optional[str | Text] = "",
@@ -92,24 +93,8 @@ class Gradient(Text):
         verbose: bool = VERBOSE,
     ) -> None:
         """Initialize the Gradient class."""
-        text = str(text)
-        match = WHITESPACE_REGEX.match(text)
-        if match:
-            text = Text.from_markup(match.group(0))
-            return
-        if not text:
-            return
-
-        # Text entered
-        if isinstance(text, Text):
-            spans = text._spans
-            text = text.plain
-
-        # Style
-        if isinstance(style, Style):
-            style = str(style)
-        self.style: str = style
-        # self.style = style
+        self.parse_text(text)
+        self.style = style
 
         # Initialize Text
         super().__init__(
@@ -123,159 +108,154 @@ class Gradient(Text):
             spans=spans,
         )
 
-        # text
-        sanitized_text: str = strip_control_codes(text)
-        self._length: int = len(sanitized_text)
-
-        # invert
         self.invert: bool = invert
+        self.parse_color_sample(color_sample)
+        self.parse_colors(colors, rainbow)
+        self.parse_hues(hues)
 
-        # Color Sample
-        self.color_sample: bool = color_sample
-        if self.color_sample:
+
+        
+
+        self._spans = self.calculate_spans()
+
+    @debug()
+    def calculate_spans(self) -> List[Span]:
+        """Calculate the spans to generate the gradient colored text.
+
+        Raises:
+            ValueError: If the number of colors is less than 2.
+
+        Returns:
+            List[Span]: The gradient spans.
+        """
+        assert len(self._colors) > 1, "Gradient must have at least two colors."
+        assert (
+            self._length > self.hues
+        ), "Text must be longer than the number of colors."
+        text_length = self._length
+        gradient_size = text_length // len(self._colors)
+        sub_lists: List[List[int]] = [
+            array.tolist()
+            for array in array_split(range(text_length), len(self._colors) - 1)
+        ]
+        console.log(sub_lists)
+        spans: List[Span] = []
+
+        gradient_substrings: List[GradientSubstring] = []
+        for main_index, list in enumerate(sub_lists):
+            start_index: int = list[0]
+            end_index: int = list[-1]
+            substring: str = self._text[start_index:end_index]
+            color_1: Color = self._colors[main_index]
+            color_2: Color = self._colors[main_index + 1]
+            gradient_substring = GradientSubstring(
+                substring, start_index, color_1, color_2, self.style
+            )
+            # console.log([span for span in gradient_substring.spans])
+            # spans.extend(gradient_substring.spans)
+            gradient_substrings.append(gradient_substring)
+            console.log(gradient_substring)
+
+
+        return spans
+
+    @property
+    @debug()
+    def style(self) -> Style:
+        """Return the gradient style."""
+        return self._style
+
+    @style.setter
+    @debug()
+    def style(self, style: StyleType) -> None:
+        """Set the gradient style.
+
+        Args:
+            style (StyleType): The style to apply to the gradient.
+        """
+        if style is None:
+            self._style = Style.null()
+        elif isinstance(style, Style):
+            self._style = style
+        elif isinstance(style, str):
+            if style is None or style == "none":
+                self._style = Style.null()
+            else:
+                self._style = Style(style)
+
+    @debug()
+    def parse_text(self, text: str|Text) -> None:
+        """Parse the gradient text."""
+        if text is None:
+            raise ValueError("Text cannot be None.")
+
+        if isinstance(text, Text):
+            self.text = [text.plain]
+            self._length = len(text.plain)
+            self._spans = text._spans
+
+        elif isinstance(text, str):
+            if text == "":
+                raise ValueError("Text cannot be empty.")
+            else:
+                sanitized_text = strip_control_codes(text)
+                self._length = len(sanitized_text)
+                self.text = [sanitized_text]
+
+    @debug()
+    def parse_style(self, color: Optional[str]) -> Style:
+        """Parse the gradient style."""
+        if self.style == Style.null() or self.style is None:
+            return Style(color)
+        elif "none" in str(Style(self.style)):
+            return Style(color)
+        else:
+            style_str = str(Style(self.style))
+            if "none" in style_str:
+                style_str = style_str.replace("none", "").strip()
+                if style_str == "":
+                    return Style(color)
+                else:
+                    return Style.parse(f"{style_str} {color}")
+            else:
+                return Style.parse(f"{style_str} {color}")
+
+    def parse_color_sample(self, color_sample: bool) -> None:
+        """Parse the color sample."""
+        if color_sample:
             self._text = "█" * self._length
 
-        # hues
-        if hues is not None:
-            self.hues = hues
-        else:
-            self.hues = 3
-
-        # colors
+    def parse_colors(self, colors: Optional[List[Color | Tuple | str]], rainbow: bool) -> None:
+        """Parse the gradient colors."""
         self._colors: List[Color] = []
         if not rainbow:
             if colors is None:
                 self._colors = ColorList(self.hues, self.invert).color_list
-                # self._colors = color_list.color_list
             else:
                 for color in colors:
                     try:
-                        parsed_color = Color(color)  # type: ignore
+                        parsed_color = Color(color)
                         self._colors.append(parsed_color)
                     except:
                         print(f"Unable to parse color: {color}")
+            assert len(self._colors) > 1, "Gradient must have at least two colors."
+            assert (self._length > self.hues), "Text must be longer than the number of colors."
             self.hues = len(self._colors)
 
         else:
+            assert len(self._colors) < self._length, "Text must be longer than the number of colors."
             self.hues = 10
             self._colors = ColorList(self.hues, self.invert).color_list
-            # self._colors = color_list.color_list
 
-        assert (
-            self._length > self.hues
-        ), "Text must be longer than the number of colors."
-        self._spans = self.calculate_spans_concurrently()
-
-        # substrings
-
-    def calculate_spans_concurrently(self) -> List[Span]:
-        num_of_gradients = self.hues - 1
-        substring_arrays: List[ndarray] = array_split(
-            range(self._length), num_of_gradients
-        )
-        substring_lists: List[List[int]] = [
-            array.tolist() for array in substring_arrays
-        ]
-        spans: List[Span] = []
-        for main_index, substring_list in enumerate(substring_lists):
-            color_1 = self._colors[main_index]
-            color_2 = self._colors[main_index + 1]
-            styles = self.style
-            args = zip(
-                substring_list,
-                repeat(self._length),
-                repeat(color_1),
-                repeat(color_2),
-                repeat(styles),
-            )
-
-            with ThreadPoolExecutor(max_workers=cpu_count() - 1) as executor:
-                future_results = executor.submit(self._calculate_span, *args)
-
-                for result in future_results:
-                    spans.append(result)
-        return spans
-
-    def _calculate_span(
-        self, index: int, length: int, color_1: Color, color_2: Color, style: str
-    ) -> Span:
-        """Calculate a span."""
-        blend = index / length
-        r1, g1, b1 = color_1.rgb_tuple
-        r2, g2, b2 = color_2.rgb_tuple
-        dr = r2 - r1
-        dg = g2 - g1
-        db = b2 - b1
-
-        span_color = f"#{int(r1 + dr * blend):02X}{int(g1 + dg * blend):02X}{int(b1 + db * blend):02X}"
-        span_style = f"{style} {span_color}".strip()
-
-        return Span(index, index + 1, span_style)
-
-    @staticmethod
-    def parse_style(style: StyleType) -> str:  # type: ignore
-        if isinstance(style, Style):
-            style = style.without_color
-            style = str(style)
-            if "none " in style:
-                style = style.replace("none ", "")
-        elif style is None:
-            if "none " in style:
-                style = style.replace("none ", "")
-            style = Style.null()
+    def parse_hues(self, hues: int) -> None:
+        """Parse the gradient hues."""
+        if hues is None:
+            self.hues = len(self._colors)
         else:
-            try:
-                style = Style.parse(style).without_color
-                style = str(style)
-                return style
-            except:
-                raise ValueError(
-                    "Style must be a Style object or a string that can be parsed into a Style object."
-                )
-
-    def __repr__(self) -> str:
-        """Return the representation of the Gradient class."""
-        width = console.width * 0.8 - 2
-        if len(self.plain) > width:
-            text = f"{self.plain[:width-3]}..."
-        else:
-            text = self.plain
-        colors = [str(color) for color in self._colors]
-        color_strings = ", ".join(colors)
-        return f"Gradient({text}, colors=[{color_strings}])"
-
-    def __rich_repr__(self) -> Table:
-        """Return the rich representation of the Gradient class."""
-        width = int(console.width * 0.8 - 2)
-        if len(self.plain) > width:
-            text = f"{self.plain[:width-3]}..."
-        else:
-            text = self.plain
-
-        colors = [
-            f"[bold {color.hex}]{str(color._original).capitalize()}[/]"
-            for color in self._colors
-        ]
-        comma = "[dim #ffffff], [/]"
-        colors = Text.from_markup(comma.join(colors))
-
-        table = Table(
-            title="[b i #5f00ff]Gradient[/]",
-            show_header=False,
-            border_style="b dim #5f00ff",
-            width=width,
-        )
-        table.add_column("Attribute", style="italic #5f00ff", justify="center")
-        table.add_column("Value", style="bold", justify="left")
-        table.add_row("Text", text)
-        table.add_row("Colors", colors)
-        return table
-
-
-register_repr(Gradient)(normal_repr)
-register_repr(GradientSubstring)(normal_repr)
+            self.hues = hues
 
 if __name__ == "__main__":
+    from lorem_text import lorem
     from rich.console import Console
     from rich.traceback import install as install_rich_traceback
 
@@ -283,7 +263,7 @@ if __name__ == "__main__":
 
     console = Console(theme=GradientTheme())
     install_rich_traceback(console=console)
-
+    random_gradient = Gradient(lorem.paragraph())
     random_gradient_text: str = "Gradient is a Python library for creating \
 beautiful color gradients."
     random_gradient: Gradient = Gradient(random_gradient_text)

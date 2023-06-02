@@ -14,6 +14,7 @@ from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
+from rich.panel import Panel
 from snoop import pp, snoop
 
 from examples.color import Color, ColorParseError
@@ -67,6 +68,7 @@ class GradientSubstring(Text):
         no_wrap: bool = False,
         end: str = "",
         tab_size: int = 8,
+        verbose: bool = VERBOSE,
     ) -> None:
         """Initialize a gradient's substring and calculate
         it's gradient spans."""
@@ -74,6 +76,8 @@ class GradientSubstring(Text):
         # Text
         if isinstance(text, List):
             text = "".join(text)
+        if spans:
+            self._spans = spans
         sanitized_text: str = strip_control_codes(text)
         self._length: int = len(sanitized_text)
         self.text: str = sanitized_text
@@ -99,8 +103,11 @@ class GradientSubstring(Text):
         end_style: Style = Style.null()
         if style:
             if isinstance(style, str):
-                self.style: str = self.parse_style(style)  # type: ignore
-                end_style = Style.parse(f"{self.style} {self.color_end.hex}")
+                if style == "none":
+                    self.style = Style.null()
+                else:
+                    self.style: str = self.parse_style(style)  # type: ignore
+                    end_style = Style.parse(f"{self.style} {self.color_end.hex}")
             elif isinstance(style, Style):
                 self.style: str = style
                 end_style = Style.parse(f"{self.style} {self.color_end.hex}")
@@ -113,6 +120,22 @@ class GradientSubstring(Text):
         initial_spans.extend(self.calculate_spans_concurrently())  # type: ignore
         simplified_spans = self.simplify_spans(initial_spans)
         self._spans = simplified_spans
+        if verbose:
+            console.print(
+                Panel(
+                    self,
+                    title = GradientSubstring(
+                        text="GradientSubstring",
+                        start_index = 0,
+                        color_start = Color("red"),
+                        color_end = Color("yellow"),
+                        style="bold"
+                    ),
+                    expand=False,
+                    width = int(console.width * 0.8)
+                ),
+                justify="center"
+            )
 
     @property
     def spans(self) -> List[Span]:
@@ -272,6 +295,7 @@ def example() -> None:
             color_start=Color("magenta"),
             color_end=Color("purple"),
             style="bold italic",
+            verbose=True,
         ),
         justify="center",
     )
