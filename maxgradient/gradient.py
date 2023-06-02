@@ -71,7 +71,7 @@ class Gradient(Text):
             verbose(`bool`): Whether to print verbose output. Defaults to False.
     """
 
-    __slots__ = ["_text""_colors", "invert", "hues", "_style"]
+    __slots__ = ["_text""_colors", "invert", "hues", "style"]
 
     @snoop(watch=("gradient_spans", "substrings"))
     def __init__(
@@ -160,13 +160,11 @@ class Gradient(Text):
         return spans
 
     @property
-    @debug()
     def style(self) -> Style:
         """Return the gradient style."""
-        return self._style
+        return self.style
 
     @style.setter
-    @debug()
     def style(self, style: StyleType) -> None:
         """Set the gradient style.
 
@@ -174,23 +172,23 @@ class Gradient(Text):
             style (StyleType): The style to apply to the gradient.
         """
         if style is None:
-            self._style = Style.null()
+            self.style = Style.null()
         elif isinstance(style, Style):
-            self._style = style
+            self.style = style
         elif isinstance(style, str):
             if style is None or style == "none":
-                self._style = Style.null()
+                self.style = Style.null()
             else:
-                self._style = Style(style)
+                self.style = Style(style)
 
-    @debug()
+    @snoop
     def parse_text(self, text: str|Text) -> None:
         """Parse the gradient text."""
         if text is None:
             raise ValueError("Text cannot be None.")
 
         if isinstance(text, Text):
-            self.text = [text.plain]
+            self._text = [text.plain]
             self._length = len(text.plain)
             self._spans = text._spans
 
@@ -200,7 +198,7 @@ class Gradient(Text):
             else:
                 sanitized_text = strip_control_codes(text)
                 self._length = len(sanitized_text)
-                self.text = [sanitized_text]
+                self._text = [sanitized_text]
 
     @debug()
     def parse_style(self, color: Optional[str]) -> Style:
