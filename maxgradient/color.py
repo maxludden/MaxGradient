@@ -5,7 +5,8 @@ import re
 from enum import Enum, auto
 from pathlib import Path
 from sys import path
-from typing import Tuple, Optional
+from typing import Optional, Tuple
+from functools import wraps
 
 from rich.box import SQUARE
 from rich.color import Color as RichColor
@@ -13,18 +14,41 @@ from rich.color import ColorParseError
 from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
 from rich.console import Console, RenderResult
+from rich.highlighter import ReprHighlighter
 from rich.table import Table
 from rich.text import Text
+from rich.traceback import install as install_rich_traceback
+from loguru import logger
 
-from maxgradient._rich import get_rich_color, rich_table, RICH, RICHRGB
-from maxgradient._x11 import get_x11_color, x11_table, X11, X11RGB
+from maxgradient._rich import RICH, RICHHEX, RICHRGB, get_rich_color, rich_table
+from maxgradient._x11 import X11, X11HEX, X11RGB, get_x11_color, x11_table
+from maxgradient.log import Log
 from maxgradient.theme import GradientTheme
 
 ColorType = str | Tuple[int, int, int] | RichColor
 
 HEX_REGEX = re.compile(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
 RGB_REGEX = re.compile(r"^r?g?b?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$")
-console = Console(theme=GradientTheme())
+console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
+install_rich_traceback(console=console)
+log = Log(console)
+
+
+
+def log_func(*, entry:bool=True, exit:bool=True, level="RICH"):
+    def wrapper(func):
+        name = func.__name__
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            if entry:
+                console.log(level, f"Entering `{name}` (args={args}, kwargs={kwargs}))")
+            result = func(*args, **kwargs)
+            if exit:
+                console.log(level, f"Exiting `{name}` (result={result})")
+            return result
+        return wrapped
+    return wrapper
+
 
 class Mode(Enum):
     """A color mode. Used to determine how a color was parsed."""
@@ -67,7 +91,8 @@ class Mode(Enum):
     def __rich__(self) -> Text:
         """Return a rich text representation of the color mode."""
         return self.__rich_repr__()
-    
+
+
 class Color:
     """A color parsed from a string. Colors can be parsed from:
         - The Named Colors:
@@ -118,6 +143,7 @@ class Color:
     #         tuple, or RichColor."""
     #     return super(Color, cls).__new__(cls, color) # type: ignore
 
+    @log_func()
     def __init__(self, color: RichColor | str | Tuple[int, int, int]) -> None:
         """A color parsed from a string.
 
@@ -203,52 +229,96 @@ class Color:
             raise ColorParseError(f"Invalid color: {color}")
 
     @property
+    @log_func()
     def value(self) -> RichColor:
         """Return the color value."""
         return self._value
 
     @value.setter
+    @log_func()
     def value(self, value: RichColor) -> None:
         """Set the color value."""
         self._value = value
 
     @property
+    @log_func()
+    def name(self) -> str:
+        """Return the color name."""
+        string = self._original
+        if self.mode == Mode.NAMED:
+            if string in self.COLORS:
+                index = self.COLORS.index(string)
+            elif string in self.RGB:
+                index = self.RGB.index(string)
+            elif string in self.RGB_TUPLE:
+                index = self.RGB_TUPLE.index(string)
+            elif string in self.HEX:
+                index = self.HEX.index(string)
+            name = self.COLORS[index]
+        elif self.mode == Mode.X11:
+            if string in X11:
+                index = X11.index(string)
+            elif string in X11RGB:
+                index = X11RGB.index(string)
+            elif string in X11HEX:
+                index = X11HEX.index(string)
+            name = X11[index]
+        elif self.mode == Mode.RICH:
+            if string in RICH:
+                index = RICH.index(string)
+            elif string in RICHRGB:
+                index = RICHRGB.index(string)
+            elif string in RICHHEX:
+                index = RICHHEX.index(string)
+            name = RICH[index]
+        elif self.mode == Mode.HEX:
+            name = string
+        elif self.mode == Mode.RGB:
+            name = self.rgb
+        log.debug(f"Getting name for {name}: {name}")
+        return name
+
+    @property
+    @log_func()
     def rgb(self) -> Optional[str]:
         """Return the RGB string."""
-        if self.mode == Mode.RGB:
-            return self.value.triplet.rgb  # type: ignore
-        elif self.mode == Mode.NAMED:
-            index = self.COLORS.index(self._original)
-            return self.RGB[index]
-        elif self.mode == Mode.X11:
-            index = X11.index(self._original)
-            return X11RGB[index]
-        elif self.mode == Mode.RICH:
-            index = RICH.index(self._original)
-            return RICHRGB[index]
-        else:
-            rgb = self.hex_to_rgb(self.hex)
+        rgb = self.value.triplet.rgb
+        log.debug(f"Getting rgb for {self.name}: {rgb}")
+        return rgb
 
     @property
+    @log_func()
     def rgb_tuple(self) -> Tuple[int, int, int]:
         """Return the RGB string as a tuple of integers."""
-        return self.rgb_to_tuple(self.rgb)  # type: ignore
+        triplet = self.value.triplet
+        red = triplet.red
+        green = triplet.green
+        blue = triplet.blue
+        rgb_tuple = (red, green, blue)
+        log.log(f"Getting rgb_tuple for {self.name}: {rgb_tuple}")
+        return rgb_tuple
 
     @property
+    @log_func()
     def hex(self) -> str:
         """Return the hex string."""
-        return self.value.triplet.hex  # type: ignore
+        hex = self.value.triplet.hex
+        log.debug(f"Getting hex for {self.name}: {hex}")
 
     @property
+    @log_func()
     def style(self) -> str:
         """Generate a style with the color as the foreground."""
+        log.debug(f"Getting style for {self.name}: {self.hex} on default")
         return f"{self.hex} on default"
 
     @property
+    @log_func()
     def bg_style(self) -> str:
         """Generate a readable style with the color as the background."""
         foreground = self.get_contrast()
-        return f"{foreground} on {self.hex}"
+        bg_style = f"{foreground} on {self.hex}"
+        log.debug(f"Getting bg_style for {self.name}: {bg_style}")
 
     COLORS: Tuple[str, ...] = (
         "magenta",
@@ -299,25 +369,19 @@ class Color:
         (255, 0, 0),
     )
 
+    @log_func()
     def __repr__(self) -> str:
-        return f"Color<{str(self._original).capitalize()}>"
+        repr = f"Color<{str(self._original).capitalize()}>"
+        log.debug(f"Getting repr for {self.value}: {repr}")
+        return repr
 
+    @log_func()
     def __str__(self) -> str:
-        return str(self._original)
+        string = str(self._original)
+        log.debug(f"Getting string for {self.value}: {string}")
+        return string
 
-    @staticmethod
-    def hex_to_rgb(hex: str) -> str:
-        hex_code = hex.lstrip("#")
-
-        if len(hex_code) == 3:
-            hex_code = "".join([c * 2 for c in hex_code])
-
-        red = int(hex_code[0:2], 16)
-        green = int(hex_code[2:4], 16)
-        blue = int(hex_code[4:6], 16)
-
-        return f"rgb({red}, {green}, {blue})"
-
+    @log_func()
     def __rich__(self) -> Table:
         """Return the rich console representation of a color."""
         table = Table(
@@ -341,6 +405,7 @@ class Color:
         return table
 
     @staticmethod
+    @log_func()
     def rgb_to_tuple(rgb_string: str) -> Tuple[int, int, int]:
         """Get the color as a tuple of integers.
 
@@ -366,6 +431,7 @@ class Color:
             raise ValueError("Invalid RGB string format")
 
     @staticmethod
+    @log_func()
     def tuple_to_triplet(rgb: Tuple[int, int, int]) -> Tuple[int, int, int]:
         """Convert a tuple of integers to a triplet.
 
@@ -377,6 +443,7 @@ class Color:
         """
         return ColorTriplet(rgb[0], rgb[1], rgb[2])
 
+    @log_func()
     def as_title(self) -> Text:
         """Return the rich representation of a color."""
         LESS = f"[bold #ffffff]<[/]"
@@ -392,27 +459,41 @@ class Color:
         markup = "".join(colors)
         return Text.from_markup(markup)
 
+    @log_func()
     def get_contrast(self) -> str:
         """Generate a foreground color for the color style.
 
         Returns:
             str: The foreground color.
         """
+        log.debug(f"Getting contrast for {self.name}")
 
+        @log_func()
         def rgb_to_hsv(rgb_color: Tuple[int, int, int]):
+            """Convert an RGB color to HSV."""
             r, g, b = rgb_color
+            log.debug(f"Converting {rgb_color} to HSV")
             h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            log.debug(f"HSV: {h}, {s}, {v}")
             return h, s, v
 
+        @log_func()
         def color_distance(rgb_color1, rgb_color2):
+            """Calculate the distance between two colors."""
             h1, s1, v1 = rgb_to_hsv(rgb_color1)
             h2, s2, v2 = rgb_to_hsv(rgb_color2)
             dh = min(abs(h1 - h2), 1 - abs(h1 - h2))
             ds = abs(s1 - s2)
             dv = abs(v1 - v2)
-            return dh + ds + dv
+            color_distance = dh + ds + dv
+            log.debug(
+                f"Color distance between {rgb_color1} and {rgb_color2}: {color_distance}"
+            )
+            return color_distance
 
+        @log_func()
         def find_closest_color(rgb_color, color_list):
+            """Calculate the closest color in a list."""
             closest_color = None
             min_distance = float("inf")
             for color in color_list:
@@ -420,6 +501,7 @@ class Color:
                 if distance < min_distance:
                     min_distance = distance
                     closest_color = color
+            log.debug(f"{rgb_color} is closer to {closest_color}.")
             return closest_color
 
         closest = find_closest_color(self.rgb_tuple, [(0, 0, 0), (255, 255, 255)])
@@ -428,9 +510,40 @@ class Color:
         else:
             return "#000000"
 
+    @staticmethod
+    @log_func()
+    def hex_to_rgb(hex: str) -> str:
+        hex_code = hex.lstrip("#")
+
+        if len(hex_code) == 3:
+            hex_code = "".join([c * 2 for c in hex_code])
+
+        red = int(hex_code[0:2], 16)
+        green = int(hex_code[2:4], 16)
+        blue = int(hex_code[4:6], 16)
+
+        return f"rgb({red}, {green}, {blue})"
+
+    @staticmethod
+    @log_func()
+    def hex_to_rgb_tuple(hex: str) -> str:
+        """Convert a hex color to an RGB tuple."""
+        hex = hex.lstrip("#")  # Remove the '#' symbol if present
+
+        # Extract individual color components
+        red = int(hex[0:2], 16)
+        green = int(hex[2:4], 16)
+        blue = int(hex[4:6], 16)
+
+        # Return the RGB tuple
+        rgb_tuple = (red, green, blue)
+        log.debug(f"Converted Hex Color ({hex}) to RGB Tuple: {rgb_tuple}")
+        return rgb_tuple
+
 
 def named_table() -> Columns:
     """Return a table of named colors."""
+    log.debug("Generating named color table.")
     colors = []
     for color in Color.COLORS:
         colors.append(Color(color))
@@ -439,6 +552,7 @@ def named_table() -> Columns:
 
 def library_tables() -> Columns:
     """Return a table of library colors."""
+    log.debug("Generating library color table.")
     rich_table = Table(_rich.rich_table())  # type: ignore
     x11_table = Table(_x11.x11_table())  # type: ignore
     return Columns([rich_table, x11_table], equal=True)
@@ -447,9 +561,9 @@ def library_tables() -> Columns:
 if __name__ == "__main__":
     from rich.console import Console
     from rich.traceback import install as install_rich_traceback
+
     import maxgradient._rich as _rich
     import maxgradient._x11 as _x11
-
     from maxgradient.theme import GradientTheme
 
     console = Console(theme=GradientTheme())

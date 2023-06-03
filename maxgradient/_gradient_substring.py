@@ -15,11 +15,13 @@ from rich.table import Table
 from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
 from rich.panel import Panel
+from rich.highlighter import ReprHighlighter
 from snoop import pp, snoop
 
-from examples.color import Color, ColorParseError
+from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
+from maxgradient.log import Log
 
 DEFAULT_JUSTIFY: "JustifyMethod" = "default"
 DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
@@ -27,14 +29,13 @@ WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 
 
-console = Console(theme=GradientTheme())
+console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
 install_rich_traceback(console=console)
-
+log = Log(console)
 
 class NotEnoughColors(IndexError):
     """Custom exceptions raised when there are not enough characters to \
         create a gradient."""
-
     pass
 
 
@@ -96,8 +97,8 @@ class GradientSubstring(Text):
         self.start_index: int = int(start_index)
 
         # Colors
-        self.color_start: Color = color_start
-        self.color_end: Color = color_end
+        self.color_start: Color = Color(color_start)
+        self.color_end: Color = Color(color_end)
 
         # Style
         end_style: Style = Style.null()

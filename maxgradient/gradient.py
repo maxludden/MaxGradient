@@ -13,15 +13,17 @@ from rich.control import strip_control_codes
 from rich.panel import Panel
 from rich.pretty import Pretty
 from rich.repr import RichReprResult
-from rich.style import Style, StyleType
+from rich.style import Style, StyleType, NULL_STYLE
 from rich.table import Table
 from rich.text import Span, Text
+from rich.highlighter import ReprHighlighter
 from rich.traceback import install as install_rich_traceback
 from snoop import pp, snoop
+from loguru import logger
 
-from examples.color import Color, ColorParseError
+from maxgradient.log import Log
 from maxgradient._gradient_substring import GradientSubstring
-from maxgradient._utilities import debug
+from maxgradient.color import Color
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
 
@@ -30,48 +32,44 @@ DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 
-console = Console(theme=GradientTheme())
+console = Console(
+    theme=GradientTheme(),
+    highlighter=ReprHighlighter()
+)
 install_rich_traceback(console=console)
+log = Log(console)
 register_repr(Pretty)(normal_repr)
 register_repr(Text)(normal_repr)
 register_repr(GradientSubstring)(normal_repr)
 register_repr(Table)(normal_repr)
 
 
-class NotEnoughColors(Exception):
-    pass
-
-
 class Gradient(Text):
     """Text with gradient color / style.
 
         Args:
-            text(`text): The text to print. Defaults to empty string.
+            text(`text): The text to print. Defaults to `""`.\n
             colors(`List[Optional[Color|Tuple|str|int]]`): A list of colors to use \
-                for the gradient. If `colors` has at least two parsable colors, `colors_start`\
-                    and `end_color`'s arguments are ignored and those values are parsed from \
-                        `colors`.Defaults to []
+                for the gradient. Defaults to None.\n
             rainbow(`bool`): Whether to print the gradient text in rainbow colors across \
-                the spectrum. Defaults to False.
-            invert(`bool): Reverse the color gradient. Defaults to False.
-            hues(`int`): The number of colors in the gradient. Defaults to `3`.
-            color_sample(`bool`): Whether to print the gradient on identically colored background. \
-                This makes the gradient's text invisible, but it useful for printing gradient \
-                samples. Defaults to False.
-            style(`StyleType`) The style of the gradient text. Defaults to None.
+                the spectrum. Defaults to False.\n
+            invert(`bool`): Reverse the color gradient. Defaults to False.\n
+            hues(`int`): The number of colors in the gradient. Defaults to `3`.\n
+            color_sample(`bool`): Replace text with characters with `"█" `. Defaults to False.\n
+            style(`StyleType`) The style of the gradient text. Defaults to None.\n
             justify(`Optional[JustifyMethod]`): Justify method: "left", "center", "full", \
-                "right". Defaults to None.
+                "right". Defaults to None.\n
             overflow(`Optional[OverflowMethod]`):  Overflow method: "crop", "fold", \
-                "ellipsis". Defaults to None.
-            end (str, optional): Character to end text with. Defaults to "\\\\n".
-            no_wrap (bool, optional): Disable text wrapping, or None for default. Defaults to None.
+                "ellipsis". Defaults to None.\n
+            end (str, optional): Character to end text with. Defaults to "\\\\n".\n
+            no_wrap (bool, optional): Disable text wrapping, or None for default. Defaults to None.\n
             tab_size (int): Number of spaces per tab, or `None` to use `console.tab_size`.\
-                Defaults to 8.
-            spans (List[Span], optional). A list of predefined style spans. Defaults to None.
-            verbose(`bool`): Whether to print verbose output. Defaults to False.
+                Defaults to 8.\n
+            spans (List[Span], optional). A list of predefined style spans. Defaults to None.\n
+
     """
 
-    __slots__ = ["_text""_colors", "invert", "hues", "style"]
+    __slots__ = ["_text","_colors", "invert", "hues", "style"]
 
     @snoop(watch=("gradient_spans", "substrings"))
     def __init__(
@@ -90,13 +88,8 @@ class Gradient(Text):
         end: str = "\n",
         tab_size: Optional[int] = 8,
         spans: Optional[List[Span]] = None,
-        verbose: bool = VERBOSE,
-    ) -> None:
-        """Initialize the Gradient class."""
-        self.parse_text(text)
-        self.style = style
-
-        # Initialize Text
+        verbose: bool = VERBOSE) -> None:
+        """Generate a gradient text object."""
         super().__init__(
             text=text,
             style=style,
@@ -108,161 +101,130 @@ class Gradient(Text):
             spans=spans,
         )
 
-        self.invert: bool = invert
-        self.parse_color_sample(color_sample)
-        self.parse_colors(colors, rainbow)
-        self.parse_hues(hues)
 
+    @property
+    def text(self) ->  str:
+        """The text of the gradient."""
+        log.debug(f"Getting gradient._text: {self._text}")
+        return self._text
 
-        
+    @text.setter
+    def text(self, text: Optional[str | Text]) -> None:
+        """Set the text of the gradient."""
+        log.debug(f"Setting gradient._text: {text}")
+        if isinstance(text, Text):
+            sanitized_text = strip_control_codes(text.plain)
+            self.length = len(sanitized_text)
+            self._text = [sanitized_text]
+            self._spans: List[Span] = text.spans
+        if isinstance(text, str):
+            if text == "":
+                raise(ValueError("Text cannot be empty."))
+            sanitized_text = strip_control_codes(text)
+            self.length = len(sanitized_text)
+            self._text = sanitized_text
 
-        self._spans = self.calculate_spans()
+    @property
+    def colors(self) -> List[Color]:
+        """The colors of the gradient."""
+        log.debug(f"Retrieving gradient._colors: {[color.value for color in self._colors]}")
+        return self._colors
 
-    @debug()
-    def calculate_spans(self) -> List[Span]:
-        """Calculate the spans to generate the gradient colored text.
+    @colors.setter
+    def colors(self, colors: Optional[List[Color | Tuple | str]]) -> None:
+        """Set the colors of the gradient."""
+        log.debug(f"Setting gradient._colors: {colors}")
+        if colors is None:
+            self._colors = ColorList(
+                hues=self.hues, invert=self.invert).color_list[:self.hues]
+        elif self.rainbow:
+            if self._length < 10:
+                self.hues = self._length
+            else:
+                self.hues = 10
+            self._colors = ColorList(
+                hues=self.hues, invert=self.invert).color_list
+        else:
+            for color in colors:
+                parsed_color = Color(color)
+                self._colors.append(parsed_color)
+            self.hues = len(self._colors)
 
-        Raises:
-            ValueError: If the number of colors is less than 2.
+    @property
+    def rainbow(self) -> bool:
+        """Whether the gradient is rainbow."""
+        log.debug(f"Retrieving gradient._rainbow: {self._rainbow}")
+        return self._rainbow
 
-        Returns:
-            List[Span]: The gradient spans.
-        """
-        assert len(self._colors) > 1, "Gradient must have at least two colors."
-        assert (
-            self._length > self.hues
-        ), "Text must be longer than the number of colors."
-        text_length = self._length
-        gradient_size = text_length // len(self._colors)
-        sub_lists: List[List[int]] = [
-            array.tolist()
-            for array in array_split(range(text_length), len(self._colors) - 1)
-        ]
-        console.log(sub_lists)
-        spans: List[Span] = []
+    @rainbow.setter
+    def rainbow(self, rainbow: bool) -> None:
+        """Set whether the gradient is rainbow."""
+        log.debug(f"Setting gradient._rainbow: {rainbow}")
+        self._rainbow = rainbow
 
-        gradient_substrings: List[GradientSubstring] = []
-        for main_index, list in enumerate(sub_lists):
-            start_index: int = list[0]
-            end_index: int = list[-1]
-            substring: str = self._text[start_index:end_index]
-            color_1: Color = self._colors[main_index]
-            color_2: Color = self._colors[main_index + 1]
-            gradient_substring = GradientSubstring(
-                substring, start_index, color_1, color_2, self.style
-            )
-            # console.log([span for span in gradient_substring.spans])
-            # spans.extend(gradient_substring.spans)
-            gradient_substrings.append(gradient_substring)
-            console.log(gradient_substring)
+    @property
+    def invert(self) -> bool:
+        """Whether the gradient is inverted."""
+        log.debug(f"Retrieving gradient._invert: {self._invert}")
+        return self._invert
 
+    @invert.setter
+    def invert(self, invert: bool) -> None:
+        """Set whether the gradient is inverted."""
+        log.debug(f"Setting gradient._invert: {invert}")
+        self._invert = invert
 
-        return spans
+    @property
+    def hues(self) -> int:
+        """The number of colors in the gradient."""
+        log.debug(f"Retrieving gradient._hues: {self._hues}")
+        return self._hues
+
+    @hues.setter
+    def hues(self, hues: int) -> None:
+        """Set the number of colors in the gradient."""
+        log.debug(f"Setting gradient._hues: {hues}")
+        if hues < 2:
+            raise ValueError("Gradient must have at least two colors.")
+        self._hues = hues
+
+    @property
+    def color_sample(self) -> bool:
+        """Whether the gradient is a color sample."""
+        log.debug(f"Retrieving gradient._color_sample: {self._color_sample}")
+        return self._color_sample
+
+    @color_sample.setter
+    def color_sample(self, color_sample: bool) -> None:
+        """Set whether the gradient is a color sample."""
+        log.debug(f"Setting gradient._color_sample: {color_sample}")
+        if color_sample:
+            self.text =  "█" * self._length
+        self._color_sample = color_sample
 
     @property
     def style(self) -> Style:
-        """Return the gradient style."""
-        return self.style
+        """The style of the gradient."""
+        log.debug(f"Retrieving gradient._style: {self._style}")
+        return self._style
 
     @style.setter
     def style(self, style: StyleType) -> None:
-        """Set the gradient style.
-
-        Args:
-            style (StyleType): The style to apply to the gradient.
-        """
+        """Set the style of the gradient."""
+        log.debug(f"Setting gradient._style: {style}")
+        if isinstance(style, Style):
+            self._style = Style.copy(style).without_color
         if style is None:
-            self.style = Style.null()
-        elif isinstance(style, Style):
-            self.style = style
+            self._style = Style.null()
         elif isinstance(style, str):
-            if style is None or style == "none":
-                self.style = Style.null()
-            else:
-                self.style = Style(style)
+            if style == "" or style == 'null':
+                self._style = Style.null()
+            if style == 'none' or style == 'None':
+                self._style = Style.null()
+            self._style = Style.parse(style)
 
-    @snoop
-    def parse_text(self, text: str|Text) -> None:
-        """Parse the gradient text."""
-        if text is None:
-            raise ValueError("Text cannot be None.")
-
-        if isinstance(text, Text):
-            self._text = [text.plain]
-            self._length = len(text.plain)
-            self._spans = text._spans
-
-        elif isinstance(text, str):
-            if text == "":
-                raise ValueError("Text cannot be empty.")
-            else:
-                sanitized_text = strip_control_codes(text)
-                self._length = len(sanitized_text)
-                self._text = [sanitized_text]
-
-    @debug()
-    def parse_style(self, color: Optional[str]) -> Style:
-        """Parse the gradient style."""
-        if self.style == Style.null() or self.style is None:
-            return Style(color)
-        elif "none" in str(Style(self.style)):
-            return Style(color)
-        else:
-            style_str = str(Style(self.style))
-            if "none" in style_str:
-                style_str = style_str.replace("none", "").strip()
-                if style_str == "":
-                    return Style(color)
-                else:
-                    return Style.parse(f"{style_str} {color}")
-            else:
-                return Style.parse(f"{style_str} {color}")
-
-    def parse_color_sample(self, color_sample: bool) -> None:
-        """Parse the color sample."""
-        if color_sample:
-            self._text = "█" * self._length
-
-    def parse_colors(self, colors: Optional[List[Color | Tuple | str]], rainbow: bool) -> None:
-        """Parse the gradient colors."""
-        self._colors: List[Color] = []
-        if not rainbow:
-            if colors is None:
-                self._colors = ColorList(self.hues, self.invert).color_list
-            else:
-                for color in colors:
-                    try:
-                        parsed_color = Color(color)
-                        self._colors.append(parsed_color)
-                    except:
-                        print(f"Unable to parse color: {color}")
-            assert len(self._colors) > 1, "Gradient must have at least two colors."
-            assert (self._length > self.hues), "Text must be longer than the number of colors."
-            self.hues = len(self._colors)
-
-        else:
-            assert len(self._colors) < self._length, "Text must be longer than the number of colors."
-            self.hues = 10
-            self._colors = ColorList(self.hues, self.invert).color_list
-
-    def parse_hues(self, hues: int) -> None:
-        """Parse the gradient hues."""
-        if hues is None:
-            self.hues = len(self._colors)
-        else:
-            self.hues = hues
-
-if __name__ == "__main__":
-    from lorem_text import lorem
-    from rich.console import Console
-    from rich.traceback import install as install_rich_traceback
-
-    from maxgradient.theme import GradientTheme
-
-    console = Console(theme=GradientTheme())
-    install_rich_traceback(console=console)
-    random_gradient = Gradient(lorem.paragraph())
-    random_gradient_text: str = "Gradient is a Python library for creating \
-beautiful color gradients."
-    random_gradient: Gradient = Gradient(random_gradient_text)
-    console.print(random_gradient, justify="center")
+    def generate_style(self, color: str) -> Style:
+        """Generate a style for a color."""
+        new_style = self.style + Style(color=color)
+        log.debug(f"Generating style for `{color}`: {new_style}")
+        return new_style
