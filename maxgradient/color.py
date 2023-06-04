@@ -123,9 +123,16 @@ class Color(ABColor):
     )
     def __init__(self, color: "Color"|str|Tuple[int, int, int]) -> None:
         """A color to make gradients with."""
-        super().__init__(color):
+        super().__init__(color)
         if isinstance(color, Color):
             self.parse_color(color)
         elif isinstance(color, str):
-            if not self.parse_named(color):
-            
+            if self.parse_named(color):
+                return
+            if self.parse_hex(color):
+                return
+            if self.parse_rgb(color):
+                return
+            if self.parse_x11(color):
+                return
+            if self.parse_rich(color):

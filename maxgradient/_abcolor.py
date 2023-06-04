@@ -2,7 +2,7 @@ import colorsys
 import re
 from enum import Enum, auto
 from typing import Tuple
-from collections.abc import ABC, abstractmethod
+from abc import ABC, abstractmethod
 
 from rich.box import SQUARE
 from rich.style import Style
