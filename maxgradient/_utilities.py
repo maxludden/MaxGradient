@@ -5,7 +5,7 @@ from rich.traceback import install as install_rich_traceback
 from loguru import logger
 
 from maxgradient.theme import GradientTheme
-from maxgradient.color import Color
+from maxgradient.old_color import Color
 
 console = Console(theme=GradientTheme())
 install_rich_traceback(console=console)

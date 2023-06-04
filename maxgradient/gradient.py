@@ -23,7 +23,7 @@ from loguru import logger
 
 from maxgradient.log import Log
 from maxgradient._gradient_substring import GradientSubstring
-from maxgradient.color import Color
+from maxgradient.old_color import Color
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
 

@@ -18,7 +18,7 @@ from rich.panel import Panel
 from rich.highlighter import ReprHighlighter
 from snoop import pp, snoop
 
-from maxgradient.color import Color, ColorParseError
+from maxgradient.old_color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
 from maxgradient.log import Log
