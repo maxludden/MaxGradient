@@ -1,21 +1,17 @@
+"""Gradient logging module"""
 from __future__ import annotations
 
+# pylint: disable=E0401
 import re
 from datetime import datetime
-from functools import partial, wraps
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
 
 import loguru
 from loguru import logger
-from rich import inspect
 from rich.abc import RichRenderable
-from rich.console import Console, ConsoleOptions, RenderResult
+from rich.console import Console
 from rich.highlighter import ReprHighlighter
-from rich.panel import Panel
-from rich.pretty import Pretty
 from rich.table import Table
-from rich.text import Text
 from rich.traceback import install as install_rich_traceback
 
 from maxgradient.theme import GradientTheme
@@ -25,71 +21,94 @@ DEBUG_LOG = CWD / "logs" / "debug.log"
 INFO_LOG = CWD / "logs" / "info.log"
 FORMAT = "{time:hh:mm:ss:SSS A} | {file.name: ^13} |  Line {line: ^5} | {level: ^8} ﰲ  {message}"
 
-console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
-install_rich_traceback(console=console)
+# console = GradientConsole(theme=GradientTheme(), highlighter=ReprHighlighter())
+# install_rich_traceback(console=console)
 RICH = logger.level("RICH", no=24, icon="🌈")
 
-def log_func(*, entry:bool=True, exit:bool=True, level="RICH"):
-    def wrapper(func):
-        name = func.__name__
-        @wraps(func)
-        def wrapped(*args, **kwargs):
-            log_ = logger.opt(depth=1)
-            if entry:
-                log_.log(level, f"Entering `{name}` (args={args}, kwargs={kwargs}))")
-            result = func(*args, **kwargs)
-            if exit:
-                log_.log(level, f"Exiting `{name}` (result={result})")
-            return result
-        return wrapped
-    return wrapper
+
+class LogConsole(Console):
+    """Create a console to log with"""
+
+    def __init__(self) -> None:
+        super().__init__(theme=GradientTheme(), highlighter=ReprHighlighter())
+
+
+def get_console() -> LogConsole:
+    """Get console."""
+    console = LogConsole()
+    install_rich_traceback(console=console)
+    return console
+
 
 class Log:
-    def __init__(self, console: Console) -> None:
+    """Logging class"""
+
+    def __init__(self) -> None:
+        console = get_console()
         logger.remove()
         logger.configure(
             handlers=[
-                dict(
-                    sink=DEBUG_LOG,
-                    level="DEBUG",
-                    format=FORMAT,
-                    colorize=True,
-                ),
-                dict(
-                    sink=INFO_LOG,
-                    level="INFO",
-                    format=FORMAT,
-                    colorize=True,
-                ),
-                dict(
-                    # sink=lambda msg: console.log(Message(msg), log_locals=True, highlight=True),
-                    sink=self.rich_sink,
-                    level="RICH",
-                    filter=self._rich_filter,
-                    colorize=True,
-                    format="{message}",
-                    diagnose=True,
-                    catch=True,
-                    backtrace=True,
-                ),
-                dict(
-                    sink=self.rich_sink,
-                    level="WARNING",
-                    filter=self._rich_filter,
-                    colorize=True,
-                    format="{message}",
-                    diagnose=True,
-                    catch=True,
-                    backtrace=True,
-                )
+                {
+                    "sink":DEBUG_LOG,
+                    "level":"DEBUG",
+                    "format":FORMAT,
+                    "colorize":True,
+                    "diagnose":True,
+                    "backtrace":True
+                },
+                {
+                    "sink":INFO_LOG,
+                    "level":"INFO",
+                    "format":FORMAT,
+                    "colorize":True,
+                    "diagnose":True,
+                    "backtrace":True
+                },
+                {
+                    "sink": self.rich_sink,
+                    "level": "RICH",
+                    "filter": self._rich_filter,
+                    "colorize": True,
+                    "format": "{message}",
+                    "diagnose": True,
+                    "catch": True,
+                    "backtrace": True,
+                },
+                {
+                    "sink": self.rich_sink,
+                    "level": "WARNING",
+                    "filter": self._rich_filter,
+                    "colorize": True,
+                    "format": "{message}",
+                    "diagnose": True,
+                    "catch": True,
+                    "backtrace": True,
+                },
+                {
+                    "sink": self.rich_sink,
+                    "level": "ERROR",
+                    "filter": self._rich_filter,
+                    "colorize": True,
+                    "format": "{message}",
+                    "diagnose": True,
+                    "catch": True,
+                    "backtrace": True,
+                },
+                {
+                    "sink": self.rich_sink,
+                    "level": "CRITICAL",
+                    "filter": self._rich_filter,
+                    "colorize": True,
+                    "format": "{message}",
+                    "diagnose": True,
+                    "catch": True,
+                    "backtrace": True,
+                }
             ]
         )
         console.clear()
         console.line(2)
         self.logger = logger.opt(depth=1, record=True)
-
-    # def __getattr__(self, name: str) -> Any:
-    #     return getattr(self.logger, name)
 
     def debug(self, msg: str) -> None:
         """Log to debug.log
@@ -107,13 +126,37 @@ class Log:
         """
         self.logger.info(msg)
 
-    def log(self, msg: RichRenderable) -> None:
+    def rich(self, msg: RichRenderable) -> None:
         """Log to console.
 
         Args:
             msg (str): Message to log.
         """
         self.logger.log("RICH", msg)
+
+    def warning(self, msg: RichRenderable) -> None:
+        """Log to console.
+
+        Args:
+            msg (str): Message to log.
+        """
+        self.logger.log("WARNING", msg)
+
+    def error(self, msg: RichRenderable) -> None:
+        """Log to console.
+
+        Args:
+            msg (str): Message to log.
+        """
+        self.logger.log("ERROR", msg)
+
+    def critical(self, msg: RichRenderable) -> None:
+        """Log to console.
+
+        Args:
+            msg (str): Message to log.
+        """
+        self.logger.log("CRITICAL", msg)
 
     @staticmethod
     def rich_sink(message: loguru.Message) -> None:
@@ -144,7 +187,7 @@ class Log:
         time_str = f"[bold #00ff00]{log_time.strftime('%H:%M:%S:%f %p')}[/]"
         num_match = re.match(r"(\d+)]", time_str)
         if num_match:
-            for index, group in enumerate(num_match.groups()):
+            for _, group in enumerate(num_match.groups()):
                 if len(group) > 2:
                     time_str = time_str.replace(group, f"[bold #008300]{group[0:2]}[/]")
                 time_str = time_str.replace(group, f"[bold #008300]{group}[/]")
@@ -152,7 +195,7 @@ class Log:
         time = time_str.replace("PM", "[bold dim #ddffdd]PM[/]")
         file = f"[bold #ff00ff]{str(record['file'].name)}[/]"
         line = f"[bold #00ffff]Line {int(record['line'])}[/]"
-        msg = str(record["message"])
+        msg = f"[bold {color}]{str(record['message'])}[/]"
 
         headers = ["Time", "File", "Line", "Level", "Message"]
         log_table = Table(
@@ -166,8 +209,7 @@ class Log:
             expand=False,
         )
         log_table.add_row(time, file, line, level, msg)
-        # for k, v in record.items():
-        #     log_table.add_row(k.capitalize(), v)
+        console = get_console()
         console.print(
             log_table,
             justify="left",
@@ -179,34 +221,19 @@ class Log:
         """Filter out rich logs."""
         return record["level"].name == "RICH"
 
+log = Log()
 
-    def func(self, *, entry=True, exit=True, level="DEBUG"):
-
-        def wrapper(func):
-            name = func.__name__
-
-            @wraps(func)
-            def wrapped(*args, **kwargs):
-                decorator_logger = self.logger.opt(depth=1)
-                if entry:
-                    decorator_logger.log(level, f"Entering '{name}' (args={args}, kwargs={kwargs}")
-                result = func(*args, **kwargs)
-                if exit:
-                    decorator_logger.log(level, f"Exiting '{name}' (result={result})")
-                return result
-
-            return wrapped
-
-        return wrapper
-
-log = Log(console)
-
-@log.func()
 def test_logger():
-    log = Log(console)
+    """Text log handlers"""
+
     log.info("Initialize DEBUG Log")
     log.debug("Initialize INFO Log")
-    log.log("Initialize RICH Log")
+    log.rich("Initialize RICH Log")
+    log.warning("Initialize WARNING Log")
+    log.error("Initialize ERROR Log")
+    log.critical("Initialize CRITICAL Log")
+
+
 
 if __name__ == "__main__":
     test_logger()

@@ -1,30 +1,29 @@
 """Purpose: Color class to parse colors for a gradient."""
-
+# pylint: disable=E0401
 import colorsys
 import re
-from collections.abc import 
 from typing import Optional, Tuple
 
-from loguru import logger
+from cheap_repr import normal_repr, register_repr
 from rich.box import SQUARE
-from rich.style import Style
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
 from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
-from rich.console import Console, RenderResult
+from rich.console import Console
 from rich.highlighter import ReprHighlighter
+from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as install_rich_traceback
-from snoop import snoop
-from cheap_repr import register_repr, normal_repr
 
-from maxgradient._rich import RICH, RICHHEX, RICHRGB, get_rich_color, rich_table
-from maxgradient._x11 import X11, X11HEX, X11RGB, get_x11_color, x11_table
+from maxgradient._rich import Rich
+from maxgradient._x11 import X11
 from maxgradient.log import Log
 from maxgradient.theme import GradientTheme
-from maxgradient._abstract_color import Mode
+
+# from snoop import snoop
+
 
 ColorType = str | Tuple[int, int, int] | RichColor
 
@@ -89,7 +88,6 @@ class Color:
     #         tuple, or RichColor."""
     #     return super(Color, cls).__new__(cls, color) # type: ignore
 
-    
     def __init__(self, color: RichColor | str | Tuple[int, int, int]) -> None:
         """A color parsed from a string.
 
@@ -175,7 +173,6 @@ class Color:
             raise ColorParseError(f"Invalid color: {color}")
 
     @property
-    
     def value(self) -> RichColor:
         """Return the color value."""
         return self._value
@@ -200,13 +197,13 @@ class Color:
                 index = self.HEX.index(string)
             name = self.COLORS[index]
         elif self.mode == Mode.X11:
-            if string in X11:
-                index = X11.index(string)
+            if string in X11_NAMES:
+                index = X11_NAMES.index(string)
             elif string in X11RGB:
                 index = X11RGB.index(string)
             elif string in X11HEX:
                 index = X11HEX.index(string)
-            name = X11[index]
+            name = X11_NAMES[index]
         elif self.mode == Mode.RICH:
             if string in RICH:
                 index = RICH.index(string)
@@ -223,7 +220,6 @@ class Color:
         return name
 
     @property
-    
     def rgb(self) -> Optional[str]:
         """Return the RGB string."""
         rgb = self.value.triplet.rgb
@@ -231,7 +227,6 @@ class Color:
         return rgb
 
     @property
-    
     def rgb_tuple(self) -> Tuple[int, int, int]:
         """Return the RGB string as a tuple of integers."""
         triplet = self.value.triplet
@@ -243,7 +238,6 @@ class Color:
         return rgb_tuple
 
     @property
-    
     def hex(self) -> str:
         """Return the hex string."""
         hex = self.value.triplet.hex
@@ -251,7 +245,6 @@ class Color:
         return hex
 
     @property
-    
     def style(self) -> Style:
         """Generate a style with the color as the foreground."""
         style = Style(color=self.value, bgcolor="default")
@@ -259,7 +252,6 @@ class Color:
         return style
 
     @property
-    
     def bg_style(self) -> str:
         """Generate a readable style with the color as the background."""
         foreground = self.get_contrast()
@@ -326,7 +318,6 @@ class Color:
         log.debug(f"Getting string for {self.name}: {string}")
         return string
 
-    
     def __rich__(self) -> Table:
         """Return the rich console representation of a color."""
         table = Table(
@@ -337,7 +328,7 @@ class Color:
             expand=False,
             width=40,
             collapse_padding=True,
-            caption="\n\n"
+            caption="\n\n",
         )
         table.add_column(
             "attribute", style=f"bold on {self.bg_style}", justify="center"
@@ -352,7 +343,6 @@ class Color:
         return table
 
     @staticmethod
-    
     def rgb_to_tuple(rgb_string: str) -> Tuple[int, int, int]:
         """Get the color as a tuple of integers.
 
@@ -381,7 +371,6 @@ class Color:
             raise ValueError("Invalid RGB string format")
 
     @staticmethod
-    
     def tuple_to_triplet(rgb: Tuple[int, int, int]) -> Tuple[int, int, int]:
         """Convert a tuple of integers to a triplet.
 
@@ -395,7 +384,7 @@ class Color:
         log.debug(f"Converting {rgb} to triplet: {triplet}")
         return triplet
 
-    
+    @staticmethod
     def as_title(self) -> Text:
         """Return the rich representation of a color."""
         LESS = f"[bold #ffffff]<[/]"
@@ -411,7 +400,6 @@ class Color:
         markup = "".join(colors)
         return Text.from_markup(markup)
 
-    
     def get_contrast(self) -> str:
         """Generate a foreground color for the color style.
 
@@ -460,7 +448,6 @@ class Color:
             return "#000000"
 
     @staticmethod
-    
     def hex_to_rgb(hex: str) -> str:
         hex_code = hex.lstrip("#")
 
@@ -474,7 +461,6 @@ class Color:
         return f"rgb({red}, {green}, {blue})"
 
     @staticmethod
-    
     def hex_to_rgb_tuple(hex: str) -> str:
         """Convert a hex color to an RGB tuple."""
         hex = hex.lstrip("#")  # Remove the '#' symbol if present
@@ -507,32 +493,19 @@ def library_tables() -> Columns:
     return Columns([rich_table, x11_table], equal=True)
 
 
-
 class Tint:
     """The grayscale of Color."""
 
-    NAMES: Tuple[str, ...] = (
-        "white",
-        "lightgrey"
-        "grey",
-        "darkgrey",
-        "black"
-    )
+    NAMES: Tuple[str, ...] = ("white", "lightgrey" "grey", "darkgrey", "black")
 
-    HEX: Tuple[str, ...] = (
-        "#ffffff",
-        "#cccccc",
-        "#888888",
-        "#444444",
-        "#000000"
-    )
+    HEX: Tuple[str, ...] = ("#ffffff", "#cccccc", "#888888", "#444444", "#000000")
 
     RGB: Tuple[str, ...] = (
-        'rgb(255, 255, 255)',
-        'rgb(204, 204, 204)',
-        'rgb(136, 136, 136)',
-        'rgb(68, 68, 68)',
-        'rgb(0, 0, 0)'
+        "rgb(255, 255, 255)",
+        "rgb(204, 204, 204)",
+        "rgb(136, 136, 136)",
+        "rgb(68, 68, 68)",
+        "rgb(0, 0, 0)",
     )
 
     RGB_TUPLE: Tuple[Tuple[int, int, int], ...] = (
@@ -540,14 +513,11 @@ class Tint:
         (204, 204, 204),
         (136, 136, 136),
         (68, 68, 68),
-        (0, 0, 0)
+        (0, 0, 0),
     )
 
-    def __init__(self, tint: "Color"|str|Tuple[int,int,int]) -> None:
-        super().__init__(
-            color=tint
-        )
-
+    def __init__(self, tint: "Color" | str | Tuple[int, int, int]) -> None:
+        super().__init__(color=tint)
 
 
 if __name__ == "__main__":

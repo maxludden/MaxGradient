@@ -1,52 +1,68 @@
+""""Generate a gradient of colors to print to the console."""
+# pylint: disable=E0401,W0611,W0201
 import colorsys
 import re
+from abc import ABC, abstractclassmethod, abstractmethod, abstractstaticmethod
 from enum import Enum, auto
-from typing import Tuple
-from abc import ABC, abstractmethod
+from typing import Tuple, Optional
 
 from rich.box import SQUARE
-from rich.style import Style
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
 from rich.color_triplet import ColorTriplet
-from rich.columns import Columns
-from rich.console import Console, RenderResult
+from rich.console import Console
 from rich.highlighter import ReprHighlighter
+from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as install_rich_traceback
 
-from maxgradient.theme import GradientTheme
 from maxgradient.log import Log
+from maxgradient.theme import GradientTheme
 
 console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
 install_rich_traceback(console=console)
 log = Log(console=console)
 
+
 class Mode(Enum):
     """A color mode. Used to determine how a color was parsed."""
-
+    COLOR = auto()
     NAMED = auto()
-    HEX = auto()
-    RGB = auto()
     X11 = auto()
     RICH = auto()
+    HEX = auto()
+    RGB = auto()
+    RGB_TUPLE = auto()
 
     @property
-    def value(self) -> str:
+    def color_mode(self) -> str:
         """Return the color mode."""
-        if self is Mode.NAMED:
+        if self.value == Mode.COLOR:
+            return str("color")
+        if self.value == Mode.NAMED:
             return str("named")
-        elif self is Mode.HEX:
-            return str("hex")
-        elif self is Mode.RGB:
-            return str("rgb")
-        elif self is Mode.X11:
+        elif self.value == Mode.X11:
             return str("x11")
-        elif self is Mode.RICH:
+        elif self.value == Mode.RICH:
             return str("rich")
+        elif self.value == Mode.HEX:
+            return str("hex")
+        elif self.value == Mode.RGB:
+            return str("rgb")
+        elif self.value == Mode.RGB_TUPLE:
+            return str("rgb_tuple")
         else:
             raise ValueError(f"Invalid mode: {self}")
+
+    def __eq__(self, other: "Mode"|str) -> bool:
+        """Return True if the color mode is equal to another."""
+        if isinstance(other, Mode):
+            return self.value == other.value
+        elif isinstance(other, str):
+            return self.color_mode == other
+        else:
+            return False
 
     def __repr__(self) -> str:
         """Return a representation of the color mode."""
@@ -65,14 +81,17 @@ class Mode(Enum):
         """Return a rich text representation of the color mode."""
         return self.__rich_repr__()
 
+
 RGB_REGEX = r"^rgb\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$"
 RGB_TUPLE_REGEX = r"^\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$"
 
 
 class ABColor(ABC):
+    """An abstract base class for colors."""
+
     HEX_REGEX = re.compile(r"([0-9a-fA-F]{6})$")
-    RGB_PATTERN= re.compile(RGB_REGEX)
-    RGB_TUPLE_PATTERN= re.compile(RGB_TUPLE_REGEX)
+    RGB_PATTERN = re.compile(RGB_REGEX)
+    RGB_TUPLE_PATTERN = re.compile(RGB_TUPLE_REGEX)
     COLORS: Tuple[str, ...]
     HEX: Tuple[str, ...]
     RGB: Tuple[str, ...]
@@ -82,53 +101,55 @@ class ABColor(ABC):
     value: RichColor
 
     @abstractmethod
-    def __init__(self, abcolor: "ABColor"|str|Tuple[int,int,int]) -> None:
-        pass
+    def __init__(self, abcolor: str | Tuple[int, int, int]) -> None:
+        """Initialize an ABColor object."""
 
     @abstractmethod
     def as_title(self) -> Text:
         """Return the color name as a title."""
-        pass
 
-    @abstractmethod
     @classmethod
-    def get_class(cls)-> str:
+    @abstractclassmethod
+    def get_class(cls) -> str:
         """Return the class name."""
-        pass
 
-    def parse_named(self, color: "ABColor"|str|Tuple[int,int,int]) -> bool:
+    def parse_named(
+        self, color: "ABColor" | str | Tuple[int, int, int]
+        ) -> Optional[Tuple[str, RichColor, Mode]]:
         """Parse a named color."""
-        log.debug(f"Attempting to parse a named color: {color}")    
+        log.debug(f"Attempting to parse a named color: {color}")
         for group in (self.COLORS, self.HEX, self.RGB, self.RGB_TUPLE):
-            if color not in group:
+            if color in group:
                 continue
             else:
                 index = group.index(color)
                 rgb_tuple = self.RGB_TUPLE[index]
                 triplet = ColorTriplet(*rgb_tuple)
-                self.name = color
-                self.value = RichColor.from_triplet(triplet)
-                self.mode = Mode.NAMED
-                log.debug(f"Successfully parsed named color: {self}")
+                color_name: str = color
+                color_value: RichColor = RichColor.from_triplet(triplet)
+                color_mode: Mode = Mode.NAMED
+                result = (color_name, color_value, color_mode)
+                log.debug(f"Successfully parsed named color: {result}")
                 return
 
-    def parse_color(self, color: "ABColor"|str|Tuple[int,int,int]) -> bool:
+
+
+    def parse_color(self, color: "ABColor" | str | Tuple[int, int, int]) -> Tuple[str, RichColor, Mode]:
         """Parse a color."""
         log.debug(f"Attempting to parse an ABColor object: {color}")
-        if isinstance(color, ABColor):
+        if isinstance(color, Color):
             self.name = color.name
             self.value = color.value
-            self.mode = color.mode
+            self.color_mode = color.mode
             log.debug(f"Successfully parsed Color: {self}")
             return
         else:
             raise TypeError(f"parse_color() expected ABColor, got {type(color)}")
 
-
     def parse_hex(self, color: str) -> bool:
         """Parse a hex color."""
         log.debug(f"Attempting to parse Hex color: {color}")
-        assert len(color) in [3,4,6,7], f"Invalid hex color: {color}"
+        assert len(color) in [3, 4, 6, 7], f"Invalid hex color: {color}"
         if "#" in color:
             color = color.replace("#", "")
             if len(color) == 3:
@@ -136,7 +157,7 @@ class ABColor(ABC):
         try:
             match = self.HEX_REGEX.match(color)
             if match:
-                rgb_tuple = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
+                rgb_tuple = tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))
                 log.debug(f"Parsed Hex colo ({color}): {rgb_tuple}")
                 triplet = ColorTriplet(*rgb_tuple)
                 self.name = color
@@ -144,14 +165,14 @@ class ABColor(ABC):
                 self.mode = Mode.HEX
                 log.debug(f"Successfully parsed Hex: {self}")
                 return
-        except ColorParseError:
-            raise ValueError(f"Invalid hex color: {color}")
+        except ColorParseError as cpe:
+            raise ColorParseError(f"Invalid hex color: {color}") from cpe
 
     def parse_rgb(self, color: str) -> bool:
         """Parse an RGB color."""
         log.debug(f"Attempting to parse RGB color: {color}")
         try:
-            match = self.RGB_REGEX.match(color)
+            match = self.RGB_PATTERN.match(color)
             if match:
                 rgb_tuple = tuple(int(x) for x in match.groups()[1:3])
                 triplet = ColorTriplet(*rgb_tuple)
@@ -160,8 +181,8 @@ class ABColor(ABC):
                 self.mode = Mode.RGB
                 log.debug(f"Successfully parsed RGB: {self}")
                 return
-        except ColorParseError:
-            raise ValueError(f"Invalid rgb color: {color}")
+        except ColorParseError as cpe:
+            raise ColorParseError(f"Invalid rgb color: {color}") from cpe
 
     def parse_rgb_tuple(self, color: Tuple[int, int, int]) -> None:
         """Parse and RGB Tuple."""
@@ -176,21 +197,21 @@ class ABColor(ABC):
             self.mode = Mode.RGB_TUPLE
             log.debug(f"Successfully parsed RGB Tuple: {self}")
             return
-        except ColorParseError:
-            raise ValueError(f"Invalid rgb tuple: {color}")
+        except ColorParseError as cpe:
+            raise ColorParseError(f"Invalid rgb tuple: {color}") from cpe
 
     @property
     def value(self) -> RichColor:
         """Return the color value."""
         log.debug(f"Getting color {self.name}'s value: {self._value}")
         return self._value
-    
+
     @value.setter
     def value(self, value: RichColor) -> None:
         """Set the color value."""
         log.debug(f"Setting color {self.name}'s value: {value}")
         self._value = value
-    
+
     @property
     def name(self) -> str:
         """Return the color name."""
@@ -200,8 +221,8 @@ class ABColor(ABC):
     @name.setter
     def name(self, name: str) -> None:
         """Return the color name."""
-        log.debug(f"Setting color {self.name}'s name: {self._name}")
         self._name = name
+        log.debug(f"Setting color {self.name}'s name: {self._name}")
 
     @property
     def rgb(self) -> str:
@@ -224,33 +245,31 @@ class ABColor(ABC):
     @property
     def hex(self) -> str:
         """Return the hex value."""
-        hex = self.value.triplet.hex
-        log.debug(f"Getting color {self.name}'s hex: {hex}")
-        return hex
-    
+        hex_str = self.value.triplet.hex
+        log.debug(f"Getting color {self.name}'s hex: {hex_str}")
+        return hex_str
+
     @property
-    def Style(self) -> Style:
+    def style(self) -> Style:
         """Return the color as a Style object."""
         style = Style(color=self.hex, bgcolor="default")
-        log.debug(f"Getting color {self.name}'s Style: {self._style}")
+        log.debug(f"Getting color {self.name}'s Style: {style}")
         return style
-    
+
     @property
     def bg_style(self) -> Style:
         """Return the color as a Style object."""
         fg_color = self.get_contrast_color()
-        bg_style = Style(
-            color = fg_color,
-            bgcolor = self.value
-        )
-        log.debug(f"Getting color {self.name}'s bg_style: {self._bg_style}")
+        bg_style = Style(color=fg_color, bgcolor=self.value)
+        log.debug(f"Getting color {self.name}'s bg_style: {bg_style}")
         return bg_style
 
     @staticmethod
-    def hex_to_rgb(hex: str) -> str:
+    @abstractstaticmethod
+    def hex_to_rgb(hex_str: str) -> str:
         """Convert a hex string to an RGB string."""
-        log.debug(f"Converting Hex ({hex}) to RGB.")
-        hex_code = hex.lstrip("#")
+        log.debug(f"Converting Hex ({hex_str}) to RGB.")
+        hex_code = hex_str.lstrip("#")
 
         if len(hex_code) == 3:
             hex_code = "".join([c * 2 for c in hex_code])
@@ -258,30 +277,29 @@ class ABColor(ABC):
         green = int(hex_code[2:4], 16)
         blue = int(hex_code[4:6], 16)
         rgb = f"rgb({red}, {green}, {blue})"
-        log.debug(f"Successfully converted Hex ({hex}) to RGB: {rgb}")
+        log.debug(f"Successfully converted Hex ({hex_str}) to RGB: {rgb}")
         return rgb
 
     @staticmethod
     def rgb_to_hex(rgb: str) -> str:
         """Convert an RGB string to a hex string."""
         log.debug(f"Converting RGB ({rgb}) to Hex.")
-        components = re.findall(r'(\d+)')
+        components = re.findall(r"(\d+)", rgb)
         if components:
             rgb_tuple = tuple(int(x) for x in components.groups()[1:3])
-            hex = ColorTriplet(*rgb_tuple).hex
-            log.debug(f"Successfully converted RGB ({rgb}) to Hex: {hex}")
+            hex_str = ColorTriplet(*rgb_tuple).hex
+            log.debug(f"Successfully converted RGB ({rgb}) to Hex: {hex_str}")
         return hex
-    
+
     @staticmethod
     def rgb_to_rgb_tuple(rgb: str) -> Tuple[int, int, int]:
         """Convert an RGB string to an RGB Tuple."""
         log.debug(f"Converting RGB ({rgb}) to RGB Tuple.")
-        components = re.findall(r'(\d+)')
+        components = re.findall(r"(\d+)", rgb)
         if components:
             rgb_tuple = tuple(int(x) for x in components.groups()[1:3])
             log.debug(f"Successfully converted RGB ({rgb}) to RGB Tuple: {rgb_tuple}")
         return rgb_tuple
-    
 
     def get_contrast_color(self) -> str:
         """Generate a foreground color for the color style.
@@ -293,20 +311,22 @@ class ABColor(ABC):
 
         def rgb_to_hsv(rgb_color: Tuple[int, int, int]):
             """Convert an RGB color to HSV."""
-            r, g, b = rgb_color
+            red, green, blue = rgb_color
             log.debug(f"Converting {rgb_color} to HSV")
-            h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-            log.debug(f"HSV: {h}, {s}, {v}")
-            return h, s, v
+            hue, saturation, value = colorsys.rgb_to_hsv(
+                red / 255, green / 255, blue / 255
+            )
+            log.debug(f"HSV: {hue}, {saturation}, {value}")
+            return hue, saturation, value
 
         def color_distance(rgb_color1, rgb_color2):
             """Calculate the distance between two colors."""
-            h1, s1, v1 = rgb_to_hsv(rgb_color1)
-            h2, s2, v2 = rgb_to_hsv(rgb_color2)
-            dh = min(abs(h1 - h2), 1 - abs(h1 - h2))
-            ds = abs(s1 - s2)
-            dv = abs(v1 - v2)
-            color_distance = dh + ds + dv
+            hue1, saturation1, value1 = rgb_to_hsv(rgb_color1)
+            hue2, saturation2, value2 = rgb_to_hsv(rgb_color2)
+            delta_hue = min(abs(hue1 - hue2), 1 - abs(hue1 - hue2))
+            delta_saturation = abs(saturation1 - saturation2)
+            delta_value = abs(value1 - value2)
+            color_distance = delta_hue + delta_saturation + delta_value
             log.debug(
                 f"Color distance between {rgb_color1} and {rgb_color2}: {color_distance}"
             )
@@ -334,14 +354,14 @@ class ABColor(ABC):
         """Return the color name."""
         log.debug(f"Stringifying {self.name}: {self._name}")
         return self.name
-    
+
     def __repr__(self) -> str:
         """Return the color name."""
         class_name = self.get_class()
-        repr = f"{class_name.capitalize()}<{self._name}>"
-        log.debug(f"Generated Repr: {repr}")
-        return self.name
-    
+        color_repr = f"{class_name.capitalize()}<{self._name}>"
+        log.debug(f"Generated Repr: {color_repr}")
+        return color_repr
+
     def __rich_repr__(self) -> str:
         """Return the color name."""
         class_name = self.get_class().capitalize()
@@ -349,9 +369,9 @@ class ABColor(ABC):
         repr2 = "[bold dim white]<[/]"
         repr3 = f"[{self.hex}]{self._name}[/]"
         repr4 = "[bold dim white]>[/]"
-        repr = ''.join([repr1, repr2, repr3, repr4])
-        log.debug(f"Generated Rich Repr: {repr}")
-        return repr
+        color_repr = "".join([repr1, repr2, repr3, repr4])
+        log.debug(f"Generated Rich Repr: {color_repr}")
+        return color_repr
 
     def __rich__(self) -> Table:
         """Return the rich console representation of a color."""
@@ -363,7 +383,7 @@ class ABColor(ABC):
             expand=False,
             width=40,
             collapse_padding=True,
-            caption="\n\n"
+            caption="\n\n",
         )
         table.add_column(
             "attribute", style=f"bold on {self.bg_style}", justify="center"

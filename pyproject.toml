@@ -35,4 +35,5 @@ dev = [
     "pyyaml>=6.0",
     "snoop>=0.4.3",
     "birdseye>=0.9.4",
+    "pylint>=2.17.4",
 ]

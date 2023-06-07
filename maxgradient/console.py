@@ -1,5 +1,5 @@
 """MaxConsole is a custom themed class inheriting from rich.console.Console."""
-# pylint: disable=invalid-name
+# pylint: disable=E0401
 import os
 from datetime import datetime
 from typing import IO, Callable, Literal, Mapping, Optional, Union
@@ -190,7 +190,6 @@ class GradientConsole(Console, metaclass=Singleton):
             Text("l", style="bold.magenta"),
             Text("e", style="bold.red"),
         ]
-        # console.log(Text.assemble(*letters))
         return Text.assemble(*letters)
 
     @classmethod
@@ -201,9 +200,9 @@ class GradientConsole(Console, metaclass=Singleton):
             " is a custom themed terminal console class inheriting from \
 [italic bold #00ffff]rich.console.Console[/]. It is a [bold.lightpurple]global singleton \
 [/]class that can be imported and used anywhere in the project and \
-used as a drop in replacement for [italic bold #00ffff]rich.console.Console[/].\n\n"
+used as a drop in replacement for [italic bold #00ffff]rich.console.Console[/]."
         )
-        combine_explanation = Text.assemble("\n\n", formatted_console, explanation_text)
+        combine_explanation = Text.assemble(formatted_console, explanation_text)
         return combine_explanation
 
 
@@ -215,8 +214,7 @@ if __name__ == "__main__":
     console.print(
         Panel(
             example,
-            title=title,
-            padding=(1, 8),
+            # title=title,
             width=100,
         ),
         justify="center",
