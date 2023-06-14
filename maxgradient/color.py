@@ -9,24 +9,20 @@ from rich.color import Color as RichColor
 from rich.color import ColorParseError
 from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
-from rich.console import Console
-from rich.highlighter import ReprHighlighter
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
-from rich.traceback import install as install_rich_traceback
 from snoop import snoop
 from cheap_repr import register_repr, normal_repr
 
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
 from maxgradient._mode import Mode
-from maxgradient.log import log, get_console
+from maxgradient.log import Log, Console
 from maxgradient.theme import GradientTheme
 
-console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
-install_rich_traceback(console=console)
-
+console = Console()
+log = Log(console)
 x11 = X11()
 rich = Rich()
 
@@ -36,9 +32,6 @@ register_repr(Text)(normal_repr)
 register_repr(Style)(normal_repr)
 register_repr(ColorTriplet)(normal_repr)
 register_repr(Mode)(normal_repr)
-
-
-
 
 class Color:
     """A color parsed from a string. Colors can be parsed from:
@@ -481,31 +474,6 @@ class Color:
         return Columns(colors, equal=True)
 
     @classmethod
-    def library_tables(cls) -> Columns:
-        """Return a table of library colors."""
-        log.debug("Generating library color table.")
-        rich_table = Table(Rich.color_table())
-        x11_table = Table(X11.color_table())
-        # return Columns([rich_table, x11_table], equal=True)
-        console.print(rich_table)
-        console.print(x11_table)
-
-    # @staticmethod
-    # def color_title() -> Text:
-    #     """Generate a colored text title."""
-    #     _rich = Text("Rich ", style=Style(color="#5f00ff", bold=True))
-    #     _and = Text(" & ", style=Style(color="#af00ff", bold=True))
-    #     _x11 = Text("X11 ", style=Style(color="#ff00ff", bold=True))
-    #     letter_c = Text("C", style=Style(color="#ff0000", bold=True))
-    #     letter_o = Text("o", style=Style(color="#ff8800", bold=True))
-    #     letter_l = Text("l", style=Style(color="#ffff00", bold=True))
-    #     letter_o2 = Text("o", style=Style(color="#00ff00", bold=True))
-    #     letter_r = Text("r", style=Style(color="#00ffff", bold=True))
-    #     letter_s = Text("s", style=Style(color="#0088ff", bold=True))
-    #     title = [_rich, _and, _x11, letter_c, letter_o, letter_l, letter_o2, letter_r, letter_s]
-    #     return Text.assemble(*title)
-
-    @classmethod
     def color_table(cls) -> Columns:
         """Return a table of all colors."""
         tables: List[Table] = []
@@ -542,6 +510,6 @@ class Color:
 
 
 if __name__ == "__main__":
-    console = get_console()
+    console = Console()
     console.print(Color.named_table(), justify="center")
     console.print(Color.color_table(), justify="center")

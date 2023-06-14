@@ -7,14 +7,13 @@ from typing import Optional, Tuple
 from rich.style import Style
 from rich.text import Text
 
-from maxgradient.log import Log
+from maxgradient.log import Log, Console
 
-log = Log()
-
+console = Console()
+log = Log(console)
 
 class X11:
     """Webcolors X11 color names."""
-
     NAMES: Tuple[str, ...] = (
         "aliceblue",
         "antiquewhite",

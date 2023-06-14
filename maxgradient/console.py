@@ -5,7 +5,8 @@ from datetime import datetime
 from typing import IO, Callable, Literal, Mapping, Optional, Union
 
 from rich._log_render import FormatTimeCallable
-from rich.console import Console, ConsoleRenderable, RichCast
+from rich.console import Console as RichConsole
+from rich.console import ConsoleRenderable, RichCast
 from rich.emoji import EmojiVariant
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
@@ -33,7 +34,7 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class GradientConsole(Console, metaclass=Singleton):
+class Console(RichConsole, metaclass=Singleton):
     """A custom-themed high level interface for the GradientConsole class that \
         inherits from rich.console.Console. This class is a singleton which removes \
         the need to pass around a console object or use the `get_console` method.
@@ -207,7 +208,7 @@ used as a drop in replacement for [italic bold #00ffff]rich.console.Console[/]."
 
 
 if __name__ == "__main__":
-    console = GradientConsole()
+    console = Console()
     example = console.generate_example()
     title = console.formatted_console()
     console.line(2)

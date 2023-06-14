@@ -1,6 +1,9 @@
 """Color Mode Enum"""
 from enum import Enum
+
 from rich.text import Text
+
+
 class Mode(Enum):
     """A color mode. Used to determine how a color was parsed."""
 
@@ -19,18 +22,17 @@ class Mode(Enum):
             return str("color")
         if self.value == Mode.NAMED:
             return str("named")
-        elif self.value == Mode.X11:
+        if self.value == Mode.X11:
             return str("x11")
-        elif self.value == Mode.RICH:
+        if self.value == Mode.RICH:
             return str("rich")
-        elif self.value == Mode.HEX:
+        if self.value == Mode.HEX:
             return str("hex")
-        elif self.value == Mode.RGB:
+        if self.value == Mode.RGB:
             return str("rgb")
-        elif self.value == Mode.RGB_TUPLE:
+        if self.value == Mode.RGB_TUPLE:
             return str("rgb_tuple")
-        else:
-            raise ValueError(f"Invalid mode: {self}")
+        raise ValueError(f"Invalid mode: {self}")
 
     def __eq__(self, other: "Mode") -> bool:
         """Return True if the color mode is equal to another."""

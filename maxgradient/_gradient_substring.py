@@ -1,42 +1,44 @@
-"""Defines the Gradient class which is used to print text with a gradient. It inherits from the Rich Text class."""
+"""Defines the Gradient class which is used to print text with a gradient.\
+    It inherits from the Rich Text class."""
+# pylint: disable=E0401, R0902, C0103
 import re
 from concurrent.futures import ThreadPoolExecutor
-from multiprocessing import cpu_count
-from random import choice, randint
-from typing import Any, Dict, List, Optional, Tuple
 
-from cheap_repr import normal_repr, register_repr
-# from lorem_text import lorem
+# from multiprocessing import cpu_count
+# from random import choice, randint
+from typing import List, Optional
 
-from rich.console import Console, JustifyMethod, OverflowMethod
+from lorem_text import lorem
+from rich.console import JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
+from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
-from rich.traceback import install as install_rich_traceback
-from rich.panel import Panel
-from rich.highlighter import ReprHighlighter
-from snoop import pp, snoop
 
-from maxgradient.old_color import Color, ColorParseError
-from maxgradient.color_list import ColorList
-from maxgradient.theme import GradientTheme
-from maxgradient.log import Log
+from maxgradient.color import Color
+
+# from maxgradient.theme import GradientTheme
+from maxgradient.log import Console, Log
+
+# from cheap_repr import normal_repr, register_repr
+# from lorem_text import lorem
+
+# from snoop import pp, snoop
+
 
 DEFAULT_JUSTIFY: "JustifyMethod" = "default"
 DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 
-
-console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
-install_rich_traceback(console=console)
+console = Console()
 log = Log(console)
+
 
 class NotEnoughColors(IndexError):
     """Custom exceptions raised when there are not enough characters to \
         create a gradient."""
-    pass
 
 
 class GradientSubstring(Text):
@@ -125,17 +127,17 @@ class GradientSubstring(Text):
             console.print(
                 Panel(
                     self,
-                    title = GradientSubstring(
+                    title=GradientSubstring(
                         text="GradientSubstring",
-                        start_index = 0,
-                        color_start = Color("red"),
-                        color_end = Color("yellow"),
-                        style="bold"
+                        start_index=0,
+                        color_start=Color("red"),
+                        color_end=Color("yellow"),
+                        style="bold",
                     ),
                     expand=False,
-                    width = int(console.width * 0.8)
+                    width=int(console.width * 0.8),
                 ),
-                justify="center"
+                justify="center",
             )
 
     @property
@@ -171,7 +173,7 @@ class GradientSubstring(Text):
     def __repr__(self) -> str:
         """Return the substring's representation."""
         strings = [
-            f"GradientSubstring",
+            "GradientSubstring",
             f"<text={self.text}",
             f"start_index={self.start_index}",
             f"color_start={self.color_start}",
@@ -192,12 +194,11 @@ class GradientSubstring(Text):
         text = Text(f'"{text}"', style="bold white")
 
         # Colors
-        hyphen = "[bold dim #cccccc] - [/]"
+        # hyphen = "[bold dim #cccccc] - [/]"
         colors = []
         for color in [self.start_color, self.end_color]:
             # color = Color(color)
-            colors.append(f"[bold {color.hex}]{str(color._original).capitalize()}[/]")
-        color_string = Text.from_markup(hyphen.join(colors))
+            colors.append(f"[bold {color.hex}]{str(color.original).capitalize()}[/]")
 
         # Repr Table
         table = Table(
@@ -210,14 +211,14 @@ class GradientSubstring(Text):
         table.add_row(
             "Color Start",
             Text(
-                str(self.color_start._original).capitalize(),
+                str(self.color_start.original).capitalize(),
                 style=f"bold {self.color_start.hex}",
             ),
         )
         table.add_row(
             "Color End",
             Text(
-                str(self.color_end._original).capitalize(),
+                str(self.color_end.name).capitalize(),
                 style=f"bold {self.color_end.hex}",
             ),
         )
@@ -240,13 +241,17 @@ class GradientSubstring(Text):
         dg = g2 - g1
         db = b2 - b1
 
-        span_color = f"#{int(r1 + dr * blend):02X}{int(g1 + dg * blend):02X}{int(b1 + db * blend):02X}"
+        red = f"{int(r1 + dr * blend):02X}"
+        green = f"{int(g1 + dg * blend):02X}"
+        blue = f"{int(b1 + db * blend):02X}"
+        span_color = f"#{red}{green}{blue}"
         span_style = f"{self.style} {span_color}".strip()
 
         return Span(span_start, span_start + 1, span_style)
 
     @staticmethod
     def parse_style(style: StyleType) -> str:
+        """Parse the style into a string."""
         if isinstance(style, Style):
             style = style.without_color
             style = str(style)
@@ -256,12 +261,13 @@ class GradientSubstring(Text):
         else:
             try:
                 style = Style.parse(style).without_color
-                style = str(style)
+
                 return style
-            except:
+            except ValueError as ve:
                 raise ValueError(
-                    "Style must be a Style object or a string that can be parsed into a Style object."
-                )
+                    "Style must be a Style object or a string that can \
+                        be parsed into a Style object."
+                ) from ve
 
     def simplify_spans(self, spans: List[Span]) -> List[Span]:
         """Simplify the spans by combining spans with the same style."""
@@ -281,9 +287,7 @@ class GradientSubstring(Text):
 
 
 def example() -> None:
-    from lorem_text import lorem
-    console = Console(theme=GradientTheme())
-    width = console.width
+    """Example of GradientSubstring."""
     TEXT = lorem.paragraph()
     console.clear()
     console.line(2)
@@ -296,7 +300,6 @@ def example() -> None:
             color_start=Color("magenta"),
             color_end=Color("purple"),
             style="bold italic",
-            verbose=True,
         ),
         justify="center",
     )

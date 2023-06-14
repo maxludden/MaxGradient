@@ -7,9 +7,10 @@ from typing import Tuple
 from rich.style import Style
 from rich.text import Text
 
-from maxgradient.log import Log
+from maxgradient.log import Log, Console
 
-log = Log()
+console = Console()
+log = Log(console=console)
 
 
 class Rich:

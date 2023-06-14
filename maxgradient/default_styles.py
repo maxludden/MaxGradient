@@ -1,8 +1,6 @@
 """A container for the default styles used by GradientConsole."""
 # pylint: disable=redefined-outer-name,consider-using-dict-items
 from typing import Dict, Mapping
-from pathlib import Path
-from json import dumps
 
 from rich.console import Console
 from rich.style import Style, StyleType
@@ -66,12 +64,12 @@ GRADIENT_STYLES: Mapping[str, StyleType] = {
     "bold.darkgrey": Style(color="#444444", bold=True),
     "cs.darkgrey": Style(color="#444444", bgcolor="#444444", bold=True),
     "style.darkgrey": Style(color="#444444", bgcolor="default", bold=True),
-    "bg_style.grey": Style(color="#ffffff", bgcolor="#444444", bold=True),
+    "bg_style.darkgrey": Style(color="#ffffff", bgcolor="#444444", bold=True),
     "darkgray": Style(color="#444444"),
     "bold.darkgray": Style(color="#444444", bold=True),
     "cs.darkgray": Style(color="#444444", bgcolor="#444444", bold=True),
     "style.darkgray": Style(color="#444444", bgcolor="default", bold=True),
-    "bg_style.gray": Style(color="#ffffff", bgcolor="#444444", bold=True),
+    "bg_style.darkgray": Style(color="#ffffff", bgcolor="#444444", bold=True),
     "black": Style(color="#000000"),
     "bold.black": Style(color="#000000", bold=True),
     "cs.black": Style(color="#000000", bgcolor="#000000", bold=True),
@@ -504,6 +502,7 @@ EDITED_STYLES: Dict[str, str] = {
     "rgb.blue": ":star: [bold #e1b400]New[/] :star:",
 }
 
+
 def get_default_styles():
     """Retrieve the defaults styles from GRADIENT_STYLES."""
     return GRADIENT_STYLES
@@ -523,7 +522,7 @@ def formatted_title() -> Text:
         Text("Th", style="bold #00ffff"),
         Text("e", style="bold #0088ff"),
         Text("m", style="bold #5f00ff"),
-        Text("e", style="bold #af00ff")
+        Text("e", style="bold #af00ff"),
     )
     return Text.assemble(*letters)
 
@@ -573,6 +572,7 @@ def example() -> None:
     console.line(3)
     console.print(styles_table(), justify="center")
     console.line(3)
+
 
 if __name__ == "__main__":
     example()

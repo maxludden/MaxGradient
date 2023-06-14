@@ -1,3 +1,4 @@
+"""Generates a spectrum of colors for use in gradient generation."""
 from itertools import cycle
 from random import randint
 from typing import List
@@ -5,10 +6,18 @@ from typing import List
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient.old_color import Color
+from maxgradient.color import Color
+from maxgradient.log import Console, Log
+
+console = Console()
+log = Log(console)
 
 
 class ColorList(list):
+    """ColorList is a list of colors. It is used to generate a spectrum of\
+        colors for use in gradient generation. It consists of a list of\
+        `Color` objects."""
+
     colors: List[str] = [
         "magenta",
         "violet",
@@ -56,9 +65,11 @@ class ColorList(list):
         self.color_list.reverse()
 
     def get_first_color(self):
+        """Return the first color in the list."""
         return self.color_list[0]
 
     def get_last_color(self):
+        """Return the last color in the list."""
         return self.color_list[-1]
 
     @classmethod
@@ -86,25 +97,19 @@ class ColorList(list):
         )
         for color in self.color_list:
             table.add_row(
-                Text(str(color._original).capitalize(), style=f"bold {color.bg_style}")
+                Text(str(color.name).capitalize(), style=f"bold {color.bg_style}")
             )
         return table
 
 
 if __name__ == "__main__":
-    from rich.console import Console
-    from rich.style import Style
-
-    from maxgradient.old_color import Color
-    from maxgradient.theme import GradientTheme
-
-    console = Console(theme=GradientTheme())
     color_list = ColorList(invert=True, hues=10)
     console.line(2)
     console.print(color_list, justify="center")
 
     last_color = color_list.get_last_color()
+    last_color_color = f"[{last_color.style}]{last_color.name.capitalize()}[/]"
     console.print(
-        f"[{last_color.style}]Last Color:[/] [bold {last_color.bg_style}]{str(last_color._original).capitalize()}[/]",
+        f"[{last_color.style}]Last Color:[/] {last_color_color}",
         justify="center",
     )

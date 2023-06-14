@@ -1,7 +1,6 @@
 """A wrapper around rich.panel.Panel that contains gradient text. GradientPanel also has
 attributes to control whether to make the panel's title gradient as well as all of panel's other attributes."""
 from io import StringIO
-from re import compile
 from typing import List, Optional, Tuple
 
 from rich.align import AlignMethod
@@ -12,8 +11,8 @@ from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.text import Text, TextType
 
-from examples.color import Color
-from maxgradient.original_gradient import DEFAULT_JUSTIFY, Gradient
+from maxgradient.color import Color
+from maxgradient.gradient import DEFAULT_JUSTIFY, Gradient
 
 
 class GradientPanel(Panel):
