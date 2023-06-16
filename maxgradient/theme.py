@@ -5,9 +5,18 @@ from rich.console import Console
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.theme import Theme
+from rich.highlighter import RegexHighlighter
 
 from maxgradient.default_styles import GRADIENT_STYLES, styles_table
 
+class LogHighlighter(RegexHighlighter):
+    """Apply style to anything that looks like an email."""
+
+    base_style = "log."
+    highlights = [
+        r"(?P<keyword>.+(?=\d+)) ?(?P<index>\d+)?(?P<separator>:) ",
+        r"(?P<keyword>[A-Za-z_]+)(?P<separator>:) "
+    ]
 
 class GradientTheme(Theme):
     """A container for style information used by 'MaxGradient.gradient.GradientConsole'.

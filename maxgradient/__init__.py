@@ -7,6 +7,6 @@ from maxgradient.color import Color
 from maxgradient.gradient import Gradient
 
 # pylint: disable=W0604
-from maxgradient.log import Console, Log
+from maxgradient.log import LogConsole, Log
 
 # from maxgradient.console import Console

@@ -19,7 +19,7 @@ from rich.text import Span, Text
 from maxgradient.color import Color
 
 # from maxgradient.theme import GradientTheme
-from maxgradient.log import Console, Log
+from maxgradient.log import LogConsole, Log
 
 # from cheap_repr import normal_repr, register_repr
 # from lorem_text import lorem
@@ -32,7 +32,7 @@ DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 
-console = Console()
+console = LogConsole()
 log = Log(console)
 
 
@@ -78,7 +78,7 @@ class GradientSubstring(Text):
 
         # Text
         if isinstance(text, List):
-            text = "".join(text)
+            text = "".join([f"{char}" for char in text])
         if spans:
             self._spans = spans
         sanitized_text: str = strip_control_codes(text)
@@ -99,8 +99,21 @@ class GradientSubstring(Text):
         self.start_index: int = int(start_index)
 
         # Colors
-        self.color_start: Color = Color(color_start)
-        self.color_end: Color = Color(color_end)
+        color1 = Color(color_start)
+        self.color_start: Color = color1
+        color1_msg = f"Color Start: [{color1.hex}]{color1.name.capitalize()}[/]"
+        if verbose:
+            log.success(color1_msg)
+        else:
+            log.debug(color1_msg)
+
+        color2 = Color(color_end)
+        self.color_end: Color = color2
+        color2_msg = f"Color End: [{color2.hex}]{color2.name.capitalize()}[/]"
+        if verbose:
+            log.success(color2_msg)
+        else:
+            log.debug(color2_msg)
 
         # Style
         end_style: Style = Style.null()

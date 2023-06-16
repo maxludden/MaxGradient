@@ -1,8 +1,9 @@
 """Module for parsing colors from strings."""
-# pylint: disable=C0209,E0401,W0611, C0103
+# pylint: disable=C0209,E0401,W0611,C0103,E0202
 import colorsys
 import re
 from typing import Any, Tuple, List
+from functools import cached_property, lru_cache
 
 from rich.box import SQUARE
 from rich.color import Color as RichColor
@@ -18,10 +19,10 @@ from cheap_repr import register_repr, normal_repr
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
 from maxgradient._mode import Mode
-from maxgradient.log import Log, Console
+from maxgradient.log import Log, LogConsole
 from maxgradient.theme import GradientTheme
 
-console = Console()
+console = LogConsole()
 log = Log(console)
 x11 = X11()
 rich = Rich()
@@ -142,8 +143,8 @@ class Color:
         if isinstance(color, Color):
             log.debug("Color is a Color object.")
             self.name = color.name
-            self.value = color.value
-            self.mode = Mode.COLOR
+            self._value = color.value
+            self._mode = Mode.COLOR
             return
         if isinstance(color, str):
             log.debug("Color is a string.")
@@ -154,9 +155,9 @@ class Color:
                     index = group.index(color)
                     rgb_tuple = self.RGB_TUPLE[index]
                     triplet = ColorTriplet(*rgb_tuple)
-                    self.value = RichColor.from_triplet(triplet)
+                    self._value = RichColor.from_triplet(triplet)
                     self.name = self.NAMED[index]
-                    self.mode = Mode.NAMED
+                    self._mode = Mode.NAMED
                     return
 
             rich_color: Tuple[int, int, int] = Rich().get_color(color)
@@ -165,8 +166,8 @@ class Color:
                 index = Rich().get_rgb().index("rgb({0},{1},{2})".format(*rich_color))
                 self.name = Rich().NAMES[index]
                 triplet = ColorTriplet(*rich_color)
-                self.value = RichColor.from_triplet(triplet)
-                self.mode = Mode.RICH
+                self._value = RichColor.from_triplet(triplet)
+                self._mode = Mode.RICH
                 return
 
             # X11
@@ -176,8 +177,8 @@ class Color:
                 index = X11().get_rgb().index("rgb({0},{1},{2})".format(*x11_color))
                 self.name = X11().NAMES[index]
                 triplet = ColorTriplet(*x11_color)
-                self.value = RichColor.from_triplet(triplet)
-                self.mode = Mode.X11
+                self._value = RichColor.from_triplet(triplet)
+                self._mode = Mode.X11
                 return
 
             # Hex
@@ -190,9 +191,9 @@ class Color:
                 rgb = self.hex_to_rgb(hex_color)
                 rgb_tuple = self.rgb_to_tuple(rgb)
                 triplet = ColorTriplet(*rgb_tuple)
-                self.value = RichColor.from_triplet(triplet)
+                self._value = RichColor.from_triplet(triplet)
                 self.name = color
-                self.mode = Mode.HEX
+                self._mode = Mode.HEX
                 return
 
             # RGB
@@ -201,9 +202,9 @@ class Color:
                 log.debug(f"Color is an RGB color: {rgb_match.groups()}")
                 rgb_tuple = self.rgb_to_tuple(color)
                 triplet = ColorTriplet(*rgb_tuple)
-                self.value = RichColor.from_triplet(triplet)
+                self._value = RichColor.from_triplet(triplet)
                 self.name = color
-                self.mode = Mode.RGB
+                self._mode = Mode.RGB
                 return
 
         # RGB Tuple
@@ -215,7 +216,7 @@ class Color:
                     0 <= num <= 255
                 ), f"RGB values must be between 0 and 255. Invalid number: {count}"
             triplet = ColorTriplet(*color)
-            self.value = RichColor.from_triplet(triplet)
+            self._value = RichColor.from_triplet(triplet)
             self.name = str(color)
             self.mode = Mode.RGB_TUPLE
             return
@@ -225,8 +226,12 @@ class Color:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Color):
             return NotImplemented
-        return self.value == other.value
+        return self.name == other.name
 
+    def __hash__(self):
+        return hash((self.name, self.original))
+
+    @lru_cache
     def __repr__(self) -> str:
         repr_str = f"Color<{str(self._original).capitalize()}>"
         log.debug(f"Getting repr for {self.name}: {repr_str}")
@@ -284,6 +289,7 @@ class Color:
 
     # Properties
     @property
+    @lru_cache
     def value(self) -> RichColor:
         """Return the color value."""
         return self._value
@@ -296,6 +302,7 @@ class Color:
         self._value = color
 
     @property
+    @lru_cache
     def name(self) -> str:
         """Return the color name."""
         return self._name
@@ -307,7 +314,7 @@ class Color:
         log.debug(f"Setting Color-{name}'s name: {name}")
         self._name = name
 
-    @property
+    @cached_property
     def color_name(self) -> str:
         """Return the color name formatted in the color."""
         name = self.name
@@ -317,6 +324,7 @@ class Color:
         return color_name
 
     @property
+    @lru_cache
     def mode(self) -> Mode:
         """Return the color mode."""
         log.debug(f"Getting Color-{self.name}'s mode: {self._mode}")
@@ -330,21 +338,21 @@ class Color:
         self._mode = mode
 
     # Format Properties
-    @property
+    @cached_property
     def hex(self) -> str:
         """Return the color as a hex string."""
         hex_color = self.value.triplet.hex
         log.debug(f"Getting Color-{self.name}'s as hex: {hex_color}")
         return hex_color
 
-    @property
+    @cached_property
     def rgb(self) -> str:
         """Return the color as a RGB string."""
         rgb_color = self.value.triplet.rgb
         log.debug(f"Getting Color-{self.name}'s as RGB: {rgb_color}")
         return rgb_color
 
-    @property
+    @cached_property
     def rgb_tuple(self) -> Tuple[int, int, int]:
         """Return the color as a RGB tuple."""
         rgb = self.value.triplet.rgb
@@ -354,14 +362,14 @@ class Color:
         log.debug(f"Getting Color-{self.name}'s as RGB Tuple: {rgb_tuple}")
         return rgb_tuple
 
-    @property
+    @cached_property
     def style(self) -> Style:
         """Get the color as a style."""
         style = Style(color=self.hex)
         log.debug(f"Getting Color-{self.name}'s as Style: {style}")
         return style
 
-    @property
+    @cached_property
     def bg_style(self) -> Style:
         """Get the color as a background style."""
         foreground = self.get_contrast()
@@ -417,6 +425,7 @@ class Color:
             return tuple(int(c) for c in rgb_match.groups())
         return (0, 0, 0)
 
+    @lru_cache
     def get_contrast(self) -> str:
         """Generate a foreground color for the color style.
 
@@ -464,52 +473,51 @@ class Color:
         else:
             return "#000000"
 
-    @classmethod
-    def named_table(cls) -> Columns:
-        """Return a table of named colors."""
-        log.debug("Generating named color table.")
-        colors = []
-        for color in cls.NAMED:
-            colors.append(Color(color))
-        return Columns(colors, equal=True)
 
-    @classmethod
-    def color_table(cls) -> Columns:
-        """Return a table of all colors."""
-        tables: List[Table] = []
-        for colors in [Rich, X11]:
-            log.debug("Generating color table.")
-            title = colors.get_title()
-            table = Table(title=title, show_header=True, header_style="bold.magenta")
-            table.add_column("Example", justify="center")
-            table.add_column("Name", justify="center")
-            table.add_column("Hex", justify="center")
-            table.add_column("RGB", justify="center")
-            table.add_column("RGB Tuple", justify="center")
+def named_table() -> Columns:
+    """Return a table of named colors."""
+    log.debug("Generating named color table.")
+    colors = []
+    for color in Color.NAMED:
+        colors.append(Color(color))
+    return Columns(colors, equal=True)
+
+def color_table() -> Columns:
+    """Return a table of all colors."""
+    tables: List[Table] = []
+    for colors in [Rich, X11]:
+        log.debug("Generating color table.")
+        title = colors.get_title()
+        table = Table(title=title, show_header=True, header_style="bold.magenta")
+        table.add_column("Example", justify="center")
+        table.add_column("Name", justify="center")
+        table.add_column("Hex", justify="center")
+        table.add_column("RGB", justify="center")
+        table.add_column("RGB Tuple", justify="center")
 
 
-            def add_row(
-                color: Color,
-                table: Table = table,
-                end_section: bool = False) -> Table:
-                block = Text("█" * 12, style=f"bold {color.hex}")
-                name = Text(color.name, style=f"bold {color.hex}")
-                hex_color = Text(color.hex, style=f" bold {color.hex}")
-                rgb_color = Text(color.rgb, style=f" bold {color.hex}")
-                rgb_tuple = Text(str(color.rgb_tuple), style=f" bold {color.hex}")
-                table.add_row(block, name, hex_color, rgb_color, rgb_tuple)
-                if end_section:
-                    table.add_section()
-                return table
+        def add_row(
+            color: Color,
+            table: Table = table,
+            end_section: bool = False) -> Table:
+            block = Text("█" * 12, style=f"bold {color.hex}")
+            name = Text(color.name, style=f"bold {color.hex}")
+            hex_color = Text(color.hex, style=f" bold {color.hex}")
+            rgb_color = Text(color.rgb, style=f" bold {color.hex}")
+            rgb_tuple = Text(str(color.rgb_tuple), style=f" bold {color.hex}")
+            table.add_row(block, name, hex_color, rgb_color, rgb_tuple)
+            if end_section:
+                table.add_section()
+            return table
 
-            for color in colors.NAMES:
-                table = add_row(cls(color), table)
-            tables.append(table)
+        for color in colors.NAMES:
+            table = add_row(Color(color), table)
+        tables.append(table)
 
-        return Columns(tables, equal=True)
+    return Columns(tables, equal=True)
 
 
 if __name__ == "__main__":
-    console = Console()
-    console.print(Color.named_table(), justify="center")
-    console.print(Color.color_table(), justify="center")
+    console = LogConsole()
+    console.print(named_table(), justify="center")
+    console.print(color_table(), justify="center")

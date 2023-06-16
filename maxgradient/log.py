@@ -5,13 +5,13 @@ from __future__ import annotations
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Self
+from typing import Optional, Self, Any
 
 import loguru
 from loguru import logger
 from rich.abc import RichRenderable
 from rich.console import Console as RichConsole
-from rich.highlighter import ReprHighlighter
+from rich.highlighter import ReprHighlighter, RegexHighlighter
 from rich.table import Table
 from rich.traceback import install as install_rich_traceback
 
@@ -35,17 +35,27 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class Console(RichConsole, metaclass=Singleton):
+class LogHighlighter(RegexHighlighter):
+    """Apply style to anything that looks like an email."""
+
+    base_style = "log."
+    highlights = [
+        r"(?P<keyword>.+(?=\d+)) ?(?P<index>\d+)?(?P<separator>:) ",
+        r"(?P<keyword>[A-Za-z_]+)(?P<separator>:) "
+    ]
+
+
+class LogConsole(RichConsole, metaclass=Singleton):
     """A Console to log to. Inherits from rich.console.Console.\
         This class is a singleton which removes the need to pass\
         around a console object or use the `get_console` method."""
 
     def __init__(self) -> None:
-        super().__init__(theme=GradientTheme(), highlighter=ReprHighlighter())
+        super().__init__(theme=GradientTheme(), highlighter=LogHighlighter())
         install_rich_traceback(console=self)
 
 
-console_ = Console()
+console_ = LogConsole()
 
 
 class Log:
@@ -70,10 +80,10 @@ class Log:
     rich_level: str
 
     def __init__(
-        self, console: Console = console_, rich_level: str = "SUCCESS"
+        self, console: LogConsole = console_, rich_level: str = "SUCCESS"
     ) -> None:
         self.rich_level = rich_level
-        self.console: Console = console
+        self.console: LogConsole = console
         logger.remove()
         logger.configure(
             handlers=[
@@ -256,7 +266,7 @@ class Log:
             expand=False,
         )
 
-    def rich_sink(self, message: loguru.Message, console: Console = console_) -> None:
+    def rich_sink(self, message: loguru.Message, console: LogConsole = console_) -> None:
         """Log to console.
 
         Args:
@@ -309,6 +319,31 @@ class Log:
             msg (str): Message to log.
         """
         self.logger.success(msg)
+
+    def key(self, key:str, value: Any) -> None:
+        """Log to debug.log
+
+        Args:
+            msg (str): Message to log.
+        """
+        key_markup = f"[bold #E3EC84]{key}[/]"
+        sep = "[bold #ffffff]: [/]"
+        value_markup = f"[bold #00ff00]{value}[/]"
+        msg = f"{key_markup}{sep}{value_markup}"
+        self.logger.debug(msg)
+
+    def key_index(self, key:str, index: int, value: Any) -> None:
+        """Log to debug.log
+
+        Args:
+            msg (str): Message to log.
+        """
+        key_markup = f"[bold ##E3EC84]{key}[/]"
+        index_markup = f"[bold #7FD6E8] {index}[/]"
+        sep = "[bold #ffffff]: [/]"
+        value_markup = f"[bold #00ff00]{value}[/]"
+        msg = f"{key_markup}{index_markup}{sep}{value_markup}"
+        self.logger.debug(msg)
 
     def warning(self, msg: RichRenderable) -> None:
         """Log to console.

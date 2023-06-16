@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run Script After Debug",
+        "type": "shell",
+        "command": "/Users/maxludden/dev/venvs/maxgradient/bin/python",
+        "args": ["/Users/maxludden/dev/py/maxgradient/tasks/clear.py"],
+        "presentation": {
+          "focus": false,
+          "panel": "shared",
+          "clear": true
+        },
+        "problemMatcher": []
+      }
+    ],
+    "presentation": {
+      "echo": true,
+      "reveal": "always",
+      "focus": false,
+      "panel": "shared"
+    }
+  }
