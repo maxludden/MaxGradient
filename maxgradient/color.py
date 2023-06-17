@@ -2,9 +2,10 @@
 # pylint: disable=C0209,E0401,W0611,C0103,E0202
 import colorsys
 import re
-from typing import Any, Tuple, List
-from functools import cached_property, lru_cache
+from functools import lru_cache
+from typing import Any, List, Tuple
 
+from cheap_repr import normal_repr, register_repr
 from rich.box import SQUARE
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
@@ -14,18 +15,17 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from snoop import snoop
-from cheap_repr import register_repr, normal_repr
 
+from maxgradient._mode import Mode
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
-from maxgradient._mode import Mode
 from maxgradient.log import Log, LogConsole
-from maxgradient.theme import GradientTheme
 
 console = LogConsole()
 log = Log(console)
 x11 = X11()
 rich = Rich()
+VERBOSE: bool = False
 
 register_repr(Table)(normal_repr)
 register_repr(Columns)(normal_repr)
@@ -33,6 +33,7 @@ register_repr(Text)(normal_repr)
 register_repr(Style)(normal_repr)
 register_repr(ColorTriplet)(normal_repr)
 register_repr(Mode)(normal_repr)
+
 
 class Color:
     """A color parsed from a string. Colors can be parsed from:
@@ -82,6 +83,7 @@ class Color:
         \t`python -m maxgradient.color.`
     """
 
+    __slots__ = ["_original", "_name", "_value", "_mode"]
     _name: str
     _value: RichColor
     _mode: Mode
@@ -138,20 +140,22 @@ class Color:
         """A color to make gradients with."""
         self.original = str(color)
         self.name = str(color)
-        log.debug(f"Parsing color: {self.original}")
+        log.log("INFO", f"Parsing color: {self.original}", VERBOSE)
 
         if isinstance(color, Color):
-            log.debug("Color is a Color object.")
+            log.log("DEBUG", "Color is a Color object.", VERBOSE)
             self.name = color.name
             self._value = color.value
             self._mode = Mode.COLOR
             return
         if isinstance(color, str):
-            log.debug("Color is a string.")
+            log.log("DEBUG", "Color is a string.", VERBOSE)
             # Named
             for group in (self.NAMED, self.HEX, self.RGB, self.RGB_TUPLE):
                 if color in group:
-                    log.debug(f"Color is a named color: {group} {color}")
+                    log.log(
+                        "DEBUG", f"Color is a named color: {group} {color}", VERBOSE
+                    )
                     index = group.index(color)
                     rgb_tuple = self.RGB_TUPLE[index]
                     triplet = ColorTriplet(*rgb_tuple)
@@ -162,7 +166,7 @@ class Color:
 
             rich_color: Tuple[int, int, int] = Rich().get_color(color)
             if rich_color:
-                log.debug(f"Color is a rich color: {rich_color}")
+                log.log("DEBUG", f"Color is a rich color: {rich_color}", VERBOSE)
                 index = Rich().get_rgb().index("rgb({0},{1},{2})".format(*rich_color))
                 self.name = Rich().NAMES[index]
                 triplet = ColorTriplet(*rich_color)
@@ -173,7 +177,7 @@ class Color:
             # X11
             x11_color: Tuple[int, int, int] = X11().get_color(color)
             if x11_color:
-                log.debug(f"Color is an X11 color: {x11_color}")
+                log.log("DEBUG", f"Color is an X11 color: {x11_color}", VERBOSE)
                 index = X11().get_rgb().index("rgb({0},{1},{2})".format(*x11_color))
                 self.name = X11().NAMES[index]
                 triplet = ColorTriplet(*x11_color)
@@ -184,7 +188,7 @@ class Color:
             # Hex
             hex_match = re.match(r"^#\?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$", color)
             if hex_match:
-                log.debug(f"Color is a hex color: {hex_match.group(0)}")
+                log.log("DEBUG", f"Color is a hex color: {hex_match.group(0)}", VERBOSE)
                 hex_color = hex_match.group(1)
                 if len(hex_color) == 3:
                     hex_color = "".join([c * 2 for c in group])
@@ -199,7 +203,9 @@ class Color:
             # RGB
             rgb_match = re.match(r"r?g?b?\((\d{1,3}), (\d{1,3}), (\d{1,3})\)", color)
             if rgb_match:
-                log.debug(f"Color is an RGB color: {rgb_match.groups()}")
+                log.log(
+                    "DEBUG", f"Color is an RGB color: {rgb_match.groups()}", VERBOSE
+                )
                 rgb_tuple = self.rgb_to_tuple(color)
                 triplet = ColorTriplet(*rgb_tuple)
                 self._value = RichColor.from_triplet(triplet)
@@ -209,7 +215,7 @@ class Color:
 
         # RGB Tuple
         if isinstance(color, tuple):
-            log.debug(f"Color is an RGB tuple: {color}")
+            log.log("DEBUG", f"Color is an RGB tuple: {color}", VERBOSE)
             assert len(color) == 3
             for count, num in enumerate(color):
                 assert (
@@ -228,10 +234,24 @@ class Color:
             return NotImplemented
         return self.name == other.name
 
-    def __hash__(self):
-        return hash((self.name, self.original))
+    lru_cache(maxsize=128, typed=False)
 
-    @lru_cache
+    def __hash__(self):
+        hash_value = 0
+        name = self._original
+        log.log("DEBUG", "called Color.__hash__()", VERBOSE)
+        log.log("DEBUG", f"Hashing {name}, initial value: {hash_value}", VERBOSE)
+        for index, char in enumerate(self._original):
+            hash_value += ord(char)
+            log.log(
+                "DEBUG",
+                f"Hashing {char} at index {index}: ord({char}) = {ord(char)}",
+                VERBOSE,
+            )
+            # log.debug(f"Hashed {char} at index {index}: hash_value = {hash_value}")
+        return hash_value
+
+    @lru_cache(maxsize=1)
     def __repr__(self) -> str:
         repr_str = f"Color<{str(self._original).capitalize()}>"
         log.debug(f"Getting repr for {self.name}: {repr_str}")
@@ -275,6 +295,7 @@ class Color:
 
     # Properties
     @property
+    @lru_cache(maxsize=1)
     def original(self) -> str:
         """Return the original color."""
         return self._original
@@ -289,7 +310,7 @@ class Color:
 
     # Properties
     @property
-    @lru_cache
+    @lru_cache(maxsize=1)
     def value(self) -> RichColor:
         """Return the color value."""
         return self._value
@@ -302,7 +323,7 @@ class Color:
         self._value = color
 
     @property
-    @lru_cache
+    @lru_cache(maxsize=1)
     def name(self) -> str:
         """Return the color name."""
         return self._name
@@ -311,10 +332,12 @@ class Color:
     def name(self, name: str) -> None:
         """Set the color name."""
         assert isinstance(name, str), f"Invalid name: {name}"
-        log.debug(f"Setting Color-{name}'s name: {name}")
         self._name = name
+        hr = "-" * 30
+        log.debug(f"Color Name -> {name}\n{hr}")
 
-    @cached_property
+    @property
+    @lru_cache(maxsize=1)
     def color_name(self) -> str:
         """Return the color name formatted in the color."""
         name = self.name
@@ -324,7 +347,7 @@ class Color:
         return color_name
 
     @property
-    @lru_cache
+    @lru_cache(maxsize=1)
     def mode(self) -> Mode:
         """Return the color mode."""
         log.debug(f"Getting Color-{self.name}'s mode: {self._mode}")
@@ -338,21 +361,24 @@ class Color:
         self._mode = mode
 
     # Format Properties
-    @cached_property
+    @property
+    @lru_cache(maxsize=1)
     def hex(self) -> str:
         """Return the color as a hex string."""
         hex_color = self.value.triplet.hex
         log.debug(f"Getting Color-{self.name}'s as hex: {hex_color}")
         return hex_color
 
-    @cached_property
+    @property
+    @lru_cache(maxsize=1)
     def rgb(self) -> str:
         """Return the color as a RGB string."""
         rgb_color = self.value.triplet.rgb
         log.debug(f"Getting Color-{self.name}'s as RGB: {rgb_color}")
         return rgb_color
 
-    @cached_property
+    @property
+    @lru_cache(maxsize=1)
     def rgb_tuple(self) -> Tuple[int, int, int]:
         """Return the color as a RGB tuple."""
         rgb = self.value.triplet.rgb
@@ -362,14 +388,16 @@ class Color:
         log.debug(f"Getting Color-{self.name}'s as RGB Tuple: {rgb_tuple}")
         return rgb_tuple
 
-    @cached_property
+    @property
+    @lru_cache(maxsize=1)
     def style(self) -> Style:
         """Get the color as a style."""
         style = Style(color=self.hex)
         log.debug(f"Getting Color-{self.name}'s as Style: {style}")
         return style
 
-    @cached_property
+    @property
+    @lru_cache(maxsize=1)
     def bg_style(self) -> Style:
         """Get the color as a background style."""
         foreground = self.get_contrast()
@@ -425,21 +453,18 @@ class Color:
             return tuple(int(c) for c in rgb_match.groups())
         return (0, 0, 0)
 
-    @lru_cache
+    @lru_cache(maxsize=1)
     def get_contrast(self) -> str:
         """Generate a foreground color for the color style.
 
         Returns:
             str: The foreground color.
         """
-        log.debug(f"Getting contrast for {self.name}")
 
         def rgb_to_hsv(rgb_color: Tuple[int, int, int]):
             """Convert an RGB color to HSV."""
             r, g, b = rgb_color
-            log.debug(f"Converting {rgb_color} to HSV")
             h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-            log.debug(f"HSV: {h}, {s}, {v}")
             return h, s, v
 
         def color_distance(rgb_color1, rgb_color2):
@@ -450,9 +475,6 @@ class Color:
             ds = abs(s1 - s2)
             dv = abs(v1 - v2)
             color_distance = dh + ds + dv
-            log.debug(
-                f"Color distance between {rgb_color1} and {rgb_color2}: {color_distance}"
-            )
             return color_distance
 
         def find_closest_color(rgb_color, color_list):
@@ -464,13 +486,22 @@ class Color:
                 if distance < min_distance:
                     min_distance = distance
                     closest_color = color
-            log.debug(f"{rgb_color} is closer to {closest_color}.")
             return closest_color
 
         closest = find_closest_color(self.rgb_tuple, [(0, 0, 0), (255, 255, 255)])
         if closest == (0, 0, 0):
+            if VERBOSE:
+                msg = f"[b {self.hex}]Color's contrast: [b #ffffff]White[/]"
+                log.success(msg)
+            else:
+                log.debug(f"Contrast for Color<{self.name}> -> White")
             return "#ffffff"
         else:
+            if VERBOSE:
+                msg = f"[b {self.hex}]Color's contrast: [b #000000]Black[/]"
+                log.success(msg)
+            else:
+                log.debug(f"Contrast for Color<{self.name}> -> White")
             return "#000000"
 
 
@@ -481,6 +512,7 @@ def named_table() -> Columns:
     for color in Color.NAMED:
         colors.append(Color(color))
     return Columns(colors, equal=True)
+
 
 def color_table() -> Columns:
     """Return a table of all colors."""
@@ -495,11 +527,9 @@ def color_table() -> Columns:
         table.add_column("RGB", justify="center")
         table.add_column("RGB Tuple", justify="center")
 
-
         def add_row(
-            color: Color,
-            table: Table = table,
-            end_section: bool = False) -> Table:
+            color: Color, table: Table = table, end_section: bool = False
+        ) -> Table:
             block = Text("█" * 12, style=f"bold {color.hex}")
             name = Text(color.name, style=f"bold {color.hex}")
             hex_color = Text(color.hex, style=f" bold {color.hex}")

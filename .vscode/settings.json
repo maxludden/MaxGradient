@@ -6,6 +6,7 @@
     "~/dev/venvs/"
   ],
   "python.venvPath": "~/dev/venvs",
+  "python.pythonPath": "/Users/maxludden/dev/venvs/maxgradient/bin/python",
   "cSpell.userWords": [
     "greylock",
     "maxbook",
@@ -159,7 +160,7 @@
   },
   "remote.tunnels.access.hostNameOverride": "maxbook",
   "editor.colorDecoratorsLimit": 800,
-  "python.defaultInterpreterPath": "/Users/maxludden/dev/venvs/gradient",
+  "python.defaultInterpreterPath": "/Users/maxludden/dev/venvs/maxgradient/bin/python",
   "explorer.confirmDragAndDrop": false,
   "errorLens.excludeBySource": [
     "Pylint(F0002:astroid-error)"

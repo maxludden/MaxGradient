@@ -22,6 +22,7 @@ DEBUG_LOG = CWD / "logs" / "debug.log"
 INFO_LOG = CWD / "logs" / "info.log"
 FORMAT = "{time:hh:mm:ss:SSS A} | {file.name: ^13} |\
     Line {line: ^5} | {level: ^8} ﰲ  {message}"
+VERBOSE: bool = False
 
 
 class Singleton(type):
@@ -369,6 +370,21 @@ class Log:
         """
         self.logger.log("CRITICAL", msg)
 
+    def log(self, level: str, msg: str, verbose: bool = VERBOSE) -> None:
+        """Log to console or log file.
+
+        Args:
+            level (str): Log level.
+            msg (str): Message to log.
+        """
+        if verbose:
+            if level not in ["SUCCESS", "WARNING", "ERROR", "CRITICAL"]:
+                level = "SUCCESS"
+            self.logger.log(level, msg)
+        else:
+            if level not in ["DEBUG", "INFO"]:
+                level = "DEBUG"
+            self.logger.log(level, msg)
 
 log = Log(console_)
 
