@@ -30,6 +30,9 @@ build-backend = "pdm.backend"
 [tool.pdm.scripts]
 gradient = "cli.gradient:main"
 
+[tool.pdm.hooks]
+pre_debug = "pdm-hooks/pre_debug.py"
+
 [tool.pdm.dev-dependencies]
 dev = [
     "pyyaml>=6.0",

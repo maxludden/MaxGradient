@@ -42,7 +42,8 @@ class LogHighlighter(RegexHighlighter):
     base_style = "log."
     highlights = [
         r"(?P<keyword>.+(?=\d+)) ?(?P<index>\d+)?(?P<separator>:) ",
-        r"(?P<keyword>[A-Za-z_]+)(?P<separator>:) "
+        r"(?P<keyword>[A-Za-z_()]+)(?P<separator>:) ",
+        r"^[^\d:]+:"
     ]
 
 

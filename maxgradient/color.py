@@ -11,6 +11,8 @@ from rich.color import Color as RichColor
 from rich.color import ColorParseError
 from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
+from rich.console import Console
+from rich.highlighter import ReprHighlighter
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
@@ -20,6 +22,7 @@ from maxgradient._mode import Mode
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
 from maxgradient.log import Log, LogConsole
+from maxgradient.theme import GradientTheme, GradientTerminalTheme
 
 console = LogConsole()
 log = Log(console)
@@ -232,7 +235,7 @@ class Color:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Color):
             return NotImplemented
-        return self.name == other.name
+        return self._original == other._original
 
     lru_cache(maxsize=128, typed=False)
 
@@ -405,18 +408,32 @@ class Color:
         log.debug(f"Getting Color-{self.name}'s as Background Style: {style}")
         return style
 
-    def as_title(self) -> Text:
-        """Return the rich representation of a color."""
-        LESS = "[bold #ffffff]<[/]"
-        GREATER = "[bold #ffffff]>[/]"
+    @classmethod
+    def colored_class(cls, as_text: bool = True) -> Text|str:
+        """Return the class name in colored format.
+
+        Args:
+            as_text (bool, optional): Return as a Text object. Defaults to True.
+        """
         C1 = "[bold #ff0000]C[/]"
         O1 = "[bold #ff8800]o[/]"
         L1 = "[bold #ffff00]l[/]"
         O2 = "[bold #00ff00]o[/]"
         R1 = "[bold #00ffff]r[/]"
+        color=[C1, O1, L1, O2, R1]
+        markup = "".join(color)
+        if as_text:
+            return Text.from_markup(markup)
+        return markup
+
+    def as_title(self) -> Text:
+        """Return the rich representation of a color."""
+        LESS = "[bold #ffffff]<[/]"
+        GREATER = "[bold #ffffff]>[/]"
+        COLOR = Color.colored_class(False)
         style = self.style
         NAME = f"[bold italic {style}]{str(self._original).capitalize()}[/]"
-        colors = [C1, O1, L1, O2, R1, LESS, NAME, GREATER]
+        colors = [COLOR, LESS, NAME, GREATER]
         markup = "".join(colors)
         return Text.from_markup(markup)
 
@@ -548,6 +565,11 @@ def color_table() -> Columns:
 
 
 if __name__ == "__main__":
-    console = LogConsole()
+    console = Console(theme=GradientTheme(), highlighter=ReprHighlighter(), record=True)
     console.print(named_table(), justify="center")
     console.print(color_table(), justify="center")
+    # console.save_svg(
+    #     path="color.svg",
+    #     title="MaxGradient.Color",
+    #     # theme=GradientTerminalTheme()
+    # )

@@ -97,6 +97,11 @@ class GradientSubstring(Text):
 
         # Start index
         self.start_index: int = int(start_index)
+        start_index_msg = f"Start Index: [b #7FD6E8]{self.start_index}[/]"
+        if verbose:
+            log.success(start_index_msg)
+        else:
+            log.debug(f"Start Index:{self.start_index}")
 
         # Colors
         color1 = Color(color_start)

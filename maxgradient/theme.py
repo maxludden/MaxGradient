@@ -1,13 +1,16 @@
 """A container for style information, used by `gradient.Gradient'."""
-from typing import Dict, Mapping, Optional
+from typing import Dict, Mapping, Optional, Tuple
 
 from rich.console import Console
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.theme import Theme
 from rich.highlighter import RegexHighlighter
+from rich.terminal_theme import TerminalTheme
 
 from maxgradient.default_styles import GRADIENT_STYLES, styles_table
+
+_ColorTuple = Tuple[int,int,int]
 
 class LogHighlighter(RegexHighlighter):
     """Apply style to anything that looks like an email."""
@@ -54,6 +57,24 @@ class GradientTheme(Theme):
     def get_theme_table(cls) -> Table:
         """Get a table of all styles in the theme."""
         return styles_table()
+
+class GradientTerminalTheme(TerminalTheme):
+    """A custom terminal theme for MaxGradient."""
+    def __init__(self) -> None:
+        super().__init__(
+            background = (0,0,0),
+            foreground = (250,250,250),
+            normal = [
+                (30,30,30),
+                (192, 0, 0),
+                (0, 192, 0),
+                (192, 192, 0),
+                (0, 55, 255),
+                (255, 0, 255),
+                (0, 255, 255),
+                (255, 255, 255),
+            ]
+        )
 
 
 if __name__ == "__main__":  # pragma: no cover

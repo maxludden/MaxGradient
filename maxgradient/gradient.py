@@ -1,11 +1,11 @@
 """Defines the Gradient class which is used to print text with a gradient. \
     It inherits from the Rich Text class."""
-# pylint: disable=W0611,C0103, E0401
+# pylint: disable=W0611,C0103, E0401, C0301
 import re
 from concurrent.futures import Future, ProcessPoolExecutor, as_completed
+from functools import lru_cache
 from multiprocessing import cpu_count
 from typing import List, Optional, Tuple
-from functools import lru_cache
 
 import numpy as np
 from cheap_repr import normal_repr, register_repr
@@ -24,7 +24,7 @@ from snoop import snoop
 from maxgradient._gradient_substring import GradientSubstring
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
-from maxgradient.log import LogConsole, Log
+from maxgradient.log import Log, LogConsole
 
 DEFAULT_JUSTIFY: "JustifyMethod" = "default"
 DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
@@ -113,12 +113,11 @@ class Gradient(Text):
         self.hues: int = hues or 3
         self.colors: List[Color] = self.get_colors(colors, rainbow, invert, verbose)
 
-        gradient_substrings: List[GradientSubstring] = self.generate_substrings(verbose)
+        gradient_substring: Text = self.generate_substrings(verbose)
         console.line(2)
-        for substring in gradient_substrings:
-            console.print(substring)
+        self._spans = gradient_substring.spans
 
-    @snoop(watch_explode=["colors", "self.colors"])
+    # @snoop(watch_explode=["colors", "self.colors"])
     def get_colors(
         self,
         colors: Optional[List[Color | Tuple | str]] = None,
@@ -159,78 +158,9 @@ class Gradient(Text):
                 if self.validate_colors(colors_):
                     return colors_
             else:
-                colors_ = color_list[:self.hues]
+                colors_ = color_list[: self.hues]
                 if self.validate_colors(colors_):
                     return colors_
-
-    def validate_colors(self, colors: Optional[List[Color]]) -> bool:
-        """Validate self.colors to ensure that it is a list of colors."""
-        valid: bool = True
-        for color in colors:
-            if not isinstance(color, Color):
-                return False
-        if valid:
-            return True
-
-
-    def get_indexes(self, verbose: bool = VERBOSE) -> List[List[int]]:
-        """Generate the indexes for the gradient substring.
-
-        Returns:
-            List[List[int]]: The indexes for the gradient substring.
-        """
-        result: ndarray = np.array_split(np.arange(self._length), self.hues - 1)
-        indexes: List[List[int]] = [sublist.tolist() for sublist in result]
-        for count, index in enumerate(indexes):
-            msg = f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}"
-            if verbose:
-                log.success(msg)
-            else:
-                log.info(msg)
-        return indexes
-
-    def get_substrings(
-        self, indexes: List[List[int]], text: str, verbose: bool = VERBOSE
-    ) -> List[str]:
-        """Generate a list of substrings for the gradient.
-
-        Args:
-            indexes (List[List[int]]): The indexes for the gradient substring.
-            text (str): The text to generate the gradient substring from.
-            verbose (bool, optional): Whether to print verbose output. Defaults to VERBOSE.
-        """
-        substrings: List[str] = []
-        for index in indexes:
-            substring = self.get_substring(index, text, verbose=verbose)
-            substrings.append(substring)
-        return substrings
-
-    def get_substring(
-        self, index: List[int], text: str, verbose: bool = VERBOSE
-    ) -> str:
-        """Generate a string to make a GradientSubstring.
-
-        Args:
-            index (List[int]): The index of the substring.
-            text (str): The text to generate the gradient substring from.
-            verbose (bool, optional): Whether to print verbose output. Defaults to VERBOSE.
-
-        Returns:
-            str: The substring.
-        """
-        substring_list: List[str] = []
-        for num in index:
-            substring_list.append(text[num])
-        substring = "".join(substring_list)
-        msg1 = f"[b white]Substring:[/]{substring}"
-        msg2 = f"[b white]Substring length:[/]{len(substring)}"
-        if verbose:
-            log.success(msg1)
-            log.success(msg2)
-        else:
-            log.info(msg1)
-            log.info(msg2)
-        return substring
 
     def get_text(self) -> str:
         """Get the gradient text.
@@ -245,6 +175,62 @@ class Gradient(Text):
         else:
             raise TypeError("Text must be a string or a list of strings.")
 
+    def validate_colors(self, colors: Optional[List[Color]]) -> bool:
+        """Validate self.colors to ensure that it is a list of colors."""
+        valid: bool = True
+        for color in colors:
+            if not isinstance(color, Color):
+                return False
+        if valid:
+            return True
+
+    def get_indexes(self, verbose: bool = False) -> List[List[int]]:
+        """Generate the indexes for the gradient substring.
+
+        Returns:
+            List[List[int]]: The indexes for the gradient substring.
+        """
+        result: ndarray = np.array_split(np.arange(self._length), self.hues - 1)
+        indexes: List[List[int]] = [sublist.tolist() for sublist in result]
+        for count, index in enumerate(indexes):
+            msg = f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}\n\n"
+            if verbose:
+                log.success(msg)
+            else:
+                log.info(msg)
+        return indexes
+
+    def get_substrings(self, indexes: List[List[int]], text: str) -> List[str]:
+        """Generate a list of substrings for the gradient.
+
+        Args:
+            indexes (List[List[int]]): The indexes for the gradient substring.
+            text (str): The text to generate the gradient substring from.
+            verbose (bool, optional): Whether to print verbose output. Defaults to VERBOSE.
+        """
+        substrings: List[str] = []
+        for index in indexes:
+            substring = self.get_substring(index, text)
+            substrings.append(substring)
+        return substrings
+
+    def get_substring(self, index: List[int], text: str = VERBOSE) -> str:
+        """Generate a string to make a GradientSubstring.
+
+        Args:
+            index (List[int]): The index of the substring.
+            text (str): The text to generate the gradient substring from.
+            verbose (bool, optional): Whether to print verbose output. Defaults to VERBOSE.
+
+        Returns:
+            str: The substring.
+        """
+        substring_list: List[str] = []
+        for num in index:
+            substring_list.append(text[num])
+        substring = "".join(substring_list)
+        return substring
+
     def generate_substrings(self, verbose: bool = VERBOSE) -> List[Span]:
         """Generate gradient spans.
 
@@ -252,147 +238,110 @@ class Gradient(Text):
             List[Span]: The gradient spans.
         """
         text = self.get_text()
-        indexes: List[List[int]] = self.get_indexes(verbose)
-        substrings: List[str] = self.get_substrings(indexes, text, verbose)
-        start_indexes: List[int] = self.get_start_indexes(indexes, verbose)
-        color_starts: List[Color] = self.get_color_starts()
-        color_ends: List[Color] = self.get_color_ends()
-        style = self.style
-        if verbose:
-            sub_verbose: bool = True
-            self.log_substring_gradient(
-                substrings, start_indexes, color_starts, color_ends, style, verbose
-            )
-        else:
-            sub_verbose: bool = False
-        gradient_substrings: List[GradientSubstring] = []
-        for index in range(self.hues - 1):
-            substring = GradientSubstring(
-                substrings[index],
-                start_indexes[index],
-                color_starts[index],
-                color_ends[index],
-                style,
-                verbose=sub_verbose,
-            )
+        gradient_string = Text()
+        indexes: List[List[int]] = self.get_indexes()
+        substrings: List[str] = self.get_substrings(indexes, text)
+        for index, substring in enumerate(substrings):
+            if verbose:
+                log.success(f"\n\n[b #ffffff]Index[/]: [b #7FD6E8]{index}[/]")
+                log.success(f"[b #ffffff]Substring:[/] [b #E3EC84]{substring}[/]")
+            gradient_length = len(substring)
             if verbose:
                 log.success(
-                    f"[b white]GradientSubstring[/] [b #7FD6E8]{index}[/][white]:[/]"
+                    f"[b #ffffff]Substring length:[/] [b #7FD6E8]{gradient_length}[/]"
                 )
-                console.print(substring)
-            else:
-                log.debug(f"GradientSubstring {index}: {substring}")
-            gradient_substrings.append(substring)
-        return gradient_substrings
+            substring = Text(substring)
 
-    def get_start_indexes(
-        self, indexes: List[List[int]], verbose: bool = VERBOSE
-    ) -> List[int]:
-        """Generate the index of the start of each substring of the text.
+            if index < self.hues - 1:
+                if verbose:
+                    msg1 = f"[bold #7FD6E8]{index}[/]"
+                    msg2 = f"< [bold #7FD6E8]{self.hues-1}[/]"
+                    msg3 = "[bold #af00ff]True[/]"
+                    log.success(f"{msg1} {msg2} {msg3}")
+                color1 = self.colors[index]
+                if verbose:
+                    log.success(
+                        f"[b white]Color 1:[/][b {color1.hex}] {color1.name.capitalize()}[/]"
+                    )
+                r1, g1, b1 = color1.rgb_tuple
+                if verbose:
+                    log.success(
+                        f"[b white]Color 1 RGB:[/][b {color1.hex}] rgb({r1}, {g1}, {b1})[/]"
+                    )
+                color2 = self.colors[index + 1]
+                if verbose:
+                    log.success(
+                        f"[b white]Color 2:[/][b {color2.hex}] {color2.name.capitalize()}[/]"
+                    )
+                r2, g2, b2 = color2.rgb_tuple
+                if verbose:
+                    log.success(
+                        f"[b white]Color 2 RGB:[/][b {color2.hex}] rgb({r2}, {g2}, {b2})[/]"
+                    )
+                dr = r2 - r1
+                dg = g2 - g1
+                db = b2 - b1
+
+            for subindex in range(gradient_length):
+                blend = subindex / gradient_length
+                red = int(r1 + (blend * dr))
+                green = int(g1 + (blend * dg))
+                blue = int(b1 + (blend * db))
+                color = f"#{red:02X}{green:02X}{blue:02X}"
+                if verbose:
+                    log.success(
+                        f"SubIndex: {subindex} | Blend: {blend} | Color: {color}"
+                    )
+                substring.stylize(color, subindex, subindex + 1)
+
+            gradient_string = Text.assemble(
+                gradient_string,
+                substring,
+                style=self.style,
+                justify=self.justify,
+                overflow=self.overflow,
+                no_wrap=self.no_wrap,
+                end=self.end,
+                tab_size=self.tab_size,
+            )
+        return gradient_string
+
+    @snoop
+    def get_start_indexes(self, indexes: List[List[int]]) -> List[int]:
+        """Get the start indexes for the gradient substring.
 
         Args:
             indexes (List[List[int]]): The indexes for the gradient substring.
-            verbose (bool, optional): Whether to print verbose output. Defaults to VERBOSE.
 
         Returns:
-            List[int]: _description_
+            List[int]: The start indexes for the gradient substring.
         """
-        substring_starts: List[int] = []
+        start_indexes: List[int] = []
         for index in indexes:
             start_index = index[0]
-            msg: str = f"[b white]Start index:[/][b #7FD6E8]{start_index}[/]"
-            if verbose:
-                log.success(msg)
-            else:
-                log.debug(msg)
-            substring_starts.append(start_index)
-        return substring_starts
+            log.log("INFO", f"Start Index: {start_index}")
+            start_indexes.append(start_index)
+        return start_indexes
 
-    def get_color_starts(self, verbose: bool = VERBOSE) -> List[Color]:
-        """Generate a list of Color instances from which the gradients will start.
-
-        Returns:
-            List[Color]: A list of Color instances.
-        """
+    @snoop
+    def get_color_starts(self) -> List[Color]:
+        """Generate the start colors for the gradient substring."""
         color_starts: List[Color] = []
-        for index in range(self.hues):
-            color1 = self.get_color1(index, self.colors)
-            msg = f"[b white]Color1 {index}:[/][b {color1.hex}]{color1.name.capitalize()}[/]"
-            if verbose:
-                log.success(msg)
-            else:
-                log.debug(msg)
-            color_starts.append(color1)
+        for index, color in enumerate(self.colors):
+            if index < self.hues - 1:
+                log.log("INFO", f"Color Start {index}: {color}")
+                color_starts.append(color)
         return color_starts
 
     @snoop
-    def get_color1(self, index: int, colors: List[Color]) -> Color:
-        """Get the first color for the gradient substring.
-
-        Args:
-            index (int): The index of the substring.
-        """
-        color1: Color = colors[index]
-        log.debug(f"Called get_color1() -> {color1}")
-        return color1
-
-    def get_color_ends(self, verbose: bool = VERBOSE) -> List[Color]:
-        """Generate a list of Color instances from which the gradients will end.
-
-        Returns:
-            List[Color]: A list of Color instances.
-        """
-        color_ends = self.colors[1:-1]
-        msg = f"Called get_color_ends() -> {color_ends}"
-        if verbose:
-            log.success(msg)
-        else:
-            log.debug(msg)
+    def get_color_ends(self) -> List[Color]:
+        """Generate the end colors for the gradient substring."""
+        color_ends: List[Color] = []
+        for index, color in enumerate(self.colors):
+            if index > 0:
+                log.log("INFO", f"Color End {index}: {color}")
+                color_ends.append(color)
         return color_ends
-
-    def get_color2(self, index: int, colors: List[Color]) -> Color:
-        """Get the second color for the gradient substring.
-
-        Args:
-            index (int): The index of the substring.
-        """
-        return colors[index + 1]
-
-    def get_start_index(self, index: int, indexes: List[List[int]]) -> int:
-        """Get the start index of the gradient substring.
-
-        Args:
-            index (int): The index of the substring.
-        """
-        return indexes[index][0]
-
-    def log_substring_gradient(
-        self,
-        substring: str,
-        start_index: int,
-        color1: Color,
-        color2: Color,
-        style: Style,
-        verbose: bool = VERBOSE,
-    ) -> None:
-        """Log the gradient substring.
-
-        Args:
-            substring (str): The substring to log.
-            start_index (int): The start_index of the substring.center()
-            color1 (Color): The first color of the substring.
-            color2 (Color): The second color of the substring.
-        """
-        msg1 = f"[b white]Substring:[/][i #E3EC84]{substring}[/]"
-        msg2 = f"[b white]Start_index:[/][b #7FD6E8]{start_index}[/]"
-        msg3 = f"[b white]Color 1:[/][i {color1.hex}]{color1.name.capitalize()}[/]"
-        msg4 = f"[b white]Color 2:[/][i {color2.hex}]{color2.name.capitalize()}[/]"
-        msg5 = f"[b white]Style:[/][i {style.color}]{str(style)}[/]"
-        for msg in [msg1, msg2, msg3, msg4, msg5]:
-            if verbose:
-                log.success(msg)
-            else:
-                log.info(msg)
 
     @property
     def text(self) -> str:
@@ -415,22 +364,6 @@ class Gradient(Text):
             sanitized_text = strip_control_codes(text)
             self._length = len(sanitized_text)
             self._text = sanitized_text
-
-    # @property
-    # @lru_cache(maxsize=1)
-    # def colors(self) -> List[Color]:
-    #     """The colors of the gradient."""
-    #     log.debug(
-    #         f"Retrieving gradient._colors: {[color.value for color in self._colors]}"
-    #     )
-    #     return self._colors
-
-    # @colors.setter
-    # def colors(self, colors: List[Color | Tuple | str]) -> None:
-    #     """Set the colors of the gradient."""
-    #     log.debug(f"Setting gradient._colors: {colors}")
-    #     assert isinstance(colors, list), f"Colors must be a list, not {type(colors)}"
-    #     self._colors = colors
 
     @property
     def hues(self) -> int:
@@ -492,5 +425,5 @@ register_repr(Gradient)(normal_repr)
 
 if __name__ == "__main__":
     TEXT = lorem.paragraphs(2)
-    gradient = Gradient(TEXT, verbose=True)
+    gradient = Gradient(TEXT)
     console.print(gradient, justify="center")
