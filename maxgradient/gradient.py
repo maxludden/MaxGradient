@@ -13,8 +13,11 @@ from loguru import logger
 from lorem_text import lorem
 from numpy import ndarray
 from rich import inspect
+from rich.columns import Columns
 from rich.console import JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
+from rich.layout import Layout
+from rich.panel import Panel
 from rich.pretty import Pretty
 from rich.style import Style, StyleType
 from rich.table import Table
@@ -85,9 +88,32 @@ class Gradient(Text):
         end: str = "\n",
         tab_size: Optional[int] = 8,
         spans: Optional[List[Span]] = None,
-        verbose: bool = VERBOSE,
     ) -> None:
-        """Generate a gradient text object."""
+        """Text with gradient color / style.
+
+        Args:
+            text(`text): The text to print. Defaults to `""`.\n
+            colors(`List[Optional[Color|Tuple|str|int]]`): A list of colors to use \
+                for the gradient. Defaults to None.\n
+            rainbow(`bool`): Whether to print the gradient text in rainbow colors across \
+                the spectrum. Defaults to False.\n
+            invert(`bool`): Reverse the color gradient. Defaults to False.\n
+            hues(`int`): The number of colors in the gradient. Defaults to `3`.\n
+            color_sample(`bool`): Replace text with characters with `"█" `. Defaults to False.\n
+            style(`StyleType`) The style of the gradient text. Defaults to None.\n
+            justify(`Optional[JustifyMethod]`): Justify method: "left", "center", "full", \
+                "right". Defaults to None.\n
+            overflow(`Optional[OverflowMethod]`):  Overflow method: "crop", "fold", \
+                "ellipsis". Defaults to None.\n
+            end (str, optional): Character to end text with. Defaults to "\\\\n".\n
+            no_wrap (bool, optional): Disable text wrapping, or None for default.\
+                Defaults to None.\n
+            tab_size (int): Number of spaces per tab, or `None` to use `console.tab_size`.\
+                Defaults to 8.\n
+            spans (List[Span], optional). A list of predefined style spans. Defaults to None.\n
+
+    """
+
         if isinstance(text, Text):
             self._spans: List[Span] = text.spans
             text = strip_control_codes(text.plain)
@@ -111,19 +137,16 @@ class Gradient(Text):
         self.color_sample: bool = color_sample
         self.colors: List[Color] = []
         self.hues: int = hues or 3
-        self.colors: List[Color] = self.get_colors(colors, rainbow, invert, verbose)
+        self.colors: List[Color] = self.get_colors(colors, rainbow, invert)
+        self.hues = len(self.colors)
 
-        gradient_substring: Text = self.generate_substrings(verbose)
+        gradient_substring: Text = self.generate_substrings()
         console.line(2)
         self._spans = gradient_substring.spans
 
     # @snoop(watch_explode=["colors", "self.colors"])
     def get_colors(
-        self,
-        colors: Optional[List[Color | Tuple | str]] = None,
-        rainbow: bool = False,
-        invert: bool = False,
-        verbose: bool = VERBOSE,
+        self, colors: Optional[List[Color | Tuple | str]], rainbow: bool, invert: bool
     ) -> List[Color]:
         """Get the colors for the gradient.
 
@@ -138,26 +161,25 @@ class Gradient(Text):
         Returns:
             List[Color]: A list of colors for the gradient.
         """
-        if colors is not None:
-            colors_: List[Color] = []
-            for index, color in enumerate(colors):
-                try:
-                    color = Color(color)
-                    log.debug(f"Color {index}: {color}")
-                    if verbose:
-                        console.print(color)
-                    colors_.append(color)
-                except ColorParseError as error:
-                    raise ColorParseError(f"Can't parse color: {color}") from error
+        if rainbow:
+            self.hues = 10
+            color_list = ColorList(self.hues, invert).color_list
+            colors_ = color_list
             if self.validate_colors(colors_):
                 return colors_
         else:
-            color_list = ColorList(self.hues, invert).color_list
-            if rainbow:
-                colors_ = color_list
+            if colors is not None:
+                colors_: List[Color] = []
+                for color in colors:
+                    try:
+                        color = Color(color)
+                        colors_.append(color)
+                    except ColorParseError as error:
+                        raise ColorParseError(f"Can't parse color: {color}") from error
                 if self.validate_colors(colors_):
                     return colors_
             else:
+                color_list = ColorList(self.hues, invert).color_list
                 colors_ = color_list[: self.hues]
                 if self.validate_colors(colors_):
                     return colors_
@@ -214,7 +236,7 @@ class Gradient(Text):
             substrings.append(substring)
         return substrings
 
-    def get_substring(self, index: List[int], text: str = VERBOSE) -> str:
+    def get_substring(self, index: List[int], text: str) -> str:
         """Generate a string to make a GradientSubstring.
 
         Args:
@@ -231,7 +253,7 @@ class Gradient(Text):
         substring = "".join(substring_list)
         return substring
 
-    def generate_substrings(self, verbose: bool = VERBOSE) -> List[Span]:
+    def generate_substrings(self) -> List[Span]:
         """Generate gradient spans.
 
         Returns:
@@ -242,42 +264,14 @@ class Gradient(Text):
         indexes: List[List[int]] = self.get_indexes()
         substrings: List[str] = self.get_substrings(indexes, text)
         for index, substring in enumerate(substrings):
-            if verbose:
-                log.success(f"\n\n[b #ffffff]Index[/]: [b #7FD6E8]{index}[/]")
-                log.success(f"[b #ffffff]Substring:[/] [b #E3EC84]{substring}[/]")
             gradient_length = len(substring)
-            if verbose:
-                log.success(
-                    f"[b #ffffff]Substring length:[/] [b #7FD6E8]{gradient_length}[/]"
-                )
             substring = Text(substring)
 
             if index < self.hues - 1:
-                if verbose:
-                    msg1 = f"[bold #7FD6E8]{index}[/]"
-                    msg2 = f"< [bold #7FD6E8]{self.hues-1}[/]"
-                    msg3 = "[bold #af00ff]True[/]"
-                    log.success(f"{msg1} {msg2} {msg3}")
                 color1 = self.colors[index]
-                if verbose:
-                    log.success(
-                        f"[b white]Color 1:[/][b {color1.hex}] {color1.name.capitalize()}[/]"
-                    )
                 r1, g1, b1 = color1.rgb_tuple
-                if verbose:
-                    log.success(
-                        f"[b white]Color 1 RGB:[/][b {color1.hex}] rgb({r1}, {g1}, {b1})[/]"
-                    )
                 color2 = self.colors[index + 1]
-                if verbose:
-                    log.success(
-                        f"[b white]Color 2:[/][b {color2.hex}] {color2.name.capitalize()}[/]"
-                    )
                 r2, g2, b2 = color2.rgb_tuple
-                if verbose:
-                    log.success(
-                        f"[b white]Color 2 RGB:[/][b {color2.hex}] rgb({r2}, {g2}, {b2})[/]"
-                    )
                 dr = r2 - r1
                 dg = g2 - g1
                 db = b2 - b1
@@ -288,10 +282,6 @@ class Gradient(Text):
                 green = int(g1 + (blend * dg))
                 blue = int(b1 + (blend * db))
                 color = f"#{red:02X}{green:02X}{blue:02X}"
-                if verbose:
-                    log.success(
-                        f"SubIndex: {subindex} | Blend: {blend} | Color: {color}"
-                    )
                 substring.stylize(color, subindex, subindex + 1)
 
             gradient_string = Text.assemble(
@@ -423,7 +413,94 @@ class Gradient(Text):
 
 register_repr(Gradient)(normal_repr)
 
-if __name__ == "__main__":
+
+def gradient_color() -> Layout:
+    """Generate a layout for the examples of gradients."""
     TEXT = lorem.paragraphs(2)
-    gradient = Gradient(TEXT)
-    console.print(gradient, justify="center")
+    gradient_random = Gradient(TEXT)
+    panel_random = Panel(
+        gradient_random,
+        title="Random Gradient",
+        padding=(2, 4)
+    )
+    gradient_rainbow = Gradient(TEXT, rainbow=True)
+    panel_rainbow = Panel(
+        gradient_rainbow,
+        title="Rainbow Gradient",
+        padding=(2, 4)
+    )
+    gradient_red_orange_yellow = Gradient(
+        TEXT,
+        colors=["red", "orange", "yellow"]
+    )
+    panel_red_orange_yellow = Panel(
+        gradient_red_orange_yellow,
+        title="Red, Orange, Yellow Gradient",
+        padding=(2, 4)
+    )
+    color_layout = Layout(name="root")
+    color_layout.split_row(
+        Layout(" ", name="pad1", ratio=1),
+        Layout(panel_random, name="left", ratio=5),
+        Layout(" ", name="pad2", ratio=1),
+        Layout(panel_rainbow, name="center", ratio=5),
+        Layout(" ",name="pad3", ratio=1),
+        Layout(panel_red_orange_yellow, name="right", ratio=5),
+        Layout(" ", name="pad4", ratio=1),
+    )
+    return color_layout
+
+def style_layout() -> Layout:
+    """Generate a layout for the examples of styles."""
+    TEXT = lorem.paragraphs(2)
+    layout = Layout(name="root")
+    layout.split_row(
+        Layout(" ", name="pad1", ratio=1),
+        Layout(
+            Panel(
+                Gradient(
+                    TEXT,
+                    colors = ["yellow", "lime", "cyan", "lightblue"],
+                ),
+                title="No Style Gradient",
+                padding=(2, 4)
+            ),
+            ratio=5,
+            name="normal"
+        ),
+        Layout(" ", name="pad2", ratio=1),
+        Layout(
+            Panel(
+                Gradient(
+                    TEXT,
+                    colors = ["yellow", "lime", "cyan", "lightblue"],
+                    style="bold"
+                ),
+                title="Bold Gradient",
+                padding=(2, 4)
+            ),
+            ratio=5,
+            name="bold"
+        ),
+        Layout(" ", name="pad3", ratio=1),
+        Layout(
+            Panel(
+                Gradient(
+                    TEXT,
+                    colors = ["yellow", "lime", "cyan", "lightblue"],
+                    style="italic underline"
+                ),
+                title="Italic Underline Gradient",
+                padding=(2, 4)
+            ),
+            ratio=5,
+            name="italic underline"
+        ),
+        Layout(" ", name="pad4", ratio=1),
+    )
+    return layout
+
+if __name__ == "__main__":
+    console.print(gradient_color())
+    console.line()
+    console.print(style_layout())
