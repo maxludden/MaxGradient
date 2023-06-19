@@ -8,12 +8,10 @@ authors = [
 ]
 dependencies = [
     "rich>=13.3.5",
-    "pydantic>=1.10.7",
     "lorem-text>=2.1",
     "numpy>=1.24.3",
-    "snoop>=0.4.3",
-    "cheap-repr>=0.5.1",
     "loguru>=0.7.0",
+    "typer>=0.9.0",
 ]
 requires-python = ">=3.9"
 readme = "README.md"
@@ -28,7 +26,7 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
-gradient = "cli.gradient:main"
+gradient = "maxgradient.cli.main:app"
 
 [tool.pdm.hooks]
 pre_debug = "pdm-hooks/pre_debug.py"
@@ -36,7 +34,6 @@ pre_debug = "pdm-hooks/pre_debug.py"
 [tool.pdm.dev-dependencies]
 dev = [
     "pyyaml>=6.0",
-    "snoop>=0.4.3",
     "birdseye>=0.9.4",
     "pylint>=2.17.4",
 ]

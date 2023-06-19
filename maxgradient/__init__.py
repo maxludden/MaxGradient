@@ -3,10 +3,10 @@
     It is a global singleton class that can be imported and used anywhere in the project and \
     used as a drop in replacement for [italic bold #00ffff]rich.console.Console[/].
     """
-from maxgradient.color import Color
-from maxgradient.gradient import Gradient
-
 # pylint: disable=W0604
+from maxgradient.color import Color
+from maxgradient.console import Console
+from maxgradient.gradient import Gradient
 from maxgradient.log import Log, LogConsole
 
 # from maxgradient.console import Console
@@ -22,6 +22,5 @@ __all__ = [
     "default_styles",
     "gradient",
     "log",
-    "panel",
-    "theme"
+    "theme",
 ]

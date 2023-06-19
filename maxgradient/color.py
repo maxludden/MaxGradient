@@ -5,7 +5,6 @@ import re
 from functools import lru_cache
 from typing import Any, List, Tuple
 
-from cheap_repr import normal_repr, register_repr
 from rich.box import SQUARE
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
@@ -16,7 +15,6 @@ from rich.highlighter import ReprHighlighter
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
-from snoop import snoop
 
 from maxgradient._mode import Mode
 from maxgradient._rich import Rich
@@ -29,13 +27,6 @@ log = Log(console)
 x11 = X11()
 rich = Rich()
 VERBOSE: bool = False
-
-register_repr(Table)(normal_repr)
-register_repr(Columns)(normal_repr)
-register_repr(Text)(normal_repr)
-register_repr(Style)(normal_repr)
-register_repr(ColorTriplet)(normal_repr)
-register_repr(Mode)(normal_repr)
 
 
 class Color:

@@ -8,7 +8,6 @@ from multiprocessing import cpu_count
 from typing import List, Optional, Tuple
 
 import numpy as np
-from cheap_repr import normal_repr, register_repr
 from loguru import logger
 from lorem_text import lorem
 from numpy import ndarray
@@ -22,7 +21,6 @@ from rich.pretty import Pretty
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
-from snoop import snoop
 
 from maxgradient._gradient_substring import GradientSubstring
 from maxgradient.color import Color, ColorParseError
@@ -36,12 +34,6 @@ WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 console = LogConsole()
 log = Log(console=console)
-
-
-register_repr(Pretty)(normal_repr)
-register_repr(Text)(normal_repr)
-register_repr(GradientSubstring)(normal_repr)
-register_repr(Table)(normal_repr)
 
 
 class Gradient(Text):
@@ -297,7 +289,6 @@ class Gradient(Text):
             )
         return gradient_string
 
-    @snoop
     def get_start_indexes(self, indexes: List[List[int]]) -> List[int]:
         """Get the start indexes for the gradient substring.
 
@@ -314,7 +305,6 @@ class Gradient(Text):
             start_indexes.append(start_index)
         return start_indexes
 
-    @snoop
     def get_color_starts(self) -> List[Color]:
         """Generate the start colors for the gradient substring."""
         color_starts: List[Color] = []
@@ -324,7 +314,6 @@ class Gradient(Text):
                 color_starts.append(color)
         return color_starts
 
-    @snoop
     def get_color_ends(self) -> List[Color]:
         """Generate the end colors for the gradient substring."""
         color_ends: List[Color] = []
