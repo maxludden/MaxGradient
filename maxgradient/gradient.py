@@ -412,9 +412,6 @@ class Gradient(Text):
         return new_style
 
 
-register_repr(Gradient)(normal_repr)
-
-
 def gradient_color() -> Layout:
     """Generate a layout for the examples of gradients."""
     TEXT = lorem.paragraphs(2)

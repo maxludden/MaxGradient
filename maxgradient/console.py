@@ -1,8 +1,8 @@
 """MaxConsole is a custom themed class inheriting from rich.console.Console."""
-# pylint: disable=E0401
+# pylint: disable=E0401, R0913, R0914
 import os
 from datetime import datetime
-from typing import IO, Callable, Literal, Mapping, Optional, Union
+from typing import IO, Callable, Literal, Mapping, Optional, Union, List, Tuple
 
 from rich._log_render import FormatTimeCallable
 from rich.console import Console as RichConsole
@@ -10,12 +10,14 @@ from rich.console import ConsoleRenderable, RichCast
 from rich.emoji import EmojiVariant
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
-from rich.style import StyleType
-from rich.text import Text
+from rich.style import StyleType, Style
+from rich.text import Text, Span
 from rich.theme import Theme
 from rich.traceback import install as install_traceback
 
 from maxgradient.theme import GradientTheme
+from maxgradient.color import Color
+from maxgradient.gradient import Gradient
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
@@ -172,6 +174,40 @@ class Console(RichConsole, metaclass=Singleton):
 
     def __repr__(self) -> str:
         return f"<GradientConsole width={self.width} {self._color_system!s}>"
+
+    def gradient(
+        self,
+        text: Optional[str | Text] = "",
+        colors: Optional[List[Color | Tuple | str]] = None,
+        rainbow: bool = False,
+        invert: bool = False,
+        hues: Optional[int] = None,
+        color_sample: bool = False,
+        style: StyleType = Style.null(),
+        *,
+        justify: Optional[JustifyMethod] = None,
+        overflow: Optional[OverflowMethod] = None,
+        no_wrap: Optional[bool] = None,
+        end: str = "\n",
+        tab_size: Optional[int] = 8,
+        spans: Optional[List[Span]] = None) -> None:
+        """Return a gradient used by the console."""
+        console_gradient = Gradient(
+            text=text,
+            colors=colors,
+            rainbow=rainbow,
+            invert=invert,
+            hues=hues,
+            color_sample=color_sample,
+            style=style,
+            justify=justify,
+            overflow=overflow,
+            no_wrap=no_wrap,
+            end=end,
+            tab_size=tab_size,
+            spans=spans
+        )
+        self.print(console_gradient)
 
     @staticmethod
     def formatted_console() -> Text:
