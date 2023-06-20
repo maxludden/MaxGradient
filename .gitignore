@@ -159,3 +159,12 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 .pdm-python
+.templates/$$var_template/$$var_filename.js
+.gitignore
+.templates/template-sample/index.js
+.templates/template-sample-react-component/index.jsx
+.gitignore
+.templates/.editorconfig
+template.config.js
+.gitignore
+.templates/template-sample-react-component/index.scss

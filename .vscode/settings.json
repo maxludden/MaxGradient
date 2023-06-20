@@ -564,9 +564,9 @@
   "python.testing.unittestArgs": [
     "-v",
     "-s",
-    "./maxgradient",
+    "./tests",
     "-p",
-    "*_test.py"
+    "test*.py"
   ],
   "python.testing.pytestEnabled": false,
   "python.testing.unittestEnabled": true

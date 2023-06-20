@@ -43,7 +43,13 @@
     </style>
 </head>
 
-![MaxGradient](https://bit.ly/MaxGradient)
+<img src="Images/MaxGradient_banner.gif" alt="MaxGradient" width="100%" height="auto">
+<div class="badges">
+    <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient"></a>
+        <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
+        <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.1.1-bbbbbb" alt="Version - 0.1.1"></a>
+        <a href="https://pdm.fming.dev/latest/">
+</div>
 
 <h2 class="cool">MaxGradient</h2>
 
