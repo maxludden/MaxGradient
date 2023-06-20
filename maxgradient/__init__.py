@@ -9,7 +9,6 @@ from maxgradient.console import Console
 from maxgradient.gradient import Gradient
 from maxgradient.log import Log, LogConsole
 
-# from maxgradient.console import Console
 
 __all__ = [
     "_gradient_substring",
