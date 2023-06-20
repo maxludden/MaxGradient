@@ -82,7 +82,9 @@
   // "python.logging.level": "debug",
   "git.confirmSync": false,
   "security.workspace.trust.untrustedFiles": "open",
-  "yaml.schemas": {},
+  "yaml.schemas": {
+    "file:///Users/maxludden/.vscode/extensions/docsmsft.docs-yaml-1.0.0/dist/toc.schema.json": "/toc\\.yml/i"
+  },
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
@@ -567,17 +569,5 @@
     "test*.py"
   ],
   "python.testing.pytestEnabled": false,
-<<<<<<< Updated upstream
   "python.testing.unittestEnabled": true
-=======
-  "python.testing.unittestEnabled": true,
-  "markdownlint.config": {
-    "default": true,
-    "MD033": false,
-    "MD041": false,
-    "MD003": { "style": "atx" },
-    "MD007": { "indent": 4 },
-    "no-hard-tabs": false
-}
->>>>>>> Stashed changes
 }
