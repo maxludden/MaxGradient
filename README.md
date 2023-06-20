@@ -1,96 +1,62 @@
 <html>
-<head>
-    <link href="gradient.css" rel="stylesheet">
-    <style>
-        html {
-        font-family: "Century Gothic";
-        font-size: 25px;
-    }
-    body {
-        color: #fff;
-        background: #111;
-    }
-    table {
-        margin-left: 20px
-    }
-    td {
-        font-family: 'Century Gothic';
-        padding-left: 5px;
-    }
-    .pdm {
-        font-size: 20px;
-        background: linear-gradient(to right, #ff00ff, #5f00ff);
-        display: inline-block;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-decoration: none;
-    }
-        a:hover {
-            color: #000;
-        }
-        a:visited {
-            color: #f00;
-        }
-        a:active {
-            color: #ff5900;
-        }
-        .result {
-            width: 50%;
-            margin: auto;
-            display: block;
-        }
-    </style>
-</head>
-
-<img src="Images/MaxGradient_banner.gif" alt="MaxGradient" width="100%" height="auto">
+    <head>
+        <link href="gradient.css" rel="stylesheet">
+        <title>README</title>
+    </head>
+    <body>
+<img src="Images/MaxGradient_banner.gif" alt="MaxGradient Banner" style="zoom:200%;" />
 <div class="badges">
-    <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient"></a>
-        <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-        <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.1.1-bbbbbb" alt="Version - 0.1.1"></a>
-        <a href="https://pdm.fming.dev/latest/">
+    <a href="https://GitHub.com/maxludden/maxgradient">
+        <img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient">
+    </a>
+    <a href="https://GitHub.com/maxludden/maxgradient">
+        <img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient">
+    </a>
+    <a href="https://GitHub.com/maxludden/maxgradient">
+        <img  class="badge" src="https://img.shields.io/badge/Version-0.1.2-bbbbbb" alt="Version - 0.1.2">
+    </a>
+    <a href="https://pdm.fming.dev/">
+        <img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574">
+    </a>
 </div>
-
 <h2 class="cool">MaxGradient</h2>
 
-MaxGradient automating printing gradient colored text to the console. It's built upon the great [rich](http://rich.readthedocs.io/en/latest/) library.
+MaxGradient automating printing gradient colored text to the console. It's built upon the great [rich library](http://rich.readthedocs.io/en/latest/).
 
-<h2 class="lime-yellow">Installation</h2><br>
- MaxGradient can be installed from PyPi using your favorite package manager:
-<h3 class="pdm">PDM<span class="recommended"> (Recommended)</span></h3>
-<pre>
-<code>
-    <span class="rainbow">pdm </span><span class="light">add</span> maxgradient
-</code>
-</pre>
+# Installation #
 
-<h3 class="blue-lightblue">Pip</h3>
+MaxGradient can be installed from PyPi using your favorite package manager:
 
-<pre>
-<code>
-pip install maxgradient
-</code>
-</pre>
+<h3 class="pdm">PDM
+    <span class="recommended"> (Recommended)</span>
+</h3>
 
-<h2 class="warm">Usage</span>
+```shell
+pdm add maxgradient
+```
 
-### Basic Usage
+## Pip ##
+
+```shell
+ pip install maxgradient
+```
+
+# Usage #
+
+## Basic Usage ##
 
 The basic usage is to create a console object and use it to print gradient text:
 
-<pre>
-    <code>
-    import maxgradient as mg
+```python
+import maxgradient as mg
 
-    console = mg.Console()
-    console.gradient("Hello, World!")
-    </code>
-</pre>
-<img class="result" src="Images/hello_world.svg">
+console = mg.Console()
+console.gradient("Hello, World!")
+```
 
-<br><br><hr><br>
+<img src="Images/hello_world.svg" alt="Hello, World!" style="zoom: 25%;" />
 
-### Gradient
+## Gradient ##
 
 You may also instantiate a Gradient Object. The Gradient class is a subclass of the
 rich.text.Text class, and can be used in the same way. The Gradient class has a
@@ -118,25 +84,25 @@ class Gradient(rich.rich.Text):
         tab_size: Optional[int] = 8,
         spans: Optional[List[Span]] = None,) -> None:
 ```
-The Gradient class can utilize the above arguments to get a plethora of different gradients. 
 
+The Gradient class can utilize the above arguments to get a plethora of different gradients.
 
 ![MaxGradient](Images/gradient_examples.svg)
 
-<br><br><hr><br>
-## Color
+## Color ##
 
-The final main component of <span class="code-3">MaxGradient</span> is expanding the <span class="code-1">rich.color.Color</span> class. The <span class="code-3">MaxGradient </span>.<span class="code-1">Color</span> class can still parse and ustilize the <span class="code-1">rich.color.Color</span>'s <a href="https://rich.readthedocs.io/en/latest/appendix/colors.html" alt="Rich Standard Colors">standard colors</a> but in addition to Hex and RGB colors, it can also parse RGB Tuples as well as X11 color names. I've also included the colors that <span class="code-3">MaxGradient</span> uses to create random gradients from for convienince. The follow are the available named colors as well as there hex and rgb colors:
+The final main component of <span class="code-3">MaxGradient</span> is expanding the <span class="class">rich.color.Color</span> class. The <span class="code-3">MaxGradient </span>.<span class="class">Color</span> class can still parse and utilize <span class="class">rich.color.Color</span>'s <a href="https://rich.readthedocs.io/en/latest/appendix/colors.html" alt="Rich Standard Colors">standard colors</a> but in addition to Hex and RGB colors, it can also parse RGB Tuples as well as X11 color names. I've also included the colors that <span class="code-3">MaxGradient</span> uses to create random gradients from for convenience. The follow are the available named colors as well as there hex and rgb colors:
 
 <img src="Images/available_colors.svg" >
 
-<h3 class="code-2">Example</h3>
-<pre>
-    <code>
-import maxgradient as mg
+## Example ##
 
+```python
+import maxgradient as mg
 console = mg.Console()
 console.print("[bold lime]This is a a vibrant green color!")
-    </code>
-</pre>
-<img class="result" src="Images/color_example.svg">
+
+```
+
+<img class="result" width="50%"rc="Images/color_example.svg">
+</body>
