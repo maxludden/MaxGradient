@@ -11,7 +11,7 @@
     "greylock",
     "maxbook",
     "maxludden",
-    "TODOC", 
+    "TODOC",
     "venvs",
     "webcolors"
   ],
@@ -254,10 +254,9 @@
   "todohighlight.isEnable": true,
   "todohighlight.isCaseSensitive": false,
   "todohighlight.keywords": [
-
     {
       "text": "white",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?white)\\b|\\b(#f{3,6)\\b|\\b(\\( ?255, *?255, *?255 ?\\))\\b"
       },
       "color": "#000000",
@@ -267,9 +266,10 @@
       "border": "1px solid #dddddd",
       "borderRadius": "2px",
       "isWholeLine": false
-    },			{
+    },
+    {
       "text": "lightgrey",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?light_?gr[a|e]y)\\b|\\b(#dddddd)\\b|\\b(\\( ?68, *?68, *?68 ?\\))\\b"
       },
       "color": "#bbbbbb",
@@ -282,7 +282,7 @@
     },
     {
       "text": "lightgrey",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?light_?gr[ae]y)\\b|\\b(#dddddd)\\b|\\b(\\( ?221, *?221, *?221 ?\\))\\b"
       },
       "color": "#000000",
@@ -295,7 +295,7 @@
     },
     {
       "text": "grey",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?_?gr[a|e]y)\\b|\\b(#888888)\\b|\\b(\\( ?68, *?68, *?68 ?\\))\\b"
       },
       "color": "#ffffff",
@@ -308,8 +308,8 @@
     },
     {
       "text": "darkgrey",
-      "regex":{
-        "pattern": "\\b(\\w*\\.?dark_?gr[a|e]y)\\b|\\b(#444444)\\b|\\b(\\( ?68, *?68, *?68 ?\\))\\b"	
+      "regex": {
+        "pattern": "\\b(\\w*\\.?dark_?gr[a|e]y)\\b|\\b(#444444)\\b|\\b(\\( ?68, *?68, *?68 ?\\))\\b"
       },
       "color": "#ffffff",
       "bold": true,
@@ -321,7 +321,7 @@
     },
     {
       "text": "black",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?black)\\b|\\b(#000000)\\b|\\b(\\( 0, *?0, *?0 ?\\))\\b"
       },
       "color": "#ffffff",
@@ -334,7 +334,7 @@
     },
     {
       "text": "magenta",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?magenta)\\b|\\b(#ff00ff)\\b|\\b(\\( ?255, *?0, *?255 ?\\))\\b",
       },
       "color": "#000000",
@@ -373,7 +373,7 @@
     },
     {
       "text": "blue",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\.?_?d?e?l?t?a?_?blue\\d?)\\b|\\b(#0000ff)\\b|\\b(\\( ?0, *?0, *?255 ?\\))\\b"
       },
       "color": "#ffffff",
@@ -386,7 +386,7 @@
     },
     {
       "text": "lightblue",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?lightblue\\d?)\\b|\\b(#0088ff)\\b|\\b(\\( ?0, *?136, *?255 ?\\))\\b"
       },
       "color": "#ffffff",
@@ -399,7 +399,7 @@
     },
     {
       "text": "cyan",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?cyan)\\b|\\b(#00ffff)\\b|\\b(\\( ?0, *?255, *?255 ?\\))\\b"
       },
       "color": "#000011",
@@ -425,7 +425,7 @@
     },
     {
       "text": "delta_green",
-      "regex":{
+      "regex": {
         "pattern": "\\b(\\w*\\.?delta_?green\\d?)\\b|\\b(#00ff00)\\b|\\b(\\( ?0, *?255, *?0 ?\\))\\b",
       },
       "color": "#001100",
@@ -463,7 +463,7 @@
     },
     {
       "text": "red",
-      "regex":{
+      "regex": {
         "pattern": "\\b(red)\\b|\\b(bold\\.red)\\b|\\b(cs\\.red)\\b|\\b(style\\.red)\\b|\\b(#ff0000)\\b|\\b(\\( ?255, *?0, *?0 ?\\))\\b"
       },
       "color": "#ffeeee",
@@ -476,7 +476,6 @@
     }
   ],
   "todohighlight.defaultStyle": {
-
     "color": "#ffffff",
     "backgroundColor": "#af00ff",
     "overviewRulerColor": "#af00ff",
@@ -552,13 +551,9 @@
     "SASS",
     "STYLUS"
   ],
-  "editor.semanticTokenColorCustomizations": {
-
-  },
+  "editor.semanticTokenColorCustomizations": {},
   "editor.fontFamily": "MesloLGS NF, Menlo, Monaco, 'Courier New', monospace",
-  "github.copilot.advanced": {
-    
-  },
+  "github.copilot.advanced": {},
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": false,
   "python.testing.unittestArgs": [
@@ -569,5 +564,18 @@
     "test*.py"
   ],
   "python.testing.pytestEnabled": false,
-  "python.testing.unittestEnabled": true
+  "python.testing.unittestEnabled": true,
+  "markdownlint.config": {
+    "default": true,
+    "MD033": false,
+    "MD041": false,
+    "MD013": false,
+    "MD003": {
+      "style": "atx"
+    },
+    "MD007": {
+      "indent": 4
+    },
+    "no-hard-tabs": false
+  }
 }
