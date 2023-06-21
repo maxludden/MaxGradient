@@ -1,652 +1,121 @@
-.magenta-violet-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #ff00ff 20%,
-    #af00ff 40%,
-    #af00ff 60%,
-    #ff00ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.magenta-violet-wipe-mono {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #ff00ff 20%,
-    #af00ff 40%,
-    #af00ff 60%,
-    #ff00ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.violet-purple-wipe {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #af00ff 20%,
-    #5f00ff 40%,
-    #5f00ff 60%,
-    #af00ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.violet-purple-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #af00ff 20%,
-    #5f00ff 40%,
-    #5f00ff 60%,
-    #af00ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.purple-blue-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #5f00ff 20%,
-    #0000ff 40%,
-    #0000ff 60%,
-    #5f00ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.purple-blue-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #5f00ff 20%,
-    #0000ff 40%,
-    #0000ff 60%,
-    #5f00ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
+@import url("https://fonts.googleapis.com/css2?family=Prompt");
+:root {
+  --color-1: #f00;
+  --color-2: #f80;
+  --color-3: #ff0;
+  --color-4: #0f0;
+  --color-5: #0ff;
+  --color-6: #ee07ff;
+  --tint-0: #a0a;
+  --tint-1: #a00;
+  --tint-2: #a20;
+  --tint-3: #990;
+  --tint-4: #090;
+  --tint-5: #02a;
 }
 
-.blue-lightblue-wipe {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #0000ff 20%,
-    #0088ff 40%,
-    #0088ff 60%,
-    #0000ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
+
+body {
+  background: #222;
+  color: #ddd;
 }
-.blue-lightblue-wipe-mono {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #0000ff 20%,
-    #0088ff 40%,
-    #0088ff 60%,
-    #0000ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
+tspan {
+  font-family: "Prompt", sans-serif;
 }
-.lightblue-cyan-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #0088ff 20%,
-    #00ffff 40%,
-    #00ffff 60%,
-    #0088ff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
+h1 {
+  font-family:'Prompt', sans-serif;;
+  font-size: 9em;
+  color: rgba(0,0,0,0.6)
 }
-.lightblue-cyan-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #0088ff 20%,
-    #00ffff 40%,
-    #00ffff 60%,
-    #0088ff 80%
-  );
+.container {
+  font-family: "Rock Salt";
   background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.cyan-lime-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
+  animation: gradient 15s ease infinite;
+
+  width: 700%;
+  height: 600px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+
   background: linear-gradient(
-    to right,
-    #00ffff 20%,
-    #00ff00 40%,
-    #00ff00 60%,
-    #00ffff 80%
+    35deg,
+    var(--color-6) 10%,
+    var(--color-1) 20%,
+    var(--color-2) 25%,
+    var(--color-3) 30%,
+    var(--color-4) 40%,
+    var(--color-5) 45%,
+    var(--color-5) 55%,
+    var(--color-4) 60%,
+    var(--color-3) 70%,
+    var(--color-2) 75%,
+    var(--color-1) 80%,
+    var(--color-6) 90%
   );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.cyan-lime-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #00ffff 20%,
-    #00ff00 40%,
-    #00ff00 60%,
-    #00ffff 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.lime-yellow-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", monospace;
-  background: linear-gradient(
-    to right,
-    #00ff00 20%,
-    #ffff00 40%,
-    #ffff00 60%,
-    #00ff00 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.lime-yellow-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #00ff00 20%,
-    #ffff00 40%,
-    #ffff00 60%,
-    #00ff00 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.yellow-orange-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #ffff00 20%,
-    #ff8800 40%,
-    #ff8800 60%,
-    #ffff00 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.yellow-orange-wipe-mono {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #ffff00 20%,
-    #ff8800 40%,
-    #ff8800 60%,
-    #ffff00 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.orange-red-wipe {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #ff8800 20%,
-    #ff0000 40%,
-    #ff0000 60%,
-    #ff8800 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.orange-red-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #ff8800 20%,
-    #ff0000 40%,
-    #ff0000 60%,
-    #ff8800 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.red-magenta-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #ff0000 20%,
-    #ff00ff 40%,
-    #ff00ff 60%,
-    #ff0000 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.red-magenta-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #ff0000 20%,
-    #ff00ff 40%,
-    #ff00ff 60%,
-    #ff0000 80%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.blue-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #0055ff 10%,
-    #0088ff 20%,
-    #00ffff 30%,
-    #88ffff 40%,
-    #88ffff 60%,
-    #00ccff 70%,
-    #0088ff 80%,
-    #0055ff 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.blue-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #0055ff 10%,
-    #0088ff 20%,
-    #00ffff 30%,
-    #88ffff 40%,
-    #88ffff 60%,
-    #00ccff 70%,
-    #0088ff 80%,
-    #0055ff 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.green-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #080 10%,
-    #0c0 20%,
-    #2f2 30%,
-    #8f8 40%,
-    #8f8 60%,
-    #2f2 70%,
-    #0c0 80%,
-    #080 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.cool-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  background: linear-gradient(
-    to right,
-    #af00ff 10%,
-    #0088ff 20%,
-    #00ffff 30%,
-    #00ff00 40%,
-    #00ff00 60%,
-    #00ffff 70%,
-    #0088ff 80%,
-    #af00ff 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.cool-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #af00ff 10%,
-    #0088ff 20%,
-    #00ffff 30%,
-    #00ff00 40%,
-    #00ff00 60%,
-    #00ffff 70%,
-    #0088ff 80%,
-    #af00ff 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.green-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #080 10%,
-    #0c0 20%,
-    #2f2 30%,
-    #8f8 40%,
-    #8f8 60%,
-    #2f2 70%,
-    #0c0 80%,
-    #080 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-}
-.pdm-wipe {
-    font-weight: 700;
-    font-family: "Urbanist", monospace;
-    background: linear-gradient(
-      to right,
-      #ff00ff 20%,
-      #af00ff 30%,
-      #5f00ff 40%,
-      #5f00ff 60%,
-      #af00ff 70%,
-      #ff00ff 80%
-    );
-    background-size: 200% auto;
-    color: #000;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 1s linear infinite;
-    @keyframes shine {
-      to {
-        background-position: 200% center;
-      }
-    }
-  }
-  .pdm-wipe-mono {
-    font-weight: 700;
-    font-family: "Fira Code", monospace;
-    background: linear-gradient(
-      to right,
-      #ff00ff 20%,
-      #af00ff 30%,
-      #5f00ff 40%,
-      #5f00ff 60%,
-      #af00ff 70%,
-      #ff00ff 80%
-    );
-    background-size: 200% auto;
-    color: #000;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 1s linear infinite;
-    @keyframes shine {
-      to {
-        background-position: 200% center;
-      }
-    }
-  }
-.rainbow-wipe {
+
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  width: 100%;
   text-align: center;
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
+}
+/* .container-2 {
+  --color-0: #f0f;
+  --color-1: #f00;
+  --color-2: #f80;
+  --color-3: #ff0;
+  --color-4: #0f0;
+  --color-5: #0ff;
+
+  background: linear-gradient(to right, var(--color-0), var(--color-1), var(--color-2), var(--color-3), var(--color4-), var(--color-5));
+
+
+  width: 1500%;
+  height: 600px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: 'Rock Salt', cursive;
+} */
+
+
+/* @media (prefers-color-scheme: light) { */
+  /* :root {
+    --color-0: #f0f;
+    --color-1: #a0f;
+    --color-2: #50f;
+    --color-3: #00f;
+    --color-4: #08f;
+    --color-5: #0ff;
+    --tint-0: #faf;
+    --tint-1: #c4f;
+    --tint-2: #c7f;
+    --tint-3: #88f;
+    --tint-4: #bbf;
+    --tint-5: #cff;
+  }
+} */
+/* @keyframes gradient {
+  0% {
+  background-position: 0% 50%;
+  }
+  50% {
+  background-position: 100% 50%;
+  }
+  100% {
+  background-position: 0% 50%;
+  }
+} */
+/* h1 {
+  font-family: "Rock Salt", cursive;
+  font-size: 4em;
+  display: inline;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(
     to right,
     #ff00ff 10%,
@@ -666,111 +135,51 @@
     #5f00ff 85%,
     #ff00ff 90%
   );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
 }
-.rainbow-wipe-mono {
-  text-align: center;
-  font-size: large;
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  background: linear-gradient(
-    to right,
-    #ff00ff 10%,
-    #5f00ff 15%,
-    #08f 20%,
-    #0ff 25%,
-    #0f0 30%,
-    #ff0 35%,
-    #f80 40%,
-    #f00 45%,
-    #f00 55%,
-    #f80 60%,
-    #ff0 65%,
-    #0f0 70%,
-    #0ff 75%,
-    #08f 80%,
-    #5f00ff 85%,
-    #ff00ff 90%
-  );
-  background-size: 200% auto;
 
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.container {
+  --color-0: #f0f;
+  --color-1: #f00;
+  --color-2: #f80;
+  --color-3: #ff0;
+  --color-4: #0f0;
+  --color-5: #0ff;
 
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
+  background: linear-gradient(to right, var(--color-0), var(--color-1), var(--color-2), var(--color-3), var(--color4-), var(--color-5));
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+
+  width: 1500%;
+  height: 600px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: 'Rock Salt', cursive;
+}
+
+.hi {
+  animation: hi 1.5s linear -0.5s infinite;
+  display: inline-block;
+  transform-origin: 70% 70%;
+} */
+
+@media (prefers-color-scheme: dark) {
+  .container {
+  --color0: #f0f;
+  --color1: #a0f;
+  --color2: #50f;
+  --color3: #00f;
+  --color4: #08f;
+  --color5: #0ff;
   }
 }
-.warm-wipe {
-  font-weight: 700;
-  font-family: "Urbanist", sans-serif;
-  text-decoration: underline;
-  background: linear-gradient(
-    to right,
-    #ff00ff 10%,
-    #ff0000 20%,
-    #ff8800 30%,
-    #ffff00 35%,
-    #00ff00 40%,
-    #00ff00 60%,
-    #ffff00 65%,
-    #ff8800 70%,
-    #ff0000 80%,
-    #ff00ff 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
+
+@media (prefers-reduced-motion) {
+  .container {
+    animation: none;
   }
-}
-.warm-wipe-mono {
-  font-weight: 700;
-  font-family: "Fira Code", monospace;
-  text-decoration: underline;
-  background: linear-gradient(
-    to right,
-    #ff00ff 10%,
-    #ff0000 20%,
-    #ff8800 30%,
-    #ffff00 35%,
-    #00ff00 40%,
-    #00ff00 60%,
-    #ffff00 65%,
-    #ff8800 70%,
-    #ff0000 80%,
-    #ff00ff 90%
-  );
-  background-size: 200% auto;
-  color: #000;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
+  .hi {
+    animation: none;
   }
 }

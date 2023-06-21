@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@900&display=swap");
+
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
 body {
   font-family: "Urbanist", sans-serif;
   font-weight: 700;
@@ -614,8 +615,8 @@ pre.code {
   font-family: "Fira Code", monospace;
   background: linear-gradient(
     to right,
-    #ff00ff 10%,
-    #5f00ff 15%,
+    #f0f 10%,
+    #50f 15%,
     #08f 20%,
     #0ff 25%,
     #0f0 30%,
@@ -628,8 +629,8 @@ pre.code {
     #0f0 70%,
     #0ff 75%,
     #08f 80%,
-    #5f00ff 85%,
-    #ff00ff 90%
+    #50f 85%,
+    #f0f 90%
   );
   background-size: 200% auto;
 

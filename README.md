@@ -1,28 +1,22 @@
-<body>
-    <head>
-        <link href="styles/gradient.css" rel="stylesheet">
-        <!--<link href="styles/link.css" rel="stylesheet">-->
-    </head>
-    <body>
-        <img src="Images/MaxGradient_banner.gif" alt="MaxGradient" width="100%" height="auto">
-        <div class="badges">
-            <a href="https://GitHub.com/maxludden/maxgradient">
-                <img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient">
-            </a>
-            <a href="https://GitHub.com/maxludden/maxgradient">
-                <img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient">
-            </a>
-            <a href="https://GitHub.com/maxludden/maxgradient">
-                <img  class="badge" src="https://img.shields.io/badge/Version-0.1.2-bbbbbb" alt="Version - 0.1.3">
-            </a>
-            <a href="https://pdm.fming.dev/">
-                <img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574">
-            </a>
-        </div>
-        <h1 class="rainbow-wipefont">MaxGradient</h1>
-            <div class="summary">MaxGradient automating printing gradient colored text to the console. It's built upon the great <a href="https://rich.readthedocs.io/en/latest/introduction.html">rich library.</a></div>
-            <br>
-        <div class="body">
+​        <img src="Images/MaxGradient_banner.gif" alt="MaxGradient" width="100%" height="auto">
+​        <div class="badges">
+​            <a href="https://GitHub.com/maxludden/maxgradient">
+​                <img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient">
+​            </a>
+​            <a href="https://GitHub.com/maxludden/maxgradient">
+​                <img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient">
+​            </a>
+​            <a href="https://GitHub.com/maxludden/maxgradient">
+​                <img  class="badge" src="https://img.shields.io/badge/Version-0.1.2-bbbbbb" alt="Version - 0.1.3">
+​            </a>
+​            <a href="https://pdm.fming.dev/">
+​                <img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574">
+​            </a>
+​        </div>
+​        <h1 class="rainbow-wipefont">MaxGradient</h1>
+​            <div class="summary">MaxGradient automating printing gradient colored text to the console. It's built upon the great <a href="https://rich.readthedocs.io/en/latest/introduction.html">rich library.</a></div>
+​            <br>
+​        <div class="body">
 
 ## Installation
 

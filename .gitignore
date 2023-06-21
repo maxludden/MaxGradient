@@ -168,3 +168,11 @@ cython_debug/
 template.config.js
 .gitignore
 .templates/template-sample-react-component/index.scss
+styles/.DS_Store
+styles/test.html
+maxgradient.code-workspace
+.DS_Store
+*/.DS_Store
+*/.DS_Store?
+*/.Spotlight-V100
+*/.Trashes
