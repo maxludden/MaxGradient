@@ -109,4 +109,4 @@ console = mg.Console()
 console.print("[bold lime]This is a a vibrant green color!")
 ```
 
-<img class="result" src="Images/color_example.svg">
+<img class="result" src="Images/color_example.svg" alt="Color Example">

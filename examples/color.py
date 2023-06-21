@@ -1,6 +1,7 @@
 """Example of how to used the MaxGradient.color.Color class."""
 # pylint: disable=E0401
 import maxgradient as mg
+from maxgradient.theme import GradientTerminalTheme
 
 def color_example(record: bool = False):
     """Demonstrate printing an X11 color.
@@ -22,6 +23,7 @@ def color_example(record: bool = False):
         console.save_svg(
             "Images/color_example.svg",
             title="Color Example",
+            theme=GradientTerminalTheme(),
         )
 
 if __name__ == "__main__":
