@@ -1,9 +1,3 @@
-
-<html>
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width initial-scale=1">
-<title>README</title>
-</head>
 <body>
     <head>
         <link href="styles/gradient.css" rel="stylesheet">
@@ -19,7 +13,7 @@
                 <img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient">
             </a>
             <a href="https://GitHub.com/maxludden/maxgradient">
-                <img  class="badge" src="https://img.shields.io/badge/Version-0.1.2-bbbbbb" alt="Version - 0.1.2">
+                <img  class="badge" src="https://img.shields.io/badge/Version-0.1.2-bbbbbb" alt="Version - 0.1.3">
             </a>
             <a href="https://pdm.fming.dev/">
                 <img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574">
