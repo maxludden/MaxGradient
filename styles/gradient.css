@@ -119,7 +119,6 @@ h1 {
   justify-content: center;
   align-items: center;
 }
-
 h2 {
   font-family: "Pretty", sans-serif;
   font-weight: 700;
@@ -129,7 +128,6 @@ h2 {
   text-decoration: underline;
   padding: 20px;
 }
-
 h3 {
   font-family: "Pretty", sans-serif;
   font-weight: 500;
@@ -180,6 +178,12 @@ pre.code {
       background-position: 200% center;
     }
   }
+}
+svg {
+  display: block;
+  margin: auto;
+  width: 100%;
+  height: auto;
 }
 .badges {
   display: flex;
@@ -787,9 +791,11 @@ pre.code {
   max-width: 650px;
 }
 .summary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  text-align: center;
+  padding: 2 vw;
+  margin: auto;
+  max-width: 850px;
 }
 .summary-wipe {
   background: linear-gradient(

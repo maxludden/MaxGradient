@@ -13,10 +13,6 @@
   --tint-4: #090;
   --tint-5: #02a;
 }
-
-svg{
-  width: 100%;
-}
 h1.banner {
   font-family: "Prompt", sans-serif;
   color: rgba(0, 0, 0, 0.6);
