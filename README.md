@@ -1,73 +1,25 @@
 <html>
-<head>
-    <link href="styles/gradient.css" rel="stylesheet">
-    <link href="styles/animation.css" rel="stylesheet">
-    <style>
-        @import url("https://fonts.googleapis.com/css?family=Prompt");
-		@keyframes gradient {
-			0% {
-				background-position: 0% 50%;
-		    }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-        .container {
-            background: linear-gradient(-45deg, #f0f, #a0f, #50f, #00f, #08f, #0ff, #0f0, #ff0,#f80, #f00, #f00, #f80, #ff0, #0f0, #0ff, #08f, #00f, #50f, #a0f, #f0f);
-            background-size: 400% 400%;
-            animation: shine 1s ease infinite;
-            width: 100%;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-family: Prompt, sans-serif;
-        }
-    	h1 {
-    		font-family: Prompt, sans-serif;
-    		font-size: 6em;
-    		color: rgba(0,0,0,0.8);
-    	}
-    	@media (prefers-reduced-motion) {
-    		.container {
-    		    animation: none;
-    		}
-    	}
-    </style>
-</head>
-<body>
-<div class="container">
-<h1>MaxGradient</h1>
-</div>
-    <!-- <img src="Images/maxgradient_banner.svg" alt="MaxGradient" width="100%" height="auto">
-</div> -->
+    <head>
+        <link href="styles/gradient.css" rel="stylesheet">
+    </head>
+    <body>
+        <img src="Images/maxgradient_banner.svg" alt="MaxGradient" width="100%">
 ​        <div class="badges">
-​            <a href="https://GitHub.com/maxludden/maxgradient">
-​                <img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient">
-​            </a>
-​            <a href="https://GitHub.com/maxludden/maxgradient">
-​                <img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient">
-​            </a>
-​            <a href="https://GitHub.com/maxludden/maxgradient">
-​                <img  class="badge" src="https://img.shields.io/badge/Version-0.1.2-bbbbbb" alt="Version - 0.1.3">
-​            </a>
-​            <a href="https://pdm.fming.dev/">
-​                <img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574">
-​            </a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient"></a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.1.2-bbbbbb" alt="Version - 0.1.3"></a>
+​            <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
 ​        </div>
-​        <h1 class="rainbow-wipefont">MaxGradient</h1>
-​            <div class="summary">MaxGradient automating printing gradient colored text to the console. It's built upon the great <a href="https://rich.readthedocs.io/en/latest/introduction.html">rich library.</a></div>
-​            <br>
+        <!--End of badges-->
+​        <div class="summary">
+            <p><span class="mg">MaxGradient</span> automates the printing gradient colored text to the console. It's built upon the great <a href="https://rich.readthedocs.io/en/latest/introduction.html"> <span class="warm-wipe">rich library</span></a>. It contains a Console that can serve as a drop in replacement for <span class="lightblue-cyan-wipe">rich.rich.Console</span> and has an expanded Color class which can parse X11 color names on top of rich's standard colors. <span class="mg">MaxGradient</span> is a work in progress and I'm open to any suggestions or contributions.</span></p>
+        </div>
 ​        <div class="body">
 
 ## Installation
 
 <div class="section">
-    <p><span class="rainbow-wipe">MaxGradient</span> can be installed from PyPi using your favorite package manager:</p>
+    <p><span class="mg">MaxGradient</span> can be installed from PyPi using your favorite package manager:</p>
 
 ### PDM <span class="recommend">(Recommended)</span></h3>
 
