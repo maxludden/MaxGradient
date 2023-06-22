@@ -14,18 +14,17 @@
   --tint-5: #02a;
 }
 
-
 body {
   background: #222;
   color: #ddd;
 }
-tspan {
-  font-family: "Prompt", sans-serif;
+svg{
+  width: 100%;
 }
 h1 {
-  font-family:'Prompt', sans-serif;;
+  font-family: "Prompt", sans-serif;
   font-size: 9em;
-  color: rgba(0,0,0,0.6)
+  color: rgba(0, 0, 0, 0.6);
 }
 .container {
   font-family: "Rock Salt";
@@ -61,117 +60,15 @@ h1 {
   width: 100%;
   text-align: center;
 }
-/* .container-2 {
-  --color-0: #f0f;
-  --color-1: #f00;
-  --color-2: #f80;
-  --color-3: #ff0;
-  --color-4: #0f0;
-  --color-5: #0ff;
-
-  background: linear-gradient(to right, var(--color-0), var(--color-1), var(--color-2), var(--color-3), var(--color4-), var(--color-5));
-
-
-  width: 1500%;
-  height: 600px;
-  display: block;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-family: 'Rock Salt', cursive;
-} */
-
-
-/* @media (prefers-color-scheme: light) { */
-  /* :root {
-    --color-0: #f0f;
-    --color-1: #a0f;
-    --color-2: #50f;
-    --color-3: #00f;
-    --color-4: #08f;
-    --color-5: #0ff;
-    --tint-0: #faf;
-    --tint-1: #c4f;
-    --tint-2: #c7f;
-    --tint-3: #88f;
-    --tint-4: #bbf;
-    --tint-5: #cff;
-  }
-} */
-/* @keyframes gradient {
-  0% {
-  background-position: 0% 50%;
-  }
-  50% {
-  background-position: 100% 50%;
-  }
-  100% {
-  background-position: 0% 50%;
-  }
-} */
-/* h1 {
-  font-family: "Rock Salt", cursive;
-  font-size: 4em;
-  display: inline;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(
-    to right,
-    #ff00ff 10%,
-    #5f00ff 15%,
-    #08f 20%,
-    #0ff 25%,
-    #0f0 30%,
-    #ff0 35%,
-    #f80 40%,
-    #f00 45%,
-    #f00 55%,
-    #f80 60%,
-    #ff0 65%,
-    #0f0 70%,
-    #0ff 75%,
-    #08f 80%,
-    #5f00ff 85%,
-    #ff00ff 90%
-  );
-}
-
-.container {
-  --color-0: #f0f;
-  --color-1: #f00;
-  --color-2: #f80;
-  --color-3: #ff0;
-  --color-4: #0f0;
-  --color-5: #0ff;
-
-  background: linear-gradient(to right, var(--color-0), var(--color-1), var(--color-2), var(--color-3), var(--color4-), var(--color-5));
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-
-  width: 1500%;
-  height: 600px;
-  display: block;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-family: 'Rock Salt', cursive;
-}
-
-.hi {
-  animation: hi 1.5s linear -0.5s infinite;
-  display: inline-block;
-  transform-origin: 70% 70%;
-} */
 
 @media (prefers-color-scheme: dark) {
   .container {
-  --color0: #f0f;
-  --color1: #a0f;
-  --color2: #50f;
-  --color3: #00f;
-  --color4: #08f;
-  --color5: #0ff;
+    --color0: #f0f;
+    --color1: #a0f;
+    --color2: #50f;
+    --color3: #00f;
+    --color4: #08f;
+    --color5: #0ff;
   }
 }
 

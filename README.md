@@ -1,4 +1,50 @@
-​        <img src="Images/MaxGradient_banner.gif" alt="MaxGradient" width="100%" height="auto">
+<html>
+<head>
+    <link href="styles/gradient.css" rel="stylesheet">
+    <link href="styles/animation.css" rel="stylesheet">
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Prompt");
+		@keyframes gradient {
+			0% {
+				background-position: 0% 50%;
+		    }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .container {
+            background: linear-gradient(-45deg, #f0f, #a0f, #50f, #00f, #08f, #0ff, #0f0, #ff0,#f80, #f00, #f00, #f80, #ff0, #0f0, #0ff, #08f, #00f, #50f, #a0f, #f0f);
+            background-size: 400% 400%;
+            animation: shine 1s ease infinite;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Prompt, sans-serif;
+        }
+    	h1 {
+    		font-family: Prompt, sans-serif;
+    		font-size: 6em;
+    		color: rgba(0,0,0,0.8);
+    	}
+    	@media (prefers-reduced-motion) {
+    		.container {
+    		    animation: none;
+    		}
+    	}
+    </style>
+</head>
+<body>
+<div class="container">
+<h1>MaxGradient</h1>
+</div>
+    <!-- <img src="Images/maxgradient_banner.svg" alt="MaxGradient" width="100%" height="auto">
+</div> -->
 ​        <div class="badges">
 ​            <a href="https://GitHub.com/maxludden/maxgradient">
 ​                <img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient">
@@ -61,7 +107,7 @@ console.gradient("Hello, World!")
 ```python
 class Gradient(rich.rich.Text):
     """Text with gradient color / style."""
-    
+
     def __init__ (
         ext: Optional[str | Text] = "",
         colors: Optional[List[Color | Tuple | str]] = None,
@@ -104,3 +150,5 @@ console.print("[bold lime]This is a a vibrant green color!")
 ```
 
 <img class="result" src="Images/color_example.svg" alt="Color Example">
+</body>
+</html>
