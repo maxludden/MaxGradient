@@ -512,53 +512,54 @@ class Color:
                 log.debug(f"Contrast for Color<{self.name}> -> White")
             return "#000000"
 
+    @classmethod
+    def named_table(cls) -> Columns:
+        """Return a table of named colors."""
+        log.debug("Generating named color table.")
+        colors = []
+        for color in cls.NAMED:
+            colors.append(Color(color))
+        return Columns(colors, equal=True)
 
-def named_table() -> Columns:
-    """Return a table of named colors."""
-    log.debug("Generating named color table.")
-    colors = []
-    for color in Color.NAMED:
-        colors.append(Color(color))
-    return Columns(colors, equal=True)
 
+    @classmethod
+    def color_table(cls) -> Columns:
+        """Return a table of all colors."""
+        tables: List[Table] = []
+        for colors in [Rich, X11]:
+            log.debug("Generating color table.")
+            title = colors.get_title()
+            table = Table(title=title, show_header=True, header_style="bold.magenta")
+            table.add_column("Example", justify="center")
+            table.add_column("Name", justify="center")
+            table.add_column("Hex", justify="center")
+            table.add_column("RGB", justify="center")
+            table.add_column("RGB Tuple", justify="center")
 
-def color_table() -> Columns:
-    """Return a table of all colors."""
-    tables: List[Table] = []
-    for colors in [Rich, X11]:
-        log.debug("Generating color table.")
-        title = colors.get_title()
-        table = Table(title=title, show_header=True, header_style="bold.magenta")
-        table.add_column("Example", justify="center")
-        table.add_column("Name", justify="center")
-        table.add_column("Hex", justify="center")
-        table.add_column("RGB", justify="center")
-        table.add_column("RGB Tuple", justify="center")
+            def add_row(
+                color: Color, table: Table = table, end_section: bool = False
+            ) -> Table:
+                block = Text("█" * 12, style=f"bold {color.hex}")
+                name = Text(color.name, style=f"bold {color.hex}")
+                hex_color = Text(color.hex, style=f" bold {color.hex}")
+                rgb_color = Text(color.rgb, style=f" bold {color.hex}")
+                rgb_tuple = Text(str(color.rgb_tuple), style=f" bold {color.hex}")
+                table.add_row(block, name, hex_color, rgb_color, rgb_tuple)
+                if end_section:
+                    table.add_section()
+                return table
 
-        def add_row(
-            color: Color, table: Table = table, end_section: bool = False
-        ) -> Table:
-            block = Text("█" * 12, style=f"bold {color.hex}")
-            name = Text(color.name, style=f"bold {color.hex}")
-            hex_color = Text(color.hex, style=f" bold {color.hex}")
-            rgb_color = Text(color.rgb, style=f" bold {color.hex}")
-            rgb_tuple = Text(str(color.rgb_tuple), style=f" bold {color.hex}")
-            table.add_row(block, name, hex_color, rgb_color, rgb_tuple)
-            if end_section:
-                table.add_section()
-            return table
+            for color in colors.NAMES:
+                table = add_row(cls(color), table)
+            tables.append(table)
 
-        for color in colors.NAMES:
-            table = add_row(Color(color), table)
-        tables.append(table)
-
-    return Columns(tables, equal=True)
+        return Columns(tables, equal=True)
 
 
 if __name__ == "__main__":
     console = Console(theme=GradientTheme(), highlighter=ReprHighlighter(), record=True)
-    console.print(named_table(), justify="center")
-    console.print(color_table(), justify="center")
+    console.print(Color.named_table(), justify="center")
+    console.print(Color.color_table(), justify="center")
     # console.save_svg(
     #     path="color.svg",
     #     title="MaxGradient.Color",

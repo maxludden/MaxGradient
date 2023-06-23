@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import re
+from os import environ
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, Self, Any
 
 import loguru
 from loguru import logger
+from dotenv import load_dotenv
 from rich.abc import RichRenderable
 from rich.console import Console as RichConsole
 from rich.highlighter import ReprHighlighter, RegexHighlighter
@@ -16,6 +18,8 @@ from rich.table import Table
 from rich.traceback import install as install_rich_traceback
 
 from maxgradient.theme import GradientTheme
+
+load_dotenv()
 
 CWD = Path.cwd()
 DEBUG_LOG = CWD / "logs" / "debug.log"

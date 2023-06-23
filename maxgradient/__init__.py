@@ -4,11 +4,17 @@
     used as a drop in replacement for [italic bold #00ffff]rich.console.Console[/].
     """
 # pylint: disable=W0604
+from os import environ
+from sys import platform
+from pathlib import Path
+from typing import Dict, Optional
+
+from dotenv import load_dotenv
+
 from maxgradient.color import Color
 from maxgradient.console import Console
 from maxgradient.gradient import Gradient
 from maxgradient.log import Log, LogConsole
-
 
 __all__ = [
     "_gradient_substring",
