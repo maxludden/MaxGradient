@@ -9,8 +9,6 @@ from sys import platform
 from pathlib import Path
 from typing import Dict, Optional
 
-from dotenv import load_dotenv
-
 from maxgradient.color import Color
 from maxgradient.console import Console
 from maxgradient.gradient import Gradient
