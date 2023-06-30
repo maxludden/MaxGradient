@@ -2,27 +2,19 @@
     It inherits from the Rich Text class."""
 # pylint: disable=W0611,C0103, E0401, C0301
 import re
-from concurrent.futures import Future, ProcessPoolExecutor, as_completed
-from functools import lru_cache
-from multiprocessing import cpu_count
 from typing import List, Optional, Tuple
 
 import numpy as np
-from loguru import logger
 from lorem_text import lorem
 from numpy import ndarray
-from rich import inspect
-from rich.columns import Columns
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
 from rich.layout import Layout
 from rich.panel import Panel
-from rich.pretty import Pretty
 from rich.style import Style, StyleType
-from rich.table import Table
 from rich.text import Span, Text
 
-from maxgradient._gradient_substring import GradientSubstring
+from maxgradient.gradient_color import GradientColor as GC
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.log import Log, LogConsole
@@ -68,7 +60,7 @@ class Gradient(Text):
     def __init__(
         self,
         text: Optional[str | Text] = "",
-        colors: Optional[List[Color | Tuple | str]] = None,
+        colors: Optional[List[Color | Tuple | str]|str] = None,
         rainbow: bool = False,
         invert: bool = False,
         hues: Optional[int] = None,
@@ -139,7 +131,7 @@ class Gradient(Text):
 
     # @snoop(watch_explode=["colors", "self.colors"])
     def get_colors(
-        self, colors: Optional[List[Color | Tuple | str]], rainbow: bool, invert: bool
+        self, colors: Optional[str|List[Color | Tuple | str]], rainbow: bool, invert: bool
     ) -> List[Color]:
         """Get the colors for the gradient.
 
@@ -154,28 +146,53 @@ class Gradient(Text):
         Returns:
             List[Color]: A list of colors for the gradient.
         """
-        if rainbow:
-            self.hues = 10
-            color_list = ColorList(self.hues, invert).color_list
-            colors_ = color_list
-            if self.validate_colors(colors_):
-                return colors_
+        if isinstance(colors, str):
+            return self.mono(colors)
         else:
-            if colors is not None:
-                colors_: List[Color] = []
-                for color in colors:
-                    try:
-                        color = Color(color)
-                        colors_.append(color)
-                    except ColorParseError as error:
-                        raise ColorParseError(f"Can't parse color: {color}") from error
-                if self.validate_colors(colors_):
-                    return colors_
-            else:
+            if rainbow:
+                self.hues = 10
                 color_list = ColorList(self.hues, invert).color_list
-                colors_ = color_list[: self.hues]
+                colors_ = color_list
                 if self.validate_colors(colors_):
                     return colors_
+
+            else:
+                if colors is not None:
+                    colors_: List[Color] = []
+                    for color in colors:
+                        try:
+                            color = Color(color)
+                            colors_.append(color)
+                        except ColorParseError as error:
+                            raise ColorParseError(f"Can't parse color: {color}") from error
+                    if self.validate_colors(colors_):
+                        return colors_
+                else:
+                    color_list = ColorList(self.hues, invert).color_list
+                    colors_ = color_list[: self.hues]
+                    if self.validate_colors(colors_):
+                        return colors_
+
+    def mono(self, color: str|Color) -> List[Color]:
+        """Create a list of monochromatic hues from a color.
+
+        Args:
+            color (str|Color): The color to generate monochromatic hues from.
+        """
+        log.debug(f"Called Gradient.mono({color})")
+        if isinstance(color, str):
+            try:
+                color = Color(color)
+            except:
+                raise ColorParseError(f"Could not parse color: {color}")
+            else:
+                return [
+                    # Color(color.darken(0.4)),
+                    Color(color.darken(0.2)),
+                    color,
+                    Color(color.lighten(0.2)),
+                    Color(color.lighten(0.6))
+                ]
 
     def get_text(self) -> str:
         """Get the gradient text.
@@ -401,7 +418,7 @@ class Gradient(Text):
         return new_style
 
 
-def gradient_color() -> Layout:
+def examples() -> Layout:
     """Generate a layout for the examples of gradients."""
     TEXT = lorem.paragraphs(2)
     gradient_random = Gradient(TEXT)
@@ -530,7 +547,7 @@ def example(record: bool = False) -> None:
             theme=GradientTheme(),
         )
     console.rule(Gradient("Color Gradient Examples"))
-    example_console.print(gradient_color())
+    example_console.print(examples())
     example_console.line()
     example_console.print(style_layout())
     if record:

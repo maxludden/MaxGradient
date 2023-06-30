@@ -5,6 +5,7 @@ from re import findall
 from typing import Tuple
 
 from rich.style import Style
+from rich.table import Table
 from rich.text import Text
 
 from maxgradient.log import Log, LogConsole
@@ -632,6 +633,212 @@ class Rich:
         "rgb(238,238,238)",
     )
 
+    RGB_TUPLE: Tuple[Tuple[int, int, int]] = (
+        (1,1,1),
+        (255,0,0),
+        (0,255,0),
+        (255,255,0),
+        (0,0,255),
+        (255,0,255),
+        (0,255,255),
+        (255,255,255),
+        (45,45,45),
+        (210,0,0),
+        (0,210,0),
+        (210,210,0),
+        (0,0,210),
+        (210,0,210),
+        (0,210,210),
+        (210,210,210),
+        (0,0,0),
+        (0,0,95),
+        (0,0,135),
+        (0,0,215),
+        (0,0,255),
+        (0,95,0),
+        (0,95,175),
+        (0,95,215),
+        (0,95,255),
+        (0,135,0),
+        (0,135,95),
+        (0,135,135),
+        (0,135,215),
+        (0,135,255),
+        (0,175,135),
+        (0,175,175),
+        (0,175,215),
+        (0,175,255),
+        (0,215,0),
+        (0,215,95),
+        (0,215,175),
+        (0,215,215),
+        (0,215,255),
+        (0,255,0),
+        (0,255,95),
+        (0,255,135),
+        (0,255,175),
+        (0,255,215),
+        (0,255,255),
+        (95,0,175),
+        (95,0,215),
+        (95,0,255),
+        (95,95,95),
+        (95,95,135),
+        (95,95,215),
+        (95,95,255),
+        (95,135,0),
+        (95,135,135),
+        (95,135,175),
+        (95,135,215),
+        (95,135,255),
+        (95,175,95),
+        (95,175,175),
+        (95,175,215),
+        (95,215,0),
+        (95,215,135),
+        (95,215,175),
+        (95,215,215),
+        (95,215,255),
+        (95,255,95),
+        (95,255,175),
+        (95,255,255),
+        (135,0,0),
+        (135,0,175),
+        (135,95,0),
+        (135,95,95),
+        (135,95,135),
+        (135,95,215),
+        (135,95,255),
+        (135,135,95),
+        (135,135,135),
+        (135,135,175),
+        (135,135,215),
+        (135,135,255),
+        (135,175,0),
+        (135,175,135),
+        (135,175,215),
+        (135,175,255),
+        (135,215,0),
+        (135,215,135),
+        (135,215,215),
+        (135,215,255),
+        (135,255,0),
+        (135,255,135),
+        (135,255,215),
+        (135,255,255),
+        (175,0,95),
+        (175,0,135),
+        (175,0,215),
+        (175,0,255),
+        (175,95,175),
+        (175,95,215),
+        (175,135,0),
+        (175,135,135),
+        (175,135,175),
+        (175,135,215),
+        (175,135,255),
+        (175,175,95),
+        (175,175,135),
+        (175,175,175),
+        (175,175,215),
+        (175,175,255),
+        (175,215,95),
+        (175,215,135),
+        (175,215,215),
+        (175,215,255),
+        (175,255,0),
+        (175,255,95),
+        (175,255,135),
+        (175,255,175),
+        (175,255,255),
+        (215,0,0),
+        (215,0,135),
+        (215,0,215),
+        (215,95,0),
+        (215,95,95),
+        (215,95,135),
+        (215,95,175),
+        (215,95,215),
+        (215,135,0),
+        (215,135,95),
+        (215,135,135),
+        (215,135,175),
+        (215,135,215),
+        (215,135,255),
+        (215,175,0),
+        (215,175,95),
+        (215,175,135),
+        (215,175,175),
+        (215,175,215),
+        (215,175,255),
+        (215,215,0),
+        (215,215,95),
+        (215,215,175),
+        (215,215,215),
+        (215,215,255),
+        (215,255,0),
+        (215,255,135),
+        (215,255,175),
+        (215,255,215),
+        (215,255,255),
+        (255,0,0),
+        (255,0,95),
+        (255,0,175),
+        (255,0,215),
+        (255,0,255),
+        (255,95,0),
+        (255,95,135),
+        (255,95,215),
+        (255,95,255),
+        (255,135,0),
+        (255,135,95),
+        (255,135,135),
+        (255,135,175),
+        (255,135,215),
+        (255,135,255),
+        (255,175,0),
+        (255,175,95),
+        (255,175,135),
+        (255,175,175),
+        (255,175,215),
+        (255,175,255),
+        (255,215,0),
+        (255,215,135),
+        (255,215,175),
+        (255,215,215),
+        (255,215,255),
+        (255,255,0),
+        (255,255,95),
+        (255,255,135),
+        (255,255,175),
+        (255,255,215),
+        (255,255,255),
+        (8,8,8),
+        (18,18,18),
+        (28,28,28),
+        (38,38,38),
+        (48,48,48),
+        (58,58,58),
+        (68,68,68),
+        (78,78,78),
+        (88,88,88),
+        (98,98,98),
+        (108,108,108),
+        (118,118,118),
+        (128,128,128),
+        (138,138,138),
+        (148,148,148),
+        (158,158,158),
+        (168,168,168),
+        (178,178,178),
+        (188,188,188),
+        (198,198,198),
+        (208,208,208),
+        (218,218,218),
+        (228,228,228),
+        (238,238,238),
+    )
+
     @classmethod
     @lru_cache(maxsize=203, typed=True)
     def get_names(cls) -> Tuple[str, ...]:
@@ -673,12 +880,118 @@ class Rich:
     @staticmethod
     def get_title() -> Text:
         """Generate a colored text title."""
-        _rich = Text("Rich ", style=Style(color="#ff00ff", bold=True))
-        letter_c = Text("C", style=Style(color="#ff0000", bold=True))
+        letter_r1 = Text("R", style=Style(color="#0000FF", bold=True))
+        letter_i = Text("i", style=Style(color="#5F00FF", bold=True))
+        letter_c1 = Text("c", style=Style(color="#AF00FF", bold=True))
+        letter_h = Text("h", style=Style(color="#FF00FF", bold=True))
+        letter_c2 = Text("C", style=Style(color="#ff0000", bold=True))
         letter_o = Text("o", style=Style(color="#ff8800", bold=True))
         letter_l = Text("l", style=Style(color="#ffff00", bold=True))
         letter_o2 = Text("o", style=Style(color="#00ff00", bold=True))
-        letter_r = Text("r", style=Style(color="#00ffff", bold=True))
+        letter_r2 = Text("r", style=Style(color="#00ffff", bold=True))
         letter_s = Text("s", style=Style(color="#0088ff", bold=True))
-        title = [_rich, letter_c, letter_o, letter_l, letter_o2, letter_r, letter_s]
+        title = [
+            letter_r1,
+            letter_i,
+            letter_c1,
+            letter_h,
+            letter_c2,
+            letter_o,
+            letter_l,
+            letter_o2,
+            letter_r2,
+            letter_s,
+        ]
         return Text.assemble(*title)
+
+    @staticmethod
+    def sample_title() -> Text:
+        """Generate a colored header."""
+        sample = [
+            Text("S", style="bold #0000FF"),
+            Text("a", style="bold #5F00FF"),
+            Text("m", style="bold #AF00FF"),
+            Text("p", style="bold #FF00FF"),
+            Text("l", style="bold #ff0000"),
+            Text("e", style="bold #ff8800"),
+        ]
+        return Text.assemble(*sample)
+
+    @staticmethod
+    def name_title() -> Text:
+        """Generate a colored header."""
+        name = [
+            Text("N", style="bold #FFFF00"),
+            Text("a", style="bold #00FF00"),
+            Text("m", style="bold #00FFFF"),
+            Text("e", style="bold #0088FF"),
+        ]
+        return Text.assemble(*name)
+
+    @staticmethod
+    def hex_title() -> Text:
+        """Generate a colored header."""
+        hex = [
+            Text("H", style="bold #0000FF"),
+            Text("e", style="bold #5F00FF"),
+            Text("x", style="bold #AF00FF"),
+        ]
+        return Text.assemble(*hex)
+
+    @staticmethod
+    def rgb_title() -> Text:
+        """Generate a colored header."""
+        rgb = [
+            Text("R", style="bold #FF00FF"),
+            Text("G", style="bold #ff0000"),
+            Text("B", style="bold #ff8800"),
+        ]
+        return Text.assemble(*rgb)
+
+    @classmethod
+    def color_table(cls) -> Table:
+        """Return a table of the rich library's Standard Colors."""
+        color_block = "█" * 10
+        NAMES = cls.get_names()
+        HEX = cls.get_hex()
+        RGB = cls.get_rgb()
+        color_table = Table(
+            title=cls.get_title(),
+            show_header=True,
+            border_style="dim white",
+            expand=False,
+            show_lines=False,
+            padding=(0, 2),
+        )
+        sample_text: Text = cls.sample_title()
+        color_table.add_column(
+            sample_text, width=14, justify="center", style="bold"
+        )
+        name_text: Text = cls.name_title()
+        color_table.add_column(
+            name_text, width=18, justify="left", style="bold"
+        )
+        hex_text: Text = cls.hex_title()
+        color_table.add_column(
+            hex_text, width=10, justify="center", style="bold"
+        )
+        rgb_text: Text = cls.rgb_title()
+        color_table.add_column(
+            rgb_text, width=16, justify="left", style="bold"
+        )
+        for index, color in enumerate(HEX):
+            color_name = str(NAMES[index]).capitalize()
+            color_hex = str(HEX[index]).upper()
+            color_rgb = str(RGB[index]).lower()
+            color_table.add_row(
+                Text(color_block, style=color_hex),
+                Text(color_name, style=color_hex),
+                Text(color_hex, style=color_hex),
+                Text(color_rgb, style=color_hex),
+            )
+
+        return color_table
+
+
+if __name__ == "__main__":
+    console.print(Rich.color_table(), justify="center")

@@ -7,6 +7,7 @@ from os import environ
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, Self, Any
+from functools import wraps
 
 import loguru
 from loguru import logger
@@ -388,7 +389,73 @@ class Log:
                 level = "DEBUG"
             self.logger.log(level, msg)
 
+    def opt(
+        self,
+        *kwargs,
+        depth: int = 0) -> "Log":
+        """Return a new logger with the specified depth offset."""
+        return self.logger.opt(depth=depth, *kwargs)
+
+    def _combine_regex(*regexes: str) -> str:
+        """Combine a number of regexes in to a single regex.
+
+        Returns:
+            str: New regex with all regexes ORed together.
+        """
+        return "|".join(regexes)
+
+    def trace(
+        *,
+        level="DEBUG",
+        depth: int=1,
+        entry: bool=True,
+        exit: bool=True):
+
+        def wrapper(func):
+            name = func.__name__
+
+            @wraps(func)
+            def wrapped(*args, **kwargs):
+                logger_ = log.opt(depth=1)
+                if entry:
+                    logger_.log(level, "Entering '{}' (Args={}, Kwargs={})", name, args, kwargs)
+                result = func(*args, **kwargs)
+                if exit:
+                    logger_.log(level, "Exiting '{}' (Result={})", name, result)
+                return result
+            return wrapped
+        return wrapper
+
+    def disable(self) -> None:
+        """Disable logging."""
+        self.logger.disable("maxgradient")
+    
+    
 log = Log(console_)
+
+
+
+def debug(                                                  
+    *,
+    level="DEBUG",
+    depth: int=1,
+    entry: bool=True,
+    exit: bool=True):
+
+    def wrapper(func):
+        name = func.__name__
+
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            logger_ = log.opt(depth=depth)
+            if entry:
+                logger_.log(level, "Entering '{}' (Args={}, Kwargs={})", name, args, kwargs)
+            result = func(*args, **kwargs)
+            if exit:
+                logger_.log(level, "Exiting '{}' (Result={})", name, result)
+            return result
+        return wrapped
+    return wrapper
 
 
 def test_logger():

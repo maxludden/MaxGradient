@@ -3,279 +3,354 @@
 import colorsys
 import re
 from functools import lru_cache
-from typing import Any, List, Tuple
+from re import Match
+from typing import Any, List, Tuple, Union
 
-from rich.box import SQUARE
+from rich import inspect
+from rich.box import HEAVY, SQUARE
 from rich.color import Color as RichColor
-from rich.color import ColorParseError
+from rich.color import ColorParseError, ColorType
 from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
 from rich.console import Console
 from rich.highlighter import ReprHighlighter
+from rich.panel import Panel
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
+from maxgradient._hex import Hex
 from maxgradient._mode import Mode
+from maxgradient._rgb import RGB
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
-from maxgradient.log import Log, LogConsole
-from maxgradient.theme import GradientTheme, GradientTerminalTheme
+from maxgradient.gradient_color import GradientColor as GC
+from maxgradient.log import Log, LogConsole, debug
+from maxgradient.theme import GradientTheme
 
 console = LogConsole()
 log = Log(console)
-x11 = X11()
-rich = Rich()
+
 VERBOSE: bool = False
+
+ColorType = Union[Hex, "Color", RichColor, str, Tuple[int, int, int], X11]
 
 
 class Color:
-    """A color parsed from a string. Colors can be parsed from:
-        - The Named Colors:
-            - `magenta`
-            - `violet`
-            - `purple`
-            - `blue`
-            - `lightblue`
-            - `cyan`
-            - `lime`
-            - `yellow`
-            - `orange`
-            - `red`
-
-        - Hex Colors:
-            - Six digit hex color codes - `#ff00ff`
-            - Three digit hex color codes - `#0f0`
-
-        - RGB Colors:
-            - `rgb(255, 0, 255)`
-
-        - X11 colors:
-            - `magenta`,
-            - 'deepskyblue'
-
-        - Or any of the `rich` library's standard colors:
-            - `skyblue1`,
-            - `bright_red`
-
-        Attributes:\n\t
-            `original` (str): The original color string.\n\t
-            `name` (str): The name of the color. The string\
-                to parse to easily create a color.\n\t
-            `value` (RichColor): The color value.\n\t
-            `mode` (Mode): The color mode.\n\t
-            `rgb` (str): The RGB string.\n\t
-            `rgb_tuple` (Tuple[int, int, int]): The RGB string as a tuple of integers.\n\t
-            `hex` (str): The hex string.\n\t
-            `style` (str): A style with the color as the foreground.\n\t
-            `bg_style` (str): A readable style with the color as the background.\n\t
-
-
-    ---
-
-        For an example of possible colors enter the following in a terminal:
-        \t`python -m maxgradient.color.`
-    """
-
-    __slots__ = ["_original", "_name", "_value", "_mode"]
-    _name: str
-    _value: RichColor
-    _mode: Mode
-    NAMED: Tuple[str, ...] = (
-        "magenta",
-        "violet",
-        "purple",
-        "blue",
-        "lightblue",
-        "cyan",
-        "lime",
-        "yellow",
-        "orange",
-        "red",
-    )
-    HEX: Tuple[str, ...] = (
-        "#ff00ff",
-        "#af00ff",
-        "#5f00ff",
-        "#0000fe",
-        "#0088ff",
-        "#00ffff",
-        "#00ff00",
-        "#ffff00",
-        "#ff8800",
-        "#ff0000",
-    )
-    RGB: Tuple[str, ...] = (
-        "rgb(255, 0, 255)",
-        "rgb(175, 0, 255)",
-        "rgb(95, 0, 255)",
-        "rgb(0, 0, 255)",
-        "rgb(0, 136, 255)",
-        "rgb(0, 255, 255)",
-        "rgb(0, 255, 0)",
-        "rgb(255, 255, 0)",
-        "rgb(255, 136, 0)",
-        "rgb(255, 0, 0)",
-    )
-    RGB_TUPLE: Tuple[Tuple[int, int, int], ...] = (
-        (255, 0, 255),
-        (175, 0, 255),
-        (95, 0, 255),
-        (0, 0, 255),
-        (0, 136, 255),
-        (0, 255, 255),
-        (0, 255, 0),
-        (255, 255, 0),
-        (255, 136, 0),
-        (255, 0, 0),
-    )
-
     def __init__(self, color: Any) -> None:
-        """A color to make gradients with."""
-        self.original = str(color)
-        self.name = str(color)
-        log.log("INFO", f"Parsing color: {self.original}", VERBOSE)
+        """A color that may be used to style renderables for the Console or \
+        from which to generate a gradient. Colors can be parse from a number \
+        of inputs:
+        
+1) GradientColors (str, Tuple[int,int,int]): The colors from which random\
+    gradients are generated. Can be parsed from the GradientColor's name, \
+    hex color code, RGB color code, or RGB tuple.
+        ```         
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃                      GradientColor Examples                       ┃
+        ┣━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┫
+        ┃  Color Names  ┃   Hex Color   ┃     RGB Color     ┃   RGB Tuple   ┃
+        ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+        │       Magenta │   '#ff00ff'   │  rgb(255,0,255)   │  (255,0,255)  │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │        Purple │   '#af00ff'   │  rgb(175,0,255)   │  (165,0,255)  │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │       Violet  │   '#5f00ff'   │  rgb(95,0,255)    │  (95,0,255)   │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │          Blue │   '#0000ff'   │  rgb(0,0,255)     │  (0,0,255)    │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │     Lightblue │   '#0088ff'   │  rgb(0,136,255)   │  (0,136,255)  │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │          Cyan │   '#00ffff'   │  rgb(0,255,255)   │  (0,0,255)    │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │          Lime │   '#00ff00'   │  rgb(0,255,0)     │  (0,255,255)  │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │        Yellow │   '#ffff00'   │  rgb(255,255,0)   │  (255,255,0)  │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │        Orange │   '#ff8800'   │  rgb(255,255,0)   │  (255,136,0)  │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │           Red │   '#ff0000'   │  rgb(255,0,0)     │  (255,0,0)    │
+        └───────────────┴───────────────┴───────────────────┴───────────────┘
+        ```
+        
+2) RichColors (rich.color.Color|str|Tuple[int,int,int]): The rich library's:
+- name
+- hex color code
+- rgb color code
+- rgb tuple 
+            
+            Examples:
+
+        ```     
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃                      Rich Colors Examples                         ┃
+        ┣━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┫
+        ┃  Color Names  ┃   Hex Color   ┃     RGB Color     ┃   RGB Tuple   ┃
+        ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+        │        Blue1  │   '#0000ff'   │  rgb(0,0,255)     │ (0,0,255)     │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │        Grey0  │   '#000000'   │  rgb(0,0,0)       │ (0,0,0)       │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │    honeydew2  │   '#d7ffd7'   │  rgb(215,255,215) │ (215,255,215) │
+        └───────────────┴───────────────┴───────────────────┴───────────────┘
+        ```
+For a complete list of rich colors run the following script:
+    
+    ```
+    python -m maxgradient._rich
+    ```
+
+You can also visit the rich library's documentation to view all \
+    of the colors at the following link: 
+                
+    https://rich.readthedocs.io/en/latest/appendix/colors.html
+            
+3) X11Colors (str|Tuple[int,int,int]) as color keywords (names), hex color codes, \
+    or rgb tuples. 
+    
+            Examples:
+        ```
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃                       X11 Colors Examples                         ┃
+        ┣━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┫
+        ┃  Color Names  ┃   Hex Color   ┃     RGB Color     ┃   RGB Tuple   ┃
+        ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+        │   powderblue  │   '#b0e0e6'   │  rgb(176,224,230) │ (176,224,230) │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │       salmon  │   '#fa8072'   │  rgb(250,128,114) │ (250,128,114) │
+        ├───────────────┼───────────────┼───────────────────┼───────────────┤
+        │    turquoise  │   '#40e0d0'   │  rgb(64,224,208)  │ (64,224,208)  │
+        └───────────────┴───────────────┴───────────────────┴───────────────┘
+        ```
+For a complete list of x11 colors run the following script:
+    
+    ```
+    python -m maxgradient._x11
+    ```
+
+You can also visit the rich library's documentation to view all \
+    of the colors at the following link: 
+                
+    https://pdos.csail.mit.edu/~jinyang/rgb.html
+"""
+        log.debug("Called Color.__init__()")
+        self.original: str = str(color)
 
         if isinstance(color, Color):
-            log.log("DEBUG", "Color is a Color object.", VERBOSE)
-            self.name = color.name
-            self._value = color.value
-            self._mode = Mode.COLOR
-            return
-        if isinstance(color, str):
-            log.log("DEBUG", "Color is a string.", VERBOSE)
-            # Named
-            for group in (self.NAMED, self.HEX, self.RGB, self.RGB_TUPLE):
-                if color in group:
-                    log.log(
-                        "DEBUG", f"Color is a named color: {group} {color}", VERBOSE
-                    )
-                    index = group.index(color)
-                    rgb_tuple = self.RGB_TUPLE[index]
-                    triplet = ColorTriplet(*rgb_tuple)
-                    self._value = RichColor.from_triplet(triplet)
-                    self.name = self.NAMED[index]
-                    self._mode = Mode.NAMED
-                    return
-
-            rich_color: Tuple[int, int, int] = Rich().get_color(color)
-            if rich_color:
-                log.log("DEBUG", f"Color is a rich color: {rich_color}", VERBOSE)
-                index = Rich().get_rgb().index("rgb({0},{1},{2})".format(*rich_color))
-                self.name = Rich().NAMES[index]
-                triplet = ColorTriplet(*rich_color)
-                self._value = RichColor.from_triplet(triplet)
-                self._mode = Mode.RICH
-                return
-
-            # X11
-            x11_color: Tuple[int, int, int] = X11().get_color(color)
-            if x11_color:
-                log.log("DEBUG", f"Color is an X11 color: {x11_color}", VERBOSE)
-                index = X11().get_rgb().index("rgb({0},{1},{2})".format(*x11_color))
-                self.name = X11().NAMES[index]
-                triplet = ColorTriplet(*x11_color)
-                self._value = RichColor.from_triplet(triplet)
-                self._mode = Mode.X11
-                return
-
-            # Hex
-            hex_match = re.match(r"^#\?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$", color)
-            if hex_match:
-                log.log("DEBUG", f"Color is a hex color: {hex_match.group(0)}", VERBOSE)
-                hex_color = hex_match.group(1)
-                if len(hex_color) == 3:
-                    hex_color = "".join([c * 2 for c in group])
-                rgb = self.hex_to_rgb(hex_color)
-                rgb_tuple = self.rgb_to_tuple(rgb)
-                triplet = ColorTriplet(*rgb_tuple)
-                self._value = RichColor.from_triplet(triplet)
-                self.name = color
-                self._mode = Mode.HEX
-                return
-
-            # RGB
-            rgb_match = re.match(r"r?g?b?\((\d{1,3}), (\d{1,3}), (\d{1,3})\)", color)
-            if rgb_match:
-                log.log(
-                    "DEBUG", f"Color is an RGB color: {rgb_match.groups()}", VERBOSE
-                )
-                rgb_tuple = self.rgb_to_tuple(color)
-                triplet = ColorTriplet(*rgb_tuple)
-                self._value = RichColor.from_triplet(triplet)
-                self.name = color
-                self._mode = Mode.RGB
-                return
-
-        # RGB Tuple
-        if isinstance(color, tuple):
-            log.log("DEBUG", f"Color is an RGB tuple: {color}", VERBOSE)
-            assert len(color) == 3
-            for count, num in enumerate(color):
-                assert (
-                    0 <= num <= 255
-                ), f"RGB values must be between 0 and 255. Invalid number: {count}"
-            triplet = ColorTriplet(*color)
-            self._value = RichColor.from_triplet(triplet)
-            self.name = str(color)
-            self.mode = Mode.RGB_TUPLE
+            self.name: str = color.name
+            self.red: int = color.red
+            self.green: int = color.green
+            self.blue: int = color.blue
+            self.mode: Mode = color.mode
             return
 
-        raise ColorParseError(f"Invalid color: {color}")
+        hex_match: Match = Hex.REGEX.match(color)
+        if hex_match:
+            self.hex_components(color)
+            self.name: str = self.generate_name(color)
+            self.mode: Mode = Mode.HEX
+            return
 
-    def __eq__(self, other: object) -> bool:
+        rgb_match: Match = RGB.REGEX.match(color)
+        if rgb_match:
+            self.rgb_components(color)
+            self.name: str = self.generate_name(color)
+            self.mode: Mode = Mode.RGB
+            return
+
+        for group in [GC.NAMES, GC.HEX, GC.RGB, GC.RGB_TUPLE]:
+            if color in group:
+                index = group.index(color)
+                rgb_tuple = GC.RGB_TUPLE[index]
+                self.red, self.green, self.blue = rgb_tuple
+                self.name: str = GC.NAMES[index]
+                self.mode: Mode = Mode.GC
+                return
+
+        for group in [Rich.NAMES, Rich.HEX, Rich.RGB, Rich.RGB_TUPLE]:
+            if color in group:
+                index = group.index(color)
+                rgb_tuple = Rich.RGB_TUPLE[index]
+                self.red, self.green, self.blue = rgb_tuple
+                self.name: str = Rich.NAMES[index]
+                self.mode: Mode = Mode.RICH
+                return
+
+        for group in [X11.NAMES, X11.HEX, X11.RGB, X11.RGB_TUPLE]:
+            if color in group:
+                index = group.index(color)
+                rgb_tuple = X11.RGB_TUPLE[index]
+                self.red, self.green, self.blue = rgb_tuple
+                self.name: str = X11.NAMES[index]
+                self.mode: Mode = Mode.X11
+                return
+
+        raise ColorParseError(f"Unable to parse color: {color}")
+
+    @property
+    @lru_cache
+    def original(self) -> str:
+        """Return the original color."""
+        log.debug("Called Color.original.getter()")
+        return self._original
+
+    @original.setter
+    def original(self, color: str) -> None:
+        """Set the original color."""
+        log.debug(f"Called Color.original.setter({color}")
+        self._original = color
+
+    @property
+    @lru_cache
+    def red(self) -> int:
+        """Return the red value of the color."""
+        return self._red
+
+    @red.setter
+    def red(self, red: int | float) -> None:
+        """ "Set the red value of the color."""
+        if isinstance(red, float):
+            red = int(red * 255)
+        if isinstance(red, int):
+            assert 0 <= red <= 255, f"Red value must be between 0 and 255, not {red}"
+            self._red = red
+
+    @property
+    @lru_cache
+    def green(self) -> int:
+        """Return the green value of the color."""
+        return self._green
+
+    @green.setter
+    def green(self, green: int | float) -> None:
+        """ "Set the green value of the color."""
+        if isinstance(green, float):
+            green = int(green * 255)
+        if isinstance(green, int):
+            assert (
+                0 <= green <= 255
+            ), f"Green value must be between 0 and 255, not {green}"
+            self._green = green
+
+    @property
+    @lru_cache
+    def blue(self) -> int:
+        """Return the blue value of the color."""
+        return self._blue
+
+    @blue.setter
+    def blue(self, blue: int | float) -> None:
+        """Set the blue value of the color."""
+        if isinstance(blue, float):
+            blue = int(blue * 255)
+        if isinstance(blue, int):
+            assert 0 <= blue <= 255, f"Blue value must be between 0 and 255, not {blue}"
+            self._blue = blue
+
+    @property
+    @lru_cache
+    def name(self) -> str:
+        """Return the name of the color."""
+        log.debug("Called Color.name.getter()")
+        return self._name
+
+    @name.setter
+    def name(self, name: str) -> None:
+        """Set the name of the color."""
+        log.debug(f"Called Color.name.setter({name})")
+        self._name = name
+
+    @property
+    def mode(self) -> Mode:
+        """Return the mode of the color."""
+        log.debug("Called Color.mode.getter()")
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode: Mode) -> None:
+        """Set the mode of the color.
+
+        Args:
+            mode (Mode): The mode of the color.
+        """
+        log.debug(f"Called Color.mode.setter({mode})")
+        self._mode = mode
+
+    @property
+    def hex(self) -> str:
+        """Return the hex color code."""
+        log.debug("Called Color.hex.getter()")
+        red_str = f"{self.red:02X}"
+        green_str = f"{self.green:02X}"
+        blue_str = f"{self.blue:02X}"
+        return f"#{red_str}{green_str}{blue_str}"
+
+    @property
+    def rgb(self) -> str:
+        """Return the rgb color code."""
+        log.debug("Called Color.rgb.getter()")
+        return f"rgb({self.red},{self.green},{self.blue})"
+
+    @property
+    def rgb_tuple(self) -> Tuple[int, int, int]:
+        """Return the rgb color code as a tuple."""
+        log.debug("Called Color.rgb_tuple.getter()")
+        return (self.red, self.green, self.blue)
+
+    @property
+    def style(self) -> Style:
+        """Return the style of the color."""
+        log.debug("Called Color.style.getter()")
+        return Style(color=self.hex)
+
+    @property
+    def bg_style(self) -> Style:
+        """Return a style with the color as the background."""
+        log.debug("Called Color.bg_style.getter()")
+        foreground: str = self.get_contrast()
+        return Style(color=foreground, bgcolor=self.hex)
+
+    def __eq__(self, other: "Color") -> bool:
+        """Return True if the colors are equal."""
+        log.debug("Called Color.__eq__()")
         if not isinstance(other, Color):
             return NotImplemented
-        return self._original == other._original
+        return self.hex == other.hex
 
-    lru_cache(maxsize=128, typed=False)
-
-    def __hash__(self):
-        hash_value = 0
-        name = self._original
-        log.log("DEBUG", "called Color.__hash__()", VERBOSE)
-        log.log("DEBUG", f"Hashing {name}, initial value: {hash_value}", VERBOSE)
-        for index, char in enumerate(self._original):
-            hash_value += ord(char)
-            log.log(
-                "DEBUG",
-                f"Hashing {char} at index {index}: ord({char}) = {ord(char)}",
-                VERBOSE,
-            )
-            # log.debug(f"Hashed {char} at index {index}: hash_value = {hash_value}")
+    def __hash__(self) -> int:
+        """Return the hash of the color."""
+        log.debug("Called Color.__hash__()")
+        hash_value: int = 0
+        for value in self.rgb_tuple:
+            hash_value += ord(value)
         return hash_value
 
-    @lru_cache(maxsize=1)
-    def __repr__(self) -> str:
-        repr_str = f"Color<{str(self._original).capitalize()}>"
-        log.debug(f"Getting repr for {self.name}: {repr_str}")
-        return repr_str
-
-    def __str__(self) -> str:
-        string = str(self._original)
-        log.debug(f"Getting string for {self.name}: {string}")
-        return string
-
-    def __rich__(self) -> Table:
+    def __rich__(self) -> Panel:
         """Return the rich console representation of a color."""
+        log.debug("Called Color.__rich__()")
         table = Table(
-            title=self.as_title(),
+            # title=self.name.capitalize(),
             show_header=False,
-            box=SQUARE,
+            show_footer=False,
+            show_edge=True,
+            show_lines=False,
+            box=HEAVY,
             border_style=f"bold {self.style}",
             expand=False,
             width=40,
             collapse_padding=True,
-            caption="\n\n",
+            # caption=f"[dim italic]Original: {self.original}\n\n",
+            # caption_justify="right"
         )
+
+        contrast = self.get_contrast()
         table.add_column(
-            "attribute", style=f"bold on {self.bg_style}", justify="center"
+            "attribute", style=f"bold {contrast} on {self.bg_style}", justify="center"
         )
+
         table.add_column(
             "value", style=f"bold {self.style} on #000000", justify="center"
         )
-        original = str(self._original).capitalize()
-        table.add_row("Original", original)
         mode = self.mode
         table.add_row("Mode", mode)
         hex_str = str(self.hex).upper()
@@ -285,183 +360,86 @@ class Color:
         rgb_tuple = self.rgb_tuple
         tuple_str = str(rgb_tuple)
         table.add_row("RGB Tuple", tuple_str)
-        return table
 
-    # Properties
-    @property
-    @lru_cache(maxsize=1)
-    def original(self) -> str:
-        """Return the original color."""
-        return self._original
+        title = self.color_title()
+        dark = Color(self.hex).darken(0.5)
+        sub_panel = Panel(
+            table,
+            title=title,
+            expand=False,
+            box=HEAVY,
+            border_style=Style(color=dark),
+            subtitle=f"[i {dark}]Original: {self.original}\n\n",
+            subtitle_align="right",
+        )
+        panel = Panel(sub_panel, border_style="#000000")
+        return panel
 
-    @original.setter
-    def original(self, original: str) -> None:
-        """Set the original color."""
-        assert isinstance(
-            original, (str, Tuple, Color)
-        ), f"Invalid original: {original}"
-        self._original = original
+    def color_title(self) -> Text:
+        """Generate a title bar for the color."""
+        log.debug("Called Color.color_title()")
+        name = self.name.capitalize()
+        length = len(name)
+        # Calculate
+        if length % 2 == 1:
+            name = f"{name} "  # makes length even
+            length += 1
+        padding: int = (38 - length) / 2
+        pad = " " * int(padding)
+        color = Color(self.hex).darken(0.5)
+        bg_color = Color(self.hex).lighten(0.5)
+        return Text(
+            f"{pad}{name}{pad}", style=Style(color=color, bgcolor=bg_color, bold=True)
+        )
 
-    # Properties
-    @property
-    @lru_cache(maxsize=1)
-    def value(self) -> RichColor:
-        """Return the color value."""
-        return self._value
+    def generate_name(self, color: Any) -> str:
+        """Retrieve the color's name if it exists in GradientColor,\
+            rich.color.Colors's Standard Library or X11 Colors. \
+            Otherwise, generate a name from the color's hex value."""
+        if self.rgb_tuple in GC.RGB_TUPLE:
+            index = GC.RGB_TUPLE.index(self.rgb_tuple)
+            return GC.NAMES[index]
 
-    @value.setter
-    def value(self, color: RichColor) -> None:
-        """Set the color value."""
-        assert isinstance(color, RichColor), f"Invalid value: {color}"
-        log.debug(f"Setting Color-{str(color)}'s value: {color}")
-        self._value = color
+        elif self.rgb_tuple in Rich.RGB_TUPLE:
+            index = Rich.RGB_TUPLE.index(self.rgb_tuple)
+            return Rich.NAMES[index]
 
-    @property
-    @lru_cache(maxsize=1)
-    def name(self) -> str:
-        """Return the color name."""
-        return self._name
+        elif self.rgb_tuple in X11.RGB_TUPLE:
+            index = X11.RGB_TUPLE.index(self.rgb_tuple)
+            return X11.NAMES[index]
 
-    @name.setter
-    def name(self, name: str) -> None:
-        """Set the color name."""
-        assert isinstance(name, str), f"Invalid name: {name}"
-        self._name = name
-        hr = "-" * 30
-        log.debug(f"Color Name -> {name}\n{hr}")
+        else:
+            return str(color)
 
-    @property
-    @lru_cache(maxsize=1)
-    def color_name(self) -> str:
-        """Return the color name formatted in the color."""
-        name = self.name
-        style = f"bold {self.hex}"
-        color_name = f"[{style}]{name}[/{style}]"
-        log.debug(f"Getting Color-{self.name}'s color name: {color_name}")
-        return color_name
+    def hex_components(self, hex_str: str) -> None:
+        """Parse color components from a hex string."""
+        log.debug(f"Called Color.hex_components({hex_str})")
+        if "#" in hex_str:
+            hex_str = hex_str.replace("#", "")
+        if len(hex_str) == 3:
+            hex_str = "".join([char * 2 for char in hex_str])
+        self.red = int(hex_str[0:2], 16)
+        log.debug(f"Red: {self.red}")
+        self.green = int(hex_str[2:4], 16)
+        log.debug(f"Green: {self.green}")
+        self.blue = int(hex_str[4:6], 16)
+        log.debug(f"Blue: {self.blue}")
 
-    @property
-    @lru_cache(maxsize=1)
-    def mode(self) -> Mode:
-        """Return the color mode."""
-        log.debug(f"Getting Color-{self.name}'s mode: {self._mode}")
-        return self._mode
+    def rgb_components(self, rgb_str: str) -> None:
+        """Parse the components from an RGB string."""
+        log.debug(f"Called Color.rgb_components({rgb_str})")
+        REGEX = re.compile(
+            r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)[ ,]? ?(?P<blue>\d+\.?\d*)\)"
+        )
+        match: Match = REGEX.match(rgb_str)
+        if match:
+            self.red = int(match.group("red"))
+            log.debug(f"Red: {self.red}")
+            self.green = int(match.group("green"))
+            log.debug(f"Green: {self.green}")
+            self.blue = int(match.group("blue"))
+            log.debug(f"Blue: {self.blue}")
 
-    @mode.setter
-    def mode(self, mode: Mode) -> None:
-        """Set the color mode."""
-        assert isinstance(mode, Mode), f"Invalid mode: {mode}"
-        log.debug(f"Setting Color<{self.name}>'s mode: {mode}")
-        self._mode = mode
-
-    # Format Properties
-    @property
-    @lru_cache(maxsize=1)
-    def hex(self) -> str:
-        """Return the color as a hex string."""
-        hex_color = self.value.triplet.hex
-        log.debug(f"Getting Color-{self.name}'s as hex: {hex_color}")
-        return hex_color
-
-    @property
-    @lru_cache(maxsize=1)
-    def rgb(self) -> str:
-        """Return the color as a RGB string."""
-        rgb_color = self.value.triplet.rgb
-        log.debug(f"Getting Color-{self.name}'s as RGB: {rgb_color}")
-        return rgb_color
-
-    @property
-    @lru_cache(maxsize=1)
-    def rgb_tuple(self) -> Tuple[int, int, int]:
-        """Return the color as a RGB tuple."""
-        rgb = self.value.triplet.rgb
-        rgb_matches = re.findall(r"\d{1,3}", rgb)
-        if rgb_matches:
-            rgb_tuple = tuple([int(num) for num in rgb_matches])
-        log.debug(f"Getting Color-{self.name}'s as RGB Tuple: {rgb_tuple}")
-        return rgb_tuple
-
-    @property
-    @lru_cache(maxsize=1)
-    def style(self) -> Style:
-        """Get the color as a style."""
-        style = Style(color=self.hex)
-        log.debug(f"Getting Color-{self.name}'s as Style: {style}")
-        return style
-
-    @property
-    @lru_cache(maxsize=1)
-    def bg_style(self) -> Style:
-        """Get the color as a background style."""
-        foreground = self.get_contrast()
-        style = Style(color=foreground, bgcolor=self.hex)
-        log.debug(f"Getting Color-{self.name}'s as Background Style: {style}")
-        return style
-
-    @classmethod
-    def colored_class(cls, as_text: bool = True) -> Text|str:
-        """Return the class name in colored format.
-
-        Args:
-            as_text (bool, optional): Return as a Text object. Defaults to True.
-        """
-        C1 = "[bold #ff0000]C[/]"
-        O1 = "[bold #ff8800]o[/]"
-        L1 = "[bold #ffff00]l[/]"
-        O2 = "[bold #00ff00]o[/]"
-        R1 = "[bold #00ffff]r[/]"
-        color=[C1, O1, L1, O2, R1]
-        markup = "".join(color)
-        if as_text:
-            return Text.from_markup(markup)
-        return markup
-
-    def as_title(self) -> Text:
-        """Return the rich representation of a color."""
-        LESS = "[bold #ffffff]<[/]"
-        GREATER = "[bold #ffffff]>[/]"
-        COLOR = Color.colored_class(False)
-        style = self.style
-        NAME = f"[bold italic {style}]{str(self._original).capitalize()}[/]"
-        colors = [COLOR, LESS, NAME, GREATER]
-        markup = "".join(colors)
-        return Text.from_markup(markup)
-
-    @staticmethod
-    def rgb_to_hex(rgb_str: str) -> str:
-        """Convert a RGB string to a hex string."""
-        rgb_match = re.match(r"^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$", rgb_str)
-        if rgb_match:
-            rgb_matches = rgb_match.groups()
-            hex_code = "".join([f"{int(num):02x}" for num in rgb_matches])
-            hex_code = f"#{hex_code}"
-            return hex_code
-
-    @staticmethod
-    def hex_to_rgb(hex_input: str) -> str:
-        """Convert a hex color to an RGB string."""
-        if hex_input.startswith("#"):
-            hex_code = hex.lstrip("#")
-
-        if len(hex_code) == 3:
-            hex_code = "".join([c * 2 for c in hex_code])
-
-        red = int(hex_code[0:2], 16)
-        green = int(hex_code[2:4], 16)
-        blue = int(hex_code[4:6], 16)
-
-        return f"rgb({red}, {green}, {blue})"
-
-    @staticmethod
-    def rgb_to_tuple(rgb_str: str) -> Tuple[int, int, int]:
-        """Convert a RGB string to an RGB tuple."""
-        rgb_match = re.match(r"^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$", rgb_str)
-        if rgb_match:
-            return tuple(int(c) for c in rgb_match.groups())
-        return (0, 0, 0)
-
-    @lru_cache(maxsize=1)
     def get_contrast(self) -> str:
         """Generate a foreground color for the color style.
 
@@ -512,15 +490,68 @@ class Color:
                 log.debug(f"Contrast for Color<{self.name}> -> White")
             return "#000000"
 
+    def lighten(self, percent: float = 0.5) -> str:
+        """Generate a tint of the color.
+
+        Args:
+            percent (float, optional): The percentage of the tint. \
+                Defaults to 0.5.
+
+        Returns:
+            str: The tinted color as a hex string.
+        """
+        log.debug(f"Called Color.tint({percent})")
+        tuple = self.rgb_tuple
+        red, green, blue = tuple
+
+        red_tint = int(red + (255 - red) * percent)
+        red_final = f"{red_tint:02x}"
+
+        green_tint = int(green + (255 - green) * percent)
+        green_final = f"{green_tint:02x}"
+
+        blue_tint = int(blue + (255 - blue) * percent)
+        blue_final = f"{blue_tint:02x}"
+
+        tint: str = f"#{red_final}{green_final}{blue_final}"
+        log.debug(f"Tinting by {percent * 100}%: {tint}")
+        return tint
+
+    def darken(self, percent: float = 0.5) -> str:
+        """Generate a tint of the color.
+
+        Args:
+            percent (float, optional): The percentage of the darkening. \
+                Defaults to 0.5.
+
+        Returns:
+            str: The darkened color as a hex string.
+        """
+        log.debug(f"Called Color.dark({percent})")
+        tuple = self.rgb_tuple
+        red, green, blue = tuple
+
+        dark_red = int(red + (0 - red) * percent)
+        red_final = f"{dark_red:02x}"
+
+        dark_green = int(green + (0 - green) * percent)
+        green_final = f"{dark_green:02x}"
+
+        dark_blue = int(blue + (0 - blue) * percent)
+        blue_final = f"{dark_blue:02x}"
+
+        dark: str = f"#{red_final}{green_final}{blue_final}"
+        log.debug(f"Darken by {percent * 100}%: {dark}")
+        return dark
+
     @classmethod
     def named_table(cls) -> Columns:
         """Return a table of named colors."""
         log.debug("Generating named color table.")
         colors = []
-        for color in cls.NAMED:
+        for color in GC.NAMES:
             colors.append(Color(color))
         return Columns(colors, equal=True)
-
 
     @classmethod
     def color_table(cls) -> Columns:
@@ -557,11 +588,6 @@ class Color:
 
 
 if __name__ == "__main__":
-    console = Console(theme=GradientTheme(), highlighter=ReprHighlighter(), record=True)
+    console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
     console.print(Color.named_table(), justify="center")
     console.print(Color.color_table(), justify="center")
-    # console.save_svg(
-    #     path="color.svg",
-    #     title="MaxGradient.Color",
-    #     # theme=GradientTerminalTheme()
-    # )

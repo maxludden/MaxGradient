@@ -2,7 +2,7 @@
 # pylint: disable=E0401, R0913, R0914
 import os
 from datetime import datetime
-from typing import IO, Callable, Literal, Mapping, Optional, Union, List, Tuple
+from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
 
 from rich._log_render import FormatTimeCallable
 from rich.console import Console as RichConsole
@@ -10,14 +10,15 @@ from rich.console import ConsoleRenderable, RichCast
 from rich.emoji import EmojiVariant
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
-from rich.style import StyleType, Style
-from rich.text import Text, Span
+from rich.style import Style, StyleType
+from rich.text import Span, Text
 from rich.theme import Theme
 from rich.traceback import install as install_traceback
 
+# from maxgradient.color import Color
+from maxgradient.gradient import Gradient
 from maxgradient.theme import GradientTheme
 from maxgradient.color import Color
-from maxgradient.gradient import Gradient
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
@@ -190,7 +191,8 @@ class Console(RichConsole, metaclass=Singleton):
         no_wrap: Optional[bool] = None,
         end: str = "\n",
         tab_size: Optional[int] = 8,
-        spans: Optional[List[Span]] = None) -> None:
+        spans: Optional[List[Span]] = None,
+    ) -> None:
         """Return a gradient used by the console."""
         console_gradient = Gradient(
             text=text,
@@ -205,12 +207,12 @@ class Console(RichConsole, metaclass=Singleton):
             no_wrap=no_wrap,
             end=end,
             tab_size=tab_size,
-            spans=spans
+            spans=spans,
         )
         self.print(console_gradient)
 
     @staticmethod
-    def formatted_console() -> Text:
+    def get_title() -> Text:
         """Print out `MaxConsole` in a manual gradient"""
         letters = [
             Text("Gr", style="bold.blue"),
@@ -232,21 +234,32 @@ class Console(RichConsole, metaclass=Singleton):
     @classmethod
     def generate_example(cls) -> Text:
         """Generate an explanation of MaxConsole for demonstration."""
-        formatted_console = cls.formatted_console()
-        explanation_text = Text.from_markup(
-            " is a custom themed terminal console class inheriting from \
-[italic bold #00ffff]rich.console.Console[/]. It is a [bold.lightpurple]global singleton \
-[/]class that can be imported and used anywhere in the project and \
-used as a drop in replacement for [italic bold #00ffff]rich.console.Console[/]."
+        rich = Gradient(
+            "rich.console.Console",
+            colors=["#0000ff", "#0044ff", "#1199ff", "#44bbff", "#66ffff"],
+            style="bold italic"
         )
-        combine_explanation = Text.assemble(formatted_console, explanation_text)
+        formatted_console = cls.get_title()
+        text1 = Text(" is a custom themed terminal console class inheriting from")
+        text2 = Text(". It is a [b #af00ff]global singleton [/]class that can be \
+imported and used anywhere in the project and used as a drop in replacement for "
+        )
+        text3 = Text(".")
+        combine_explanation = Text.assemble(
+            cls.get_title(),
+            text1,
+            rich,
+            text2,
+            rich,
+            text3
+        )
         return combine_explanation
 
 
 if __name__ == "__main__":
     console = Console()
     example = console.generate_example()
-    title = console.formatted_console()
+    title = console.get_title()
     console.line(2)
     console.print(
         Panel(

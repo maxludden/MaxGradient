@@ -516,9 +516,6 @@
   ],
   "genieai.enableConversationHistory": true,
   "genieai.telemetry.disable": false,
-  "pylint.interpreter": [
-    "/Users/maxludden/dev/venvs/gradient/bin/python"
-  ],
   "pylint.importStrategy": "fromEnvironment",
   "pylint.path": [
     "/Users/maxludden/dev/venvs/gradient/bin/pylint"
@@ -577,5 +574,9 @@
       "indent": 4
     },
     "no-hard-tabs": false
-  }
+  },
+  "pylint.interpreter": [
+    "/Users/maxludden/dev/venvs/maxgradient/bin",
+    "/Users/maxludden/dev/venvs/setup_venv/bin"
+  ]
 }

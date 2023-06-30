@@ -3,7 +3,9 @@
         <link href="styles/gradient.css" rel="stylesheet">
     </head>
     <body>
+        <!--MaxGradient Banner-->
         <img src="https://raw.githubusercontent.com/maxludden/maxludden/621fcb611c1e52160d89d33e1441b34948c37752/maxgradient_banner.svg" alt="MaxGradient" width="100%">
+        <!--End of Banner-->
 ​        <div class="badges">
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient"></a>
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>

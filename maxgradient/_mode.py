@@ -8,31 +8,15 @@ class Mode(Enum):
     """A color mode. Used to determine how a color was parsed."""
 
     COLOR = "COLOR"
-    NAMED = "NAMED"
-    X11 = "X11"
-    RICH = "RICH"
+    GC = "GC"
     HEX = "HEX"
+    INIT = "INIT"
+    INVALID = "INVALID"
     RGB = "RGB"
     RGB_TUPLE = "RGB_TUPLE"
-
-    @property
-    def color_mode(self) -> str:
-        """Return the color mode."""
-        if self.value == Mode.COLOR:
-            return str("color")
-        if self.value == Mode.NAMED:
-            return str("named")
-        if self.value == Mode.X11:
-            return str("x11")
-        if self.value == Mode.RICH:
-            return str("rich")
-        if self.value == Mode.HEX:
-            return str("hex")
-        if self.value == Mode.RGB:
-            return str("rgb")
-        if self.value == Mode.RGB_TUPLE:
-            return str("rgb_tuple")
-        raise ValueError(f"Invalid mode: {self}")
+    RICH_COLOR = "RICH_COLOR"
+    RICH = "RICH"
+    X11 = "X11"
 
     def __eq__(self, other: "Mode") -> bool:
         """Return True if the color mode is equal to another."""
@@ -47,7 +31,7 @@ class Mode(Enum):
         """Return a representation of the color mode."""
         return f"Mode.{str(self.value).upper()}"
 
-    def __rich_repr__(self) -> Text:
+    def __rich__(self) -> Text:
         """Return a rich text representation of the color mode."""
         mode = Text("Mode", style="bold italic #7FD6E8")
         dot = Text(".", style="bold.white")
@@ -55,7 +39,3 @@ class Mode(Enum):
         formatted_value = Text(value, style="bold lime")
         rich_repr = Text.assemble(mode, dot, formatted_value)
         return rich_repr
-
-    def __rich__(self) -> Text:
-        """Return a rich text representation of the color mode."""
-        return self.__rich_repr__()
