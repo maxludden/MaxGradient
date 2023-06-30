@@ -310,19 +310,18 @@ You can also visit the rich library's documentation to view all \
         foreground: str = self.get_contrast()
         return Style(color=foreground, bgcolor=self.hex)
 
-    def __eq__(self, other: "Color") -> bool:
-        """Return True if the colors are equal."""
-        log.debug("Called Color.__eq__()")
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Color):
             return NotImplemented
-        return self.hex == other.hex
+        return self._original == other._original
 
-    def __hash__(self) -> int:
-        """Return the hash of the color."""
-        log.debug("Called Color.__hash__()")
-        hash_value: int = 0
-        for value in self.rgb_tuple:
-            hash_value += ord(value)
+    def __hash__(self):
+        hash_value = 0
+        name = self._original
+        for index, char in enumerate(self._original):
+            hash_value += ord(char)
+            # log.debug(f"Hashed {char} at index {index}: hash_value = {hash_value}")
+        # log.debug(f"called Color.__hash__({self._original})")
         return hash_value
 
     def __rich__(self) -> Panel:
