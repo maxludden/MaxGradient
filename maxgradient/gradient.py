@@ -6,26 +6,27 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 from lorem_text import lorem
+from nptyping import NDArray, Shape
 from numpy import ndarray
-from rich.console import Console, JustifyMethod, OverflowMethod
+from rich.console import JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.text import Span, Text
 
-from maxgradient.gradient_color import GradientColor as GC
+from maxgradient._log import Console, Log
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
-from maxgradient.log import Log, LogConsole
+from maxgradient._gc import GradientColor as GC
 from maxgradient.theme import GradientTheme
 
 DEFAULT_JUSTIFY: "JustifyMethod" = "default"
 DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
-console = LogConsole()
-log = Log(console=console)
+console = Console()
+log = Log()
 
 
 class Gradient(Text):
@@ -54,13 +55,13 @@ class Gradient(Text):
 
     """
 
-    __slots__ = ["colors", "_color_sample", "_hues", "_style"]
+    __slots__ = ["colors", "_color_sample", "_hues", "_style", "_color_sample"]
 
     # @snoop(watch=("gradient_spans", "substrings"))
     def __init__(
         self,
         text: Optional[str | Text] = "",
-        colors: Optional[List[Color | Tuple | str]|str] = None,
+        colors: Optional[List[Color | Tuple | str] | str] = None,
         rainbow: bool = False,
         invert: bool = False,
         hues: Optional[int] = None,
@@ -100,10 +101,10 @@ class Gradient(Text):
     """
 
         if isinstance(text, Text):
-            self._spans: List[Span] = text.spans
+            self._spans = text.spans
             text = strip_control_codes(text.plain)
         else:
-            self._spans = spans
+            self._spans = spans  # type: ignore
         assert isinstance(text, str), f"Text must be a string or Text, not {type(text)}"
         self._text: str = text
         self._length: int = len(text)
@@ -131,7 +132,10 @@ class Gradient(Text):
 
     # @snoop(watch_explode=["colors", "self.colors"])
     def get_colors(
-        self, colors: Optional[str|List[Color | Tuple | str]], rainbow: bool, invert: bool
+        self,
+        colors: Optional[str | List[Color | Tuple | str]],
+        rainbow: bool,
+        invert: bool,
     ) -> List[Color]:
         """Get the colors for the gradient.
 
@@ -164,7 +168,9 @@ class Gradient(Text):
                             color = Color(color)
                             colors_.append(color)
                         except ColorParseError as error:
-                            raise ColorParseError(f"Can't parse color: {color}") from error
+                            raise ColorParseError(
+                                f"Can't parse color: {color}"
+                            ) from error
                     if self.validate_colors(colors_):
                         return colors_
                 else:
@@ -173,7 +179,7 @@ class Gradient(Text):
                     if self.validate_colors(colors_):
                         return colors_
 
-    def mono(self, color: str|Color) -> List[Color]:
+    def mono(self, color: str | Color) -> List[Color]:
         """Create a list of monochromatic hues from a color.
 
         Args:
@@ -183,15 +189,15 @@ class Gradient(Text):
         if isinstance(color, str):
             try:
                 color = Color(color)
-            except:
-                raise ColorParseError(f"Could not parse color: {color}")
+            except ColorParseError as cpe:
+                raise ColorParseError(f"Could not parse color: {color}") from cpe
             else:
                 return [
                     # Color(color.darken(0.4)),
                     Color(color.darken(0.2)),
                     color,
                     Color(color.lighten(0.2)),
-                    Color(color.lighten(0.6))
+                    Color(color.lighten(0.6)),
                 ]
 
     def get_text(self) -> str:
@@ -222,7 +228,9 @@ class Gradient(Text):
         Returns:
             List[List[int]]: The indexes for the gradient substring.
         """
-        result: ndarray = np.array_split(np.arange(self._length), self.hues - 1)
+        result: NDArray[Shape["*, *"], int] = np.array_split(
+            np.arange(self._length), self.hues - 1
+        )
         indexes: List[List[int]] = [sublist.tolist() for sublist in result]
         for count, index in enumerate(indexes):
             msg = f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}\n\n"
@@ -288,9 +296,9 @@ class Gradient(Text):
 
             for subindex in range(gradient_length):
                 blend = subindex / gradient_length
-                red = int(r1 + (blend * dr))
-                green = int(g1 + (blend * dg))
-                blue = int(b1 + (blend * db))
+                red = int(r1 + (blend * dr))  # type: ignore
+                green = int(g1 + (blend * dg))  # type: ignore
+                blue = int(b1 + (blend * db))  # type: ignore
                 color = f"#{red:02X}{green:02X}{blue:02X}"
                 substring.stylize(color, subindex, subindex + 1)
 
@@ -353,7 +361,7 @@ class Gradient(Text):
         if isinstance(text, Text):
             sanitized_text = strip_control_codes(text.plain)
             self._length = len(sanitized_text)
-            self._text = [sanitized_text]
+            self._text = sanitized_text
             self._spans: List[Span] = text.spans
         if isinstance(text, str):
             if text == "":
@@ -363,13 +371,13 @@ class Gradient(Text):
             self._text = sanitized_text
 
     @property
-    def hues(self) -> int:
+    def hues(self) -> int:  # type: ignore
         """The number of colors in the gradient."""
         log.debug(f"Retrieving gradient._hues: {self._hues}")
         return self._hues
 
     @hues.setter
-    def hues(self, hues: int) -> None:
+    def hues(self, hues: int) -> None:  # type: ignore
         """Set the number of colors in the gradient."""
         log.debug(f"Setting gradient._hues: {hues}")
         if hues < 2:
@@ -377,13 +385,13 @@ class Gradient(Text):
         self._hues = hues
 
     @property
-    def color_sample(self) -> bool:
+    def color_sample(self) -> bool:  # type: ignore
         """Whether the gradient is a color sample."""
         log.debug(f"Retrieving gradient._color_sample: {self._color_sample}")
         return self._color_sample
 
-    @color_sample.setter
-    def color_sample(self, color_sample: bool) -> None:
+    @color_sample.setter  # type: ignore
+    def color_sample(self, color_sample: bool) -> None:  # type: ignore
         """Set whether the gradient is a color sample."""
         log.debug(f"Setting gradient._color_sample: {color_sample}")
         if color_sample:

@@ -11,10 +11,10 @@ from rich.text import Text
 
 from maxgradient._mode import Mode
 from maxgradient._rich import Rich
-from maxgradient.log import Log, LogConsole
+from maxgradient._log import Log, Console
 
-console = LogConsole()
-log = Log(console)
+console = Console()
+log = Log()
 
 class HexParseError(ValueError):
     """Unable to parse input as a hex color."""
@@ -121,11 +121,14 @@ class Hex:
         log.debug("Called Hex.__str__()")
         return self.value
 
-    def __eq__(self, other: Union["Hex", str]) -> bool:
+    def __eq__(self, other: "Hex",) -> bool: # type: ignore
         """Return True if the Hex object is equal to another."""
         log.debug(f"Called Hex.__eq__({other})")
-        if isinstance(other, (Hex, str)):
-            return self.value == other.value
+        if isinstance(other, Hex):
+            if self.value == other.value:
+                return True
+            else:
+                return False
         else:
             return False
 
@@ -140,20 +143,21 @@ class Hex:
             box=HEAVY_EDGE,
         )
 
-    def print_rich_hex(self) -> None:
-        """Print a rich representation of all the Hex colors."""
-        HEX_COLORS = Rich.HEX
-        panels: list[Panel] = []
-        for index, color in enumerate(HEX_COLORS):
-            msg1 = f"[i white]Color[/] [bold cyan]{index}[/][i white]:[/]"
-            msg2 = f"[bold {color}]{color}[/]"
-            hex = Hex(color)
-            panels.append(hex.hex_panel())
-        columns = Columns(panels, equal=True)
-        console.print(columns)
+    # def print_rich_hex(self) -> None:
+    #     """Print a rich representation of all the Hex colors."""
+    #     HEX_COLORS = Rich.HEX
+    #     panels: list[Panel] = []
+    #     for index, color in enumerate(HEX_COLORS):
+    #         msg1 = f"[i white]Color[/] [bold cyan]{index}[/][i white]:[/]"
+    #         msg2 = f"[bold {color}]{color}[/]"
+    #         hex = Hex(color)
+    #         panels.append(hex.hex_panel())
+    #     columns = Columns(panels, equal=True)
+    #     console.print(columns)
 
 
 if __name__ == "__main__":
+    console = Console()
     RANDOM_HEX_STRING = choice(Rich.HEX)
     RANDOM_HEX = Hex(RANDOM_HEX_STRING)
     console.print(RANDOM_HEX)

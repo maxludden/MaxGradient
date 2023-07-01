@@ -4,7 +4,7 @@ import colorsys
 import re
 from functools import lru_cache
 from re import findall
-from typing import Any, Dict, List, Tuple
+from typing import Optional, Tuple
 
 from rich.box import SQUARE
 from rich.color import Color as RichColor
@@ -18,15 +18,15 @@ from rich.table import Table
 from rich.text import Text
 from snoop import snoop
 
+from maxgradient._log import Console as LogConsole
+from maxgradient._log import Log
 from maxgradient._mode import Mode
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
-from maxgradient.log import Log, LogConsole
 from maxgradient.theme import GradientTerminalTheme, GradientTheme
 
-console = Console()
-_console = LogConsole()
-log = Log(_console)
+console = LogConsole()
+log = Log()
 
 
 class GradientColor:
@@ -100,13 +100,13 @@ class GradientColor:
 
     @classmethod
     @lru_cache(maxsize=10, typed=True)
-    def get_rgb_tuple(cls) -> Tuple[str, ...]:
+    def get_rgb_tuple(cls) -> Tuple[Tuple[int, int, int]]:
         """Retrieve gradient RGB tuples."""
         return cls.RGB_TUPLE
 
     @classmethod
     @lru_cache(maxsize=10, typed=True)
-    def get_color(cls, color: str) -> Tuple[int, int, int]:
+    def get_color(cls, color: str) -> Optional[Tuple[int, int, int]]:
         """Retrieve gradient RGB tuples."""
         for group in [
             cls.get_names(),
@@ -162,3 +162,8 @@ class GradientColor:
             letter_s,
         ]
         return Text.assemble(*title)
+
+    @classmethod
+    def color_table(cls) -> Table:
+        """Generate a table of gradient colors."""
+        

@@ -4,7 +4,7 @@ import colorsys
 import re
 from functools import lru_cache
 from re import Match
-from typing import Any, List, Tuple, Union
+from typing import Any, List, Optional, Tuple, Union
 
 from rich import inspect
 from rich.box import HEAVY, SQUARE
@@ -12,7 +12,6 @@ from rich.color import Color as RichColor
 from rich.color import ColorParseError, ColorType
 from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
-from rich.console import Console
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
 from rich.style import Style
@@ -20,16 +19,16 @@ from rich.table import Table
 from rich.text import Text
 
 from maxgradient._hex import Hex
+from maxgradient._log import Console, Log, debug
 from maxgradient._mode import Mode
 from maxgradient._rgb import RGB
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
-from maxgradient.gradient_color import GradientColor as GC
-from maxgradient.log import Log, LogConsole, debug
+from maxgradient._gc import GradientColor as GC
 from maxgradient.theme import GradientTheme
 
-console = LogConsole()
-log = Log(console)
+console = Console()
+log = Log()
 
 VERBOSE: bool = False
 
@@ -144,7 +143,7 @@ You can also visit the rich library's documentation to view all \
             self.mode: Mode = color.mode
             return
 
-        hex_match: Match = Hex.REGEX.match(color)
+        hex_match: Optional[Match] = Hex.REGEX.match(color)
         if hex_match:
             self.hex_components(color)
             self.name: str = self.generate_name(color)

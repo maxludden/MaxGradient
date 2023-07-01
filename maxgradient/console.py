@@ -17,7 +17,7 @@ from rich.traceback import install as install_traceback
 
 # from maxgradient.color import Color
 from maxgradient.gradient import Gradient
-from maxgradient.theme import GradientTheme
+from maxgradient.theme import GradientTheme, GradientTerminalTheme
 from maxgradient.color import Color
 
 RenderableType = ConsoleRenderable | RichCast | str
@@ -71,7 +71,7 @@ class Console(RichConsole, metaclass=Singleton):
         no_color (Optional[bool], optional): Enabled no color \
             mode, or None to auto detect. Defaults to None.
         tab_size (int, optional): Number of spaces used to replace \
-            a tab character. Defaults to 8.
+            a tab character. Defaults to 4.
         record (bool, optional): Boolean to enable recording of \
             terminal output,
                 required to call export_html, export_svg, and \
@@ -123,7 +123,7 @@ class Console(RichConsole, metaclass=Singleton):
         height: Optional[int] = None,
         style: Optional[StyleType] = None,
         no_color: Optional[bool] = None,
-        tab_size: int = 8,
+        tab_size: int = 4,
         record: bool = False,
         markup: bool = True,
         emoji: bool = True,
@@ -209,7 +209,23 @@ class Console(RichConsole, metaclass=Singleton):
             tab_size=tab_size,
             spans=spans,
         )
-        self.print(console_gradient)
+        self.print(
+            Gradient(
+                text=text,
+                colors=colors,
+                rainbow=rainbow,
+                invert=invert,
+                hues=hues,
+                color_sample=color_sample,
+                style=style,
+                justify=justify,
+                overflow=overflow,
+                no_wrap=no_wrap,
+                end=end,
+                tab_size=tab_size,
+                spans=spans,
+            )
+        )
 
     @staticmethod
     def get_title() -> Text:
@@ -257,14 +273,13 @@ imported and used anywhere in the project and used as a drop in replacement for 
 
 
 if __name__ == "__main__":
-    console = Console()
+    console = Console(record=True, width=100)
     example = console.generate_example()
     title = console.get_title()
     console.line(2)
     console.print(
         Panel(
             example,
-            # title=title,
             width=100,
         ),
         justify="center",

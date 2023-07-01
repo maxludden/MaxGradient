@@ -82,9 +82,7 @@
   // "python.logging.level": "debug",
   "git.confirmSync": false,
   "security.workspace.trust.untrustedFiles": "open",
-  "yaml.schemas": {
-    "file:///Users/maxludden/.vscode/extensions/docsmsft.docs-yaml-1.0.0/dist/toc.schema.json": "/toc\\.yml/i"
-  },
+  "yaml.schemas": {},
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
@@ -516,10 +514,7 @@
   ],
   "genieai.enableConversationHistory": true,
   "genieai.telemetry.disable": false,
-  "pylint.importStrategy": "fromEnvironment",
-  "pylint.path": [
-    "/Users/maxludden/dev/venvs/gradient/bin/pylint"
-  ],
+  "pylint.importStrategy": "useBundled",
   "vsicons.dontShowNewVersionMessage": true,
   "editor.linkedEditing": true,
   "files.exclude": {
@@ -574,9 +569,5 @@
       "indent": 4
     },
     "no-hard-tabs": false
-  },
-  "pylint.interpreter": [
-    "/Users/maxludden/dev/venvs/maxgradient/bin",
-    "/Users/maxludden/dev/venvs/setup_venv/bin"
-  ]
+  }
 }

@@ -3,17 +3,18 @@
 from __future__ import annotations
 
 import re
-from os import environ
 from datetime import datetime
-from pathlib import Path
-from typing import Optional, Self, Any
 from functools import wraps
+from os import environ
+from pathlib import Path
+from sys import stderr, stdout
+from typing import Any, Optional, Self
 
 import loguru
 from loguru import logger
 from rich.abc import RichRenderable
-from rich.console import Console as RichConsole
-from rich.highlighter import ReprHighlighter, RegexHighlighter
+from rich.console import Console
+from rich.highlighter import RegexHighlighter
 from rich.table import Table
 from rich.traceback import install as install_rich_traceback
 
@@ -45,21 +46,26 @@ class LogHighlighter(RegexHighlighter):
     highlights = [
         r"(?P<keyword>.+(?=\d+)) ?(?P<index>\d+)?(?P<separator>:) ",
         r"(?P<keyword>[A-Za-z_()]+)(?P<separator>:) ",
-        r"^[^\d:]+:"
+        r"^[^\d:]+:",
     ]
 
 
-class LogConsole(RichConsole, metaclass=Singleton):
+class Console(Console, metaclass=Singleton):
     """A Console to log to. Inherits from rich.console.Console.\
         This class is a singleton which removes the need to pass\
         around a console object or use the `get_console` method."""
 
     def __init__(self) -> None:
-        super().__init__(theme=GradientTheme(), highlighter=LogHighlighter())
+        super().__init__(
+            theme=GradientTheme(),
+            highlighter=LogHighlighter(),
+            stderr=True,
+            tab_size=4,
+        )
         install_rich_traceback(console=self)
 
 
-console_ = LogConsole()
+console_ = Console()
 
 
 class Log:
@@ -84,10 +90,13 @@ class Log:
     rich_level: str
 
     def __init__(
-        self, console: LogConsole = console_, rich_level: str = "SUCCESS"
+        self, console: Optional[Console] = None, rich_level: str = "SUCCESS"
     ) -> None:
         self.rich_level = rich_level
-        self.console: LogConsole = console
+        if console is None:
+            console = Console()
+            install_rich_traceback(console=console)
+        self.console: Console = console
         logger.remove()
         logger.configure(
             handlers=[
@@ -246,8 +255,8 @@ class Log:
         """Return the line the record was logged from with color."""
         line: int = record["line"]
         color = "#7FD6E8"
-        line = f"[bold {color}]Line {line}[/]"
-        return line
+        line_str = f"[bold {color}]Line {line}[/]"
+        return line_str
 
     @classmethod
     def _get_msg(cls, record: loguru.Record) -> str:
@@ -270,7 +279,7 @@ class Log:
             expand=False,
         )
 
-    def rich_sink(self, message: loguru.Message, console: LogConsole = console_) -> None:
+    def rich_sink(self, message: loguru.Message) -> None:
         """Log to console.
 
         Args:
@@ -290,7 +299,7 @@ class Log:
         log_table.add_row(time, file, line, level, msg)
 
         # print the log table
-        console.print(
+        self.console.print(
             log_table,
             justify="left",
             # width=int(console.width * 0.8),
@@ -324,7 +333,7 @@ class Log:
         """
         self.logger.success(msg)
 
-    def key(self, key:str, value: Any) -> None:
+    def key(self, key: str, value: Any) -> None:
         """Log to debug.log
 
         Args:
@@ -336,7 +345,7 @@ class Log:
         msg = f"{key_markup}{sep}{value_markup}"
         self.logger.debug(msg)
 
-    def key_index(self, key:str, index: int, value: Any) -> None:
+    def key_index(self, key: str, index: int, value: Any) -> None:
         """Log to debug.log
 
         Args:
@@ -349,7 +358,7 @@ class Log:
         msg = f"{key_markup}{index_markup}{sep}{value_markup}"
         self.logger.debug(msg)
 
-    def warning(self, msg: RichRenderable) -> None:
+    def warning(self, msg: str | RichRenderable) -> None:
         """Log to console.
 
         Args:
@@ -357,7 +366,7 @@ class Log:
         """
         self.logger.log("WARNING", msg)
 
-    def error(self, msg: RichRenderable) -> None:
+    def error(self, msg: str | RichRenderable) -> None:
         """Log to console.
 
         Args:
@@ -365,7 +374,7 @@ class Log:
         """
         self.logger.log("ERROR", msg)
 
-    def critical(self, msg: RichRenderable) -> None:
+    def critical(self, msg: str | RichRenderable) -> None:
         """Log to console.
 
         Args:
@@ -373,7 +382,9 @@ class Log:
         """
         self.logger.log("CRITICAL", msg)
 
-    def log(self, level: str, msg: str, verbose: bool = VERBOSE) -> None:
+    def log(
+        self, level: str, msg: str | RichRenderable, verbose: bool = VERBOSE
+    ) -> None:
         """Log to console or log file.
 
         Args:
@@ -389,13 +400,11 @@ class Log:
                 level = "DEBUG"
             self.logger.log(level, msg)
 
-    def opt(
-        self,
-        *kwargs,
-        depth: int = 0) -> "Log":
+    def opt(self, *kwargs, depth: int = 0) -> "Log":
         """Return a new logger with the specified depth offset."""
-        return self.logger.opt(depth=depth, *kwargs)
+        return self.logger.opt(depth=depth, *kwargs)  # type: ignore
 
+    @staticmethod
     def _combine_regex(*regexes: str) -> str:
         """Combine a number of regexes in to a single regex.
 
@@ -404,13 +413,7 @@ class Log:
         """
         return "|".join(regexes)
 
-    def trace(
-        *,
-        level="DEBUG",
-        depth: int=1,
-        entry: bool=True,
-        exit: bool=True):
-
+    def trace(*, level="DEBUG", depth: int = 1, entry: bool = True, exit: bool = True):
         def wrapper(func):
             name = func.__name__
 
@@ -418,30 +421,36 @@ class Log:
             def wrapped(*args, **kwargs):
                 logger_ = log.opt(depth=1)
                 if entry:
-                    logger_.log(level, "Entering '{}' (Args={}, Kwargs={})", name, args, kwargs)
+                    logger_.log(
+                        level,
+                        "Entering '{}' (Args={}, Kwargs={})",
+                        name,
+                        *args,
+                        *kwargs,
+                    )
                 result = func(*args, **kwargs)
                 if exit:
-                    logger_.log(level, "Exiting '{}' (Result={})", name, result)
+                    logger_.log(level, "Exiting '{name}' (Result={result})")
                 return result
+
             return wrapped
+
         return wrapper
 
     def disable(self) -> None:
         """Disable logging."""
         self.logger.disable("maxgradient")
-    
-    
-log = Log(console_)
+
+    def enable(self, module: str = "maxgradient") -> None:
+        """Enable logging.
+
+        Args:
+            module (str, optional): Module to enable logging for. Defaults to "maxgradient".
+        """
+        self.logger.enable(module)
 
 
-
-def debug(                                                  
-    *,
-    level="DEBUG",
-    depth: int=1,
-    entry: bool=True,
-    exit: bool=True):
-
+def debug(*, level="DEBUG", depth: int = 1, entry: bool = True, exit: bool = True):
     def wrapper(func):
         name = func.__name__
 
@@ -449,19 +458,23 @@ def debug(
         def wrapped(*args, **kwargs):
             logger_ = log.opt(depth=depth)
             if entry:
-                logger_.log(level, "Entering '{}' (Args={}, Kwargs={})", name, args, kwargs)
+                logger_.log(
+                    level, "Entering '{}' (Args={}, Kwargs={})", name, *args, *kwargs
+                )
             result = func(*args, **kwargs)
             if exit:
-                logger_.log(level, "Exiting '{}' (Result={})", name, result)
+                logger_.log(level, "Exiting '{name}' (Result={result})")
             return result
+
         return wrapped
+
     return wrapper
 
 
 def test_logger():
     """Text log handlers"""
     console_.line(2)
-    text_log = Log("DEBUG")
+    text_log = Log()
     text_log.info("Initialize DEBUG Log")
     text_log.debug("Initialize INFO Log")
     text_log.success("Initialize SUCCESS Log")
@@ -471,4 +484,5 @@ def test_logger():
 
 
 if __name__ == "__main__":
+    log = Log()
     test_logger()

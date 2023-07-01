@@ -12,10 +12,10 @@ from rich.text import Text
 
 from maxgradient._mode import Mode
 from maxgradient._rich import Rich
-from maxgradient.log import Log, LogConsole
+from maxgradient._log import Log, Console
 
-console = LogConsole()
-log = Log(console)
+console = Console()
+log = Log()
 
 
 class RGB:
@@ -33,55 +33,55 @@ class RGB:
 
     @property
     @lru_cache(maxsize=1)
-    def original(self) -> str:
+    def original(self) -> str: # type: ignore
         """Return the original RGB color string."""
         log.debug(f"Called RGB.original()")
         return self._original
 
     @original.setter
-    def original(self, rgb: str) -> None:
+    def original(self, rgb: str) -> None: # type: ignore
         """Validate and initialize the rgb value."""
         log.debug(f"Called RGB.original.setter({rgb})")
         self._original = rgb
 
     @property
     @lru_cache(maxsize=1)
-    def red(self) -> int:
+    def red(self) -> int: # type: ignore
         """Return the red component of the RGB color."""
         log.debug(f"Called RGB.red()")
         return self._red
 
     @red.setter
-    def red(self, red: int | str) -> None:
+    def red(self, red: int | str) -> None: # type: ignore
         """Set the red component of the RGB color."""
         log.debug(f"Called RGB.red({red})")
-        self._red: int = self._parse_component(red)
+        self._red: int = self._parse_component(f"red")
 
     @property
     @lru_cache(maxsize=1)
-    def green(self) -> int:
+    def green(self) -> int: # type: ignore
         """Return the green component of the RGB color."""
         log.debug(f"Called RGB.green()")
         return self._green
 
     @green.setter
-    def green(self, green: int | str) -> None:
+    def green(self, green: int | str) -> None: # type: ignore
         """Set the green component of the RGB color."""
         log.debug(f"Called RGB.green({green})")
-        self._green: int = self._parse_component(green)
+        self._green: int = self._parse_component(f"green")
 
     @property
     @lru_cache
-    def blue(self) -> int:
+    def blue(self) -> int: # type: ignore
         """Return the blue component of the RGB color."""
         log.debug(f"Called RGB.blue()")
         return self._blue
 
     @blue.setter
-    def blue(self, blue: int | str) -> None:
+    def blue(self, blue: int | str) -> None: # type: ignore
         """Set the blue component of the RGB color."""
         log.debug(f"Called RGB.blue({blue})")
-        self._blue = self._parse_component(blue)
+        self._blue = self._parse_component(f"blue")
 
     @property
     def value(self) -> str:
@@ -93,9 +93,12 @@ class RGB:
     def value(self, rgb: str) -> None:
         """Validate and initialize the rgb value."""
         log.debug(f"Called RGB.value({rgb})")
-        valid_rgb: str = self.parse(rgb)
-        if valid_rgb is not None:
-            self._value: str = valid_rgb
+        assert rgb is not None, "RGB value cannot be None"
+        parsed_rgb = self.parse(rgb)
+        if parsed_rgb is None:
+            raise ValueError(f"Invalid RGB color: {rgb}")
+        else:
+            self._value: str = parsed_rgb
             
 
     @property
@@ -123,7 +126,7 @@ class RGB:
         return Mode.RGB
 
     @staticmethod
-    def _parse_component(component: str) -> int:
+    def _parse_component(component: str|int) -> int:
         """Parse a string component to an integer."""
         log.debug(f"Called RGB._parse_component({component})")
         try:
@@ -138,9 +141,9 @@ class RGB:
         log.debug(f"Called RGB.parse({rgb})")
         rgb_match: Optional[Match] = self.REGEX.match(rgb)
         if rgb_match:
-            self.red = rgb_match.group("red")
-            self.green: str = rgb_match.group("green")
-            self.blue = rgb_match.group("blue")
+            self.red: int = int(rgb_match.group("red"))
+            self.green: int = int(rgb_match.group("green"))
+            self.blue: int = int(rgb_match.group("blue"))
             log.debug(f"Parsed RGB: {self.red}, {self.green}, {self.blue}")
 
             return f"rgb({self.red}, {self.green}, {self.blue})"
@@ -179,7 +182,7 @@ class RGB:
         """Return True if the RGB color values are equal."""
         log.debug(f"Called RGB.__eq__({other})")
         if isinstance(other, RGB):
-            return self.tuple == other.tuple
+            return self.as_tuple == other.as_tuple
         return False
 
     def __hash__(self) -> int:

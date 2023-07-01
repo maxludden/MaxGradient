@@ -3,7 +3,7 @@
 from maxgradient.color import Color, ColorParseError
 from maxgradient._mode import Mode
 from lzma import MODE_FAST
-from maxgradient.log import LogConsole
+from maxgradient._log import LogConsole
 
 
 import unittest
