@@ -1,66 +1,110 @@
 """MaxGradient CLI"""
-# pylint: disable=R0913
-from typing import Annotated, List, Optional
+# pylint: disable=R0913,W0621,W0611,C0103,E1121
 
+#  _   _       _    __        __         _    _
+# | \ | | ___ | |_  \ \      / /__  _ __| | _(_)_ __   __ _
+# |  \| |/ _ \| __|  \ \ /\ / / _ \| '__| |/ / | '_ \ / _` |
+# | |\  | (_) | |_    \ V  V / (_) | |  |   <| | | | | (_| |
+# |_| \_|\___/ \__|    \_/\_/ \___/|_|  |_|\_\_|_| |_|\__, |
+#                                                     |___/
+
+from random import choice
+from typing import Annotated, List, Optional
+from enum import Enum
+
+from rich import inspect
 from rich.text import Text
-from typer import Option, Typer
+from typer import Argument, Option, Typer, run
 
 from maxgradient._log import Log
 
 # from maxgradient._gc import GradientColor as GC
 from maxgradient.color import ColorParseError
-from maxgradient.console import Console, JustifyMethod, OverflowMethod
+from maxgradient.console import Console, OverflowMethod
 from maxgradient.gradient import Gradient
 
 log: Log = Log()
 
-APP_NAME: str = "max"
+APP_NAME: str = "gradient"
+
 app = Typer(
     name=APP_NAME,
     no_args_is_help=True,
     short_help="Print gradient colored, formatted text to the console.",
     rich_markup_mode="rich",
+    rich_help_panel=True
 )
 
 
-def rainbow_gradient() -> Gradient:
+def rainbow_help() -> Text:
     """Generate the text, `rainbow gradient`, in a rainbow gradient."""
-    return Gradient("rainbow gradient", rainbow=True, end=" ")
+    rainbow_gradient: Text = Gradient("rainbow gradient", rainbow=True, end=" ")
+    help_text: List[Text] = [
+        Text("Print text in a "),
+        rainbow_gradient,
+        Text(". Defaults to "),
+        Text("False", style="violet"),
+    ]
+    return Text.assemble(*help_text)
 
 
-@app.command("gradient")
-def gradient(
+def get_default_text() -> str:
+    return choice(
+        [
+            "Hello, World!",
+            "Gradients are pretty cool, don't you think?",
+            "Why is six afraid of seven?\n\n\n\nYou think it's because \
+                seven ate nine, but really it's because seven is a \
+                registered six offender.",
+            "8===)",
+        ]
+    )
+
+class Colors(Enum):
+    """Colors to make a gradient from."""
+    none = None
+    magenta = "magenta"
+    violet = "violet"
+    purple = "purple"
+    blue = "blue"
+    lightblue = "lightblue"
+    cyan = "cyan"
+    lime = "lime"
+    green = "lime"
+    yellow = "yellow"
+    orange = "orange"
+    red =  "red"
+
+class JustifyMethod:
+    """How to justify the gradient."""
+    default = "default"
+    left = "left"
+    center = "center"
+    right = "right"
+    full = "full"
+    
+    
+@app.callback()
+def callback():
+    """Print gradient colored, formatted text to the console."""
+
+
+@app.command()
+def main(
     text: Annotated[
         str,
-        Option(
-            "-t",
-            "--text",
-            help="[i white]The[/] [b i #E3EC84]text[/][i white] \
-        to print.[/]",
+        Argument(
+            default=get_default_text,
+            help="The [b i #E3EC84]text[/] to print. [i dim](Don't forget to quote it!)[/]",
             rich_help_panel="Gradient Options",
         ),
-    ] = "",
-    colors: Annotated[
-        Optional[str | List[str]],
-        Option(
-            "-c",
-            "--colors",
-            help="The [i]colors[/] to of the gradient.",
-            rich_help_panel="[dim lightblue]Gradient Options[/]",
-        ),
-    ] = None,
+    ],
     rainbow: Annotated[
         Optional[bool],
         Option(
             "-r",
             "--rainbow",
-            help=Text.assemble(
-                [
-                    "Print the text in a ",
-                    rainbow_gradient(),
-                    ". Much more colorful. Defaults to [b violet]False[/].",
-                ]
-            ),
+            help=rainbow_help(),
             rich_help_panel="Gradient Options",
         ),
     ] = False,
@@ -108,6 +152,7 @@ to use to generate a gradient. Defaults to [bold cyan]3[/].""",
     justify: Annotated[
         Optional[JustifyMethod],
         Option(
+            JustifyMethod.left,
             "-j",
             "--justify",
             help="The justification of the text: [dim]`[/][b #7FD6E8]left[/][dim]`[/],\
@@ -157,6 +202,14 @@ or [dim]`[/][b #7FD6E8]ignore[/][dim]`[/]. Defaults to [b i #7FD6E8]ellipsis[/][
             "-c",
             "--console",
             help="The console to print to. Defaults to [b violet]None[/].",
+        ),
+    ] = None,
+    colors: Annotated[
+        Optional[List[Colors]],
+        Argument(
+            default=Colors.none,
+            help="The [i]colors[/] to of the gradient.",
+            rich_help_panel="[dim lightblue]Gradient Options[/]",
         ),
     ] = None,
 ) -> None:
@@ -215,3 +268,9 @@ or [dim]`[/][b #7FD6E8]ignore[/][dim]`[/]. Defaults to [b i #7FD6E8]ellipsis[/][
         )
     except ColorParseError as cpe:
         console.log(f"[bold red]ERROR:[/] {cpe}")
+
+
+if __name__ == "__main__":
+    inspect(app, all=True)
+    
+    run(app)

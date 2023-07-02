@@ -17,7 +17,7 @@ from rich.traceback import install as install_traceback
 
 # from maxgradient.color import Color
 from maxgradient.gradient import Gradient
-from maxgradient.theme import GradientTheme, GradientTerminalTheme
+from maxgradient.theme import GradientTheme
 from maxgradient.color import Color
 
 RenderableType = ConsoleRenderable | RichCast | str
@@ -194,21 +194,6 @@ class Console(RichConsole, metaclass=Singleton):
         spans: Optional[List[Span]] = None,
     ) -> None:
         """Return a gradient used by the console."""
-        console_gradient = Gradient(
-            text=text,
-            colors=colors,
-            rainbow=rainbow,
-            invert=invert,
-            hues=hues,
-            color_sample=color_sample,
-            style=style,
-            justify=justify,
-            overflow=overflow,
-            no_wrap=no_wrap,
-            end=end,
-            tab_size=tab_size,
-            spans=spans,
-        )
         self.print(
             Gradient(
                 text=text,
@@ -230,23 +215,11 @@ class Console(RichConsole, metaclass=Singleton):
     @staticmethod
     def get_title() -> Text:
         """Print out `MaxConsole` in a manual gradient"""
-        letters = [
-            Text("Gr", style="bold.blue"),
-            Text("a", style="bold.lightblue"),
-            Text("d", style="bold.cyan"),
-            Text("ie", style="bold.lime"),
-            Text("n", style="bold.yellow"),
-            Text("t", style="bold.orange"),
-            Text("C", style="bold.red"),
-            Text("o", style="bold.lightblue"),
-            Text("n", style="bold.blue"),
-            Text("s", style="bold.purple"),
-            Text("o", style="bold.violet"),
-            Text("l", style="bold.magenta"),
-            Text("e", style="bold.red"),
-        ]
-        return Text.assemble(*letters)
-
+        return Gradient(
+            "GradientConsole",
+            colors=["#5f00ff", "#af00ff", "#ff00ff"],
+            style="bold italic"
+        )
     @classmethod
     def generate_example(cls) -> Text:
         """Generate an explanation of MaxConsole for demonstration."""
@@ -255,9 +228,8 @@ class Console(RichConsole, metaclass=Singleton):
             colors=["#0000ff", "#0044ff", "#1199ff", "#44bbff", "#66ffff"],
             style="bold italic"
         )
-        formatted_console = cls.get_title()
         text1 = Text(" is a custom themed terminal console class inheriting from")
-        text2 = Text(". It is a [b #af00ff]global singleton [/]class that can be \
+        text2 = Text.from_markup(". It is a [i #66EE35] global singleton [/]class that can be \
 imported and used anywhere in the project and used as a drop in replacement for "
         )
         text3 = Text(".")
@@ -273,7 +245,7 @@ imported and used anywhere in the project and used as a drop in replacement for 
 
 
 if __name__ == "__main__":
-    console = Console(record=True, width=100)
+    console = Console()
     example = console.generate_example()
     title = console.get_title()
     console.line(2)

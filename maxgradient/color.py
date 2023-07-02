@@ -18,13 +18,13 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
+from maxgradient._gc import GradientColor as GC
 from maxgradient._hex import Hex
 from maxgradient._log import Console, Log, debug
 from maxgradient._mode import Mode
 from maxgradient._rgb import RGB
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
-from maxgradient._gc import GradientColor as GC
 from maxgradient.theme import GradientTheme
 
 console = Console()
@@ -317,7 +317,7 @@ You can also visit the rich library's documentation to view all \
     def __hash__(self):
         hash_value = 0
         name = self._original
-        for index, char in enumerate(self._original):
+        for char in name:
             hash_value += ord(char)
             # log.debug(f"Hashed {char} at index {index}: hash_value = {hash_value}")
         # log.debug(f"called Color.__hash__({self._original})")
@@ -499,8 +499,8 @@ You can also visit the rich library's documentation to view all \
             str: The tinted color as a hex string.
         """
         log.debug(f"Called Color.tint({percent})")
-        tuple = self.rgb_tuple
-        red, green, blue = tuple
+        rgb_tuple = self.rgb_tuple
+        red, green, blue = rgb_tuple
 
         red_tint = int(red + (255 - red) * percent)
         red_final = f"{red_tint:02x}"
@@ -526,8 +526,8 @@ You can also visit the rich library's documentation to view all \
             str: The darkened color as a hex string.
         """
         log.debug(f"Called Color.dark({percent})")
-        tuple = self.rgb_tuple
-        red, green, blue = tuple
+        rgb_tuple = self.rgb_tuple
+        red, green, blue = rgb_tuple
 
         dark_red = int(red + (0 - red) * percent)
         red_final = f"{dark_red:02x}"

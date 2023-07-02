@@ -10,9 +10,8 @@ dependencies = [
     "loguru>=0.7.0",
     "rich>=13.4.2",
     "typer-cli>=0.0.1",
-    "pylint>=2.17.4",
     "nptyping>=2.5.0",
-    "typer[all]>=0.9.0",
+    "typer>=0.9.0",
     "numpy>=1.25.0",
 ]
 requires-python = ">=3.10"
@@ -23,12 +22,10 @@ license = {text = "MIT"}
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-[tool.pdm.scripts]
-gradient = "maxgradient.cli.main:app"
-
-[tool.pdm.hooks]
-pre_debug = "pdm-hooks/pre_debug.py"
-
 [tool.pdm.dev-dependencies]
 dev = [
+    "snoop>=0.4.3",
+    "cheap-repr>=0.5.1",
+    "birdseye>=0.9.4",
+    "pylint>=2.17.4",
 ]

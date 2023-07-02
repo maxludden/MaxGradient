@@ -4,17 +4,15 @@
     used as a drop in replacement for [italic bold #00ffff]rich.console.Console[/].
     """
 # pylint: disable=W0604
-from typing_extensions import Annotated
-from os import environ
-from sys import platform, stdout, stderr
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-
-from rich.text import Text as RichText
 from rich.console import Console as RichConsole
+from rich.panel import Panel
+from rich.table import Table, Column
+from rich.columns import Columns
+from rich.highlighter import RegexHighlighter, ReprHighlighter
+from rich.style import Style, StyleType
 
 from maxgradient.theme import GradientTheme
 from maxgradient.color import Color, ColorParseError
 from maxgradient.console import Console, JustifyMethod, OverflowMethod
 from maxgradient.gradient import Gradient, Text
-from maxgradient._log import Log, Console as LogConsole, LogHighlighter
+from maxgradient._log import Log, LogHighlighter
