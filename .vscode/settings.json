@@ -39,6 +39,9 @@
     "editor.trimAutoWhitespace": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
+    },
+    "analysis.diagnosticSeverityOverrides": {
+      "reportGeneralTypeIssues": "none"
     }
   },
   "git.ignoredRepositories": [

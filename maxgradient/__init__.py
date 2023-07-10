@@ -15,4 +15,4 @@ from maxgradient.theme import GradientTheme
 from maxgradient.color import Color, ColorParseError
 from maxgradient.console import Console, JustifyMethod, OverflowMethod
 from maxgradient.gradient import Gradient, Text
-from maxgradient._log import Log, LogHighlighter
+from maxgradient.log import Log, LogHighlighter

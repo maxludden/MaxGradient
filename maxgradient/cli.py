@@ -16,7 +16,7 @@ from rich import inspect
 from rich.text import Text
 from typer import Argument, Option, Typer, run
 
-from maxgradient._log import Log
+from maxgradient.log import Log
 
 # from maxgradient._gc import GradientColor as GC
 from maxgradient.color import ColorParseError

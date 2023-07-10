@@ -8,7 +8,7 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient._log import Log, Console
+from maxgradient.log import Log, Console
 
 console = Console()
 log = Log()

@@ -16,13 +16,12 @@ from rich.highlighter import ReprHighlighter
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
-from snoop import snoop
 
-from maxgradient._log import Console as LogConsole
-from maxgradient._log import Log
 from maxgradient._mode import Mode
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
+from maxgradient.log import Console as LogConsole
+from maxgradient.log import Log
 from maxgradient.theme import GradientTerminalTheme, GradientTheme
 
 console = LogConsole()
@@ -131,39 +130,38 @@ class GradientColor:
     @staticmethod
     def get_title() -> Text:
         """Generate a colored text title."""
-        letter_g = Text("G", style=Style(color="#ff00ff", bold=True))
+        letter_g1 = Text("G", style=Style(color="#ff00ff", bold=True))
         letter_r1 = Text("r", style=Style(color="#cf00ff", bold=True))
-        letter_a = Text("a", style=Style(color="#af00ff", bold=True))
-        letter_d = Text("d", style=Style(color="#8f00ff", bold=True))
-        letter_i = Text("i", style=Style(color="#6f00ff", bold=True))
-        letter_e = Text("e", style=Style(color="#4f00ff", bold=True))
-        letter_n = Text("n", style=Style(color="#2f00ff", bold=True))
-        letter_t = Text("t", style=Style(color="#0000ff", bold=True))
-        letter_c = Text("C", style=Style(color="#002fff", bold=True))
-        letter_o = Text("o", style=Style(color="#004fff", bold=True))
-        letter_l = Text("l", style=Style(color="#006fff", bold=True))
+        letter_a1 = Text("a", style=Style(color="#af00ff", bold=True))
+        letter_d1 = Text("d", style=Style(color="#8f00ff", bold=True))
+        letter_i1 = Text("i", style=Style(color="#6f00ff", bold=True))
+        letter_e1 = Text("e", style=Style(color="#4f00ff", bold=True))
+        letter_n1 = Text("n", style=Style(color="#2f00ff", bold=True))
+        letter_t1 = Text("t", style=Style(color="#0000ff", bold=True))
+        letter_c1 = Text("C", style=Style(color="#002fff", bold=True))
+        letter_o1 = Text("o", style=Style(color="#004fff", bold=True))
+        letter_l1 = Text("l", style=Style(color="#006fff", bold=True))
         letter_o2 = Text("o", style=Style(color="#0088ff", bold=True))
         letter_r2 = Text("r", style=Style(color="#00aaff", bold=True))
-        letter_s = Text("s", style=Style(color="#00ccff", bold=True))
+        letter_s1 = Text("s", style=Style(color="#00ccff", bold=True))
         title = [
-            letter_g,
+            letter_g1,
             letter_r1,
-            letter_a,
-            letter_d,
-            letter_i,
-            letter_e,
-            letter_n,
-            letter_t,
-            letter_c,
-            letter_o,
-            letter_l,
+            letter_a1,
+            letter_d1,
+            letter_i1,
+            letter_e1,
+            letter_n1,
+            letter_t1,
+            letter_c1,
+            letter_o1,
+            letter_l1,
             letter_o2,
             letter_r2,
-            letter_s,
+            letter_s1,
         ]
         return Text.assemble(*title)
 
     @classmethod
     def color_table(cls) -> Table:
         """Generate a table of gradient colors."""
-        

@@ -6,7 +6,7 @@ from typing import List
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient._log import Log, Console
+from maxgradient.log import Log, Console
 from maxgradient.color import Color
 
 console = Console()

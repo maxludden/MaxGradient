@@ -5,20 +5,23 @@ from datetime import datetime
 from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
 
 from rich._log_render import FormatTimeCallable
+from rich.align import AlignMethod
 from rich.console import Console as RichConsole
-from rich.console import ConsoleRenderable, RichCast
+from rich.console import ConsoleRenderable, Group, RenderResult, RichCast
 from rich.emoji import EmojiVariant
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
 from rich.style import Style, StyleType
-from rich.text import Span, Text
+from rich.text import Span, Text, TextType
 from rich.theme import Theme
 from rich.traceback import install as install_traceback
+
+from maxgradient.color import Color
 
 # from maxgradient.color import Color
 from maxgradient.gradient import Gradient
 from maxgradient.theme import GradientTheme
-from maxgradient.color import Color
+from maxgradient.rule import GradientRule, Thickness
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
@@ -212,34 +215,52 @@ class Console(RichConsole, metaclass=Singleton):
             )
         )
 
+    def gradient_rule(
+        self,
+        title: TextType = "",
+        *,
+        thickness: Thickness = "thin",
+        end: str = "\n",
+        align: AlignMethod = "center",
+    ) -> None:
+        """Draw a line with optional centered title.
+
+        Args:
+            title (str, optional): Text to render over the rule. Defaults to "".
+            characters (str, optional): Character(s) to form the line. Defaults to "─".
+            style (str, optional): Style of line. Defaults to "rule.line".
+            align (str, optional): How to align the title, one of "left", "center", or "right". Defaults to "center".
+        """
+        from maxgradient.rule import GradientRule
+
+        rule = GradientRule(title=title, thickness=thickness, end="\n", align=align)
+        self.print(rule)
+
     @staticmethod
     def get_title() -> Text:
         """Print out `MaxConsole` in a manual gradient"""
         return Gradient(
             "GradientConsole",
             colors=["#5f00ff", "#af00ff", "#ff00ff"],
-            style="bold italic"
+            style="bold italic",
         )
+
     @classmethod
     def generate_example(cls) -> Text:
         """Generate an explanation of MaxConsole for demonstration."""
         rich = Gradient(
             "rich.console.Console",
             colors=["#0000ff", "#0044ff", "#1199ff", "#44bbff", "#66ffff"],
-            style="bold italic"
+            style="bold italic",
         )
         text1 = Text(" is a custom themed terminal console class inheriting from")
-        text2 = Text.from_markup(". It is a [i #66EE35] global singleton [/]class that can be \
+        text2 = Text.from_markup(
+            ". It is a [i #66EE35] global singleton [/]class that can be \
 imported and used anywhere in the project and used as a drop in replacement for "
         )
         text3 = Text(".")
         combine_explanation = Text.assemble(
-            cls.get_title(),
-            text1,
-            rich,
-            text2,
-            rich,
-            text3
+            cls.get_title(), text1, rich, text2, rich, text3
         )
         return combine_explanation
 

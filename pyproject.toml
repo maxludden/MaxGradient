@@ -9,10 +9,10 @@ authors = [
 dependencies = [
     "loguru>=0.7.0",
     "rich>=13.4.2",
-    "typer-cli>=0.0.1",
     "nptyping>=2.5.0",
-    "typer>=0.9.0",
     "numpy>=1.25.0",
+    "sh>=2.0.4",
+    "lorem-text>=2.1",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -23,9 +23,10 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.dev-dependencies]
-dev = [
-    "snoop>=0.4.3",
-    "cheap-repr>=0.5.1",
-    "birdseye>=0.9.4",
-    "pylint>=2.17.4",
-]
+dev = []
+
+[tool.pyright]
+include = ["maxgradient"]
+ignore = ["tests"]
+pythonVersion = "3.11"
+reportGeneralTypeIssues = false

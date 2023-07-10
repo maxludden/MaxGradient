@@ -20,7 +20,7 @@ from rich.text import Text
 
 from maxgradient._gc import GradientColor as GC
 from maxgradient._hex import Hex
-from maxgradient._log import Console, Log, debug
+from maxgradient.log import Console, Log, debug
 from maxgradient._mode import Mode
 from maxgradient._rgb import RGB
 from maxgradient._rich import Rich
@@ -248,7 +248,7 @@ You can also visit the rich library's documentation to view all \
 
     @property
     @lru_cache
-    def name(self) -> str:
+    def name(self) -> str: 
         """Return the name of the color."""
         log.debug("Called Color.name.getter()")
         return self._name

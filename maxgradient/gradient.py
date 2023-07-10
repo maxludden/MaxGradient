@@ -14,8 +14,9 @@ from rich.layout import Layout
 from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.text import Span, Text
+from rich.table import Table
 
-from maxgradient._log import Console, Log
+from maxgradient.log import Console, Log
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient._gc import GradientColor as GC
@@ -125,6 +126,8 @@ class Gradient(Text):
         self.hues: int = hues or 3
         self.colors: List[Color] = self.get_colors(colors, rainbow, invert)
         self.hues = len(self.colors)
+        # color_msg = f"Colors: {[color.hex for color in self.colors]}"
+        # console.log(color_msg)
 
         gradient_substring: Text = self.generate_substrings()
         console.line(2)
@@ -133,7 +136,7 @@ class Gradient(Text):
     # @snoop(watch_explode=["colors", "self.colors"])
     def get_colors(
         self,
-        colors: Optional[str | List[Color | Tuple | str]],
+        input_colors: Optional[str | List[Color | Tuple | str]],
         rainbow: bool,
         invert: bool,
     ) -> List[Color]:
@@ -150,34 +153,86 @@ class Gradient(Text):
         Returns:
             List[Color]: A list of colors for the gradient.
         """
-        if isinstance(colors, str):
-            return self.mono(colors)
+        if rainbow:
+            self.hues = 10
+            color_list = ColorList(self.hues, invert).color_list
+            assert len(color_list) == self.hues, f"Color list length: {len(color_list)}"
+            colors = color_list
+            if self.validate_colors(colors):
+                return colors
+        if isinstance(input_colors, str):
+            return self.mono(input_colors)
+        elif input_colors is not None:
+            colors: List[Color] = []
+            for color in input_colors:
+                try:
+                    color = Color(color)
+                    colors.append(color)
+                except ColorParseError as error:
+                    raise ColorParseError(
+                        f"Can't parse color: {color}"
+                    ) from error
+            if self.validate_colors(colors):
+                    return colors
         else:
-            if rainbow:
-                self.hues = 10
-                color_list = ColorList(self.hues, invert).color_list
-                colors_ = color_list
-                if self.validate_colors(colors_):
-                    return colors_
+            color_list = ColorList(self.hues, invert).color_list
+            colors = color_list[: self.hues]
+            if self.validate_colors(colors):
+                return colors
 
-            else:
-                if colors is not None:
-                    colors_: List[Color] = []
-                    for color in colors:
-                        try:
-                            color = Color(color)
-                            colors_.append(color)
-                        except ColorParseError as error:
-                            raise ColorParseError(
-                                f"Can't parse color: {color}"
-                            ) from error
-                    if self.validate_colors(colors_):
-                        return colors_
-                else:
-                    color_list = ColorList(self.hues, invert).color_list
-                    colors_ = color_list[: self.hues]
-                    if self.validate_colors(colors_):
-                        return colors_
+    def generate_substrings(self) -> List[Span]:
+        """Generate gradient spans.
+
+        Returns:
+            List[Span]: The gradient spans.
+        """
+        text = self.get_text()
+        gradient_string = Text()
+        indexes: List[List[int]] = self.get_indexes()
+        substrings: List[str] = self.get_substrings(indexes, text)
+        #______________________
+        substrings_table = Table("Index", "Substring", "Length", expand=False, highlight=True)
+
+        for index, substring in enumerate(substrings):
+            gradient_length = len(substring)
+            substring = Text(substring)
+            
+            substrings_table.add_row(
+                str(index),
+                substring,
+                str(gradient_length),
+            )
+
+
+            if index < self.hues - 1:
+                color1 = self.colors[index]
+                r1, g1, b1 = color1.rgb_tuple
+                color2 = self.colors[index + 1]
+                r2, g2, b2 = color2.rgb_tuple
+                dr = r2 - r1
+                dg = g2 - g1
+                db = b2 - b1
+
+            for subindex in range(gradient_length):
+                blend = subindex / gradient_length
+                red = int(r1 + (blend * dr))  # type: ignore
+                green = int(g1 + (blend * dg))  # type: ignore
+                blue = int(b1 + (blend * db))  # type: ignore
+                color = f"#{red:02X}{green:02X}{blue:02X}"
+                substring.stylize(color, subindex, subindex + 1)
+
+            gradient_string = Text.assemble(
+                gradient_string,
+                substring,
+                style=self.style,
+                justify=self.justify,
+                overflow=self.overflow,
+                no_wrap=self.no_wrap,
+                end=self.end,
+                tab_size=self.tab_size,
+            )
+            console.print(substrings_table)
+        return gradient_string
 
     def mono(self, color: str | Color) -> List[Color]:
         """Create a list of monochromatic hues from a color.
@@ -216,11 +271,14 @@ class Gradient(Text):
     def validate_colors(self, colors: Optional[List[Color]]) -> bool:
         """Validate self.colors to ensure that it is a list of colors."""
         valid: bool = True
+        if colors is None:
+            return False
         for color in colors:
             if not isinstance(color, Color):
                 return False
         if valid:
             return True
+        return False
 
     def get_indexes(self, verbose: bool = False) -> List[List[int]]:
         """Generate the indexes for the gradient substring.
@@ -240,6 +298,7 @@ class Gradient(Text):
                 log.info(msg)
         return indexes
 
+    # Called from get __init__
     def get_substrings(self, indexes: List[List[int]], text: str) -> List[str]:
         """Generate a list of substrings for the gradient.
 
@@ -271,48 +330,7 @@ class Gradient(Text):
         substring = "".join(substring_list)
         return substring
 
-    def generate_substrings(self) -> List[Span]:
-        """Generate gradient spans.
-
-        Returns:
-            List[Span]: The gradient spans.
-        """
-        text = self.get_text()
-        gradient_string = Text()
-        indexes: List[List[int]] = self.get_indexes()
-        substrings: List[str] = self.get_substrings(indexes, text)
-        for index, substring in enumerate(substrings):
-            gradient_length = len(substring)
-            substring = Text(substring)
-
-            if index < self.hues - 1:
-                color1 = self.colors[index]
-                r1, g1, b1 = color1.rgb_tuple
-                color2 = self.colors[index + 1]
-                r2, g2, b2 = color2.rgb_tuple
-                dr = r2 - r1
-                dg = g2 - g1
-                db = b2 - b1
-
-            for subindex in range(gradient_length):
-                blend = subindex / gradient_length
-                red = int(r1 + (blend * dr))  # type: ignore
-                green = int(g1 + (blend * dg))  # type: ignore
-                blue = int(b1 + (blend * db))  # type: ignore
-                color = f"#{red:02X}{green:02X}{blue:02X}"
-                substring.stylize(color, subindex, subindex + 1)
-
-            gradient_string = Text.assemble(
-                gradient_string,
-                substring,
-                style=self.style,
-                justify=self.justify,
-                overflow=self.overflow,
-                no_wrap=self.no_wrap,
-                end=self.end,
-                tab_size=self.tab_size,
-            )
-        return gradient_string
+    
 
     def get_start_indexes(self, indexes: List[List[int]]) -> List[int]:
         """Get the start indexes for the gradient substring.

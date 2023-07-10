@@ -160,15 +160,12 @@ cython_debug/
 #.idea/
 .pdm-python
 .templates/$$var_template/$$var_filename.js
-.gitignore
 .templates/template-sample/index.js
 .templates/template-sample-react-component/index.jsx
-.gitignore
 .templates/.editorconfig
 template.config.js
 .gitignore
 .templates/template-sample-react-component/index.scss
-styles/.DS_Store
 styles/test.html
 maxgradient.code-workspace
 .DS_Store
@@ -176,3 +173,5 @@ maxgradient.code-workspace
 */.DS_Store?
 */.Spotlight-V100
 */.Trashes
+rich_progress.py
+__console.py
