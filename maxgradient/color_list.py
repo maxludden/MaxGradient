@@ -5,6 +5,7 @@ from typing import List
 
 from rich.table import Table
 from rich.text import Text
+from snoop import snoop
 
 from maxgradient.log import Log, Console
 from maxgradient.color import Color
@@ -102,6 +103,91 @@ class ColorList(list):
         return table
 
 
+class TintList(List):
+    """Generate a list of Tints for use in gradient generation."""
+    tints: List[str] = [
+        "#ffffff",
+        "#dddddd",
+        "#bbbbbb",
+        "#999999",
+        "#777777",
+        "#999999",
+        "#aaaaaa",
+        "#cccccc",
+        "#eeeeee",
+        "#ffffff"
+    ]
+
+    def __init__(self, hues: int = 3, invert: bool = False):
+        super().__init__()
+        self.tint_list: List[Color] = []
+        start_index = randint(0, 9)
+        random_tints: List[str] = []
+        step = -1 if invert else 1
+        for index in range(10):
+            current = start_index + (index * step)
+            if current > 9:
+                current -= 10
+            if current < 0:
+                current += 10
+            random_tints.append(self.tints[current])
+        tint_cycle = cycle(random_tints)
+        for _ in range(hues):
+            tint = Color(next(tint_cycle))
+            self.tint_list.append(tint)
+            if tint is None:
+                break
+        # return self.color_list
+
+    def __call__(self):
+        return self.tint_list
+
+    def __getitem__(self, index):
+        return self.tint_list[index]
+
+    def __len__(self):
+        return len(self.tint_list)
+
+    def reverse(self):
+        self.tint_list.reverse()
+
+    def get_first_color(self):
+        """Return the first color in the list."""
+        return self.tint_list[0]
+
+    def get_last_color(self):
+        """Return the last color in the list."""
+        return self.tint_list[-1]
+
+
+    @classmethod
+    def tint_title(cls) -> Text:
+        """Returns `ColorList` title with colors applied."""
+        title = [
+            Text("T", style="bold #ffffff"),
+            Text("i", style="bold #eeeeee"),
+            Text("n", style="bold #dddddd"),
+            Text("t", style="bold #cccccc"),
+            Text("L", style="bold #bbbbbb"),
+            Text("i", style="bold #aaaaaa"),
+            Text("s", style="bold #999999"),
+            Text("t", style="bold #888888")
+        ]
+        return Text.assemble(*title)
+
+    def __rich__(self) -> Table:
+        table = Table(
+            title=self.tint_title(),
+            show_header=False,
+            expand=False,
+            padding=(0, 1),
+        )
+        for tint in self.tint_list:
+            table.add_row(
+                Text(str(tint._original).capitalize(), style=f"bold {tint.bg_style}")
+            )
+        return table
+
 if __name__ == "__main__":
     color_list = ColorList(invert=True, hues=10)
     console.line(2)
@@ -111,5 +197,16 @@ if __name__ == "__main__":
     last_color_color = f"[{last_color.style}]{last_color.name.capitalize()}[/]"
     console.print(
         f"[{last_color.style}]Last Color:[/] {last_color_color}",
+        justify="center",
+    )
+
+    tint_list = TintList(hues=10)
+    console.line(2)
+    console.print(tint_list, justify="center")
+
+    last_tint = tint_list.get_last_color()
+    last_tint_color = f"[{last_tint.style}]{last_tint._original.capitalize()}[/]"
+    console.print(
+        f"[{last_tint.style}]Last Tint:[/] {last_tint_color}",
         justify="center",
     )

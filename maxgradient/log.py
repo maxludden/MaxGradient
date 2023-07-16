@@ -28,6 +28,15 @@ FORMAT = "{time:hh:mm:ss:SSS A} | {file.name: ^13} |\
 VERBOSE: bool = False
 
 
+def _combine_regex(*regexes: str) -> str:
+    """Combine a number of regexes in to a single regex.
+
+    Returns:
+        str: New regex with all regexes ORed together.
+    """
+    return "|".join(regexes)
+
+
 class Singleton(type):
     """A metaclass to create a single global MaxConsole instance."""
 
@@ -39,54 +48,21 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class LogHighlighter(RegexHighlighter):
+class ColorHighlighter(RegexHighlighter):
     """Apply style to anything that looks like an email."""
 
     base_style = "bold."
     highlights = [
-        r"(?P<magenta>magenta)",
-        r"(?P<magenta>#[Ff]0[Ff])",
-        r"(?P<magenta>#[Ff]{2}00[Ff]{2})",
-        r"(?P<magenta>r?g?b?\(255, ?0, ?255\)",
-        r"(?P<violet>violet)",
-        r"(?P<violet>#[Aa]0[Ff])",
-        r"(?P<violet>#[Aa][Ff]{2}00[Ff]{2})",
-        r"(?P<violet>r?g?b?\(175, ?0, ?255\)",
-        r"(?P<purple>purple)",
-        r"(?P<purple>#50[Ff])",
-        r"(?P<purple>#5[Ff]00[Ff]{2})",
-        r"(?P<purple>r?g?b?\(95, ?0, ?255\)",
-        r"(?P<blue>blue)",
-        r"(?P<blue>#00[Ff])",
-        r"(?P<blue>#0{4}[Ff]{2})",
-        r"(?P<blue>r?g?b?\(0, ?0, ?255\)",
-        r"(?P<lightblue>lightblue)",
-        r"(?P<lightblue>#08f)",
-        r"(?P<lightblue>#0088[Ff]{2})",
-        r"(?P<lightblue>r?g?b?\(0, ?136, ?255\)",
-        r"(?P<cyan>cyan)",
-        r"(?P<cyan>#0[Ff]{2})",
-        r"(?P<cyan>#00[Ff]{4})",
-        r"(?P<cyan>r?g?b?\(0, ?255, ?255\)",
-        r"(?P<lime>lime)",
-        r"(?P<green>#0[Ff]0)",
-        r"(?P<lime>#00[Ff]{2}00)",
-        r"(?P<lime>r?g?b?\(0, ?255, ?0\)",
-        r"(?P<green>green)",
-        r"(?P<green>#0[Ff]0)",
-        r"(?P<green>#00[Ff]{2}00)",
-        r"(?P<green>r?g?b?\(0, ?255, ?0\)",
-        r"(?P<yellow>yellow)",
-        r"(?P<yellow>#f[Ff]{2}0)",
-        r"(?P<yellow>#[Ff]{4}00)",
-        r"(?P<yellow>r?g?b?\(255, ?255, ?0\)",
-        r"(?P<orange>orange)",
-        r"(?P<orange>#[Ff]80)",
-        r"(?P<orange>r?g?b?\(255, ?136, ?0\)",
-        r"(?P<red>red)",
-        r"(?P<red>#[Ff]00)",
-        r"(?P<red>#[Ff]{2}0{4}",
-        r"(?P<red>r?g?b?\(255, ?0, ?0\)",
+        r"(?P<magenta>magenta|#[Ff]0[Ff]|#[Ff]{2}00[Ff]{2}|r?g?b?\(255, ?0, ?255\))",
+        r"(?P<purple>purple|#50[Ff]|#5[Ff]00[Ff]{2}|r?g?b?\(95, ?0, ?255\))",
+        r"(?P<blue>blue|#00[Ff]|#0{4}[Ff]{2}|r?g?b?\(0, ?0, ?255\))",
+        r"(?P<lightblue>lightblue|#08[Ff]|#0088[Ff]{2}|r?g?b?\(0, ?136, ?255\))",
+        r"(?P<cyan>cyan|#0[Ff]{2}|#00[Ff]{4}|r?g?b?\(0, ?255, ?255\))",
+        r"(?P<line>lime|#0[Ff]0|#00[Ff]{2}00|r?g?b?\(0, ?255, ?0\))",
+        r"(?P<green>green|#0[Ff]0|#00[Ff]{2}00|r?g?b?\(0, ?255, ?0\))",
+        r"(?P<yellow>yellow|#f[Ff]{2}0|#[Ff]{4}00|r?g?b?\(255, ?255, ?0\))",
+        r"(?P<orange>orange|#[Ff]80|#[Ff]{2}8800|r?g?b?\(255, ?136, ?0\))",
+        r"(?P<red>red|#[Ff]00|#[Ff]{2}0{4}|r?g?b?\(255, ?0, ?0\))",
     ]
 
 
@@ -98,7 +74,7 @@ class Console(Console, metaclass=Singleton):
     def __init__(self) -> None:
         super().__init__(
             theme=GradientTheme(),
-            highlighter=LogHighlighter(),
+            highlighter=ColorHighlighter(),
             stderr=True,
             tab_size=4,
         )

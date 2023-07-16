@@ -12,12 +12,12 @@ from rich.style import Style, StyleType
 from rich.table import Column, Table
 
 # from maxgradient.theme import GradientTheme
-from .color import Color, ColorParseError
-from .color_list import ColorList
-from .console import Console, JustifyMethod, OverflowMethod
-from .gradient import Gradient, Text
-from .log import ColorHighlighter, Log
-from .rule import Rule, Thickness
+from maxgradient.color import Color, ColorParseError
+from maxgradient.color_list import ColorList
+from maxgradient.console import Console, JustifyMethod, OverflowMethod
+from maxgradient.gradient import Gradient, Text
+from maxgradient.log import ColorHighlighter, Log
+from maxgradient.rule import Rule, Thickness
 
 __all__ = [
     "Color",

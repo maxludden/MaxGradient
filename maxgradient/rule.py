@@ -1,48 +1,72 @@
-from enum import Enum
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, Iterable
+from pathlib import Path
+from io import StringIO
+from rich.console import Console
+import re
 
 from rich.align import AlignMethod
 from rich.cells import cell_len, set_cell_size
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.jupyter import JupyterMixin
 from rich.measure import Measurement
-from rich.style import Style
+from rich.style import Style, StyleType
 from rich.text import Text
+from rich.rule import Rule as RichRule
+from rich.segment import Segment
+from snoop import snoop
+import birdseye
+from cheap_repr import normal_repr, register_repr
 
-from maxgradient.color_list import ColorList
+from maxgradient.color_list import ColorList, TintList
 from maxgradient.gradient import Gradient
-from maxgradient.log import Log
+from maxgradient.color import Color, ColorParseError
+from maxgradient.log import Log, ColorHighlighter
+from maxgradient.theme import GradientTheme
+
 
 Thickness = Literal["thin", "medium", "thick"]
+
 console = Console()
 log = Log
 
 
-class GradientRule(JupyterMixin):
+THIN_REGEX = re.compile(r"(─+)")
+MEDIUM_REGEX = re.compile(r"(━+)")
+THICK_REGEX = re.compile(r"(█+)")
+
+class Rule(JupyterMixin):
     """A console renderable to draw a horizontal rule (line).
 
     Args:
         title (Union[str, Text], optional): Text to render in the rule. Defaults to "".
-        characters (str, optional): Character(s) used to draw the line. Defaults to "─".
-        style (StyleType, optional): Style of Rule. Defaults to "rule.line".
+        gradient (bool, optional): Whether to use gradient colors. Defaults to True.
+        thickness (Thickness, optional): Thickness of the rule. Defaults to "medium".
         end (str, optional): Character at end of Rule. defaults to "\\\\n"
         align (str, optional): How to align the title, one of "left", "center", or "right". Defaults to "center".
     """
-
+    # @spy
     def __init__(
         self,
         title: Union[str, Text] = "",
         *,
-        thickness: Thickness = "thin",
-        characters: Optional[str] = None,
+        gradient: bool = True,
+        thickness: Thickness = "medium",
         end: str = "\n",
         align: AlignMethod = "center",
     ) -> None:
+        self.gradient = gradient
         if thickness not in ["thin", "medium", "thick"]:
             raise ValueError(
                 f"thickness must be one of 'thin', 'medium', or 'thick' (not {thickness!r})"
             )
-        self.set_thickness = thickness
+        self.thickness = thickness
+        if self.thickness == "thin":
+            self.characters = "─"
+        elif self.thickness == "medium":
+            self.characters = "━"
+        elif self.thickness == "thick":
+            self.characters = "█"
+
 
         if cell_len(self.characters) < 1:
             raise ValueError(
@@ -56,10 +80,14 @@ class GradientRule(JupyterMixin):
         self.thickness = thickness
         self.end = end
         self.align = align
+        color_list = ColorList(5)
+        self.left_colors = [color_list[0], color_list[1], color_list[2]]
+        self.right_colors = [color_list[2], color_list[3], color_list[4]]
 
     def __repr__(self) -> str:
         return f"Rule({self.title!r}, {self.characters!r})"
 
+    # @spy
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
@@ -73,55 +101,87 @@ class GradientRule(JupyterMixin):
 
         chars_len = cell_len(characters)
         if not self.title:
-            yield self._rule_line(chars_len, width)
+            color_list = ColorList(5)
+            yield Gradient(self._rule_line(chars_len, width), colors=[
+                color_list[0], color_list[1], color_list[2], color_list[3], color_list[4]
+                ]
+            )
             return
 
         if isinstance(self.title, Text):
-            title_text = self.title
+            self.title_text = self.title
         else:
-            title_text = console.render_str(self.title, style="rule.text")
+            self.title_text = console.render_str(self.title, style="rule.text")
 
-        title_text.plain = title_text.plain.replace("\n", " ")
-        title_text.expand_tabs()
+        self.title_text.plain = self.title_text.plain.replace("\n", " ")
+        self.title_text.expand_tabs()
 
         required_space = 4 if self.align == "center" else 2
         truncate_width = max(0, width - required_space)
+
+        #/ No Title
         if not truncate_width:
             yield self._rule_line(chars_len, width)
             return
 
         rule_text = Text(end=self.end)
         if self.align == "center":
-            title_text.truncate(truncate_width, overflow="ellipsis")
-            side_width = (width - cell_len(title_text.plain)) // 2
-            left = Gradient(characters * (side_width // chars_len + 1))
-            left.truncate(side_width - 2)
-            right_length = width - cell_len(left.plain) - cell_len(title_text.plain)
-            right = Gradient(characters * (side_width // chars_len + 1))
-            right.truncate(right_length - 1)
-            rule_text.append(left.plain + " ")
-            rule_text.append(title_text)
-            rule_text.append(" " + right.plain)
+            rule_text = self.center_rule(rule_text,truncate_width,chars_len, width)
         elif self.align == "left":
-            title_text.truncate(truncate_width, overflow="ellipsis")
-            rule_text.append(title_text)
+            self.title_text.truncate(truncate_width, overflow="ellipsis")
+            rule_text.append(self.title_text)
             rule_text.append(" ")
-            rule_text.append(characters * (width - rule_text.cell_len))
+            if self.gradient:
+                rule_text.append(Gradient(characters * (width - self.title_text.cell_len - 1),
+                        colors=self.right_colors))
+            else:
+                rule_text.append(characters * (width - rule_text.cell_len))
         elif self.align == "right":
-            title_text.truncate(truncate_width, overflow="ellipsis")
-            rule_text.append(characters * (width - title_text.cell_len - 1))
+            self.title_text.truncate(truncate_width, overflow="ellipsis")
+            rule_text.append(Gradient(characters * (width - self.title_text.cell_len - 1),
+                    colors=self.left_colors))
             rule_text.append(" ")
-            rule_text.append(title_text)
+            rule_text.append(self.title_text)
 
         rule_text.plain = set_cell_size(rule_text.plain, width)
+        # console.out(f"Rule3:\n{rule_text}", end="")
         yield rule_text
 
+    # @spy
     def _rule_line(self, chars_len: int, width: int) -> Text:
-        rule_text = Text(self.characters * ((width // chars_len) + 1))
+        rule_text = Gradient(self.characters * ((width // chars_len) + 1),
+            colors=self.left_colors)
         rule_text.truncate(width)
         rule_text.plain = set_cell_size(rule_text.plain, width)
         return rule_text
 
+    def center_rule(self, rule_text: Text, truncate_width: int, chars_len: int, width: int) -> Text:
+        """Generate a centered rule.
+    
+        Args:
+            rule_text (Text): Text of the rule.
+            truncate_width (int): Width of the truncated rule.
+            chars_len (int): Width of the rule characters.
+            width (int): Width of the rule.
+        """
+        self.title_text.truncate(truncate_width, overflow="ellipsis")
+        self.side_width = (width - cell_len(self.title_text.plain)) // 2
+        if self.gradient:
+            rule_text.append(Gradient(self.characters * (self.side_width // chars_len + 1),
+                colors=self.left_colors, end = ""))
+        else:
+            rule_text.append(Text(self.characters * (self.side_width // chars_len + 1), end = ""))
+        rule_text.append(" ")
+        rule_text.append(self.title_text)
+        rule_text.append(" ")
+        if self.gradient:
+            rule_text.append(Gradient(text = self.characters * (self.side_width // chars_len + 1),
+                colors=self.right_colors, end = " "))
+        else:
+            rule_text.append(Text(self.characters * (self.side_width // chars_len + 1), end = " "))
+        rule_text.truncate(width)
+        return rule_text
+    # @spy
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:
@@ -132,6 +192,7 @@ class GradientRule(JupyterMixin):
         """Thickness of the rule line."""
         return self._thickness
 
+    # @spy
     @thickness.setter
     def thickness(self, thickness: Thickness) -> None:
         if thickness not in ("thin", "medium", "thick"):
@@ -142,35 +203,86 @@ class GradientRule(JupyterMixin):
 
     @property
     def characters(self) -> str:
-        """Retrieves the character(s) used to draw the rule line."""
-        return self.characters
+        """Characters used to draw the rule."""
+        return self._characters
 
     @characters.setter
-    def characters(self) -> None:
-        """Character(s) used to draw the line.
+    def characters(self, characters: str) -> None:
+        """Set or generate the characters to draw the rule."""
+        # log.debug(msg=f"Called Rule.characters.setter with {characters!r}")
+        if characters is not None:
+            self._characters = characters
+            return
+        else:
+            if self.thickness == "thin":
+                self.characters = "─"
+            elif self.thickness == "medium":
+                self.characters = "━"
+            elif self.thickness == "thick":
+                self.characters = "█"
+            log.debug(f"Rule.characters: {self.characters!r}")
 
-        Notes: Characters.setter() must be called after thickness.setter() to ensure that the correct characters are used.
-        """
-        log.debug(f"Called rule.characters()")
-        if self.thickness == "thin":
-            self.characters = "─"
-        elif self.thickness == "medium":
-            self.characters = "━"
-        else:  # if thickness == "thick"
-            self.characters = "█"
+    @classmethod
+    def rule_example(cls) -> None:
+        import sys
+        from rich.console import Console
 
+        register_repr(Rule)(normal_repr)
 
-if __name__ == "__main__":  # pragma: no cover
-    import sys
+        try:
+            text = sys.argv[1]
+        except IndexError:
+            text = "Gradient Rule"
+        console = Console()
+        console.print(
+            "[u b #ffffff]Rule Examples[/]",
+            justify="center"
+        )
+        console.print(Rule())
+        console.print(
+            Rule(
+                title=f"Rule (with gradient)",
+                gradient=True,
+                align="center",
+                end=""
+            )
+        )
+        console.print(
+            Rule(
+                title="Thin Rule",
+                gradient=True,
+                thickness="thin",
+                align="center",
+                end=""
+            )
+        )
+        console.print(
+            Rule(
+                title = "Medium Left-aligned Non-gradient Rule",
+                gradient=False,
+                thickness="medium",
+                align = "left",
+                end=""
+            )
+        )
+        console.print(
+            Rule("Thick Gradient Rule",
+                thickness="thick",
+                end=""
+            )
+        )
+        console.print(
+            Rule(
+                title = "Medium Right-aligned Gradient Rule",
+                align = "right",
+                end=""
+            )
+        )
 
-    from rich.console import Console
+register_repr(Rule)(normal_repr)
+register_repr(Text)(normal_repr)
+register_repr(RichRule)(normal_repr)
+register_repr(Text)(normal_repr)
 
-    try:
-        text = sys.argv[1]
-    except IndexError:
-        text = "Hello, World"
-    console = Console()
-    console.print(GradientRule(title=text))
-
-    console = Console()
-    console.print(GradientRule("foo"), width=4)
+if __name__ == "__main__":
+    Rule.rule_example()

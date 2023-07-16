@@ -16,7 +16,7 @@ from maxgradient.log import Log, Console
 
 console = Console()
 log = Log()
-
+log.enable("_rgb")
 
 class RGB:
     """RGB Color Class"""
@@ -55,7 +55,7 @@ class RGB:
     def red(self, red: int | str) -> None: # type: ignore
         """Set the red component of the RGB color."""
         log.debug(f"Called RGB.red({red})")
-        self._red: int = self._parse_component(f"red")
+        self._red: int = self._parse_component(red)
 
     @property
     @lru_cache(maxsize=1)
@@ -68,7 +68,7 @@ class RGB:
     def green(self, green: int | str) -> None: # type: ignore
         """Set the green component of the RGB color."""
         log.debug(f"Called RGB.green({green})")
-        self._green: int = self._parse_component(f"green")
+        self._green: int = self._parse_component(green)
 
     @property
     @lru_cache
@@ -81,7 +81,7 @@ class RGB:
     def blue(self, blue: int | str) -> None: # type: ignore
         """Set the blue component of the RGB color."""
         log.debug(f"Called RGB.blue({blue})")
-        self._blue = self._parse_component(f"blue")
+        self._blue = self._parse_component(blue)
 
     @property
     def value(self) -> str:

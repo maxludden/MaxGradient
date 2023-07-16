@@ -13,6 +13,8 @@ dependencies = [
     "numpy>=1.25.0",
     "sh>=2.0.4",
     "lorem-text>=2.1",
+    "snoop>=0.4.3",
+    "birdseye>=0.9.4",
 ]
 requires-python = ">=3.10"
 readme = "README.md"

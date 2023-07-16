@@ -22,7 +22,6 @@ from maxgradient._rich import Rich
 from maxgradient._x11 import X11
 from maxgradient.log import Console as LogConsole
 from maxgradient.log import Log
-from maxgradient.theme import GradientTerminalTheme, GradientTheme
 
 console = LogConsole()
 log = Log()
@@ -53,6 +52,18 @@ class GradientColor:
         "#ffff00",
         "#ff8800",
         "#ff0000",
+    )
+    HEX3: Tuple[str, ...] = (
+        "#f0f",
+        "#a0f",
+        "#50f",
+        "#00f",
+        "#08f",
+        "#0ff",
+        "#0f0",
+        "#ff0",
+        "#f80",
+        "#f00",
     )
     RGB: Tuple[str, ...] = (
         "rgb(255,0,255)",

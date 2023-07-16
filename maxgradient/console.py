@@ -21,7 +21,7 @@ from maxgradient.color import Color
 # from maxgradient.color import Color
 from maxgradient.gradient import Gradient
 from maxgradient.theme import GradientTheme
-from maxgradient.rule import GradientRule, Thickness
+from maxgradient.rule import Rule, Thickness
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
@@ -215,25 +215,26 @@ class Console(RichConsole, metaclass=Singleton):
             )
         )
 
-    def gradient_rule(
+    def rule(
         self,
         title: TextType = "",
         *,
-        thickness: Thickness = "thin",
+        gradient: bool = True,
+        thickness: Thickness = "medium",
         end: str = "\n",
         align: AlignMethod = "center",
     ) -> None:
-        """Draw a line with optional centered title.
+        """Draw an optionally gradient line with optional centered title.
 
         Args:
             title (str, optional): Text to render over the rule. Defaults to "".
-            characters (str, optional): Character(s) to form the line. Defaults to "─".
-            style (str, optional): Style of line. Defaults to "rule.line".
+            gradient (bool, optional): Whether to use a gradient for the rule. Defaults to True.
+            thickness (Thickness, optional): Thickness of the rule. Defaults to "medium".
             align (str, optional): How to align the title, one of "left", "center", or "right". Defaults to "center".
         """
-        from maxgradient.rule import GradientRule
+        from maxgradient.rule import Rule
 
-        rule = GradientRule(title=title, thickness=thickness, end="\n", align=align)
+        rule = Rule(title=title, thickness=thickness, end="\n", align=align)
         self.print(rule)
 
     @staticmethod
@@ -269,7 +270,9 @@ if __name__ == "__main__":
     console = Console()
     example = console.generate_example()
     title = console.get_title()
-    console.line(2)
+    # console.line(2)
+    console.line()
+    console.rule("GradientConsole",thickness="medium", align="center")
     console.print(
         Panel(
             example,
@@ -278,3 +281,6 @@ if __name__ == "__main__":
         justify="center",
     )
     console.line()
+    console.rule()
+    console.rule("text1")
+    console.rule("text2", thickness="thin")

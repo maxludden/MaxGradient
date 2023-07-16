@@ -1,6 +1,6 @@
 """Defines the Gradient class which is used to print text with a gradient. \
     It inherits from the Rich Text class."""
-# pylint: disable=W0611,C0103, E0401, C0301
+# pylint: disable=W0611,C0103, E0401, C0301, R0914
 import re
 from typing import List, Optional, Tuple
 
@@ -13,13 +13,13 @@ from rich.control import strip_control_codes
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.style import Style, StyleType
-from rich.text import Span, Text
 from rich.table import Table
+from rich.text import Span, Text
 
-from maxgradient.log import Console, Log
+from maxgradient._gc import GradientColor as GC
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
-from maxgradient._gc import GradientColor as GC
+from maxgradient.log import Console, Log
 from maxgradient.theme import GradientTheme
 
 DEFAULT_JUSTIFY: "JustifyMethod" = "default"
@@ -126,8 +126,6 @@ class Gradient(Text):
         self.hues: int = hues or 3
         self.colors: List[Color] = self.get_colors(colors, rainbow, invert)
         self.hues = len(self.colors)
-        # color_msg = f"Colors: {[color.hex for color in self.colors]}"
-        # console.log(color_msg)
 
         gradient_substring: Text = self.generate_substrings()
         console.line(2)
@@ -162,18 +160,16 @@ class Gradient(Text):
                 return colors
         if isinstance(input_colors, str):
             return self.mono(input_colors)
-        elif input_colors is not None:
+        if input_colors is not None:
             colors: List[Color] = []
             for color in input_colors:
                 try:
                     color = Color(color)
                     colors.append(color)
                 except ColorParseError as error:
-                    raise ColorParseError(
-                        f"Can't parse color: {color}"
-                    ) from error
+                    raise ColorParseError(f"Can't parse color: {color}") from error
             if self.validate_colors(colors):
-                    return colors
+                return colors
         else:
             color_list = ColorList(self.hues, invert).color_list
             colors = color_list[: self.hues]
@@ -190,19 +186,19 @@ class Gradient(Text):
         gradient_string = Text()
         indexes: List[List[int]] = self.get_indexes()
         substrings: List[str] = self.get_substrings(indexes, text)
-        #______________________
-        substrings_table = Table("Index", "Substring", "Length", expand=False, highlight=True)
+
+        substrings_table = Table(
+            "Index", "Substring", "Length", expand=False, highlight=True
+        )
 
         for index, substring in enumerate(substrings):
             gradient_length = len(substring)
             substring = Text(substring)
-            
             substrings_table.add_row(
                 str(index),
                 substring,
                 str(gradient_length),
             )
-
 
             if index < self.hues - 1:
                 color1 = self.colors[index]
@@ -231,7 +227,7 @@ class Gradient(Text):
                 end=self.end,
                 tab_size=self.tab_size,
             )
-            console.print(substrings_table)
+            substrings_table.add_row(f"{index}", substring, f"{len(gradient_string)}")
         return gradient_string
 
     def mono(self, color: str | Color) -> List[Color]:
@@ -248,8 +244,8 @@ class Gradient(Text):
                 raise ColorParseError(f"Could not parse color: {color}") from cpe
             else:
                 return [
-                    # Color(color.darken(0.4)),
-                    Color(color.darken(0.2)),
+                    Color(color.darken(0.5)),
+                    Color(color.darken(0.3)),
                     color,
                     Color(color.lighten(0.2)),
                     Color(color.lighten(0.6)),
@@ -330,41 +326,6 @@ class Gradient(Text):
         substring = "".join(substring_list)
         return substring
 
-    
-
-    def get_start_indexes(self, indexes: List[List[int]]) -> List[int]:
-        """Get the start indexes for the gradient substring.
-
-        Args:
-            indexes (List[List[int]]): The indexes for the gradient substring.
-
-        Returns:
-            List[int]: The start indexes for the gradient substring.
-        """
-        start_indexes: List[int] = []
-        for index in indexes:
-            start_index = index[0]
-            log.log("INFO", f"Start Index: {start_index}")
-            start_indexes.append(start_index)
-        return start_indexes
-
-    def get_color_starts(self) -> List[Color]:
-        """Generate the start colors for the gradient substring."""
-        color_starts: List[Color] = []
-        for index, color in enumerate(self.colors):
-            if index < self.hues - 1:
-                log.log("INFO", f"Color Start {index}: {color}")
-                color_starts.append(color)
-        return color_starts
-
-    def get_color_ends(self) -> List[Color]:
-        """Generate the end colors for the gradient substring."""
-        color_ends: List[Color] = []
-        for index, color in enumerate(self.colors):
-            if index > 0:
-                log.log("INFO", f"Color End {index}: {color}")
-                color_ends.append(color)
-        return color_ends
 
     @property
     def text(self) -> str:
@@ -581,4 +542,14 @@ def example(record: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    example()
+    console = Console()
+    console.print(
+        Gradient(
+            "This is a gradient",
+            colors=["red", "orange", "yellow", "green", "blue", "purple"],
+            style='bold'
+        )
+    )
+    console.print(Gradient("This is a gradient"),
+        justify="center"
+    )

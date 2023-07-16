@@ -172,7 +172,7 @@ GRADIENT_STYLES: Mapping[str, StyleType] = {
     "repr.attrib_equal": Style(bold=True),
     "repr.attrib_value": Style(color="#00ff00", italic=False),
     "repr.number": Style(
-        color="#00ffff", bold=True, italic=False
+        color="#8BE8FC", bold=True, italic=False
     ),  # repr.number is identical to
     "repr.number_complex": Style(
         color="#00ffff", bold=True, italic=False
@@ -191,12 +191,12 @@ GRADIENT_STYLES: Mapping[str, StyleType] = {
     "json.bool_true": Style(color="#00ff00", italic=True),
     "json.bool_false": Style(color="#ff0000", italic=True),
     "json.null": Style(color="#00ff00", italic=True),
-    "json.number": Style(color="#00ffff", bold=True, italic=False),
+    "json.number": Style(color="#8BE8FC", bold=True, italic=False),
     "json.str": Style(color="#00ff00", italic=False, bold=False),
     "json.key": Style(color="#0000ff", bold=True),
     "prompt": Style.null(),
     "prompt.choices": Style(color="#ff00ff", bold=True),
-    "prompt.default": Style(color="#00ffff", bold=True),
+    "prompt.default": Style(color="#8BE8FC", bold=True),
     "prompt.invalid": Style(color="#ff0000"),
     "prompt.invalid.choice": Style(color="#ff0000"),
     "pretty": Style.null(),
