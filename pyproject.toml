@@ -32,3 +32,18 @@ include = ["maxgradient"]
 ignore = ["tests"]
 pythonVersion = "3.11"
 reportGeneralTypeIssues = false
+
+[tool.pylint]
+max-line-length = 120
+disable = [
+    "C0330",
+    "E0401",
+    "E0611",
+    "W0612",
+    "W0621",
+    "W0201",
+    "W0613",
+    "W0404",
+    "C0415",
+    "R0902"
+ ]

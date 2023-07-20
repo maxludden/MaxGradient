@@ -1,5 +1,5 @@
 """MaxConsole is a custom themed class inheriting from rich.console.Console."""
-# pylint: disable=E0401, R0913, R0914
+# pylint: disable=E0401,R0913,R0914,E0611,W0621:
 import os
 from datetime import datetime
 from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
@@ -7,7 +7,7 @@ from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
 from rich._log_render import FormatTimeCallable
 from rich.align import AlignMethod
 from rich.console import Console as RichConsole
-from rich.console import ConsoleRenderable, Group, RenderResult, RichCast
+from rich.console import ConsoleRenderable, RichCast
 from rich.emoji import EmojiVariant
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
@@ -20,8 +20,8 @@ from maxgradient.color import Color
 
 # from maxgradient.color import Color
 from maxgradient.gradient import Gradient
+from maxgradient.rule import GradientRule, Thickness
 from maxgradient.theme import GradientTheme
-from maxgradient.rule import Rule, Thickness
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
@@ -215,7 +215,7 @@ class Console(RichConsole, metaclass=Singleton):
             )
         )
 
-    def rule(
+    def gradient_rule(
         self,
         title: TextType = "",
         *,
@@ -231,10 +231,11 @@ class Console(RichConsole, metaclass=Singleton):
             gradient (bool, optional): Whether to use a gradient for the rule. Defaults to True.
             thickness (Thickness, optional): Thickness of the rule. Defaults to "medium".
             align (str, optional): How to align the title, one of "left", "center", or "right". Defaults to "center".
+            justify (str, optional): How to justify the title, one of "left", "center", or "right". Defaults to None.
         """
-        from maxgradient.rule import Rule
-
-        rule = Rule(title=title, thickness=thickness, end="\n", align=align)
+        rule = GradientRule(
+            title=title, gradient=gradient, thickness=thickness, end=end, align=align
+        )
         self.print(rule)
 
     @staticmethod
@@ -272,7 +273,8 @@ if __name__ == "__main__":
     title = console.get_title()
     # console.line(2)
     console.line()
-    console.rule("GradientConsole",thickness="medium", align="center")
+    console.gradient_rule("GradientConsole", thickness="medium", align="center")
+    console.line()
     console.print(
         Panel(
             example,
@@ -281,6 +283,3 @@ if __name__ == "__main__":
         justify="center",
     )
     console.line()
-    console.rule()
-    console.rule("text1")
-    console.rule("text2", thickness="thin")

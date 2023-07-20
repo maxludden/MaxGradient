@@ -1,27 +1,20 @@
-from typing import Literal, Optional, Union, Iterable
-from pathlib import Path
-from io import StringIO
-from rich.console import Console
-import re
+"""Rule class for maxgradient package."""
+from typing import Literal, Union
 
+from cheap_repr import normal_repr, register_repr
 from rich.align import AlignMethod
 from rich.cells import cell_len, set_cell_size
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.jupyter import JupyterMixin
 from rich.measure import Measurement
-from rich.style import Style, StyleType
-from rich.text import Text
 from rich.rule import Rule as RichRule
-from rich.segment import Segment
-from snoop import snoop
-import birdseye
-from cheap_repr import normal_repr, register_repr
+from rich.text import Text
 
-from maxgradient.color_list import ColorList, TintList
+from maxgradient.color_list import ColorList
 from maxgradient.gradient import Gradient
-from maxgradient.color import Color, ColorParseError
-from maxgradient.log import Log, ColorHighlighter
-from maxgradient.theme import GradientTheme
+from maxgradient.log import Log
+
+# from snoop import snoop
 
 
 Thickness = Literal["thin", "medium", "thick"]
@@ -30,11 +23,7 @@ console = Console()
 log = Log
 
 
-THIN_REGEX = re.compile(r"(─+)")
-MEDIUM_REGEX = re.compile(r"(━+)")
-THICK_REGEX = re.compile(r"(█+)")
-
-class Rule(JupyterMixin):
+class GradientRule(JupyterMixin):
     """A console renderable to draw a horizontal rule (line).
 
     Args:
@@ -44,6 +33,7 @@ class Rule(JupyterMixin):
         end (str, optional): Character at end of Rule. defaults to "\\\\n"
         align (str, optional): How to align the title, one of "left", "center", or "right". Defaults to "center".
     """
+
     # @spy
     def __init__(
         self,
@@ -66,7 +56,6 @@ class Rule(JupyterMixin):
             self.characters = "━"
         elif self.thickness == "thick":
             self.characters = "█"
-
 
         if cell_len(self.characters) < 1:
             raise ValueError(
@@ -102,9 +91,15 @@ class Rule(JupyterMixin):
         chars_len = cell_len(characters)
         if not self.title:
             color_list = ColorList(5)
-            yield Gradient(self._rule_line(chars_len, width), colors=[
-                color_list[0], color_list[1], color_list[2], color_list[3], color_list[4]
-                ]
+            yield Gradient(
+                self._rule_line(chars_len, width),
+                colors=[
+                    color_list[0],
+                    color_list[1],
+                    color_list[2],
+                    color_list[3],
+                    color_list[4],
+                ],
             )
             return
 
@@ -119,27 +114,35 @@ class Rule(JupyterMixin):
         required_space = 4 if self.align == "center" else 2
         truncate_width = max(0, width - required_space)
 
-        #/ No Title
+        # / No Title
         if not truncate_width:
             yield self._rule_line(chars_len, width)
             return
 
         rule_text = Text(end=self.end)
         if self.align == "center":
-            rule_text = self.center_rule(rule_text,truncate_width,chars_len, width)
+            rule_text = self.center_rule(rule_text, truncate_width, chars_len, width)
         elif self.align == "left":
             self.title_text.truncate(truncate_width, overflow="ellipsis")
             rule_text.append(self.title_text)
             rule_text.append(" ")
             if self.gradient:
-                rule_text.append(Gradient(characters * (width - self.title_text.cell_len - 1),
-                        colors=self.right_colors))
+                rule_text.append(
+                    Gradient(
+                        characters * (width - self.title_text.cell_len - 1),
+                        colors=self.right_colors,
+                    )
+                )
             else:
                 rule_text.append(characters * (width - rule_text.cell_len))
         elif self.align == "right":
             self.title_text.truncate(truncate_width, overflow="ellipsis")
-            rule_text.append(Gradient(characters * (width - self.title_text.cell_len - 1),
-                    colors=self.left_colors))
+            rule_text.append(
+                Gradient(
+                    characters * (width - self.title_text.cell_len - 1),
+                    colors=self.left_colors,
+                )
+            )
             rule_text.append(" ")
             rule_text.append(self.title_text)
 
@@ -149,15 +152,18 @@ class Rule(JupyterMixin):
 
     # @spy
     def _rule_line(self, chars_len: int, width: int) -> Text:
-        rule_text = Gradient(self.characters * ((width // chars_len) + 1),
-            colors=self.left_colors)
+        rule_text = Gradient(
+            self.characters * ((width // chars_len) + 1), colors=self.left_colors
+        )
         rule_text.truncate(width)
         rule_text.plain = set_cell_size(rule_text.plain, width)
         return rule_text
 
-    def center_rule(self, rule_text: Text, truncate_width: int, chars_len: int, width: int) -> Text:
+    def center_rule(
+        self, rule_text: Text, truncate_width: int, chars_len: int, width: int
+    ) -> Text:
         """Generate a centered rule.
-    
+
         Args:
             rule_text (Text): Text of the rule.
             truncate_width (int): Width of the truncated rule.
@@ -167,20 +173,35 @@ class Rule(JupyterMixin):
         self.title_text.truncate(truncate_width, overflow="ellipsis")
         self.side_width = (width - cell_len(self.title_text.plain)) // 2
         if self.gradient:
-            rule_text.append(Gradient(self.characters * (self.side_width // chars_len + 1),
-                colors=self.left_colors, end = ""))
+            rule_text.append(
+                Gradient(
+                    self.characters * (self.side_width // chars_len + 1),
+                    colors=self.left_colors,
+                    end="",
+                )
+            )
         else:
-            rule_text.append(Text(self.characters * (self.side_width // chars_len + 1), end = ""))
+            rule_text.append(
+                Text(self.characters * (self.side_width // chars_len + 1), end="")
+            )
         rule_text.append(" ")
         rule_text.append(self.title_text)
         rule_text.append(" ")
         if self.gradient:
-            rule_text.append(Gradient(text = self.characters * (self.side_width // chars_len + 1),
-                colors=self.right_colors, end = " "))
+            rule_text.append(
+                Gradient(
+                    text=self.characters * (self.side_width // chars_len + 1),
+                    colors=self.right_colors,
+                    end=" ",
+                )
+            )
         else:
-            rule_text.append(Text(self.characters * (self.side_width // chars_len + 1), end = " "))
+            rule_text.append(
+                Text(self.characters * (self.side_width // chars_len + 1), end=" ")
+            )
         rule_text.truncate(width)
         return rule_text
+
     # @spy
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
@@ -224,65 +245,55 @@ class Rule(JupyterMixin):
 
     @classmethod
     def rule_example(cls) -> None:
+        """Create a console with examples of Rule."""
         import sys
+
         from rich.console import Console
 
-        register_repr(Rule)(normal_repr)
+        register_repr(GradientRule)(normal_repr)
 
         try:
             text = sys.argv[1]
         except IndexError:
             text = "Gradient Rule"
         console = Console()
+        console.print("[u b #ffffff]Rule Examples[/]", justify="center")
+        console.print(GradientRule())
         console.print(
-            "[u b #ffffff]Rule Examples[/]",
-            justify="center"
-        )
-        console.print(Rule())
-        console.print(
-            Rule(
-                title=f"Rule (with gradient)",
-                gradient=True,
-                align="center",
-                end=""
+            GradientRule(
+                title="Rule (with gradient)", gradient=True, align="center", end=""
             )
         )
         console.print(
-            Rule(
+            GradientRule(
                 title="Thin Rule",
                 gradient=True,
                 thickness="thin",
                 align="center",
-                end=""
+                end="",
             )
         )
         console.print(
-            Rule(
-                title = "Medium Left-aligned Non-gradient Rule",
+            GradientRule(
+                title="Medium Left-aligned Non-gradient Rule",
                 gradient=False,
                 thickness="medium",
-                align = "left",
-                end=""
+                align="left",
+                end="",
             )
         )
+        console.print(GradientRule("Thick Gradient Rule", thickness="thick", end=""))
         console.print(
-            Rule("Thick Gradient Rule",
-                thickness="thick",
-                end=""
-            )
-        )
-        console.print(
-            Rule(
-                title = "Medium Right-aligned Gradient Rule",
-                align = "right",
-                end=""
+            GradientRule(
+                title="Medium Right-aligned Gradient Rule", align="right", end=""
             )
         )
 
-register_repr(Rule)(normal_repr)
+
+register_repr(GradientRule)(normal_repr)
 register_repr(Text)(normal_repr)
 register_repr(RichRule)(normal_repr)
 register_repr(Text)(normal_repr)
 
 if __name__ == "__main__":
-    Rule.rule_example()
+    GradientRule.rule_example()
