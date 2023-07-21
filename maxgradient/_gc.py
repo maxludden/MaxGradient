@@ -28,6 +28,8 @@ log = Log()
 
 
 class GradientColor:
+    """A class of colors used in automatically generating random gradients."""
+
     mode: Mode = Mode.GC
     NAMES: Tuple[str, ...] = (
         "magenta",
@@ -176,3 +178,29 @@ class GradientColor:
     @classmethod
     def color_table(cls) -> Table:
         """Generate a table of gradient colors."""
+        table = Table(title=cls.get_title(), box=SQUARE)
+        table.add_column("Sample", justify="center", style="bold")
+        table.add_column("Name", justify="center", style="bold")
+        table.add_column("Hex", justify="center", style="bold")
+        table.add_column("RGB", justify="center", style="bold")
+        table.add_column("RGB Tuple", justify="center", style="bold")
+        for x in range(10):
+            hex = cls.get_hex()[x]
+            table.add_row(
+                Text(" " * 10, style=Style(bgcolor=hex, bold=True)),
+                Text(
+                    str(cls.get_names()[x]).capitalize(),
+                    style=Style(color=hex, bold=True),
+                ),
+                Text(str(cls.get_hex()[x]), style=Style(color=hex, bold=True)),
+                Text(str(cls.get_rgb()[x]), style=Style(color=hex, bold=True)),
+                Text(str(cls.get_rgb_tuple()[x]), style=Style(color=hex, bold=True)),
+            )
+        return table
+
+
+if __name__ == "__main__":
+    console = Console()
+    console.line(2)
+    console.print(GradientColor.color_table(), justify="center")
+    console.line(2)

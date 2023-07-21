@@ -2,26 +2,26 @@
 import re
 from functools import lru_cache
 from random import choice
-from re import Match, Pattern, compile
-from typing import Optional, Tuple, Union
+from re import Match, Pattern
+from typing import Optional, Tuple
 
 from rich.box import HEAVY_EDGE
-from rich.columns import Columns
 from rich.panel import Panel
 from rich.text import Text
 
 from maxgradient._mode import Mode
 from maxgradient._rich import Rich
-from maxgradient.log import Log, Console
+from maxgradient.log import Console, Log
 
 console = Console()
 log = Log()
 log.enable("_rgb")
 
+
 class RGB:
     """RGB Color Class"""
 
-    REGEX: Pattern = compile(
+    REGEX: Pattern = re.compile(
         r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)[ ,]? ?(?P<blue>\d+\.?\d*)\)"
     )
 
@@ -33,52 +33,52 @@ class RGB:
 
     @property
     @lru_cache(maxsize=1)
-    def original(self) -> str: # type: ignore
+    def original(self) -> str:  # type: ignore
         """Return the original RGB color string."""
-        log.debug(f"Called RGB.original()")
+        log.debug("Called RGB.original()")
         return self._original
 
     @original.setter
-    def original(self, rgb: str) -> None: # type: ignore
+    def original(self, rgb: str) -> None:  # type: ignore
         """Validate and initialize the rgb value."""
         log.debug(f"Called RGB.original.setter({rgb})")
         self._original = rgb
 
     @property
     @lru_cache(maxsize=1)
-    def red(self) -> int: # type: ignore
+    def red(self) -> int:  # type: ignore
         """Return the red component of the RGB color."""
-        log.debug(f"Called RGB.red()")
+        log.debug("Called RGB.red()")
         return self._red
 
     @red.setter
-    def red(self, red: int | str) -> None: # type: ignore
+    def red(self, red: int | str) -> None:  # type: ignore
         """Set the red component of the RGB color."""
         log.debug(f"Called RGB.red({red})")
         self._red: int = self._parse_component(red)
 
     @property
     @lru_cache(maxsize=1)
-    def green(self) -> int: # type: ignore
+    def green(self) -> int:  # type: ignore
         """Return the green component of the RGB color."""
-        log.debug(f"Called RGB.green()")
+        log.debug("Called RGB.green()")
         return self._green
 
     @green.setter
-    def green(self, green: int | str) -> None: # type: ignore
+    def green(self, green: int | str) -> None:  # type: ignore
         """Set the green component of the RGB color."""
         log.debug(f"Called RGB.green({green})")
         self._green: int = self._parse_component(green)
 
     @property
     @lru_cache
-    def blue(self) -> int: # type: ignore
+    def blue(self) -> int:  # type: ignore
         """Return the blue component of the RGB color."""
-        log.debug(f"Called RGB.blue()")
+        log.debug("Called RGB.blue()")
         return self._blue
 
     @blue.setter
-    def blue(self, blue: int | str) -> None: # type: ignore
+    def blue(self, blue: int | str) -> None:  # type: ignore
         """Set the blue component of the RGB color."""
         log.debug(f"Called RGB.blue({blue})")
         self._blue = self._parse_component(blue)
@@ -86,7 +86,7 @@ class RGB:
     @property
     def value(self) -> str:
         """Return the RGB color string."""
-        log.info(f"Called RGB.value()")
+        log.info("Called RGB.value()")
         return self._value
 
     @value.setter
@@ -99,13 +99,12 @@ class RGB:
             raise ValueError(f"Invalid RGB color: {rgb}")
         else:
             self._value: str = parsed_rgb
-            
 
     @property
     @lru_cache(maxsize=1)
     def as_hex(self) -> str:
         """Return the RGB color string."""
-        log.debug(f"Called RGB.hex()")
+        log.debug("Called RGB.hex()")
         red: str = f"{self.red:02X}"
         green: str = f"{self.green:02X}"
         blue: str = f"{self.blue:02X}"
@@ -116,7 +115,7 @@ class RGB:
     @lru_cache
     def as_tuple(self) -> Tuple[int, int, int]:
         """Return the RGB color as a tuple."""
-        log.debug(f"Called RGB.tuple()")
+        log.debug("Called RGB.tuple()")
         return (self.red, self.green, self.blue)
 
     @property
@@ -126,7 +125,7 @@ class RGB:
         return Mode.RGB
 
     @staticmethod
-    def _parse_component(component: str|int) -> int:
+    def _parse_component(component: str | int) -> int:
         """Parse a string component to an integer."""
         log.debug(f"Called RGB._parse_component({component})")
         try:
@@ -157,7 +156,7 @@ class RGB:
 
     def __rich_repr__(self) -> Text:
         """Return a rich Text object."""
-        log.debug(f"Called RGB.__rich_repr__()")
+        log.debug("Called RGB.__rich_repr__()")
         rgb = Text("rgb", style=f"bold italic {self.as_hex}")
         left_paren = Text("(", style=f"{self.as_hex}")
         comma = Text(", ", style=f"{self.as_hex}")
@@ -167,7 +166,7 @@ class RGB:
         right_paren = Text(")", style=f"{self.as_hex}")
         rgb_list = [rgb, left_paren, red, comma, green, comma, blue, right_paren]
         return Text.assemble(*rgb_list)
-        
+
     def __rich__(self) -> Panel:
         """Return a rich Panel object."""
         rgb_text = self.__rich_repr__()
@@ -198,11 +197,6 @@ if __name__ == "__main__":
     rgb_str: str = choice(Rich.RGB)
     rgb = RGB(rgb_str)
     console.print(rgb)
-    
-    console.print(
-        f"[white]RGB as Hex:[/] [b {rgb.as_hex}]{rgb.as_hex}[/]"
-    
-    )
-    console.print(
-        f"[white]RGB as Tuple:[/]\n      [b {rgb.as_hex}]{rgb.as_tuple}[/]"
-    )
+
+    console.print(f"[white]RGB as Hex:[/] [b {rgb.as_hex}]{rgb.as_hex}[/]")
+    console.print(f"[white]RGB as Tuple:[/]\n      [b {rgb.as_hex}]{rgb.as_tuple}[/]")

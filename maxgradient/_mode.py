@@ -22,8 +22,6 @@ class Mode(Enum):
         """Return True if the color mode is equal to another."""
         if isinstance(other, Mode):
             return self.value == other.value
-        elif isinstance(other, str):
-            return self.color_mode == other
         else:
             return False
 
@@ -39,3 +37,9 @@ class Mode(Enum):
         formatted_value = Text(value, style="bold lime")
         rich_repr = Text.assemble(mode, dot, formatted_value)
         return rich_repr
+
+if __name__ == "__main__":
+    from maxgradient.log import Console
+    console = Console()
+    console.line()
+    console.print(Mode.COLOR, justify='center')

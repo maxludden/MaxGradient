@@ -258,36 +258,41 @@ class GradientRule(JupyterMixin):
             text = "Gradient Rule"
         console = Console()
         console.print("[u b #ffffff]Rule Examples[/]", justify="center")
-        console.print(GradientRule())
+        console.line()
+        console.print("[#ffffff]Gradient Rule without a title ⬇︎[/]", justify="center")
+        console.print(GradientRule(thickness="thin"))
+        console.line()
         console.print(
             GradientRule(
-                title="Rule (with gradient)", gradient=True, align="center", end=""
-            )
-        )
-        console.print(
-            GradientRule(
-                title="Thin Rule",
+                title="Thin Gradient Rule",
                 gradient=True,
                 thickness="thin",
-                align="center",
-                end="",
+                align="center"
             )
         )
+        console.line()
+        console.print(
+            GradientRule(
+                title="Medium Gradient Rule", gradient=True, align="center"
+            )
+        )
+        console.line()
         console.print(
             GradientRule(
                 title="Medium Left-aligned Non-gradient Rule",
                 gradient=False,
                 thickness="medium",
-                align="left",
-                end="",
+                align="left"
             )
         )
-        console.print(GradientRule("Thick Gradient Rule", thickness="thick", end=""))
+        console.line()
         console.print(
             GradientRule(
-                title="Medium Right-aligned Gradient Rule", align="right", end=""
+                title="Medium Right-aligned Gradient Rule", align="right"
             )
         )
+        console.line()
+        console.print(GradientRule("Thick Gradient Rule", thickness="thick"))
 
 
 register_repr(GradientRule)(normal_repr)

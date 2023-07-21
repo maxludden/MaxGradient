@@ -13,7 +13,7 @@ from typing import Any, Optional, Self
 import loguru
 from loguru import logger
 from rich.abc import RichRenderable
-from rich.console import Console
+from rich.console import Console as RichConsole
 from rich.highlighter import RegexHighlighter
 from rich.table import Table
 from rich.traceback import install as install_rich_traceback
@@ -66,7 +66,7 @@ class ColorHighlighter(RegexHighlighter):
     ]
 
 
-class Console(Console, metaclass=Singleton):
+class Console(RichConsole, metaclass=Singleton):
     """A Console to log to. Inherits from rich.console.Console.\
         This class is a singleton which removes the need to pass\
         around a console object or use the `get_console` method."""
@@ -428,30 +428,6 @@ class Log:
             str: New regex with all regexes ORed together.
         """
         return "|".join(regexes)
-
-    def trace(*, level="DEBUG", depth: int = 1, entry: bool = True, exit: bool = True):
-        def wrapper(func):
-            name = func.__name__
-
-            @wraps(func)
-            def wrapped(*args, **kwargs):
-                logger_ = log.opt(depth=1)
-                if entry:
-                    logger_.log(
-                        level,
-                        "Entering '{}' (Args={}, Kwargs={})",
-                        name,
-                        *args,
-                        *kwargs,
-                    )
-                result = func(*args, **kwargs)
-                if exit:
-                    logger_.log(level, "Exiting '{name}' (Result={result})")
-                return result
-
-            return wrapped
-
-        return wrapper
 
     def disable(self) -> None:
         """Disable logging."""

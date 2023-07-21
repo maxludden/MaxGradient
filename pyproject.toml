@@ -15,6 +15,7 @@ dependencies = [
     "lorem-text>=2.1",
     "snoop>=0.4.3",
     "birdseye>=0.9.4",
+    "mkdocs-dracula-theme>=1.0.5",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -36,7 +37,6 @@ reportGeneralTypeIssues = false
 [tool.pylint]
 max-line-length = 120
 disable = [
-    "C0330",
     "E0401",
     "E0611",
     "W0612",
@@ -45,5 +45,8 @@ disable = [
     "W0613",
     "W0404",
     "C0415",
-    "R0902"
+    "R0902",
+    "W0622",
+    "W0611",
+    "E0001"
  ]
