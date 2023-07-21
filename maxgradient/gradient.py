@@ -17,11 +17,11 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
+# from snoop import snoop
+# from cheap_repr import register_repr, normal_repr
 
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
-
-# from maxgradient.console import Console
 from maxgradient.highlighter import ColorHighlighter
 from maxgradient.log import Log
 from maxgradient.theme import GradientTheme
@@ -123,7 +123,7 @@ class Gradient(Text):
             text = strip_control_codes(text.plain)
         else:
             self._spans: List[Span] = spans or []
-        assert isinstance(text, str), f"Text must be a string or Text, not {type(text)}"
+        # assert isinstance(text, str), f"Text must be a string or Text, not {type(text)}"
         self.text: str = text
         self._length: int = len(text)
 
@@ -591,6 +591,38 @@ class Gradient(Text):
         if end:
             yield _Segment(end)
 
+    # def copy(self) -> "Gradient":
+    #     """Copy the gradient"""
+    #     return Gradient(
+    #         self.text,
+    #         colors=self.colors,
+    #         rainbow=False,
+    #         invert=False,
+    #         hues=self.hues,
+    #         color_sample=self.color_sample,
+    #         style=self.style,
+    #         justify=self.justify,
+    #         overflow=self.overflow,
+    #         no_wrap=self.no_wrap,
+    #         end=self.end,
+    #         tab_size=self.tab_size,
+    #         spans=self.spans,
+    #     )
+
+    def as_text(self) -> Text:
+        """Return the gradient as a Text object."""
+        return Text(
+            self.text,
+            style=self.style,
+            justify=self.justify,
+            overflow=self.overflow,
+            no_wrap=self.no_wrap,
+            end=self.end,
+            tab_size=self.tab_size,
+            spans=self.spans
+        )
+
+# register_repr(Gradient)(normal_repr)
 
 def strip_control_codes(text: str) -> str:
     """Remove control codes from a string."""
