@@ -572,5 +572,6 @@
       "indent": 4
     },
     "no-hard-tabs": false
-  }
+  },
+  "svg.preview.background": "editor"
 }
