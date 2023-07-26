@@ -38,8 +38,10 @@ class Mode(Enum):
         rich_repr = Text.assemble(mode, dot, formatted_value)
         return rich_repr
 
+
 if __name__ == "__main__":
     from maxgradient.log import Console
+
     console = Console()
     console.line()
-    console.print(Mode.COLOR, justify='center')
+    console.print(Mode.COLOR, justify="center")

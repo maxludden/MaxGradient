@@ -1,0 +1,10 @@
+site_name: MaxGradient
+repo_name: MaxGradient
+repo_url: https://GitHub.com/maxludden/maxgradient
+edit_uri: root/docs
+site_description: Document MaxGradient, a python library built on the wonderful `rich`` library that makes printing gradient colored text to the console easy.
+site_author: Max Ludden
+nav:
+  - User Guide: 'index.md'
+  - 'gradient.md'
+  - 'color'

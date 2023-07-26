@@ -84,7 +84,9 @@ class Gradient(rich.rich.Text):
 
 The Gradient class can utilize the above arguments to get a plethora of different gradients.
 
-<img src="Images/gradient_examples.svg" alt="Gradient Examples">)
+<a href="Images/gradient_examples.svg" target="_blank">
+  <img src="Images/gradient_examples.svg" alt="Gradient Examples" onclick="zoomImage(this)">
+</a>
 
 <br><br><hr><br>
 
