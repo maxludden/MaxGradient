@@ -3,7 +3,9 @@
 import os
 from datetime import datetime
 from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
+from pathlib import Path
 
+from rich._export_format import CONSOLE_SVG_FORMAT
 from rich._log_render import FormatTimeCallable
 from rich.align import AlignMethod
 from rich.console import Console as RichConsole
@@ -14,14 +16,13 @@ from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
 from rich.theme import Theme
+from rich.terminal_theme import TerminalTheme
 from rich.traceback import install as install_traceback
 
 from maxgradient.color import Color
-
-# from maxgradient.color import Color
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule, Thickness
-from maxgradient.theme import GradientTheme
+from maxgradient.theme import GradientTheme, GradientTerminalTheme
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
@@ -238,6 +239,85 @@ class Console(RichConsole, metaclass=Singleton):
         )
         self.print(rule)
 
+    def save_svg(
+        self,
+        path: str,
+        *,
+        title: str = "MaxGradient",
+        theme: Optional[TerminalTheme] = GradientTerminalTheme(),
+        clear: bool = True,
+        code_format: str = CONSOLE_SVG_FORMAT,
+        font_aspect_ratio: float = 0.61,
+        unique_id: Optional[str] = None,
+    ) -> None:
+        """Generate an SVG file from the console contents (requires record=True in Console constructor).
+
+        Args:
+            path (str): The path to write the SVG to.
+            title (str, optional): The title of the tab in the output image
+            theme (TerminalTheme, optional): The ``TerminalTheme`` object to use to style the terminal
+            clear (bool, optional): Clear record buffer after exporting. Defaults to ``True``
+            code_format (str, optional): Format string used to generate the SVG. Rich will inject a number of variables
+                into the string in order to form the final SVG output. The default template used and the variables
+                injected by Rich can be found by inspecting the ``console.CONSOLE_SVG_FORMAT`` variable.
+            font_aspect_ratio (float, optional): The width to height ratio of the font used in the ``code_format``
+                string. Defaults to 0.61, which is the width to height ratio of Fira Code (the default font).
+                If you aren't specifying a different font inside ``code_format``, you probably don't need this.
+            unique_id (str, optional): unique id that is used as the prefix for various elements (CSS styles, node
+                ids). If not set, this defaults to a computed value based on the recorded content.
+        """
+        svg = self.export_svg(
+            title=title,
+            theme=theme,
+            clear=clear,
+            code_format=code_format,
+            font_aspect_ratio=font_aspect_ratio,
+            unique_id=unique_id,
+        )
+        with open(path, "wt", encoding="utf-8") as write_file:
+            write_file.write(svg)
+
+    def save_max_svg(
+            self,
+            path: str|Path,
+            *,
+            title: str = "MaxGradient",
+            theme: Optional[TerminalTheme] = GradientTerminalTheme(),
+            clear: bool = True,
+            code_format: str = CONSOLE_SVG_FORMAT,
+            font_aspect_ratio: float = 0.61,
+            unique_id: Optional[str] = None,
+    ) -> None:
+        """A shortcut to save an SVG file to the Images directory.
+
+        Args:
+            path (str | Path): The path to save the SVG file to.
+            title (str, optional): The title of the exported SVG file. Defaults to "MaxGradient".
+            theme (Optional[TerminalTheme], optional): The theme to use when creating the \
+                SVG file. Defaults to GradientTerminalTheme().
+            clear (bool, optional): Whether to clear the console before generating the SVG file. Defaults to True.
+            code_format (str, optional): The format to use on the exported code. Defaults to CONSOLE_SVG_FORMAT.
+            font_aspect_ratio (float, optional): The aspect ration of the exported font. Defaults to 0.61.
+            unique_id (Optional[str], optional): The unique ID of the exported SVG file. Defaults to None.
+        """
+        if not path:
+            if 'MaxGradient.svg' in (Path.cwd() / "Images").iterdir():
+                path = Path.cwd() / "Images" / f"MaxGradient_{datetime.now().strftime('%Y%m%d%H%M%S')}.svg"
+        if title == "MaxGradient":
+            title = path.stem
+
+        svg = self.export_svg(
+                title=title,
+                theme=theme,
+                clear=clear,
+                code_format=code_format,
+                font_aspect_ratio=font_aspect_ratio,
+                unique_id=unique_id,
+        )
+        with open(path, "wt", encoding="utf-8") as write_file:
+            write_file.write(svg)
+
+
     @staticmethod
     def get_title() -> Text:
         """Print out `MaxConsole` in a manual gradient"""
@@ -257,7 +337,7 @@ class Console(RichConsole, metaclass=Singleton):
         )
         text1 = Text(" is a custom themed terminal console class inheriting from")
         text2 = Text.from_markup(
-            ". It is a [i #66EE35] global singleton [/]class that can be \
+            ". It is a[i #66EE35] global singleton[/] class that can be \
 imported and used anywhere in the project and used as a drop in replacement for "
         )
         text3 = Text(".")
@@ -271,7 +351,6 @@ if __name__ == "__main__":
     console = Console()
     example = console.generate_example()
     title = console.get_title()
-    # console.line(2)
     console.line()
     console.gradient_rule("GradientConsole", thickness="medium", align="center")
     console.line()

@@ -135,7 +135,7 @@ h3 {
   font-size: 1.25em;
   color: #fff;
   text-decoration: underline;
-  text-decoration-thickness: 1px;
+  text-shadow: 0 0 1px;
   padding: 20px;
 }
 img.badge {
@@ -182,7 +182,7 @@ pre.code {
 svg {
   display: block;
   margin: auto;
-  width: 100%;
+  max-width: 600px;
   height: auto;
 }
 .badges {
@@ -230,8 +230,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -256,8 +256,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -286,8 +286,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -333,8 +333,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -360,8 +360,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -386,8 +386,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -463,8 +463,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -490,8 +490,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -535,8 +535,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -575,8 +575,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -599,8 +599,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -687,8 +687,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -722,8 +722,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -759,8 +759,8 @@ svg {
   background-size: 200% auto;
 
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 
   animation: shine 1s linear infinite;
@@ -811,8 +811,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -914,8 +914,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -936,8 +936,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -958,8 +958,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -980,8 +980,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1002,8 +1002,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1024,8 +1024,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1047,8 +1047,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1069,8 +1069,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1091,8 +1091,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1113,8 +1113,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1135,8 +1135,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1157,8 +1157,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1179,8 +1179,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1201,8 +1201,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1223,8 +1223,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1245,8 +1245,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1267,8 +1267,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1289,8 +1289,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1311,8 +1311,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1333,8 +1333,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1377,8 +1377,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
@@ -1406,8 +1406,8 @@ svg {
   );
   background-size: 200% auto;
   color: #000;
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {

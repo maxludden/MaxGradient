@@ -5,6 +5,16 @@ edit_uri: root/docs
 site_description: Document MaxGradient, a python library built on the wonderful `rich`` library that makes printing gradient colored text to the console easy.
 site_author: Max Ludden
 nav:
-  - User Guide: 'index.md'
-  - 'gradient.md'
-  - 'color'
+    - Home: "index.md"
+    - User Guide:
+        - Console: 'console.md'
+        - Gradient: 'gradient.md'
+        - Color: 'color.md'
+    - References:
+        - Console: 'console_ref.md'
+        - Gradient: 'gradient_ref.md'
+        - Color: 'color_ref.md'
+theme: 
+    name: dracula
+extra_css:
+  - "styles/gradient.css"
