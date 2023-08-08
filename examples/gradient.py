@@ -73,7 +73,7 @@ def gradient_hex_colors() -> None:
 
     console.save_max_svg(
         "Images/hex_colors_gradient.svg",
-        title="`Hex Colors Gradient`! Result"
+        title="`Hex Colors Gradient` Result"
     )
 
 def gradient_rgb_colors() -> None:
@@ -87,4 +87,11 @@ def gradient_rgb_colors() -> None:
                 "rgb(255, 0, 0)", # RGB color code
                 (255, 128, 0), # RGB color tuple
                 "rgb(255, 255, 0)" # RGB color code
+            ]
         )
+    )
+    console.line(2)
+    console.save_max_svg(
+        "Images/rgb_gradient.svg",
+        title="RGB Color Gradient Result"
+    )
