@@ -1,4 +1,4 @@
-# Gradient
+# MaxGradient.Gradient
 
 ![Gradient Examples](../Images/gradient_examples.svg)
 
@@ -51,12 +51,11 @@ python -m maxgradient.color
 
 ```python
 from maxgradient import Console, Gradient
-
 console = Console()
 console.print(Gradient("Creating gradients from strings!", colors=["red", "green", "blue"]))
 ```
 
-![Creating gradients from strings.](../Images/creating_gradients_from_strings.svg)
+![Creating gradients from strings.](../Images/string_color_gradient.svg)
 
 ```python
 console.print(

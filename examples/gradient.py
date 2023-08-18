@@ -34,7 +34,7 @@ def gradient_cool() -> None:
 
 def gradient_string_colors() -> None:
     """Create a gradient from strings of color names."""
-    console = Console(width=55, record=True)
+    console = Console(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -56,7 +56,7 @@ def gradient_string_colors() -> None:
 
 def gradient_hex_colors() -> None:
     """Create a gradient from hex color codes."""
-    console = Console(width=55, record=True)
+    console = Console(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -78,7 +78,7 @@ def gradient_hex_colors() -> None:
 
 def gradient_rgb_colors() -> None:
     """Create a gradient from rgb color codes and color tuples."""
-    console = Console(width=55, record=True)
+    console = Console(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -95,3 +95,8 @@ def gradient_rgb_colors() -> None:
         "Images/rgb_gradient.svg",
         title="RGB Color Gradient Result"
     )
+
+if __name__ == "__main__":
+    gradient_string_colors()
+    gradient_hex_colors()
+    gradient_rgb_colors()

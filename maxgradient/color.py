@@ -36,6 +36,10 @@ ColorType = Union[Hex, "Color", RichColor, str, Tuple[int, int, int], X11]
 
 
 class Color:
+    """A class to represent a color that inherits and expands `rich.rich.Color` \
+        to include X11 named colors as well as multiple formats of hex and rgb colors.
+    """
+
     def __init__(self, color: Any) -> None:
         """A color that may be used to style renderables for the Console or \
         from which to generate a gradient. Colors can be parse from a number \
