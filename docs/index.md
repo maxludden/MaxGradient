@@ -31,4 +31,4 @@ console = mg.Console()
 console.gradient("Hello, World!")
 ```
 
-![Hello, World!](../Images/hello_world.svg)
+![Hello, World!](Images/examples/hello_world.svg)

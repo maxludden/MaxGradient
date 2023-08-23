@@ -1,4 +1,5 @@
 """Generates a spectrum of colors for use in gradient generation."""
+
 from itertools import cycle
 from random import randint
 from typing import List
@@ -7,8 +8,8 @@ from rich.table import Table
 from rich.text import Text
 from snoop import snoop
 
-from maxgradient.log import Log, Console
 from maxgradient.color import Color
+from maxgradient.log import Console, Log
 
 console = Console()
 log = Log()
@@ -105,6 +106,7 @@ class ColorList(list):
 
 class TintList(List):
     """Generate a list of Tints for use in gradient generation."""
+
     tints: List[str] = [
         "#ffffff",
         "#dddddd",
@@ -115,7 +117,7 @@ class TintList(List):
         "#aaaaaa",
         "#cccccc",
         "#eeeeee",
-        "#ffffff"
+        "#ffffff",
     ]
 
     def __init__(self, hues: int = 3, invert: bool = False):
@@ -159,7 +161,6 @@ class TintList(List):
         """Return the last color in the list."""
         return self.tint_list[-1]
 
-
     @classmethod
     def tint_title(cls) -> Text:
         """Returns `ColorList` title with colors applied."""
@@ -171,7 +172,7 @@ class TintList(List):
             Text("L", style="bold #bbbbbb"),
             Text("i", style="bold #aaaaaa"),
             Text("s", style="bold #999999"),
-            Text("t", style="bold #888888")
+            Text("t", style="bold #888888"),
         ]
         return Text.assemble(*title)
 
@@ -187,6 +188,7 @@ class TintList(List):
                 Text(str(tint._original).capitalize(), style=f"bold {tint.bg_style}")
             )
         return table
+
 
 if __name__ == "__main__":
     color_list = ColorList(invert=True, hues=10)

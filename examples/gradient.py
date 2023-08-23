@@ -97,6 +97,4 @@ def gradient_rgb_colors() -> None:
     )
 
 if __name__ == "__main__":
-    gradient_string_colors()
-    gradient_hex_colors()
-    gradient_rgb_colors()
+    gradient_hello()
