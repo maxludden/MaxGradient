@@ -22,6 +22,60 @@
           "message": 0
         }
       }
+    },
+    {
+      "label": "Build Docs",
+      "type": "shell",
+      "command": "mkdocs",
+      "args": [
+        "build"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "docs",
+        "pattern": {
+          "regexp": "^.*$",
+          "location": 2,
+          "message": 0
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false,
+        "close": true
+      }
+    },
+    {
+      "label": "Serve Docs",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "mkdocs",
+        "serve"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "docs",
+        "pattern": {
+          "regexp": "^.*$",
+          "location": 2,
+          "message": 0
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false,
+        "close": true
+      }
     }
   ]
 }
