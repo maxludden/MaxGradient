@@ -16,6 +16,7 @@ dependencies = [
     "snoop>=0.4.3",
     "birdseye>=0.9.4",
     "mkdocs-dracula-theme>=1.0.5",
+    "pytest>=7.4.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
