@@ -1,5 +1,6 @@
 """Custom highlighter to support highlighting gradient colors as well as the default
 repr highlighting."""
+
 import re
 from typing import List, Pattern, Tuple
 
@@ -106,7 +107,7 @@ class ColorHighlighter(RegexHighlighter):
             r"(?P<number>(?<!\w)\-?[0-9]+\.?[0-9]*(e[-+]?\d+?)?\b|0x[0-9a-fA-F]*)",
             r"(?P<path>\B(/[-\w._+]+)*\/)(?P<filename>[-\w._+]*)?",
             r"(?<![\\\w])(?P<str>b?'''.*?(?<!\\)'''|b?'.*?(?<!\\)'|b?\"\"\".*?(?<!\\)\"\"\"|b?\".*?(?<!\\)\")",
-    IHC        r"(?P<url>(file|https|http|ws|wss)://[-0-9a-zA-Z$_+!`(),.?/;:&=%#]*)",
+            r"(?P<url>(file|https|http|ws|wss)://[-0-9a-zA-Z$_+!`(),.?/;:&=%#]*)"
         ),
     ]
 
