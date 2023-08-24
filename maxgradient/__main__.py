@@ -5,6 +5,11 @@ from lorem_text import lorem
 from maxgradient.console import Console
 from maxgradient.gradient import Gradient
 from maxgradient.theme import GradientTheme
+import maxgradient as mg
+
+console = Console()
+console.gradient("Hello, World!")
+
 
 def examples() -> Layout:
     """Generate a layout for the examples of gradients."""

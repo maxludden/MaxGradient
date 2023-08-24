@@ -302,7 +302,7 @@ class Console(RichConsole, metaclass=Singleton):
         """
         if not path:
             if 'MaxGradient.svg' in (Path.cwd() / "Images").iterdir():
-                path = Path.cwd() / "Images" / f"MaxGradient_{datetime.now().strftime('%Y%m%d%H%M%S')}.svg"
+                path = Path.cwd() / "docs" / "img" / f"MaxGradient_{datetime.now().strftime('%Y%m%d%H%M%S')}.svg"
         if title == "MaxGradient":
             title = path.stem
 

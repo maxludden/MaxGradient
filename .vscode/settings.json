@@ -122,6 +122,7 @@
     "pyenv",
     "pylint",
     "stepsize",
+    "twotwelve",
     "windir"
   ],
   "editor.codeActionsOnSave": {

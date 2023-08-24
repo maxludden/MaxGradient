@@ -1,8 +1,6 @@
 # MaxGradient.Gradient
 
-![Gradient Examples](../Images/gradient_examples.svg)
-
-Gradient is a subclass of rich.text.Text, and can be used in the same way. The Gradient class however also incorporates maxgradient.color.Color which is an expanded version of rich.color.Color. Gradient can be used to create a gradient of colors or styles. Gradient can also be used to create a rainbow effect, or to invert the colors of the gradient.
+<p>Gradient is a subclass of rich.text.Text, and can be used in the same way. The Gradient class however also incorporates maxgradient.color.Color which is an expanded version of rich.color.Color. Gradient can be used to create a gradient of colors or styles. Gradient can also be used to create a rainbow effect, or to invert the colors of the gradient.</p>
 
 ## Basic Usage
 
@@ -15,7 +13,7 @@ console = Console()
 console.print(Gradient("Gradients are cool!"))
 ```
 
-![Gradients are cool!](../Images/gradients_are_cool.svg)
+![Gradients are cool!](img/available_colors.svg)
 
 ## Colors
 
@@ -55,7 +53,7 @@ console = Console()
 console.print(Gradient("Creating gradients from strings!", colors=["red", "green", "blue"]))
 ```
 
-![Creating gradients from strings.](../Images/string_color_gradient.svg)
+![Creating gradients from strings.](img/string_color_gradient.svg)
 
 ```python
 console.print(
@@ -66,7 +64,7 @@ console.print(
 )
 ```
 
-![Creating gradients from hex codes.](../Images/hex_gradient.svg)
+![Creating gradients from hex codes.](img/hex_gradient.svg)
 
 ```python
 console.print(

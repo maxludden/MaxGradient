@@ -1,34 +1,35 @@
-![MaxGradient](../Images/maxgradient_banner.svg)
+<!--<img src="img/maxgradient_banner.png" class="banner" alt="MaxGradient Banner">-->
 
 MaxGradient automates the printing gradient colored text to the console. It's built upon the great rich library. It contains a Console that can serve as a drop in replacement for rich.rich.Console and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions.
 
-# Installation
+# <span class="rainbow-wipe">Installation</span>
 
-MaxGradient can be installed from PyPi using your favorite package manager:
+MaxGradient can be installed from PyPi using your favorite python package manager:
 
-## PDM (Recommended)
+## <span class="pdm-wipe">PDM</span> (Recommended)
 
-```shell
-pdm add maxgradient
-```
+<pre><code>pdm<span class="keyword"> add </span>maxgradient</code></pre>
 
-## Pip
+## PIP
 
 ```shell
 pip install maxgradient
 ```
 
-# Usage
+# <span class="rainbow-wipe">Usage</span>
 
 ## Quick Start
 
-The basic usage is to create a console object and use it to print gradient text:
+The basic usage is to create a console object and use it to print gradient text. MaxGradient Console is a drop in replacement for rich.rich.Console and can be used in the same way. It does, however, have some additional methods like <span class="green">gradient</span><span class="white">()</span>.
 
-```python
-import maxgradient as mg
+<pre><code><span class="comment"># import console from MaxGradient</span>
+<span class="import">import </span>maxgradient <span class="import">as </span>mg
 
-console = mg.Console()
-console.gradient("Hello, World!")
-```
+console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
+console<span class="white">.</span><span class="green">gradient</span>(<span class="yellow">"Hello, World!"</span>)
+</code></pre>
 
-![Hello, World!](Images/examples/hello_world.svg)
+<figure>
+    <figcaption class="twotwelve">Produces the following:</figcaption>
+    <img class="result" src="img/hello_world.svg" alt="Hello, World!">
+</em>
