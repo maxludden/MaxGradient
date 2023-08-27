@@ -17,6 +17,7 @@ dependencies = [
     "birdseye>=0.9.4",
     "mkdocs-dracula-theme>=1.0.5",
     "pytest>=7.4.0",
+    "typer[all]>=0.9.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -29,6 +30,13 @@ build-backend = "pdm.backend"
 [tool.pdm.dev-dependencies]
 dev = []
 
+[tool.pdm.dependencies]
+python = ">=3.10"
+typer = {extras = ["all"], version = "^0.1.0"}
+
+[tool.pdm.scripts]
+gradient = "maxgradient.cli:app"
+
 [tool.pyright]
 include = ["maxgradient"]
 ignore = ["tests"]
@@ -39,17 +47,18 @@ reportGeneralTypeIssues = false
 max-line-length = 120
 disable = [
     "C0301",
+    "C0415",
+    "E0001",
     "E0401",
     "E0611",
+    "E1124",
     "W0612",
     "W0621",
     "W0201",
     "W0613",
     "W0404",
-    "C0415",
     "R0902",
     "W0622",
     "W0611",
-    "E0001",
     "W0212"
  ]
