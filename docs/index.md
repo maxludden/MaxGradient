@@ -36,7 +36,7 @@ console<span class="white">.</span><span class="green">gradient</span>(<span cla
 
 <p>MaxGradient easily make random gradients that require no more than the text you wish to color, it can also be used to make gradients with specific colors. The <span class="green">gradient</span><span class="white">()</span> method takes a string of text as well as a list of colors. The number of colors in the list determines the number of colors in the gradient. The gradient will be evenly distributed between the colors in the list. The gradient will be applied to the text in the order it is given in the list.</p>
 
-<p>We'll talk a low level look at <span class="warm-wipe">MaxGradient</span><span class="white">.color.</span><span class="class">Color</span> but you can use:</p>
+<p>MaxGradient accepts the following as </p>
 <ul>
     <li>color names</li>
     <li>hex color codes</li>

@@ -16,6 +16,6 @@ nav:
         - Color: 'color_ref.md'
 theme: 
     name: dracula
-    logo: img/maxgradient_flav.svg
+    logo: img/MaxGradient.svg
 extra_css:
   - "gradient.css"
