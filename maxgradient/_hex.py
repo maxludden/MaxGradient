@@ -104,6 +104,10 @@ class Hex:
             box=HEAVY_EDGE,
         )
 
+    def is_valid(self) -> bool:
+        """Return True if the Hex is valid."""
+        return self.REGEX.match(self.value) is not None
+
     # def print_rich_hex(self) -> None:
     #     """Print a rich representation of all the Hex colors."""
     #     HEX_COLORS = Rich.HEX

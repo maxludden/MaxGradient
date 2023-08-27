@@ -192,6 +192,11 @@ class RGB:
             hash_value += ord(char)
         return hash_value
 
+    def is_valid(self) -> bool:
+        """Return True if the RGB color is valid."""
+        log.debug("Called RGB.is_valid()")
+        return self.parse(self.value) is not None
+
 
 if __name__ == "__main__":
     rgb_str: str = choice(Rich.RGB)
