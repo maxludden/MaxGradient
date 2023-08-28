@@ -85,9 +85,9 @@ code {
   overflow: auto;
   font-family: "Fira Code", monospace;
   color: #dddddd;
-  padding: 20px 40px;
+  padding: 20px 40px 40px;
   margin: 20px;
-  background: #000;
+  border: 1px solid #555555;
   border-radius: 5px;
 }
 div.body {
@@ -138,6 +138,17 @@ h3 {
   text-shadow: 0 0 1px;
   padding: 20px;
 }
+h5 {
+  font-family: "Fira Code", monospace;
+  font-weight: 500;
+  text-decoration: normal;
+  font-size: 1em;
+  color: #fff;
+  text-decoration: underline;
+  text-shadow: 0 0 1px;
+  padding: 20px;
+
+}
 img.badge {
   margin: 5px;
 }
@@ -146,11 +157,13 @@ pre {
   font-family: "Fira Code", monospace;
   font-size: 0.8em;
   color: #ffffff;
+  border: 5px solid #555555;
+  border-radius: 5%;
 }
 pre.code {
   font-family: "Fira Code", monospace;
   font-size: 0.8em;
-  color: #222222;
+  color: rgb(35,35,35);
   box-shadow: linear-gradient(
       to right,
       #ff00ff 10%,
@@ -403,8 +416,9 @@ svg {
   color: #dddddd;
   padding: 20px 40px;
   margin: 20px;
-  background: #000;
-  border-radius: 5px;
+  background: #232323;
+  border: 5px solid #555555;
+  border-radius: 5%;
 }
 .code-1 {
   font-family: "Fira Code", monospace;
@@ -437,9 +451,27 @@ svg {
 }
 .def {
   color: #bc92f7;
-}
+}x
 .eq {
   color: #fb508e;
+}
+.ex-1 {
+    font-family: "Fira Code", monospace;
+    background: linear-gradient(to right, #ff00ff, #af00ff, #5f00ff);
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+  }
+.example-2 {
+  font-family: "Fira Code", monospace;
+  background: linear-gradient(to right, #0000ff,#0088ff,#00ffff);
+  display: inline-block;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-decoration: none;
 }
 .func {
   color: #ff00ff;
@@ -544,6 +576,12 @@ svg {
       background-position: 200% center;
     }
   }
+}
+.keyword {
+  color: #BD93F9;
+}
+.purple {
+  color: #BD93F9;
 }
 .none {
   color: #8b48ff;
@@ -777,10 +815,15 @@ svg {
   font-style: italic;
   font-size: 0.6em;
 }
-.result {
+.result50 {
   display: block;
   margin: auto;
   width: 50%;
+}
+.result70 {
+  display: block;
+  margin: auto;
+  width: 70%;
 }
 .str {
   color: #ffd243;
@@ -1342,6 +1385,10 @@ svg {
       background-position: 200% center;
     }
   }
+}
+.var {
+  color: #FCB56B;
+  font-weight: 400;
 }
 .warm {
   background: linear-gradient(

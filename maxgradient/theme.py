@@ -10,7 +10,8 @@ from rich.theme import Theme
 from maxgradient.default_styles import GRADIENT_STYLES, styles_table
 from maxgradient.highlighter import RegexHighlighter
 
-_ColorTuple = Tuple[int,int,int]
+_ColorTuple = Tuple[int, int, int]
+
 
 class GradientTheme(Theme):
     """A container for style information used by 'MaxGradient.gradient.GradientConsole'.
@@ -49,22 +50,34 @@ class GradientTheme(Theme):
         """Get a table of all styles in the theme."""
         return styles_table()
 
+
 class GradientTerminalTheme(TerminalTheme):
     """A custom terminal theme for MaxGradient."""
+
     def __init__(self) -> None:
         super().__init__(
-            background = (0,0,0),
-            foreground = (250,250,250),
-            normal = [
-                (30,30,30),
+            background=(35, 35, 35),
+            foreground=(250, 250, 250),
+            normal=[
+                (35, 35, 35),
                 (192, 0, 0),
                 (0, 192, 0),
                 (192, 192, 0),
                 (0, 55, 255),
+                (240, 0, 240),
+                (0, 240, 240),
+                (240, 240, 240),
+            ],
+            bright=[
+                (0, 0, 0),
+                (255, 0, 0),
+                (0, 255, 0),
+                (255, 255, 0),
+                (0, 0, 255),
                 (255, 0, 255),
                 (0, 255, 255),
                 (255, 255, 255),
-            ]
+            ],
         )
 
 

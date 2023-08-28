@@ -1,6 +1,7 @@
 """MaxConsole is a custom themed class inheriting from rich.console.Console."""
 # pylint: disable=E0401,R0913,R0914,E0611,W0621:
 import os
+from sys import stdout
 from datetime import datetime
 from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
 from pathlib import Path
@@ -42,7 +43,7 @@ class Singleton(type):
 
 
 class Console(RichConsole, metaclass=Singleton):
-    """A custom-themed high level interface for the GradientConsole class that \
+    """A custom-themed high level interface for the Console class that \
         inherits from rich.console.Console. This class is a singleton which removes \
         the need to pass around a console object or use the `get_console` method.
 
@@ -59,7 +60,7 @@ class Console(RichConsole, metaclass=Singleton):
         soft_wrap (Optional[bool], optional): Set soft wrap default on \
             print method. Defaults to False.
         theme (Theme, optional): An optional style theme object, or \
-            None for Max's default theme.
+            None for the default theme: GradientTheme().
         stderr (bool, optional): Use stderr rather than stdout if \
             file is not specified. Defaults to False.
         file (IO, optional): A file object where the console \
@@ -121,7 +122,7 @@ class Console(RichConsole, metaclass=Singleton):
         soft_wrap: bool = False,
         theme: Optional[Theme] = GradientTheme(),
         stderr: bool = False,
-        file: Optional[IO[str]] = None,
+        file: Optional[IO[str]] = stdout,
         quiet: bool = False,
         width: Optional[int] = None,
         height: Optional[int] = None,

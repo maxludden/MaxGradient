@@ -20,17 +20,21 @@ MaxGradient can be installed from PyPi using your favorite python package manage
 
 The basic usage is to create a console object and use it to print gradient text. MaxGradient Console is a drop in replacement for rich.rich.Console and can be used in the same way. It does, however, have some additional methods like <span class="green">gradient</span><span class="white">()</span>.
 
+<!--Code Block Start-->
 <pre><code><span class="comment"># import console from MaxGradient</span>
 <span class="import">import </span>maxgradient <span class="import">as </span>mg
 
 console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
 console<span class="white">.</span><span class="green">gradient</span>(<span class="yellow">"Hello, World!"</span>)
 </code></pre>
+<!--Code Block End-->
 
+<!--Caption Start-->
 <figure>
-    <figcaption class="twotwelve">Produces the following:</figcaption>
-    <img class="result" src="img/hello_world.svg" alt="Hello, World!">
+    <figcaption>Produces the following:</figcaption>
+    <img src="img/hello_world.svg" alt="Hello, World!">
 </figure>
+<!--Caption End-->
 
 ## <span class="cool-wipe">Gradient with Color</span>
 
@@ -44,3 +48,55 @@ console<span class="white">.</span><span class="green">gradient</span>(<span cla
     <li>X11 named colors</li>
     <li>as well as any colors from rich's standard library.</li>
 </ul>
+
+<p>Let's take a look at some examples:</p>
+
+<!--Code Block Start | 1 -->
+<h5 class="white">Example 1</h5>
+<pre><code>
+<span class="import">import </span>maxgradient <span class="import">as </span>mg
+
+console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
+console<span class="white">.</span><span class="green">gradient</span>(
+    <span class="yellow">"This gradient contains the colors: magenta, violet, and purple."</span>,
+    <span style="color:#FCB56B;">colors</span> <span><span class="eq">= [</span>
+        <span class="yellow">"magenta",</span>
+        <span class="yellow">"violet",</span>
+        <span class="yellow">"purple"</span>
+    <span class="eq">]</span>
+
+</code></pre>
+<!--Code Block End | 1 -->
+
+<!--Result | 1 -->
+<figure>
+    <img src="img/gradient_with_color_1.svg" alt="Hello, World!">
+</figure>
+<!--Result | 1 -->
+
+<br /><hr><br />
+
+<!--Code Block Start | 2 -->
+<h5 class="white">Example 2</h5>
+<pre><code>
+console<span class="white">.</span><span class="green">gradient</span>(
+    <span class="yellow">"This gradient contains the colors: violet, purple,</span><span class="keyword">\</span>
+        <span class="yellow">blue, lightblue, and cyan."</span>
+    <span style="color:#FCB56B;">colors</span> <span><span class="eq">= [</span>
+        <span class="yellow">"magenta",</span>
+        <span class="yellow">"violet",</span>
+        <span class="yellow">"purple"</span>
+    <span class="eq">]</span>
+
+</code></pre>
+<!--Code Block End | 2 -->
+
+<!--Result Start | 2 -->
+<figure>
+    <img src="img/gradient_with_color_2.svg" alt="Hello, World!">
+</figure>
+<!--Result End | 2 -->
+
+<br /><hr><br />
+
+## <span class="cool-wipe">Justified Gradient</span>

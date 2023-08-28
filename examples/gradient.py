@@ -24,6 +24,40 @@ def gradient_hello() -> None:
     )
 
 
+def gradient_with_color_1() -> None:
+    """Print a gradient with color."""
+    console = Console(width=70, record=True)
+    console.line()
+    console.gradient(
+        "This gradient contains the colors: magenta, violet, and purple.",
+        colors=["magenta", "violet", "purple"],
+        justify="center",
+    )
+    console.line(2)
+    console.save_max_svg(
+        "docs/img/gradient_with_color_1.svg",
+        title="Example 1 Result",
+        theme=GradientTerminalTheme(),
+    )
+
+
+def gradient_with_color_2() -> None:
+    """Print a gradient with color."""
+    console = Console(width=80, record=True)
+    console.line()
+    console.gradient(
+        "\tThis gradient contains the colors: violet, purple, blue, lightblue, and \tcyan.",
+        colors=["violet", "purple", "blue", "lightblue", "cyan"],
+        justify="center",
+    )
+    console.line(2)
+    console.save_max_svg(
+        "docs/img/gradient_with_color_2.svg",
+        title="Example 2",
+        theme=GradientTerminalTheme(),
+    )
+
+
 def gradient_cool() -> None:
     """Print a cool gradient."""
     console = Console(width=40, record=True)
@@ -94,4 +128,4 @@ def gradient_rgb_colors() -> None:
 
 
 if __name__ == "__main__":
-    gradient_hello()
+    gradient_with_color_2()

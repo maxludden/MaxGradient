@@ -575,5 +575,8 @@
     },
     "no-hard-tabs": false
   },
-  "svg.preview.background": "editor"
+  "svg.preview.background": "editor",
+  "github-actions.workflows.pinned.workflows": [
+    ".github/workflows/jekyll-gh-pages.yml"
+  ]
 }

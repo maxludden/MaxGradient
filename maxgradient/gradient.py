@@ -17,14 +17,16 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
-# from snoop import snoop
-# from cheap_repr import register_repr, normal_repr
 
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.highlighter import ColorHighlighter
 from maxgradient.log import Log
 from maxgradient.theme import GradientTheme
+
+# from snoop import snoop
+# from cheap_repr import register_repr, normal_repr
+
 
 JustifyMethod = Literal["default", "left", "center", "right", "full"]
 OverflowMethod = Literal["fold", "crop", "ellipsis", "ignore"]
@@ -619,10 +621,12 @@ class Gradient(Text):
             no_wrap=self.no_wrap,
             end=self.end,
             tab_size=self.tab_size,
-            spans=self.spans
+            spans=self.spans,
         )
 
+
 # register_repr(Gradient)(normal_repr)
+
 
 def strip_control_codes(text: str) -> str:
     """Remove control codes from a string."""
@@ -630,6 +634,7 @@ def strip_control_codes(text: str) -> str:
 
 
 # def cell_len(text: str) -> int:Y
+
 
 def pick_bool(value: Optional[bool], default: bool, fallback: bool) -> bool:
     """Pick a boolean value from a set of options."""

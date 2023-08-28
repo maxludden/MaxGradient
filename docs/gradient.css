@@ -39,6 +39,16 @@
     #f0f
   );
 }
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap");
+}
+
+@font-face {
+  font-family: "Pretty";
+  src: url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
+}
 body {
   font-family: "Urbanist", sans-serif;
   font-weight: 700;
@@ -71,24 +81,13 @@ a:active {
   color: transparent;
   text-decoration: none;
 }
-/* article { */
-  /* display: block; */
-  /* flex-direction: column; */
-  /* justify-content: left; */
-  /* align-items: center; */
-  /* max-width: 500; */
-  /* margin: 50px auto; */
-  /* padding: 0 1em; */
-}
 code {
   display: block;
   overflow: auto;
   font-family: "Fira Code", monospace;
-  font-weight: 400
-  /* color: #dddddd; */
-  padding: 20px 40px;
+  font-weight: 400;
+  padding: 20px;
   margin: 20px;
-  /* background: #000; */
   border-radius: 5px;
 }
 div.body {
