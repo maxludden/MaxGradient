@@ -119,6 +119,7 @@
     "Scrollback",
     "Sysnative",
     "docsmsft",
+    "mclass",
     "pyenv",
     "pylint",
     "stepsize",

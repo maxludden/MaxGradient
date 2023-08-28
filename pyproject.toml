@@ -3,9 +3,7 @@
 name = "MaxGradient"
 version = "0.1.5"
 description = "MaxGradient automates the printing gradient colored text to the console."
-authors = [
-    {name = "maxludden", email = "dev@maxludden.com"},
-]
+authors = [{ name = "maxludden", email = "dev@maxludden.com" }]
 dependencies = [
     "loguru>=0.7.0",
     "rich>=13.4.2",
@@ -16,26 +14,28 @@ dependencies = [
     "snoop>=0.4.3",
     "birdseye>=0.9.4",
     "mkdocs-dracula-theme>=1.0.5",
-    "pytest>=7.4.0",
     "typer[all]>=0.9.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.dev-dependencies]
-dev = []
+dev = [
+    "snoop>=0.4.3",
+    "birdseye>=0.9.4",
+]
 
 [tool.pdm.dependencies]
 python = ">=3.10"
-typer = {extras = ["all"], version = "^0.1.0"}
+typer = { extras = ["all"], version = "^0.1.0" }
 
 [tool.pdm.scripts]
-gradient = "maxgradient.cli:app"
+gradient = { call = "maxgradient.cli:app" }
 
 [tool.pyright]
 include = ["maxgradient"]
@@ -46,19 +46,24 @@ reportGeneralTypeIssues = false
 [tool.pylint]
 max-line-length = 120
 disable = [
+    "C0103",
     "C0301",
     "C0415",
     "E0001",
     "E0401",
     "E0611",
     "E1124",
+    "W0102",
     "W0612",
     "W0621",
     "W0201",
     "W0613",
     "W0404",
     "R0902",
+    "R0912", 
+    "R0913",
     "W0622",
+    "W1401",
     "W0611",
-    "W0212"
- ]
+    "W0212",
+]

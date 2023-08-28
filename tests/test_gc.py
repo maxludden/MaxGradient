@@ -1,4 +1,4 @@
-# Gradient Color Tests `maxgradient/tests/test_gc.py`
+"""Gradient Color Tests `maxgradient/tests/test_gc.py`"""
 # pylint: disable=W0105
 
 import unittest
