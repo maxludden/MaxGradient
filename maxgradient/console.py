@@ -5,11 +5,18 @@ from sys import stdout
 from datetime import datetime
 from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
 from pathlib import Path
+from dotenv import load_dotenv
 
 from rich._export_format import CONSOLE_SVG_FORMAT
 from rich._log_render import FormatTimeCallable
 from rich.align import AlignMethod
-from rich.console import Console as RichConsole
+from rich.console import (
+    Console as RichConsole,
+    ConsoleOptions,
+    RenderResult,
+    Group
+)
+    
 from rich.console import ConsoleRenderable, RichCast
 from rich.emoji import EmojiVariant
 from rich.highlighter import ReprHighlighter
@@ -21,19 +28,20 @@ from rich.terminal_theme import TerminalTheme
 from rich.traceback import install as install_traceback
 
 from maxgradient.color import Color
+from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule, Thickness
 from maxgradient.theme import GradientTheme, GradientTerminalTheme
+
+load_dotenv()
 
 RenderableType = ConsoleRenderable | RichCast | str
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
 JustifyMethod = Literal["default", "left", "center", "right", "full"]
 OverflowMethod = Literal["fold", "crop", "ellipsis", "ignore"]
 
-
 class Singleton(type):
     """A metaclass to create a single global MaxConsole instance."""
-
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
@@ -137,7 +145,7 @@ class Console(RichConsole, metaclass=Singleton):
         log_time: bool = True,
         log_path: bool = True,
         log_time_format: Union[str, FormatTimeCallable] = "[%X]",
-        highlighter: Optional[HighlighterType] = ReprHighlighter(),
+        highlighter: Optional[HighlighterType] = ColorReprHighlighter(),
         legacy_windows: Optional[bool] = None,
         safe_box: bool = True,
         get_datetime: Optional[Callable[[], datetime]] = None,
@@ -198,7 +206,32 @@ class Console(RichConsole, metaclass=Singleton):
         tab_size: Optional[int] = 8,
         spans: Optional[List[Span]] = None,
     ) -> None:
-        """Return a gradient used by the console."""
+        """Text with gradient color / style.
+
+        Args:
+            text(`text): The text to print. Defaults to `""`.\n
+            colors(`List[Optional[Color|Tuple|str|int]]`): A list of colors to use \
+                for the gradient. Defaults to None.\n
+            rainbow(`bool`): Whether to print the gradient text in rainbow colors\
+                across the spectrum. Defaults to False.\n
+            invert(`bool`): Reverse the color gradient. Defaults to False.\n
+            hues(`int`): The number of colors in the gradient. Defaults to `3`.\n
+            color_sample(`bool`): Replace text characters with `"█" `. Defaults\
+                to False.\n
+            style(`StyleType`) The style of the gradient text. Defaults to None.\n
+            justify(`Optional[JustifyMethod]`): Justify method: "left", "center",\
+                "full", "right". Defaults to None.\n
+            overflow(`Optional[OverflowMethod]`):  Overflow method: "crop", "fold", \
+                "ellipsis". Defaults to None.\n
+            end (str, optional): Character to end text with. Defaults to "\\\\n".\n
+            no_wrap (bool, optional): Disable text wrapping, or None for default.\
+                Defaults to None.\n
+            tab_size (int): Number of spaces per tab, or `None` to use\
+                `console.tab_size`. Defaults to 8.\n
+            spans (List[Span], optional). A list of predefined style spans.\
+                Defaults to None.\n
+
+        """
         self.print(
             Gradient(
                 text=text,
@@ -214,7 +247,8 @@ class Console(RichConsole, metaclass=Singleton):
                 end=end,
                 tab_size=tab_size,
                 spans=spans,
-            )
+            ),
+            justify=justify
         )
 
     def gradient_rule(

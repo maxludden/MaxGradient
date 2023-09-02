@@ -11,7 +11,7 @@ TEXT = lorem.paragraphs(2)
 
 def gradient_hello() -> None:
     """Gradient Hello, World!"""
-    console = Console(width=40, record=True)
+    console = Console(width=70, record=True)
     console.line()
     console.gradient(
         "\tHello, World!", justify="center"
@@ -19,7 +19,7 @@ def gradient_hello() -> None:
     console.line(2)
     console.save_max_svg(
         "docs/img/hello_world.svg",
-        title="`Hello, World!` Result",
+        title="Quick Start Example Result",
         theme=GradientTerminalTheme(),
     )
 
@@ -126,6 +126,11 @@ def gradient_rgb_colors() -> None:
     console.line(2)
     console.save_max_svg("docs/img/rgb_gradient.svg", title="RGB Color Gradient Result")
 
-
 if __name__ == "__main__":
-    gradient_with_color_2()
+    gradient_hello()
+    # gradient_with_color_1()
+    # gradient_with_color_2()
+    # gradient_cool()
+    # gradient_string_colors()
+    # gradient_hex_colors()
+    # gradient_rgb_colors()

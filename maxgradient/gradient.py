@@ -20,13 +20,9 @@ from rich.traceback import install as install_rich_traceback
 
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
-from maxgradient.highlighter import ColorHighlighter
+from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.log import Log
 from maxgradient.theme import GradientTheme
-
-# from snoop import snoop
-# from cheap_repr import register_repr, normal_repr
-
 
 JustifyMethod = Literal["default", "left", "center", "right", "full"]
 OverflowMethod = Literal["fold", "crop", "ellipsis", "ignore"]
@@ -36,7 +32,7 @@ DEFAULT_JUSTIFY: "JustifyMethod" = "default"
 DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
-console = Console(theme=GradientTheme(), highlighter=ColorHighlighter())
+console = Console(theme=GradientTheme(), highlighter=ColorReprHighlighter())
 install_rich_traceback(console=console, show_locals=True)
 log = Log()
 

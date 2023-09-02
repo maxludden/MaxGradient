@@ -72,7 +72,7 @@ RGB_TUPLE: Tuple[Tuple[int, int, int], ...] = (
 )
 
 
-class ColorHighlighter(RegexHighlighter):
+class ColorReprHighlighter(RegexHighlighter):
     """Apply style to anything that looks like an email."""
 
     base_style = "bold."
@@ -107,7 +107,7 @@ class ColorHighlighter(RegexHighlighter):
             r"(?P<number>(?<!\w)\-?[0-9]+\.?[0-9]*(e[-+]?\d+?)?\b|0x[0-9a-fA-F]*)",
             r"(?P<path>\B(/[-\w._+]+)*\/)(?P<filename>[-\w._+]*)?",
             r"(?<![\\\w])(?P<str>b?'''.*?(?<!\\)'''|b?'.*?(?<!\\)'|b?\"\"\".*?(?<!\\)\"\"\"|b?\".*?(?<!\\)\")",
-            r"(?P<url>(file|https|http|ws|wss)://[-0-9a-zA-Z$_+!`(),.?/;:&=%#]*)"
+            r"(?P<url>(file|https|http|ws|wss)://[-0-9a-zA-Z$_+!`(),.?/;:&=%#]*)",
         ),
     ]
 
@@ -115,10 +115,9 @@ class ColorHighlighter(RegexHighlighter):
 if __name__ == "__main__":
     from maxgradient.console import Console
 
-    console = Console(highlighter=ColorHighlighter())
-    console.print("1. This is a test of the ColorReprHighlighter.", highlight=True)
+    console = Console(highlighter=ColorReprHighlighter())
 
-    console.print("This is a test of the highlighter", highlight=True, style="bold")
+    console.print("\nThis is a test of the ColorReprHighlighter", justify="center", highlight=True, style="bold")
     # for item in [NAMES, HEX, HEX3, RGB, RGB_TUPLE]:
     colors = []
     for x in range(10):

@@ -20,8 +20,23 @@ MaxGradient can be installed from PyPi using your favorite python package manage
 
 The basic usage is to create a console object and use it to print gradient text. MaxGradient Console is a drop in replacement for rich.rich.Console and can be used in the same way. It does, however, have some additional methods like <span class="green">gradient</span><span class="white">()</span>.
 
+<div class="code-card">
+    <p class="code-head">Quick Start Example</p>
+    <div><!--Code Block Start-->
+<pre><code>
+<span class="comment"># import console from MaxGradient</span>
+<span class="import">import </span>maxgradient <span class="import">as </span>mg
+
+console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
+console<span class="white">.</span><span class="green">gradient</span>(<span class="yellow">"Hello, World!"</span>)
+</code></pre>
+
+<!--Code Block End-->
+</div>
+
 <!--Code Block Start-->
-<pre><code><span class="comment"># import console from MaxGradient</span>
+<pre><code><span class="code-title">Quick Start Example</span>
+<span class="comment"># import console from MaxGradient</span>
 <span class="import">import </span>maxgradient <span class="import">as </span>mg
 
 console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
@@ -53,19 +68,23 @@ console<span class="white">.</span><span class="green">gradient</span>(<span cla
 
 <!--Code Block Start | 1 -->
 <h5 class="white">Example 1</h5>
-<pre><code>
+<pre><code><span class="comment"># While MaxGradient has a multiple modules including a Gradient</span>
+<span class="comment"># module, the main modules may all be imported directly from maxgradient.</span>
 <span class="import">import </span>maxgradient <span class="import">as </span>mg
 
-console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
-console<span class="white">.</span><span class="green">gradient</span>(
-    <span class="yellow">"This gradient contains the colors: magenta, violet, and purple."</span>,
-    <span style="color:#FCB56B;">colors</span> <span><span class="eq">= [</span>
-        <span class="yellow">"magenta",</span>
-        <span class="yellow">"violet",</span>
-        <span class="yellow">"purple"</span>
-    <span class="eq">]</span>
+console <span class="eq">= </span>mg<span class="grey">.</span><span class="class">Console</span>()<span class="comment"> # Initialize a console</span>
 
+<span class="comment"># Use the Console's gradient function</span>
+console<span class="white">.</span><span class="green">gradient</span>(
+<span class="yellow"> "This gradient contains the colors: magenta, violet, and purple."</span>,
+<span style="color:#FCB56B;"> colors</span> <span><span class="eq">= [</span>
+<span class="yellow"> "magenta"</span>,
+<span class="yellow"> "violet"</span>,
+<span class="yellow"> "purple"</span>
+<span class="eq"> ]</span>
+)
 </code></pre>
+
 <!--Code Block End | 1 -->
 
 <!--Result | 1 -->
@@ -87,8 +106,9 @@ console<span class="white">.</span><span class="green">gradient</span>(
         <span class="yellow">"violet",</span>
         <span class="yellow">"purple"</span>
     <span class="eq">]</span>
-
+)
 </code></pre>
+
 <!--Code Block End | 2 -->
 
 <!--Result Start | 2 -->
@@ -99,4 +119,4 @@ console<span class="white">.</span><span class="green">gradient</span>(
 
 <br /><hr><br />
 
-## <span class="cool-wipe">Justified Gradient</span>
+<div class="row ">

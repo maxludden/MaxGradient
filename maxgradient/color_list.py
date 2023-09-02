@@ -1,4 +1,5 @@
 """Generates a spectrum of colors for use in gradient generation."""
+# pylint: disable=[E0401, E0611, W0611]
 
 from itertools import cycle
 from random import randint
@@ -6,7 +7,6 @@ from typing import List
 
 from rich.table import Table
 from rich.text import Text
-from snoop import snoop
 
 from maxgradient.color import Color
 from maxgradient.log import Console, Log
@@ -183,9 +183,9 @@ class TintList(List):
             expand=False,
             padding=(0, 1),
         )
-        for tint in self.tint_list:
+        for color in self.tint_list:
             table.add_row(
-                Text(str(tint._original).capitalize(), style=f"bold {tint.bg_style}")
+                Text(str(color.name).capitalize(), style=f"bold {color.bg_style}")
             )
         return table
 
@@ -207,7 +207,7 @@ if __name__ == "__main__":
     console.print(tint_list, justify="center")
 
     last_tint = tint_list.get_last_color()
-    last_tint_color = f"[{last_tint.style}]{last_tint._original.capitalize()}[/]"
+    last_tint_color = f"[{last_tint.style}]{last_tint.name.capitalize()}[/]"
     console.print(
         f"[{last_tint.style}]Last Tint:[/] {last_tint_color}",
         justify="center",

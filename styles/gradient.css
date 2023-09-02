@@ -451,7 +451,23 @@ svg {
 }
 .def {
   color: #bc92f7;
-}x
+}
+div.code-card {
+  display: block;
+  overflow: auto;
+  font-family: "Fira Code", monospace;
+  color: #dddddd;
+  padding: 0px;
+  margin: 0px;
+  border: 1px solid #555555;
+  border-radius: 5px;
+}
+div.code-head {
+  font-family: "Fira Code", monospace;
+  display: inline;
+  text-align: center;
+  color: #dddddd;
+}
 .eq {
   color: #fb508e;
 }

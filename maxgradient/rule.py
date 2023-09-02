@@ -1,7 +1,6 @@
 """Rule class for maxgradient package."""
 from typing import Literal, Union
 
-from cheap_repr import normal_repr, register_repr
 from rich.align import AlignMethod
 from rich.cells import cell_len, set_cell_size
 from rich.console import Console, ConsoleOptions, RenderResult
@@ -13,9 +12,6 @@ from rich.text import Text
 from maxgradient.color_list import ColorList
 from maxgradient.gradient import Gradient
 from maxgradient.log import Log
-
-# from snoop import snoop
-
 
 Thickness = Literal["thin", "medium", "thick"]
 
@@ -250,8 +246,6 @@ class GradientRule(JupyterMixin):
 
         from rich.console import Console
 
-        register_repr(GradientRule)(normal_repr)
-
         try:
             text = sys.argv[1]
         except IndexError:
@@ -267,14 +261,12 @@ class GradientRule(JupyterMixin):
                 title="Thin Gradient Rule",
                 gradient=True,
                 thickness="thin",
-                align="center"
+                align="center",
             )
         )
         console.line()
         console.print(
-            GradientRule(
-                title="Medium Gradient Rule", gradient=True, align="center"
-            )
+            GradientRule(title="Medium Gradient Rule", gradient=True, align="center")
         )
         console.line()
         console.print(
@@ -282,23 +274,16 @@ class GradientRule(JupyterMixin):
                 title="Medium Left-aligned Non-gradient Rule",
                 gradient=False,
                 thickness="medium",
-                align="left"
+                align="left",
             )
         )
         console.line()
         console.print(
-            GradientRule(
-                title="Medium Right-aligned Gradient Rule", align="right"
-            )
+            GradientRule(title="Medium Right-aligned Gradient Rule", align="right")
         )
         console.line()
         console.print(GradientRule("Thick Gradient Rule", thickness="thick"))
 
-
-register_repr(GradientRule)(normal_repr)
-register_repr(Text)(normal_repr)
-register_repr(RichRule)(normal_repr)
-register_repr(Text)(normal_repr)
 
 if __name__ == "__main__":
     GradientRule.rule_example()

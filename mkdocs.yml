@@ -18,4 +18,5 @@ theme:
     name: dracula
     logo: img/MaxGradient.svg
 extra_css:
-  - "gradient.css"
+  - "styles/gradient.css"
+  - "styles/next-btn.css"

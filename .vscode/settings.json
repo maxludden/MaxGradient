@@ -515,10 +515,9 @@
     "sqlite",
     "ssh_config",
     "toml",
-    "vb"
+    "vb",
+    "python"
   ],
-  "genieai.enableConversationHistory": true,
-  "genieai.telemetry.disable": false,
   "pylint.importStrategy": "useBundled",
   "vsicons.dontShowNewVersionMessage": true,
   "editor.linkedEditing": true,
@@ -540,7 +539,11 @@
     "css",
     "python",
     "javascript",
-    "typescript"
+    "typescript",
+    "yaml",
+    "toml",
+    "zsh",
+    "sh"
   ],
   "colorize.colorized_variables": [
     "LESS",
@@ -550,9 +553,6 @@
   ],
   "editor.semanticTokenColorCustomizations": {},
   "editor.fontFamily": "MesloLGS NF, Menlo, Monaco, 'Courier New', monospace",
-  "github.copilot.advanced": {},
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": false,
   "python.testing.unittestArgs": [
     "-v",
     "-s",

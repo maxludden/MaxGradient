@@ -147,6 +147,8 @@ You can also visit the rich library's documentation to view all \
             self.mode: Mode = color.mode
             return
 
+        if isinstance(color, tuple):
+            color = f"rgb{color}"
         hex_match: Optional[Match] = Hex.REGEX.match(color)
         if hex_match:
             self.hex_components(color)
@@ -252,7 +254,7 @@ You can also visit the rich library's documentation to view all \
 
     @property
     @lru_cache
-    def name(self) -> str: 
+    def name(self) -> str:
         """Return the name of the color."""
         log.debug("Called Color.name.getter()")
         return self._name
