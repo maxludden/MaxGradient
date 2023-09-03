@@ -6,7 +6,7 @@ groups = ["default", "dev"]
 cross_platform = true
 static_urls = false
 lock_version = "4.3"
-content_hash = "sha256:29d024bf0681a0f16e627f054fa2444789d69ff3d7fa72d3b91ee9d1f6796b9b"
+content_hash = "sha256:fd12eb136daf1a3fc22c88ce711046bf15fa4a1faf3954f6455b467440754f15"
 
 [[package]]
 name = "click"

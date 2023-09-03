@@ -176,3 +176,7 @@ maxgradient.code-workspace
 rich_progress.py
 __console.py
 site/
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

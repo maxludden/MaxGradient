@@ -1,6 +1,6 @@
 """Import the classes from the different modules of gradient"""
 from os import environ
-from 
+from rich import print, inspect
 
 from dotenv import load_dotenv
 from rich.console import ConsoleOptions, Group, RenderableType, RenderResult
