@@ -1,5 +1,8 @@
-"""Custom highlighter to support highlighting gradient colors as well as the default
-repr highlighting."""
+"""Custom highlighter to support highlighting gradient colors as well as the default repr highlighting."""
+# disable: pylint=[E0f04,W0012]
+
+
+# disable: pylint
 
 import re
 from typing import List, Pattern, Tuple
@@ -117,7 +120,12 @@ if __name__ == "__main__":
 
     console = Console(highlighter=ColorReprHighlighter())
 
-    console.print("\nThis is a test of the ColorReprHighlighter", justify="center", highlight=True, style="bold")
+    console.print(
+        "\nThis is a test of the ColorReprHighlighter",
+        justify="center",
+        highlight=True,
+        style="bold",
+    )
     # for item in [NAMES, HEX, HEX3, RGB, RGB_TUPLE]:
     colors = []
     for x in range(10):

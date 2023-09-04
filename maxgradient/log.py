@@ -1,5 +1,5 @@
 """Gradient logging module"""
-# pylint: disable=E0401,W0611,C0103
+# pylint: disable=E0401,W0611,C0103,E0611
 from __future__ import annotations
 
 import re
@@ -442,19 +442,30 @@ class Log:
         self.logger.enable(module)
 
 
-def debug(*, level="DEBUG", depth: int = 1, entry: bool = True, exit: bool = True):
+def watch(
+    *, level="DEBUG", depth: int = 1, func_entry: bool = True, func_exit: bool = True
+):
+    """Decorator to watch function calls.add()
+
+    Args:
+        level (str, optional): The level to log to. Defaults to "DEBUG".
+        depth (int, optional): The depth to log. Defaults to 1.
+        entry (bool, optional): Whether to log the entry of a function and the arguments. Defaults to True.
+        exit (bool, optional): Whether to log the exit and result of the function. Defaults to True.
+    """
+
     def wrapper(func):
         name = func.__name__
 
         @wraps(func)
         def wrapped(*args, **kwargs):
             logger_ = log.opt(depth=depth)
-            if entry:
+            if func_entry:
                 logger_.log(
                     level, "Entering '{}' (Args={}, Kwargs={})", name, *args, *kwargs
                 )
             result = func(*args, **kwargs)
-            if exit:
+            if func_exit:
                 logger_.log(level, "Exiting '{name}' (Result={result})")
             return result
 

@@ -10,6 +10,7 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 import numpy as np
 from nptyping import NDArray, Shape
 from rich.cells import cell_len
+from rich.box import Box
 from rich.console import Console, ConsoleOptions
 from rich.measure import Measurement
 from rich.segment import Segment
@@ -143,7 +144,6 @@ class Gradient(Text):
         self.hues = len(self.colors)
 
         gradient_substrings: Text = self.generate_gradient_substrings(True)
-        # console.line(2)
         self._spans = gradient_substrings.spans
 
     def __str__(self) -> str:
@@ -656,6 +656,7 @@ if __name__ == "__main__":  # pragma: no cover
         expand=True,
         width=70,
         padding=(1, 4),
+        border_style="bold"
     )
     # inspect(gradient)
     console.print(gradient, justify="center")

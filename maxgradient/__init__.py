@@ -1,14 +1,14 @@
 """Import the classes from the different modules of gradient"""
 from os import environ
-from rich import print, inspect
 
 from dotenv import load_dotenv
+from rich import inspect, print
 from rich.console import ConsoleOptions, Group, RenderableType, RenderResult
-from rich.style import Style, StyleType
-from rich.text import Span, Text, TextType
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.progress import Progress, Task
+from rich.style import Style, StyleType
+from rich.text import Span, Text, TextType
 
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList, TintList

@@ -1,37 +1,41 @@
-"""MaxConsole is a custom themed class inheriting from rich.console.Console."""
-# pylint: disable=E0401,R0913,R0914,E0611,W0621:
-import os
-from sys import stdout
-from datetime import datetime
-from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
-from pathlib import Path
-from dotenv import load_dotenv
+"""This module defines a custom themed class inheriting from rich.console.Console called MaxConsole.
+It also defines a metaclass Singleton to create a single global MaxConsole instance.
+The MaxConsole class is a high level interface for the Console class that inherits from rich.console.Console.
+It is a singleton which removes the need to pass around a console object or use the `get_console` method.
+"""
 
+import os
+from datetime import datetime
+from pathlib import Path
+from sys import stdout
+from typing import IO, Callable, List, Literal, Mapping, Optional, Tuple, Union
+
+from dotenv import load_dotenv
 from rich._export_format import CONSOLE_SVG_FORMAT
 from rich._log_render import FormatTimeCallable
 from rich.align import AlignMethod
+from rich.console import Console as RichConsole
 from rich.console import (
-    Console as RichConsole,
     ConsoleOptions,
+    ConsoleRenderable,
+    Group,
     RenderResult,
-    Group
+    RichCast,
 )
-    
-from rich.console import ConsoleRenderable, RichCast
 from rich.emoji import EmojiVariant
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
 from rich.style import Style, StyleType
+from rich.terminal_theme import TerminalTheme
 from rich.text import Span, Text, TextType
 from rich.theme import Theme
-from rich.terminal_theme import TerminalTheme
 from rich.traceback import install as install_traceback
 
 from maxgradient.color import Color
-from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.gradient import Gradient
+from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.rule import GradientRule, Thickness
-from maxgradient.theme import GradientTheme, GradientTerminalTheme
+from maxgradient.theme import GradientTerminalTheme, GradientTheme
 
 load_dotenv()
 
@@ -40,8 +44,23 @@ HighlighterType = Callable[[Union[str, "Text"]], "Text"]
 JustifyMethod = Literal["default", "left", "center", "right", "full"]
 OverflowMethod = Literal["fold", "crop", "ellipsis", "ignore"]
 
+
 class Singleton(type):
-    """A metaclass to create a single global MaxConsole instance."""
+    """
+    A metaclass to create a single global instance of a class.
+
+    This metaclass ensures that only one instance of a class is created and
+    provides a way to access that instance globally. To use this metaclass,
+    simply inherit from it and define your class as you normally would.
+
+    Example usage:
+
+    class MyClass(metaclass=Singleton):
+        pass
+
+    my_instance = MyClass()
+    """
+
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
@@ -113,7 +132,7 @@ class Console(RichConsole, metaclass=Singleton):
             or None for datetime.now.
         get_time (Callable[[], time], optional): Callable that \
             gets the current time in seconds, default uses time.monotonic.
-    """
+            """
 
     theme: Theme = GradientTheme()
     _environ: Mapping[str, str] = os.environ
@@ -248,7 +267,7 @@ class Console(RichConsole, metaclass=Singleton):
                 tab_size=tab_size,
                 spans=spans,
             ),
-            justify=justify
+            justify=justify,
         )
 
     def gradient_rule(
@@ -313,15 +332,15 @@ class Console(RichConsole, metaclass=Singleton):
             write_file.write(svg)
 
     def save_max_svg(
-            self,
-            path: str|Path,
-            *,
-            title: str = "MaxGradient",
-            theme: Optional[TerminalTheme] = GradientTerminalTheme(),
-            clear: bool = True,
-            code_format: str = CONSOLE_SVG_FORMAT,
-            font_aspect_ratio: float = 0.61,
-            unique_id: Optional[str] = None,
+        self,
+        path: str | Path,
+        *,
+        title: str = "MaxGradient",
+        theme: Optional[TerminalTheme] = GradientTerminalTheme(),
+        clear: bool = True,
+        code_format: str = CONSOLE_SVG_FORMAT,
+        font_aspect_ratio: float = 0.61,
+        unique_id: Optional[str] = None,
     ) -> None:
         """A shortcut to save an SVG file to the Images directory.
 
@@ -336,22 +355,26 @@ class Console(RichConsole, metaclass=Singleton):
             unique_id (Optional[str], optional): The unique ID of the exported SVG file. Defaults to None.
         """
         if not path:
-            if 'MaxGradient.svg' in (Path.cwd() / "Images").iterdir():
-                path = Path.cwd() / "docs" / "img" / f"MaxGradient_{datetime.now().strftime('%Y%m%d%H%M%S')}.svg"
+            if "MaxGradient.svg" in (Path.cwd() / "Images").iterdir():
+                path = (
+                    Path.cwd()
+                    / "docs"
+                    / "img"
+                    / f"MaxGradient_{datetime.now().strftime('%Y%m%d%H%M%S')}.svg"
+                )
         if title == "MaxGradient":
             title = path.stem
 
         svg = self.export_svg(
-                title=title,
-                theme=theme,
-                clear=clear,
-                code_format=code_format,
-                font_aspect_ratio=font_aspect_ratio,
-                unique_id=unique_id,
+            title=title,
+            theme=theme,
+            clear=clear,
+            code_format=code_format,
+            font_aspect_ratio=font_aspect_ratio,
+            unique_id=unique_id,
         )
         with open(path, "wt", encoding="utf-8") as write_file:
             write_file.write(svg)
-
 
     @staticmethod
     def get_title() -> Text:

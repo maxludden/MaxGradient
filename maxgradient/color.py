@@ -1,5 +1,5 @@
 """Module for parsing colors from strings."""
-# pylint: disable=C0209,E0401,W0611,C0103,E0202
+# pylint: disable=C0209,E0401,W0611,C0103,E0202,E0611
 import colorsys
 import re
 from functools import lru_cache
@@ -20,11 +20,11 @@ from rich.text import Text
 
 from maxgradient._gc import GradientColor as GC
 from maxgradient._hex import Hex
-from maxgradient.log import Console, Log, debug
 from maxgradient._mode import Mode
 from maxgradient._rgb import RGB
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
+from maxgradient.log import Console, Log, watch
 from maxgradient.theme import GradientTheme
 
 console = Console()

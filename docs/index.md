@@ -76,12 +76,12 @@ console <span class="eq">= </span>mg<span class="grey">.</span><span class="clas
 
 <span class="comment"># Use the Console's gradient function</span>
 console<span class="white">.</span><span class="green">gradient</span>(
-<span class="yellow"> "This gradient contains the colors: magenta, violet, and purple."</span>,
-<span style="color:#FCB56B;"> colors</span> <span><span class="eq">= [</span>
-<span class="yellow"> "magenta"</span>,
-<span class="yellow"> "violet"</span>,
-<span class="yellow"> "purple"</span>
-<span class="eq"> ]</span>
+<span class="yellow">    "This gradient contains the colors: magenta, violet, and purple."</span>,
+<span style="color:#FCB56B;">    colors</span> <span><span class="eq">= [</span>
+<span class="yellow">        "magenta"</span>,
+<span class="yellow">        "violet"</span>,
+<span class="yellow">        "purple"</span>
+<span class="eq">    ]</span>
 )
 </code></pre>
 
