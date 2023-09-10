@@ -1,5 +1,5 @@
 """Parse colors from strings."""
-# pylint: disable=C0209,E0401,W0611,C0103,E0202
+# pylint: disable=C0209,E0401,W0611,C0103,E0202,E0611,W0622
 import colorsys
 import re
 from functools import lru_cache
@@ -38,7 +38,7 @@ class GradientColor:
         "blue",
         "lightblue",
         "cyan",
-        "lime",
+        "green",
         "yellow",
         "orange",
         "red",
@@ -119,7 +119,14 @@ class GradientColor:
     @classmethod
     @lru_cache(maxsize=10, typed=True)
     def get_color(cls, color: str) -> Optional[Tuple[int, int, int]]:
-        """Retrieve gradient RGB tuples."""
+        """Retrieve gradient RGB tuples.
+
+        Args:
+            color (str): A gradient color.
+
+        Returns:
+            Optional[int]: The index of the gradient color.
+        """
         for group in [
             cls.get_names(),
             cls.get_hex(),
@@ -151,12 +158,12 @@ class GradientColor:
         letter_e1 = Text("e", style=Style(color="#4f00ff", bold=True))
         letter_n1 = Text("n", style=Style(color="#2f00ff", bold=True))
         letter_t1 = Text("t", style=Style(color="#0000ff", bold=True))
-        letter_c1 = Text("C", style=Style(color="#002fff", bold=True))
-        letter_o1 = Text("o", style=Style(color="#004fff", bold=True))
-        letter_l1 = Text("l", style=Style(color="#006fff", bold=True))
-        letter_o2 = Text("o", style=Style(color="#0088ff", bold=True))
-        letter_r2 = Text("r", style=Style(color="#00aaff", bold=True))
-        letter_s1 = Text("s", style=Style(color="#00ccff", bold=True))
+        letter_c1 = Text("C", style=Style(color="#00ccff", bold=True))
+        letter_o1 = Text("o", style=Style(color="#00aaff", bold=True))
+        letter_l1 = Text("l", style=Style(color="#0088ff", bold=True))
+        letter_o2 = Text("o", style=Style(color="#006fff", bold=True))
+        letter_r2 = Text("r", style=Style(color="#004fff", bold=True))
+        letter_s1 = Text("s", style=Style(color="#002fff", bold=True))
         title = [
             letter_g1,
             letter_r1,
@@ -197,6 +204,18 @@ class GradientColor:
                 Text(str(cls.get_rgb_tuple()[x]), style=Style(color=hex, bold=True)),
             )
         return table
+
+    @classmethod
+    def as_title(cls, color: str) -> Text:
+        """Capitalize, format, and color a gradient color's name.
+
+        Returns:
+            Text: Colorized gradient color's capitalized name.
+        """
+        index: int = cls.get_color(color)
+        name = cls.NAMES[index]
+        capital_name = name.capitalize()
+        return f"[bold {color}]{capital_name}[/bold {color}]"
 
 
 if __name__ == "__main__":

@@ -13,6 +13,7 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 from nptyping import NDArray, Shape
+from rich import inspect
 from rich.box import Box
 from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions, ConsoleRenderable
@@ -20,7 +21,7 @@ from rich.containers import Lines, Renderables
 from rich.control import strip_control_codes
 from rich.measure import Measurement
 from rich.panel import Panel
-from rich.segment import Segment
+from rich.segment import Segment, SegmentLines
 from rich.style import Style
 from rich.table import Table
 from rich.text import Span, Text
@@ -48,6 +49,14 @@ log = Log()
 DEFAULT_JUSTIFY = "left"
 DEFAULT_OVERFLOW = "crop"
 VERBOSE = True
+
+
+TEXT = "Enim ad exercitation labore culpa non sint nisi duis \
+ad ad enim enim. Ea quis irure pariatur. Enim veniam dolor esse ipsum \
+eiusmod nulla cillum non eu non velit deserunt sint pariatur cupidatat. \
+Ut exercitation nulla dolore."
+console.log(f"\n\n[i yellow]TEXT[/]: \n[b white]{TEXT}[/]")
+console.log(f"[i yellow]TEXT Length[/]: \n[b white]{len(TEXT)}[/]")
 
 
 class Gradient(Text):
@@ -104,6 +113,7 @@ class Gradient(Text):
         end: str = "\n",
         tab_size: Optional[int] = 8,
         spans: Optional[List[Span]] = None,
+        console: Optional[Console] = None,
     ) -> None:
         """Text with gradient color / style.
 
@@ -129,47 +139,35 @@ class Gradient(Text):
                   `console.tab_size`. Defaults to 8.\n
             spans (List[Span], optional). A list of predefined style spans.\
                 Defaults to None.\n
+            console (Console, optional): Console instance to use for\
+                calculating tab size. Defaults to None.\n
 
         """
-        # Parse text input
         buffer = StringIO()
-        console = Console(
-            theme=GradientTheme(),
-            highlighter=ColorReprHighlighter(),
-            record=True,
-        )
-        renderable = "Enim ad exercitation labore culpa non sint nisi duis \
-ad ad enim enim. Ea quis irure pariatur. Enim veniam dolor esse ipsum \
-eiusmod nulla cillum non eu non velit deserunt sint pariatur cupidatat. \
-Ut exercitation nulla dolore."
-
-        console.log(renderable)
-
-        panel = Panel.fit(
-            Gradient(renderable),
-            title="Panel Title",
-            border_style="bold",
-            width=70,
-            padding=(1, 4),
-        )
-        console.print(panel)
-        buffer = StringIO()
-        console = Console(
+        buffer_console = Console(
             file=buffer,
             theme=GradientTheme(),
             highlighter=ColorReprHighlighter(),
             record=True,
+            width=60,
         )
+        panel = Panel(TEXT)
+        # buffer_console.log()
 
-        panel = Panel.fit(renderable)
-        console.save_svg(
-            "docs/img/buffer_output.svg",
-            title="Buffer Output",
-            theme=GradientTerminalTheme(),
-        )
-        output = buffer.getvalue()
-        buffer.close()
-        console.log(f"Output: {output}")
+        # length = len(panel.renderable)
+        # panel = Panel(TEXT, subtitle=f"Length: {length}")
+
+        # buffer_console.print(renderable)
+
+        # buffer_console.save_svg(
+        #     "docs/img/buffer_output.svg",
+        #     title="Buffer Output",
+        #     theme=GradientTerminalTheme(),
+        # )
+        # output = buffer.getvalue()
+        # buffer.close()
+        # console = Console()
+        # console.log(f"[i yellow]Output[/]: \n[b white]{output}[/]")
 
         super().__init__(
             text=renderable,
@@ -182,14 +180,14 @@ Ut exercitation nulla dolore."
             spans=spans,
         )
 
-        self.color_sample: bool = color_sample
-        self.colors: List[Color] = []
-        self.hues: int = hues or 3
-        self.colors: List[Color] = self.get_colors(colors, rainbow, invert)
-        self.hues = len(self.colors)
+        # self.color_sample: bool = color_sample
+        # self.colors: List[Color] = []
+        # self.hues: int = hues or 3
+        # self.colors: List[Color] = self.get_colors(colors, rainbow, invert)
+        # self.hues = len(self.colors)
 
-        gradient_substrings: Text = self.generate_gradient_substrings(True)
-        self._spans = gradient_substrings.spans
+        # gradient_substrings: Text = self.generate_gradient_substrings(True)
+        # self._spans = gradient_substrings.spans
 
     # Dunder methods
     def __str__(self) -> str:
@@ -469,3 +467,78 @@ Ut exercitation nulla dolore."
             self._tab_size = 4
         else:
             self._tab_size = tab_size
+
+    def get_colors(
+        self,
+        input_colors: Optional[str | List[Color | Tuple | str]],
+        rainbow: bool,
+        invert: bool,
+    ) -> List[Color]:
+        """Get the colors for the gradient.
+
+        Args:
+            colors(`List[Optional[Color|Tuple|str|int]]`): A list of colors to use \
+                for the gradient. Defaults to None.\n
+            rainbow(`bool`): Whether to print the gradient text in rainbow colors across \
+                the spectrum. Defaults to False.\n
+            invert(`bool`): Reverse the color gradient. Defaults to False.\n
+            verbose(`bool`): Whether to print verbose output. Defaults to True.\n
+
+        Returns:
+            List[Color]: A list of colors for the gradient.
+        """
+        if rainbow:
+            self.hues = 10
+            color_list = ColorList(self.hues, invert).color_list
+            assert len(color_list) == self.hues, f"Color list length: {len(color_list)}"
+            colors = color_list
+            if self.validate_colors(colors):
+                return colors
+        if isinstance(input_colors, str):
+            return self.mono(input_colors)
+        if input_colors is not None:
+            colors: List[Color] = []
+            for color in input_colors:
+                try:
+                    color = Color(color)
+                    colors.append(color)
+                except ColorParseError as error:
+                    raise ColorParseError(f"Can't parse color: {color}") from error
+            if self.validate_colors(colors):
+                return colors
+        color_list = ColorList(self.hues, invert).color_list
+        colors = color_list[: self.hues]
+        if self.validate_colors(colors):
+            return colors
+
+    def validate_colors(self, colors: Optional[List[Color]]) -> bool:
+        """Validate self.colors to ensure that it is a list of colors."""
+        valid: bool = True
+        if colors is None:
+            return False
+        for color in colors:
+            if not isinstance(color, Color):
+                return False
+        if valid:
+            return True
+        return False
+
+
+if __name__ == "__main__":
+    console = Console(record=True, width=100)
+    TEXT = "Enim ad exercitation labore culpa non sint nisi duis \
+ad ad enim enim. Ea quis irure pariatur. Enim veniam dolor esse ipsum \
+eiusmod nulla cillum non eu non velit deserunt sint pariatur cupidatat. \
+Ut exercitation nulla dolore."
+
+    segments = console.render(TEXT, console.options)
+    length: int = 0
+    for x, segment in enumerate(segments, start=1):
+        if segment.text == "\n":
+            continue
+        lines = segment.text.split("\n")
+        for line in lines:
+            if len(line) > length:
+                length = len(line)
+    console.log(f"Length: {length}")
+    console.print(Gradient(TEXT))

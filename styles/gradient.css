@@ -921,7 +921,7 @@ div.code-head {
   color: transparent;
   text-decoration: none;
 }
-.cyan-lime {
+.cyan-green {
   background: linear-gradient(to right, #00ffff, #00ff00);
   display: inline-block;
   -webkit-background-clip: text;
@@ -929,7 +929,7 @@ div.code-head {
   color: transparent;
   text-decoration: none;
 }
-.lime-yellow {
+.green-yellow {
   background: linear-gradient(to right, #00ff00, #ffff00);
   display: inline-block;
   -webkit-background-clip: text;
@@ -1182,7 +1182,7 @@ div.code-head {
     }
   }
 }
-.cyan-lime-wipe {
+.cyan-green-wipe {
   font-weight: 700;
   font-family: "Urbanist", sans-serif;
   background: linear-gradient(
@@ -1204,7 +1204,7 @@ div.code-head {
     }
   }
 }
-.cyan-lime-wipe-mono {
+.cyan-green-wipe-mono {
   font-weight: 700;
   font-family: "Fira Code", monospace;
   background: linear-gradient(
@@ -1226,7 +1226,7 @@ div.code-head {
     }
   }
 }
-.lime-yellow-wipe {
+.green-yellow-wipe {
   font-weight: 700;
   font-family: "Urbanist", monospace;
   background: linear-gradient(
@@ -1248,7 +1248,7 @@ div.code-head {
     }
   }
 }
-.lime-yellow-wipe-mono {
+.green-yellow-wipe-mono {
   font-weight: 700;
   font-family: "Fira Code", monospace;
   background: linear-gradient(

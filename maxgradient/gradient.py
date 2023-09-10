@@ -649,14 +649,14 @@ if __name__ == "__main__":  # pragma: no cover
     gradient = Panel(
         Gradient(
             lorem.paragraph(),
-            colors=["red", "orange", "yellow", "lime", "cyan"],
+            colors=["red", "orange", "yellow", "green", "cyan"],
             justify="left",
         ),
         title=Gradient("Gradient Example"),
         expand=True,
         width=70,
         padding=(1, 4),
-        border_style="bold"
+        border_style="bold",
     )
     # inspect(gradient)
     console.print(gradient, justify="center")

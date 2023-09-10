@@ -92,7 +92,7 @@ The Gradient class can utilize the above arguments to get a plethora of differen
 
 ## Color
 
-The final main component of <span class="violet-purple-wipe">MaxGradient</span> is expanding the <span class="purple-blue-wipe">rich.color.Color</span> class. The <span class="rainbow-wipe">MaxGradient </span>.<span class="lightblue-cyan-wipe">Color</span> class can still parse and utilize the <span class="cyan-lime-wipe">rich.color.Color</span>'s <a class="lime-yellow-wipe" href="https://rich.readthedocs.io/en/latest/appendix/colors.html" alt="Rich Standard Colors">standard colors</a> but in addition to Hex and RGB colors, it can also parse RGB Tuples as well as X11 color names. I've also included the colors that <span class="rainbow-wipe">MaxGradient</span> uses to create random gradients from for convenience. The follow are the available named colors as well as there hex and rgb colors:
+The final main component of <span class="violet-purple-wipe">MaxGradient</span> is expanding the <span class="purple-blue-wipe">rich.color.Color</span> class. The <span class="rainbow-wipe">MaxGradient </span>.<span class="lightblue-cyan-wipe">Color</span> class can still parse and utilize the <span class="cyan-green-wipe">rich.color.Color</span>'s <a class="green-yellow-wipe" href="https://rich.readthedocs.io/en/latest/appendix/colors.html" alt="Rich Standard Colors">standard colors</a> but in addition to Hex and RGB colors, it can also parse RGB Tuples as well as X11 color names. I've also included the colors that <span class="rainbow-wipe">MaxGradient</span> uses to create random gradients from for convenience. The follow are the available named colors as well as there hex and rgb colors:
 
 <img src="Images/available_colors.svg" >
 
@@ -102,7 +102,7 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 import maxgradient as mg
 
 console = mg.Console()
-console.print("[bold lime]This is a a vibrant green color!")
+console.print("[bold green]This is a a vibrant green color!")
 ```
 
 <img class="result" src="Images/color_example.svg" alt="Color Example">

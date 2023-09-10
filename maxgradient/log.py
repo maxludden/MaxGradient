@@ -58,7 +58,7 @@ class ColorHighlighter(RegexHighlighter):
         r"(?P<blue>blue|#00[Ff]|#0{4}[Ff]{2}|r?g?b?\(0, ?0, ?255\))",
         r"(?P<lightblue>lightblue|#08[Ff]|#0088[Ff]{2}|r?g?b?\(0, ?136, ?255\))",
         r"(?P<cyan>cyan|#0[Ff]{2}|#00[Ff]{4}|r?g?b?\(0, ?255, ?255\))",
-        r"(?P<line>lime|#0[Ff]0|#00[Ff]{2}00|r?g?b?\(0, ?255, ?0\))",
+        r"(?P<line>green|#0[Ff]0|#00[Ff]{2}00|r?g?b?\(0, ?255, ?0\))",
         r"(?P<green>green|#0[Ff]0|#00[Ff]{2}00|r?g?b?\(0, ?255, ?0\))",
         r"(?P<yellow>yellow|#f[Ff]{2}0|#[Ff]{4}00|r?g?b?\(255, ?255, ?0\))",
         r"(?P<orange>orange|#[Ff]80|#[Ff]{2}8800|r?g?b?\(255, ?136, ?0\))",

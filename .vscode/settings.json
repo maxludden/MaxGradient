@@ -216,6 +216,16 @@
     "statusBarItem.remoteBackground": "#1e0051",
     "statusBarItem.remoteForeground": "#a782ff"
   },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+        {
+            "scope": "string.quoted.double.json meta.structure.dictionary.json string.quoted.double.json",
+            "settings": {
+                "foreground": "#00FF00"
+            }
+        }
+    ]
+},
   "better-comments.tags": [
     {
       "tag": "!",
@@ -414,9 +424,9 @@
       "isWholeLine": false
     },
     {
-      "text": "lime",
+      "text": "green",
       "regex": {
-        "pattern": "\\b(\\w*\\.?lime\\d?)\\b|\\b(#00ff00)\\b|\\b(\\( ?0, *?255, *?0 ?\\))\\b"
+        "pattern": "\\b(\\w*\\.?green\\d?)\\b|\\b(#00ff00)\\b|\\b(\\( ?0, *?255, *?0 ?\\))\\b"
       },
       "color": "#001100",
       "bold": true,

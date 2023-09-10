@@ -918,7 +918,7 @@ svg {
   color: transparent;
   text-decoration: none;
 }
-.cyan-lime {
+.cyan-green {
   background: linear-gradient(to right, #00ffff, #00ff00);
   display: inline-block;
   -webkit-background-clip: text;
@@ -926,7 +926,7 @@ svg {
   color: transparent;
   text-decoration: none;
 }
-.lime-yellow {
+.green-yellow {
   background: linear-gradient(to right, #00ff00, #ffff00);
   display: inline-block;
   -webkit-background-clip: text;
@@ -1179,7 +1179,7 @@ svg {
     }
   }
 }
-.cyan-lime-wipe {
+.cyan-green-wipe {
   font-weight: 700;
   font-family: "Urbanist", sans-serif;
   background: linear-gradient(
@@ -1201,7 +1201,7 @@ svg {
     }
   }
 }
-.cyan-lime-wipe-mono {
+.cyan-green-wipe-mono {
   font-weight: 700;
   font-family: "Fira Code", monospace;
   background: linear-gradient(
@@ -1223,7 +1223,7 @@ svg {
     }
   }
 }
-.lime-yellow-wipe {
+.green-yellow-wipe {
   font-weight: 700;
   font-family: "Urbanist", monospace;
   background: linear-gradient(
@@ -1245,7 +1245,7 @@ svg {
     }
   }
 }
-.lime-yellow-wipe-mono {
+.green-yellow-wipe-mono {
   font-weight: 700;
   font-family: "Fira Code", monospace;
   background: linear-gradient(

@@ -25,7 +25,7 @@ def generate_panels() -> Iterable[Panel]:
     cyan = "[#00ffff]cyan[/]"
     c_cyan = "[bold #00ffff]Cyan[/]"
     lightblue = "[#0088ff]lightblue[/]"
-    c_lightblue = "[bold #0088ff]Lightblue[/]{comma}"
+    c_lightblue = f"[bold #0088ff]Lightblue[/]{comma}"
     blue = "[#0000ff]blue[/]"
     c_blue = f"[bold #0000ff]Blue[/]{comma}"
     purple = "[#5f00ff]purple[/]"
@@ -87,7 +87,7 @@ def generate_panels() -> Iterable[Panel]:
     )
 
     # Magenta, Violet, Purple, Blue, Lightblue, Cyan Gradient
-    gradient_long = Gradient(TEXT, colors=["magenta", "violet", "purple", \
+    gradient_long = Gradient(TEXT, colors=["magenta", "violet", "purple",\
 "blue", "lightblue", "cyan"])
     sub_2_1 = f"{c_gradient}{r_para}{c_text}{comma}"
     sub_2_2 = f"{c_colors}{equal}{l_brac}"

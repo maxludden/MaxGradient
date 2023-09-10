@@ -27,7 +27,7 @@ class ColorList(list):
         "blue",
         "lightblue",
         "cyan",
-        "lime",
+        "green",
         "yellow",
         "orange",
         "red",
@@ -84,7 +84,7 @@ class ColorList(list):
             Text("o", style="bold.blue"),
             Text("r", style="bold.lightblue"),
             Text("L", style="bold.cyan"),
-            Text("i", style="bold.lime"),
+            Text("i", style="bold.green"),
             Text("s", style="bold.yellow"),
             Text("t", style="bold.orange"),
         ]

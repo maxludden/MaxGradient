@@ -14,6 +14,7 @@ from maxgradient.theme import GradientTheme
 console = Console()
 console.print(f"Console Width: {console.width}")
 
+
 def examples() -> Layout:
     """Generate a layout for the examples of gradients."""
     TEXT = lorem.paragraphs(2)
@@ -82,7 +83,7 @@ def style_layout() -> Layout:
             Panel(
                 Gradient(
                     TEXT,
-                    colors=["yellow", "lime", "cyan", "lightblue"],
+                    colors=["yellow", "green", "cyan", "lightblue"],
                 ),
                 title="No Style Gradient",
                 padding=(2, 4),
@@ -96,7 +97,7 @@ def style_layout() -> Layout:
         Layout(
             Panel(
                 Gradient(
-                    TEXT, colors=["yellow", "lime", "cyan", "lightblue"], style="bold"
+                    TEXT, colors=["yellow", "green", "cyan", "lightblue"], style="bold"
                 ),
                 title="Bold Gradient",
                 padding=(2, 4),
@@ -111,7 +112,7 @@ def style_layout() -> Layout:
             Panel(
                 Gradient(
                     TEXT,
-                    colors=["yellow", "lime", "cyan", "lightblue"],
+                    colors=["yellow", "green", "cyan", "lightblue"],
                     style="italic underline",
                 ),
                 title="Italic Underline Gradient",

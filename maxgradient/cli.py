@@ -23,7 +23,7 @@ valid_colors = [
     "blue",
     "lightblue",
     "cyan",
-    "lime",
+    "green",
     "green",
     "yellow",
     "orange",
@@ -31,6 +31,7 @@ valid_colors = [
 ]
 
 valid_justify = ["default", "left", "center", "right"]
+
 
 def complete_color(incomplete: str):
     """Complete the color."""
@@ -40,6 +41,7 @@ def complete_color(incomplete: str):
             completion.append(color)
     return completion
 
+
 def justify_callback(value: str):
     """Validate the justify value."""
     if value not in valid_justify:
@@ -47,6 +49,7 @@ def justify_callback(value: str):
             f"Invalid justify method: {value}. Valid methods include: {valid_justify}"
         )
     return value
+
 
 def parse_console(value: str):
     """Parse the console value."""
@@ -59,6 +62,7 @@ def parse_console(value: str):
             f"Invalid console: {value}. Valid consoles include: true, false"
         )
 
+
 @app.command()
 def main(
     text: Annotated[str, Argument(..., help="Text to print")] = "",
@@ -69,7 +73,7 @@ def main(
             "-s",
             show_default=False,
             help="Style to use. Valid styles include: bold, italic, underline",
-        )
+        ),
     ] = ["default"],
     rainbow: Annotated[
         bool,
@@ -78,17 +82,17 @@ def main(
             "-r",
             show_default=False,
             help="Whether to use a random rainbow of colors for the Gradient.",
-        )
+        ),
     ] = False,
     justify: Annotated[
         str,
         Option(
             "--justify",
-            "-j", 
+            "-j",
             case_sensitive=False,
             callback=justify_callback,
-            help="Justify method to use. Valid methods include: default, left, center, right"
-        )
+            help="Justify method to use. Valid methods include: default, left, center, right",
+        ),
     ] = "default",
     colors: Annotated[
         List[str],
@@ -98,7 +102,7 @@ def main(
             case_sensitive=False,
             autocompletion=complete_color,
             help="Colors to use in the gradient. Valid colors include: \
-magenta, violet, purple, blue, lightblue, cyan, lime/green, yellow, orange, \
+magenta, violet, purple, blue, lightblue, cyan, green/green, yellow, orange, \
 and red.",
         ),
     ] = None,
@@ -110,11 +114,10 @@ and red.",
             show_default=False,
             is_eager=True,
             help="Whether to print verbose output.",
-        )
+        ),
     ] = False,
 ) -> None:
-    """Print gradient colored text to the console.
-    """
+    """Print gradient colored text to the console."""
     console = Console()
     err_console = Console(stderr=True)
     if text:

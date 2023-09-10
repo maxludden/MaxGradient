@@ -31,10 +31,10 @@ class Mode(Enum):
 
     def __rich__(self) -> Text:
         """Return a rich text representation of the color mode."""
-        mode = Text("Mode", style="bold italic #7FD6E8")
+        mode = Text("Mode", style="italic #7FD6E8")
         dot = Text(".", style="bold.white")
         value: str = str(self.value).upper()
-        formatted_value = Text(value, style="bold lime")
+        formatted_value = Text(value, style="bold.white")
         rich_repr = Text.assemble(mode, dot, formatted_value)
         return rich_repr
 
@@ -44,4 +44,5 @@ if __name__ == "__main__":
 
     console = Console()
     console.line()
-    console.print(Mode.COLOR, justify="center")
+    console.print(Mode.COLOR, justify="left")
+    console.line()
