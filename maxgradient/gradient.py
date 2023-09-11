@@ -9,8 +9,8 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 from nptyping import NDArray, Shape
-from rich.cells import cell_len
 from rich.box import Box
+from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions
 from rich.measure import Measurement
 from rich.segment import Segment
@@ -589,23 +589,23 @@ class Gradient(Text):
         if end:
             yield _Segment(end)
 
-    # def copy(self) -> "Gradient":
-    #     """Copy the gradient"""
-    #     return Gradient(
-    #         self.text,
-    #         colors=self.colors,
-    #         rainbow=False,
-    #         invert=False,
-    #         hues=self.hues,
-    #         color_sample=self.color_sample,
-    #         style=self.style,
-    #         justify=self.justify,
-    #         overflow=self.overflow,
-    #         no_wrap=self.no_wrap,
-    #         end=self.end,
-    #         tab_size=self.tab_size,
-    #         spans=self.spans,
-    #     )
+    def copy(self) -> "Gradient":
+        """Copy the gradient"""
+        return Gradient(
+            self.text,
+            colors=self.colors,
+            rainbow=False,
+            invert=False,
+            hues=self.hues,
+            color_sample=self.color_sample,
+            style=self.style,
+            justify=self.justify,
+            overflow=self.overflow,
+            no_wrap=self.no_wrap,
+            end=self.end,
+            tab_size=self.tab_size,
+            spans=self.spans,
+        )
 
     def as_text(self) -> Text:
         """Return the gradient as a Text object."""
