@@ -589,23 +589,6 @@ class Gradient(Text):
         if end:
             yield _Segment(end)
 
-    def copy(self) -> "Gradient":
-        """Copy the gradient"""
-        return Gradient(
-            self.text,
-            colors=self.colors,
-            rainbow=False,
-            invert=False,
-            hues=self.hues,
-            color_sample=self.color_sample,
-            style=self.style,
-            justify=self.justify,
-            overflow=self.overflow,
-            no_wrap=self.no_wrap,
-            end=self.end,
-            tab_size=self.tab_size,
-            spans=self.spans,
-        )
 
     def as_text(self) -> Text:
         """Return the gradient as a Text object."""
@@ -651,6 +634,7 @@ if __name__ == "__main__":  # pragma: no cover
             lorem.paragraph(),
             colors=["red", "orange", "yellow", "green", "cyan"],
             justify="left",
+            style="bold"
         ),
         title=Gradient("Gradient Example"),
         expand=True,
