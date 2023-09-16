@@ -18,14 +18,12 @@ MaxGradient can be installed from PyPi using your favorite python package manage
 
 ## <span class="cool-wipe">Quick Start</span>
 
-The basic usage is to create a console object and use it to print gradient text. MaxGradient Console is a drop in replacement for rich.rich.Console and can be used in the same way. It does, however, have some additional methods like <span class="green">gradient</span><span class="white">()</span>.
+The basic usage is to create a console object and use it to print gradient text. MaxGradient.Console is a drop in replacement for rich.rich.Console and can be used in the same way. It does, however, have some additional methods like <span class="green">gradient</span><span class="white">()</span>.
 
 <div class="code-card">
-    <p class="code-head">Quick Start Example</p>
-    <div><!--Code Block Start-->
-<pre><code>
-<span class="comment"># import console from MaxGradient</span>
-<span class="import">import </span>maxgradient <span class="import">as </span>mg
+    <h5 class="white">Quick Start Example</h5>
+    <div><!--Code Block Start--><pre><code><span class="comment"># import console from MaxGradient</span>
+<span class="import">import </span><span class="white">maxgradient </span><span class="import">as </span>mg
 
 console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
 console<span class="white">.</span><span class="green">gradient</span>(<span class="yellow">"Hello, World!"</span>)
@@ -34,7 +32,7 @@ console<span class="white">.</span><span class="green">gradient</span>(<span cla
 <!--Code Block End-->
 </div>
 
-<!--Code Block Start-->
+<!--Code Block Start
 <pre><code><span class="code-title">Quick Start Example</span>
 <span class="comment"># import console from MaxGradient</span>
 <span class="import">import </span>maxgradient <span class="import">as </span>mg
@@ -42,16 +40,16 @@ console<span class="white">.</span><span class="green">gradient</span>(<span cla
 console <span class="eq">= </span>mg<span class="grey">.</span><span class="console">Console</span>()
 console<span class="white">.</span><span class="green">gradient</span>(<span class="yellow">"Hello, World!"</span>)
 </code></pre>
-<!--Code Block End-->
+Code Block End-->
 
 <!--Caption Start-->
 <figure>
-    <figcaption>Produces the following:</figcaption>
+    <!--<figcaption>Produces the following:</figcaption>-->
     <img src="img/hello_world.svg" alt="Hello, World!">
 </figure>
 <!--Caption End-->
 
-## <span class="cool-wipe">Gradient with Color</span>
+<h2><span class="cool-wipe">Gradient with Color</span></h2>
 
 <p>MaxGradient easily make random gradients that require no more than the text you wish to color, it can also be used to make gradients with specific colors. The <span class="green">gradient</span><span class="white">()</span> method takes a string of text as well as a list of colors. The number of colors in the list determines the number of colors in the gradient. The gradient will be evenly distributed between the colors in the list. The gradient will be applied to the text in the order it is given in the list.</p>
 
@@ -99,13 +97,18 @@ console<span class="white">.</span><span class="green">gradient</span>(
 <h5 class="white">Example 2</h5>
 <pre><code>
 console<span class="white">.</span><span class="green">gradient</span>(
-    <span class="yellow">"This gradient contains the colors: violet, purple,</span><span class="keyword">\</span>
-        <span class="yellow">blue, lightblue, and cyan."</span>
+    <span class="yellow">"This gradient contains the colors: magenta, violet, purple,</span><span class="keyword">\</span>
+<span class="yellow">blue, lightblue, and cyan."</span>
     <span style="color:#FCB56B;">colors</span> <span><span class="eq">= [</span>
-        <span class="yellow">"magenta",</span>
+        <span class="yellow">"rgb(255,0,255)",</span>
         <span class="yellow">"violet",</span>
-        <span class="yellow">"purple"</span>
-    <span class="eq">]</span>
+        <span class="yellow">"#5f00ff",</span>
+        <span class="yellow">"blue",</span>
+        <span class="yellow">"rgb(0, 136, 255)",</span>
+        <span class="yellow">"cyan"</span>
+    <span class="eq">]</span><span class="white">,</span>
+    <span style="color:#FCB56B;">justify </span><span class="eq">= </span><span class="yellow">"center"</span><span class="white">,</span>
+    <span style="color:#FCB56B;">style </span><span class="eq">= </span><span class="yellow">"bold"</span>
 )
 </code></pre>
 

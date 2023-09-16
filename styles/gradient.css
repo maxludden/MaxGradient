@@ -330,6 +330,9 @@ svg {
   color: transparent;
   text-decoration: none;
 }
+.console {
+  color: #83DDF0;
+}
 .cool-wipe {
   font-weight: 700;
   font-family: "Urbanist", sans-serif;

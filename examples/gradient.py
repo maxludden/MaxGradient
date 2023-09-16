@@ -14,7 +14,7 @@ def gradient_hello() -> None:
     console = Console(width=70, record=True)
     console.line()
     console.gradient(
-        "\tHello, World!", justify="center"
+        "Hello, World!", justify="center"
     )  # Uses the gradient function of console
     console.line(2)
     console.save_max_svg(
@@ -46,14 +46,15 @@ def gradient_with_color_2() -> None:
     console = Console(width=80, record=True)
     console.line()
     console.gradient(
-        "\tThis gradient contains the colors: violet, purple, blue, lightblue, and \tcyan.",
+        "\tThis gradient contains the colors: violet, purple, blue, lightblue, and cyan.",
         colors=["violet", "purple", "blue", "lightblue", "cyan"],
         justify="center",
+        style="bold"
     )
     console.line(2)
     console.save_max_svg(
         "docs/img/gradient_with_color_2.svg",
-        title="Example 2",
+        title="Example 2 Result",
         theme=GradientTerminalTheme(),
     )
 
@@ -129,7 +130,7 @@ def gradient_rgb_colors() -> None:
 if __name__ == "__main__":
     gradient_hello()
     # gradient_with_color_1()
-    # gradient_with_color_2()
+    gradient_with_color_2()
     # gradient_cool()
     # gradient_string_colors()
     # gradient_hex_colors()
