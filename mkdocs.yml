@@ -19,7 +19,3 @@ theme:
     name: readthedocs
     logo: img/MaxGradient.svg
     include_homepage_in_sidebar: True
-extra_css:
-#   - "styles/gradient.css"
-#   - "styles/next-btn.css"
-#   - "styles/ref.css"

@@ -70,11 +70,6 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class Group(RichGroup):
-    """Takes a group of renderables and returns a renderable object that renders the group."""
-
-    def __init__(self, *renderables: RenderableType, fit: bool = True) -> None:
-        super().__init__(*renderables, fit=fit)
 
 class Console(RichConsole, metaclass=Singleton):
     """A custom-themed high level interface for the Console class that \
