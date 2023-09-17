@@ -103,6 +103,9 @@ class Log:
                 ReprHighlighter.
     """
 
+    import loguru
+    from loguru import logger
+
     rich_level: str
 
     def __init__(

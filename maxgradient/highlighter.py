@@ -1,15 +1,10 @@
 """Custom highlighter to support highlighting gradient colors as well as the default repr highlighting."""
 # disable: pylint=[E0f04,W0012]
-
-
 # disable: pylint
-
-import re
-from typing import List, Pattern, Tuple
+from typing import Tuple
 
 from rich.columns import Columns
 from rich.highlighter import RegexHighlighter, _combine_regex
-from rich.text import Text
 
 # from maxgradient._gc import GradientColor as GC
 

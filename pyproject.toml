@@ -22,8 +22,6 @@ build-backend = "pdm.backend"
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "loguru>=0.7.0",
-    "mkdocs-dracula-theme>=1.0.5",
     "mkdocs>=1.5.2",
 ]
 

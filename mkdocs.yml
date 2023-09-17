@@ -12,8 +12,8 @@ nav:
         - Color: 'color.md'
     - References:
         - maxgradient.console.Console: 'console_ref.md'
+        - maxgradient.gradient.Gradient: 'gradient_ref.md'
         - maxgradient.color.Color: 'color_ref.md'
-        - maxgradient.color_list.ColorList: color_list.md
         - Color: 'color_ref.md'
 theme: 
     name: readthedocs
