@@ -14,17 +14,12 @@ from dotenv import load_dotenv
 from rich._export_format import CONSOLE_SVG_FORMAT
 from rich._log_render import FormatTimeCallable
 from rich.align import AlignMethod
-from rich.console import Console as RichConsole, RenderableType
-from rich.console import (
-    ConsoleOptions,
-    ConsoleRenderable,
-    Group as RichGroup,
-    RenderResult,
-    RichCast,
-    
-)
+from rich.console import Console as RichConsole
+from rich.console import ConsoleOptions, ConsoleRenderable
+from rich.console import Group as RichGroup
+from rich.console import RenderableType, RenderResult, RichCast
 from rich.emoji import EmojiVariant
-from rich.highlighter import ColorReprHighlighter
+from rich.highlighter import RegexHighlighter, ReprHighlighter
 from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.terminal_theme import TerminalTheme
@@ -68,7 +63,6 @@ class Singleton(type):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
-
 
 
 class Console(RichConsole, metaclass=Singleton):
