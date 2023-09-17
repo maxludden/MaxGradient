@@ -182,7 +182,7 @@ files = [
 
 [[package]]
 name = "mkdocs-dracula-theme"
-version = "1.0.5"
+version = "1.0.6"
 requires_python = ">=3.6"
 summary = "🧛🏻‍♂️ Dark theme for Mkdocs"
 dependencies = [

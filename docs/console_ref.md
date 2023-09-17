@@ -5,8 +5,8 @@
         <em class="property">
             <span class="pre">class</span>
             <span class="w"> </span>
-        </em><span class="sig-prename descclassname">
-            <span class="pre">rich.console.</span></span><span class="sig-name descname"><span class="pre">Console</span></span>
+        </em>
+        <span class="sig-prename descclassname"><span class="pre">maxgradient.console.</span></span><span class="sig-name descname"><span class="pre">Console</span></span>
         <span class="sig-paren">(</span>
         <em class="sig-param">
             <span class="n">
@@ -15,49 +15,261 @@
         </em>, <em class="sig-param">
             <span class="n">
                 <span class="pre">color_system='auto'</span>
-            </span></em>, <em class="sig-param">
+            </span>
+        </em>, <em class="sig-param">
             <span class="n">
                 <span class="pre">force_terminal=None</span>
             </span>
         </em>, <em class="sig-param">
-        <span class="n">
-            <span class="pre">force_jupyter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_interactive=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soft_wrap=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theme=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab_size=8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markup=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emoji=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emoji_variant=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_time=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_time_format='[%X]'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlighter=&lt;rich.highlighter.ReprHighlighter</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy_windows=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safe_box=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_datetime=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_time=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_environ=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console" title="Permalink to this definition">¶</a></dt>
-<dd><p>A high level console interface.</p>
+            <span class="n">
+                <span class="pre">force_jupyter=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">force_interactive=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">soft_wrap=False</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">theme=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">stderr=False</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">file=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">quiet=False</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">width=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">height=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">style=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">no_color=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">tab_size=4</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">record=False</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">markup=True</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">emoji=True</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">emoji_variant=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">highlight=True</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">log_time=True</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">log_path=True</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">log_time_format='[%X]'</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">highlighter=None()</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">legacy_windows=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">safe_box=True</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">get_datetime=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">get_time=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">traceback=None</span>
+            </span>
+        </em>, <em class="sig-param">
+            <span class="n">
+                <span class="pre">_environ=None</span>
+            </span>
+        </em>
+        <span class="sig-paren">)</span>
+            <a class="reference internal" href="../_modules/rich/console.html#Console">
+                <span class="viewcode-link">
+                    <span class="pre">[source]</span>
+                </span>
+            </a><a class="headerlink" href="#rich.console.Console" title="Permalink to this definition">¶</a></dt>
+<dd><p>A custom-themed high level interface for the Console class that inherits from rich.console.Console. This class is a singleton which removes the need to pass around a console object or use the `get_console` method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>color_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – The color system supported by your terminal,
-either <code class="docutils literal notranslate"><span class="pre">"standard"</span></code>, <code class="docutils literal notranslate"><span class="pre">"256"</span></code> or <code class="docutils literal notranslate"><span class="pre">"truecolor"</span></code>. Leave as <code class="docutils literal notranslate"><span class="pre">"auto"</span></code> to autodetect.</p></li>
-<li><p><strong>force_terminal</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable terminal control codes, or None to auto-detect terminal. Defaults to None.</p></li>
-<li><p><strong>force_jupyter</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable Jupyter rendering, or None to auto-detect Jupyter. Defaults to None.</p></li>
-<li><p><strong>force_interactive</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable interactive mode, or None to auto detect. Defaults to None.</p></li>
-<li><p><strong>soft_wrap</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Set soft wrap default on print method. Defaults to False.</p></li>
-<li><p><strong>theme</strong> (<a class="reference internal" href="theme.html#rich.theme.Theme" title="rich.theme.Theme"><em>Theme</em></a><em>, </em><em>optional</em>) – An optional style theme object, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for default theme.</p></li>
-<li><p><strong>stderr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Use stderr rather than stdout if <code class="docutils literal notranslate"><span class="pre">file</span></code> is not specified. Defaults to False.</p></li>
-<li><p><strong>file</strong> (<em>IO</em><em>, </em><em>optional</em>) – A file object where the console should write to. Defaults to stdout.</p></li>
-<li><p><strong>quiet</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>Optional</em>) – Boolean to suppress all output. Defaults to False.</p></li>
-<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The width of the terminal. Leave as default to auto-detect width.</p></li>
-<li><p><strong>height</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The height of the terminal. Leave as default to auto-detect height.</p></li>
-<li><p><strong>style</strong> (<em>StyleType</em><em>, </em><em>optional</em>) – Style to apply to all output, or None for no style. Defaults to None.</p></li>
-<li><p><strong>no_color</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enabled no color mode, or None to auto detect. Defaults to None.</p></li>
-<li><p><strong>tab_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of spaces used to replace a tab character. Defaults to 8.</p></li>
-<li><p><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable recording of terminal output,
-required to call <a class="reference internal" href="#rich.console.Console.export_html" title="rich.console.Console.export_html"><code class="xref py py-meth docutils literal notranslate"><span class="pre">export_html()</span></code></a>, <a class="reference internal" href="#rich.console.Console.export_svg" title="rich.console.Console.export_svg"><code class="xref py py-meth docutils literal notranslate"><span class="pre">export_svg()</span></code></a>, and <a class="reference internal" href="#rich.console.Console.export_text" title="rich.console.Console.export_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">export_text()</span></code></a>. Defaults to False.</p></li>
-<li><p><strong>markup</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable <a class="reference internal" href="../markup.html#console-markup"><span class="std std-ref">Console Markup</span></a>. Defaults to True.</p></li>
-<li><p><strong>emoji</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable emoji code. Defaults to True.</p></li>
-<li><p><strong>emoji_variant</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Optional emoji variant, either “text” or “emoji”. Defaults to None.</p></li>
-<li><p><strong>highlight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable automatic highlighting. Defaults to True.</p></li>
-<li><p><strong>log_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable logging of time by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log"><code class="xref py py-meth docutils literal notranslate"><span class="pre">log()</span></code></a> methods. Defaults to True.</p></li>
-<li><p><strong>log_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable the logging of the caller by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log"><code class="xref py py-meth docutils literal notranslate"><span class="pre">log()</span></code></a>. Defaults to True.</p></li>
-<li><p><strong>log_time_format</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>TimeFormatterCallable</em><em>]</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">log_time</span></code> is enabled, either string for strftime or callable that formats the time. Defaults to “[%X] “.</p></li>
-<li><p><strong>highlighter</strong> (<em>HighlighterType</em><em>, </em><em>optional</em>) – Default highlighter.</p></li>
-<li><p><strong>legacy_windows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable legacy Windows mode, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to auto detect. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>safe_box</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Restrict box options that don’t render on legacy Windows.</p></li>
-<li><p><strong>get_datetime</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>datetime</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time as a datetime.datetime object (used by Console.log),
-or None for datetime.now.</p></li>
-<li><p><strong>get_time</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>time</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time in seconds, default uses time.monotonic.</p></li>
-<li><p><strong>_environ</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p></li>
-</ul>
+<dd class="field-odd">
+    <ul class="simple">
+        <li><p><strong>color_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – 
+        The color system supported by your terminal. Valid values are:
+            <ul>
+                <li><code class="docutils literal notranslate"><span class="pre">"auto",</span></code></li>
+                <li><code class="docutils literal notranslate"><span class="pre">"standard",</span></code></li>
+                <li><code class="docutils literal notranslate"><span class="pre">"256",</span></code></li>
+                <li><code class="docutils literal notranslate"><span class="pre">"truecolor",</span></code></li>
+            </ul>
+        <div>Leave as <pre style="display:inline;">"auto"</pre> to autodetect.</em></p>
+        </li><li>
+            <p>
+                <strong>force_terminal</strong>
+                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em>
+                    <em>, </em>
+                    <em>optional</em>) – Enable/disable terminal control codes, or None to auto-detect terminal. Defaults to None.
+            </p>
+        </li><li>
+            <p>
+                <strong>force_jupyter</strong>
+                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable Jupyter rendering, or None to auto-detect Jupyter. Defaults to None.
+            </p>
+        </li><li>
+            <p>
+                <strong>force_interactive</strong>
+                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable interactive mode, or None to auto detect. Defaults to None.
+            </p>
+        </li><li>
+            <p>
+                <strong>soft_wrap</strong>
+                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Set soft wrap default on print method. Defaults to False.
+            </p>
+        </li><li>
+            <p>
+                <strong>theme</strong>
+                    (<a class="reference internal" href="theme.html#maxgradient.theme.Theme" title="rich.theme.Theme"><em>Theme</em></a><em>, </em><em>optional</em>) – An optional style theme object, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for default theme, GradientTheme()
+            </p>
+        <li><li>
+            <p>
+                <strong>stderr</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Use stderr rather than stdout if `file`</span></code> is not specified. Defaults to False.
+            </p>
+        </li><li>
+            <p>
+                <strong>file</strong>
+                    (<em>IO</em><em>, </em><em>optional</em>) – A file object where the console should write to. Defaults to stdout.
+            </p>
+        </li><li>
+            <p>
+                <strong>quiet</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>Optional</em>) – Boolean to suppress all output. Defaults to False.
+            </p>
+        </li><li>
+            <p>
+                <strong>width</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The width of the terminal. Leave as default to auto-detect width.
+            </p>
+        </li><li>
+            <p>
+                <strong>height</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The height of the terminal. Leave as default to auto-detect height.
+            </p>
+        </li><li>
+            <p>
+                <strong>style</strong>
+                    (<em>StyleType</em><em>, </em><em>optional</em>) – Style to apply to all output, or None for no style. Defaults to None.
+            </p>
+        </li><li>
+            <p>
+                <strong>no_color</strong>
+                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enabled no color mode, or None to auto detect. Defaults to None.
+                    </p>
+        </li><li>
+            <p>
+                <strong>tab_size</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of spaces used to replace a tab character. Defaults to 4.</p>
+        </li><li>
+            <p>
+                <strong>record</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable recording of terminal output, required to call <a class="reference internal" href="#maxgradient.console.Console.export_html" title="maxgradient.console.Console.export_html">export_html()</a>, <a class="reference internal" href="#rich.console.Console.export_svg" title="rich.console.Console.export_svg">export_svg()</a>, and <a class="reference internal" href="#rich.console.Console.export_text" title="rich.console.Console.export_text">export_text()</a>. Defaults to False.</p>
+        </li><li>
+            <p>
+                <strong>markup</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable <a class="reference internal" href="../markup.html#console-markup"><span class="std std-ref">Console Markup</span></a>. Defaults to True.</p>
+        </li><li>
+            <p>
+                <strong>emoji</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable emoji code. Defaults to True.</p>
+        </li><li>
+            <p>
+                <strong>emoji_variant</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Optional emoji variant, either “text” or “emoji”. Defaults to None.</p>
+        </li><li>
+            <p>
+                <strong>highlight</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable automatic highlighting. Defaults to True.</p>
+        </li><li>
+            <p>
+                <strong>log_time</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable logging of time by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log">log()</a> methods. Defaults to True.</p>
+        </li><li>
+            <p>
+                <strong>log_path</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable the logging of the caller by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log">log()</a>. Defaults to True.</p>
+        </li><li>
+            <p>
+                <strong>log_time_format</strong>
+                    (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>TimeFormatterCallable</em><em>]</em><em>, </em><em>optional</em>) – If <span class="pre">`log_time`</span> is enabled, either string for strftime or callable that formats the time. Defaults to “[%X] “.</p>
+        </li><li>
+            <p>
+                <strong>highlighter</strong>
+                    (<em>HighlighterType</em><em>, </em><em>optional</em>) – Default highlighter.</p>
+        </li><li>
+            <p>
+                <strong>legacy_windows</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable legacy Windows mode, or `None` to auto detect. Defaults to `None`.</p>
+        </li><li>
+            <p>
+                <strong>safe_box</strong>
+                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Restrict box options that don’t render on legacy Windows.</p>
+        </li><li>
+            <p>
+                <strong>get_datetime</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>datetime</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time as a datetime.datetime object (used by Console.log), or None for datetime.now.</p>
+        </li><li>
+            <p>
+                <strong>get_time</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>time</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time in seconds, default uses time.monotonic.</p>
+        </li><li>
+            <p>
+                <strong>_environ</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p>
+        </li>
+    </ul>
 </dd>
 </dl>
 <dl class="py method">

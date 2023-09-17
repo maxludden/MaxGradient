@@ -1,7 +1,7 @@
 
 [project]
 name = "MaxGradient"
-version = "0.1.5"
+version = "0.1.6"
 description = "MaxGradient automates the printing gradient colored text to the console."
 authors = [{ name = "maxludden", email = "dev@maxludden.com" }]
 dependencies = [
