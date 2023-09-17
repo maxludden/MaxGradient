@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Max Ludden" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Console - MaxGradient</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Console";
+        var mkdocs_page_input_path = "console.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../img/MaxGradient.svg" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Console</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#new-methods">New Methods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#consolegradient">Console.gradient()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#consolegradient_rule">Console.gradient_rule()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#thin-gradient-rule">Thin Gradient Rule</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#medium-gradient-rule">Medium Gradient Rule</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#thick-gradient-rule">Thick Gradient Rule</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gradient/">Gradient</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../color/">Color</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">References</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">maxgradient.console.Console</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gradient_ref/">maxgradient.gradient.Gradient</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../color_ref/">maxgradient.color.Color</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../color_ref/">Color</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">MaxGradient</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+          <li>User Guide &raquo;</li>
+      <li class="breadcrumb-item active">Console</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://GitHub.com/maxludden/maxgradient/root/docs/console.md">Edit on MaxGradient</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="console"><span class=rainbow-wipe>Console</span></h1>
+<p><span class="white">MaxGradient</span>.console.<span class="class">Console</span> is a drop in replacement for <a href="https://github.com/Textualize/rich/blob/master/rich/console.py" alt="Rich"><span class="white">rich</span>.console.<span class="class">Console</span></a> and can be used in the same way. It does, however, have some additional methods like <span class="green">gradient</span>(). You can initialize a console object with the following code:</p>
+<pre><code class="language-python">from maxgradient import Console
+
+console = Console()
+console.print(&quot;[bold lime]Hello, World![/]&quot;)
+</code></pre>
+<figure>
+    <img src="/img/console_print.svg" alt="console.print()">
+</figure>
+
+<p><br /><hr><br /></p>
+<h2 id="new-methods">New Methods</h2>
+<h3 id="consolegradient">Console.gradient()</span></h3>
+<p>We will take an in depth look at the <span class="class">Gradient</span> class in the next section. For now, just know that any of the parameters that can be used by <code>MaxGradient.gradient.Gradient()</code> can also be used by <code>console.gradient()</code>.</p>
+<p>Example:</p>
+<pre><code class="language-python">console.gradient(
+    &quot;This is by far the simplest way to print gradient colored text to the console.&quot;,
+    colors = [
+        &quot;red&quot;,
+        &quot;orange&quot;,
+        &quot;yellow&quot;,
+        &quot;green&quot;
+    ],
+    justify = &quot;center&quot;,
+    style = &quot;bold&quot;
+)
+</code></pre>
+<figure>
+    <img src="/img/console_gradient_example.svg" alt="console.print()">
+</figure>
+
+<p><br ><hr><br ></p>
+<h3 id="consolegradient_rule">Console.gradient_rule()</h3>
+<p><span class="class">Console</span>.<span class="green">gradient_rule</span>() expands on <span class="class">rich</span>.rule.<span class="white">Rule()</span> by allowing you to specify both the colors of the rule's gradient, as well as the rule's thickness.</p>
+<h4 id="thin-gradient-rule">Thin Gradient Rule</h4>
+<pre><code class="language-python">from maxgradient.console import Console
+
+console = Console()
+console.gradient_rule(
+    title = &quot;Thin Gradient Rule&quot;,
+    thickness = &quot;thin&quot;
+)
+</code></pre>
+<figure>
+    <img src="/img/console_gradient_rule_thin.svg" alt="console.print()">
+</figure>
+
+<p><br /><hr><br /></p>
+<h4 id="medium-gradient-rule">Medium Gradient Rule</span></h4>
+<pre><code class="language-python">from maxgradient.console import Console
+
+console = Console()
+console.gradient_rule(
+    title = &quot;Medium Gradient Rule&quot;,
+    thickness = &quot;medium&quot;
+)
+</code></pre>
+<figure>
+    <img src="/img/console_gradient_rule_medium.svg" alt="console.print()">
+</figure>
+
+<p><br /><hr><br /></p>
+<h4 id="thick-gradient-rule">Thick Gradient Rule</h4>
+<pre><code class="language-python">from maxgradient.console import Console
+
+console = Console()
+console.gradient_rule(
+    title = &quot;Thick Gradient Rule&quot;,
+    thickness = &quot;thick&quot;
+)
+</code></pre>
+<figure>
+    <img src="/img/console_gradient_rule_thick.svg" alt="console.print()">
+</figure>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../gradient/" class="btn btn-neutral float-right" title="Gradient">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../gradient/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
