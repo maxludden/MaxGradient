@@ -182,6 +182,7 @@ You can also visit the rich library's documentation to view all \
                 return
 
         for group in [X11.NAMES, X11.HEX, X11.RGB, X11.RGB_TUPLE]:
+            color = str(color).lower()
             if color in group:
                 index = group.index(color)
                 rgb_tuple = X11.RGB_TUPLE[index]

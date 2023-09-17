@@ -14,16 +14,17 @@ from dotenv import load_dotenv
 from rich._export_format import CONSOLE_SVG_FORMAT
 from rich._log_render import FormatTimeCallable
 from rich.align import AlignMethod
-from rich.console import Console as RichConsole
+from rich.console import Console as RichConsole, RenderableType
 from rich.console import (
     ConsoleOptions,
     ConsoleRenderable,
-    Group,
+    Group as RichGroup,
     RenderResult,
     RichCast,
+    
 )
 from rich.emoji import EmojiVariant
-from rich.highlighter import ReprHighlighter
+from rich.highlighter import ColorReprHighlighter
 from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.terminal_theme import TerminalTheme
@@ -68,6 +69,12 @@ class Singleton(type):
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
+
+class Group(RichGroup):
+    """Takes a group of renderables and returns a renderable object that renders the group."""
+
+    def __init__(self, *renderables: RenderableType, fit: bool = True) -> None:
+        super().__init__(*renderables, fit=fit)
 
 class Console(RichConsole, metaclass=Singleton):
     """A custom-themed high level interface for the Console class that \

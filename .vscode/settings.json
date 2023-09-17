@@ -118,6 +118,7 @@
     "Meslo",
     "Scrollback",
     "Sysnative",
+    "aaffaa",
     "docsmsft",
     "iusmod",
     "mclass",
@@ -589,5 +590,8 @@
   "svg.preview.background": "editor",
   "github-actions.workflows.pinned.workflows": [
     ".github/workflows/jekyll-gh-pages.yml"
+  ],
+  "cSpell.words": [
+    "maxgradient"
   ]
 }
