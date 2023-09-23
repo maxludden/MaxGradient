@@ -480,13 +480,12 @@ def watch(
 def test_logger():
     """Text log handlers"""
     console_.line(2)
-    text_log = Log()
-    text_log.info("Initialize DEBUG Log")
-    text_log.debug("Initialize INFO Log")
-    text_log.success("Initialize SUCCESS Log")
-    text_log.warning("Initialize WARNING Log")
-    text_log.error("Initialize ERROR Log")
-    text_log.critical("Initialize CRITICAL Log")
+    test_log = Log(console=console_)
+    test_log.debug("Initialize DEBUG Log")
+    test_log.info("Initialize INFO Log")
+    test_log.success("Initialize SUCCESS Log")
+    test_log.warning("Initialize WARNING Log")
+    test_log.critical("Initialize CRITICAL Log")
 
 
 if __name__ == "__main__":

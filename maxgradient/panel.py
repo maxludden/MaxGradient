@@ -201,7 +201,7 @@ class GradientPanel(Panel):
     @colors.setter
     def colors(self, value: list[Color | Tuple | str]) -> None:
         """Set the colors for the gradient."""
-        log.debug(f"Called colors.setter")
+        
         if value is None:
             value = self.get_colors(
                 input_colors=value, rainbow=self.rainbow, hues=self.hues
@@ -212,25 +212,25 @@ class GradientPanel(Panel):
     @property
     def buffer(self) -> StringIO:
         """Retrieve the buffer for the gradient."""
-        log.debug(f"Called buffer.getter")
+        
         return self._buffer
 
     @buffer.setter
     def buffer(self, buffer: StringIO) -> None:
         """Set the buffer for the gradient."""
-        log.debug(f"Called buffer.setter")
+        
         self._buffer = buffer
 
     @property
     def file_console(self) -> Console:
         """Retrieve the file console for the gradient."""
-        log.debug(f"Called file_console.getter")
+        
         return self._file_console
 
     @file_console.setter
     def file_console(self, value: Console) -> None:
         """Set the file console for the gradient."""
-        log.debug(f"Called file_console.setter")
+        
         assert isinstance(
             value, Console
         ), f"File console must be a \
@@ -240,13 +240,13 @@ class GradientPanel(Panel):
     @property
     def hues(self) -> int:
         """Retrieve the number of hues for the gradient."""
-        log.debug(f"Called hues.getter with value: {self._hues}")
+        
         return self._hues
 
     @hues.setter
     def hues(self, value: int) -> None:
         """Set the number of hues for the gradient."""
-        log.debug(f"Called hues.setter with value: {value}")
+        
         if value is None:
             value = len(self.colors)
         self._hues = value
@@ -254,13 +254,13 @@ class GradientPanel(Panel):
     @property
     def rainbow(self) -> bool:
         """Retrieve whether the gradient is a rainbow gradient."""
-        log.debug(f"Called rainbow.getter with value: {self._rainbow}")
+        
         return self._rainbow
 
     @rainbow.setter
     def rainbow(self, value: bool) -> None:
         """Set whether the gradient is a rainbow gradient."""
-        log.debug(f"Called rainbow.setter with value: {value}")
+        
         assert isinstance(
             value, bool
         ), f"Rainbow must be a boolean. Received: {type(value)}"
@@ -271,13 +271,13 @@ class GradientPanel(Panel):
     @property
     def lines(self) -> str:
         """Retrieve the text for the gradient."""
-        log.debug(f"Called text.getter")
+        
         return self._lines
 
     @lines.setter
     def lines(self, text: Text) -> None:
         """Set the text for the gradient."""
-        log.debug(f"Called text.setter({text}))")
+        
         assert isinstance(text, Text), f"Text must be a Text object. Received: {type(text)}"
         lines: Lines = text.wrap(
             console=self.file_console,
@@ -310,13 +310,13 @@ class GradientPanel(Panel):
     @property
     def width(self) -> int:
         """Retrieve the width of the panel."""
-        log.debug(f"Called width.getter")
+        
         return self._width
 
     @width.setter
     def width(self, value: int) -> None:
         """Set the width of the panel."""
-        log.debug(f"Called width.setter")
+        
         self._width = value
 
     def get_colors(

@@ -226,7 +226,7 @@ class GradientRule(JupyterMixin):
     @characters.setter
     def characters(self, characters: str) -> None:
         """Set or generate the characters to draw the rule."""
-        # log.debug(msg=f"Called Rule.characters.setter with {characters!r}")
+        #
         if characters is not None:
             self._characters = characters
             return
@@ -237,7 +237,6 @@ class GradientRule(JupyterMixin):
                 self.characters = "━"
             elif self.thickness == "thick":
                 self.characters = "█"
-            log.debug(f"Rule.characters: {self.characters!r}")
 
     @classmethod
     def rule_example(cls) -> None:

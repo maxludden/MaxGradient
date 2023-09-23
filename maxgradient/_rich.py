@@ -871,7 +871,7 @@ class Rich:
     @staticmethod
     def rgb_to_tuple(rgb: str) -> Tuple[int, int, int]:
         """Convert a rgb string to a tuple of ints"""
-        log.debug(f"Converting {rgb} to tuple...")
+
         rgb_match = findall(r"r?g?b?\((\d+),(\d+),(\d+)\)", rgb)
         if rgb_match:
             return tuple(int(x) for x in rgb_match[0])

@@ -205,13 +205,13 @@ class Gradient(Text):
     @property
     def text(self) -> str:
         """The text of the gradient."""
-        log.debug(f"Getting gradient._text: {self._text}")
+
         return self._text
 
     @text.setter
     def text(self, text: Optional[str | Text]) -> None:
         """Set the text of the gradient."""
-        log.debug(f"Setting gradient._text: {text}")
+
         if isinstance(text, Text):
             sanitized_text = strip_control_codes(text.plain)
             self._length = len(sanitized_text)
@@ -227,7 +227,7 @@ class Gradient(Text):
     @property
     def hues(self) -> int:
         """The number of colors in the gradient."""
-        log.debug(f"Retrieving gradient._hues: {self._hues}")
+
         return self._hues
 
     @hues.setter
@@ -237,7 +237,7 @@ class Gradient(Text):
         Args:
             hues (int): The number of colors in the gradient. Defaults to `3`.
         """
-        log.debug(f"Setting gradient._hues: {hues}")
+
         if hues < 2:
             raise ValueError("Gradient must have at least two colors.")
         self._hues = hues
@@ -245,13 +245,13 @@ class Gradient(Text):
     @property
     def color_sample(self) -> bool:
         """Whether the gradient is a color sample."""
-        log.debug(f"Retrieving gradient._color_sample: {self._color_sample}")
+
         return self._color_sample
 
     @color_sample.setter
     def color_sample(self, color_sample: bool) -> None:
         """Set whether the gradient is a color sample."""
-        log.debug(f"Setting gradient._color_sample: {color_sample}")
+
         if color_sample:
             self.text = "█" * self._length
         self._color_sample = color_sample
@@ -259,7 +259,7 @@ class Gradient(Text):
     @property
     def style(self) -> Style:
         """The style of the gradient."""
-        log.debug(f"Retrieving gradient._style: {self._style}")
+
         return self._style
 
     @style.setter
@@ -269,7 +269,7 @@ class Gradient(Text):
         Args:
             style(`StyleType`): The style to set the gradient to.
         """
-        log.debug(f"Setting gradient._style: {style}")
+
         if isinstance(style, Style):
             self._style = Style.copy(style).without_color
         if style is None:
@@ -330,7 +330,7 @@ class Gradient(Text):
         Args:
             color (str|Color): The color to generate monochromatic hues from.
         """
-        log.debug(f"Called Gradient.mono({color})")
+
         if isinstance(color, str):
             try:
                 color = Color(color)
@@ -441,7 +441,6 @@ class Gradient(Text):
             str: The gradient text.
         """
         if isinstance(self._text, str):
-            log.debug(f"Gradient._text is a string: {self._text}")
             return self._text
         if self._text:
             return "".join(self._text)
@@ -464,7 +463,7 @@ class Gradient(Text):
                     f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}"
                 )
             else:
-                log.info(f"Index {count}: {', '.join([str(i) for i in index])}")
+                
         return indexes
 
     def generate_substrings(self, indexes: List[List[int]], text: str) -> List[str]:
@@ -551,7 +550,6 @@ class Gradient(Text):
         enumerated_spans = list(enumerate(self._spans, 1))
         style_map = {index: get_style(span.style) for index, span in enumerated_spans}
         style_map[0] = get_style(self.style)
-        log.debug(f"style_map: {style_map}")
 
         spans = [
             (0, False, 0),
@@ -588,7 +586,6 @@ class Gradient(Text):
                 yield _Segment(text[offset:next_offset], get_current_style())
         if end:
             yield _Segment(end)
-
 
     def as_text(self) -> Text:
         """Return the gradient as a Text object."""
@@ -634,7 +631,7 @@ if __name__ == "__main__":  # pragma: no cover
             lorem.paragraph(),
             colors=["red", "orange", "yellow", "green", "cyan"],
             justify="left",
-            style="bold"
+            style="bold",
         ),
         title=Gradient("Gradient Example"),
         expand=True,

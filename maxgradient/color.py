@@ -136,7 +136,7 @@ You can also visit the rich library's documentation to view all \
                 
     https://pdos.csail.mit.edu/~jinyang/rgb.html
 """
-        log.debug("Called Color.__init__()")
+        
         self.original: str = str(color)
 
         if isinstance(color, Color):
@@ -197,13 +197,13 @@ You can also visit the rich library's documentation to view all \
     @lru_cache
     def original(self) -> str:
         """Return the original color."""
-        log.debug("Called Color.original.getter()")
+        
         return self._original
 
     @original.setter
     def original(self, color: str) -> None:
         """Set the original color."""
-        log.debug(f"Called Color.original.setter({color}")
+        
         self._original = color
 
     @property
@@ -257,19 +257,19 @@ You can also visit the rich library's documentation to view all \
     @lru_cache
     def name(self) -> str:
         """Return the name of the color."""
-        log.debug("Called Color.name.getter()")
+        
         return self._name
 
     @name.setter
     def name(self, name: str) -> None:
         """Set the name of the color."""
-        log.debug(f"Called Color.name.setter({name})")
+        
         self._name = name
 
     @property
     def mode(self) -> Mode:
         """Return the mode of the color."""
-        log.debug("Called Color.mode.getter()")
+        
         return self._mode
 
     @mode.setter
@@ -279,13 +279,13 @@ You can also visit the rich library's documentation to view all \
         Args:
             mode (Mode): The mode of the color.
         """
-        log.debug(f"Called Color.mode.setter({mode})")
+        
         self._mode = mode
 
     @property
     def hex(self) -> str:
         """Return the hex color code."""
-        log.debug("Called Color.hex.getter()")
+        
         red_str = f"{self.red:02X}"
         green_str = f"{self.green:02X}"
         blue_str = f"{self.blue:02X}"
@@ -294,25 +294,25 @@ You can also visit the rich library's documentation to view all \
     @property
     def rgb(self) -> str:
         """Return the rgb color code."""
-        log.debug("Called Color.rgb.getter()")
+        
         return f"rgb({self.red},{self.green},{self.blue})"
 
     @property
     def rgb_tuple(self) -> Tuple[int, int, int]:
         """Return the rgb color code as a tuple."""
-        log.debug("Called Color.rgb_tuple.getter()")
+        
         return (self.red, self.green, self.blue)
 
     @property
     def style(self) -> Style:
         """Return the style of the color."""
-        log.debug("Called Color.style.getter()")
+        
         return Style(color=self.hex)
 
     @property
     def bg_style(self) -> Style:
         """Return a style with the color as the background."""
-        log.debug("Called Color.bg_style.getter()")
+        
         foreground: str = self.get_contrast()
         return Style(color=foreground, bgcolor=self.hex)
 
@@ -326,13 +326,13 @@ You can also visit the rich library's documentation to view all \
         name = self._original
         for char in name:
             hash_value += ord(char)
-            # log.debug(f"Hashed {char} at index {index}: hash_value = {hash_value}")
-        # log.debug(f"called Color.__hash__({self._original})")
+            # 
+        # 
         return hash_value
 
     def __rich__(self) -> Panel:
         """Return the rich console representation of a color."""
-        log.debug("Called Color.__rich__()")
+        
         table = Table(
             # title=self.name.capitalize(),
             show_header=False,
@@ -382,7 +382,7 @@ You can also visit the rich library's documentation to view all \
 
     def color_title(self) -> Text:
         """Generate a title bar for the color."""
-        log.debug("Called Color.color_title()")
+        
         name = self.name.capitalize()
         length = len(name)
         # Calculate
@@ -418,32 +418,32 @@ You can also visit the rich library's documentation to view all \
 
     def hex_components(self, hex_str: str) -> None:
         """Parse color components from a hex string."""
-        log.debug(f"Called Color.hex_components({hex_str})")
+        
         if "#" in hex_str:
             hex_str = hex_str.replace("#", "")
         if len(hex_str) == 3:
             hex_str = "".join([char * 2 for char in hex_str])
         self.red = int(hex_str[0:2], 16)
-        log.debug(f"Red: {self.red}")
+        
         self.green = int(hex_str[2:4], 16)
-        log.debug(f"Green: {self.green}")
+        
         self.blue = int(hex_str[4:6], 16)
-        log.debug(f"Blue: {self.blue}")
+        
 
     def rgb_components(self, rgb_str: str) -> None:
         """Parse the components from an RGB string."""
-        log.debug(f"Called Color.rgb_components({rgb_str})")
+        
         REGEX = re.compile(
             r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)[ ,]? ?(?P<blue>\d+\.?\d*)\)"
         )
         match: Match = REGEX.match(rgb_str)
         if match:
             self.red = int(match.group("red"))
-            log.debug(f"Red: {self.red}")
+            
             self.green = int(match.group("green"))
-            log.debug(f"Green: {self.green}")
+            
             self.blue = int(match.group("blue"))
-            log.debug(f"Blue: {self.blue}")
+            
 
     def get_contrast(self) -> str:
         """Generate a foreground color for the color style.
@@ -485,14 +485,14 @@ You can also visit the rich library's documentation to view all \
                 msg = f"[b {self.hex}]Color's contrast: [b #ffffff]White[/]"
                 log.success(msg)
             else:
-                log.debug(f"Contrast for Color<{self.name}> -> White")
+                
             return "#ffffff"
         else:
             if VERBOSE:
                 msg = f"[b {self.hex}]Color's contrast: [b #000000]Black[/]"
                 log.success(msg)
             else:
-                log.debug(f"Contrast for Color<{self.name}> -> White")
+                
             return "#000000"
 
     def lighten(self, percent: float = 0.5) -> str:
@@ -505,7 +505,7 @@ You can also visit the rich library's documentation to view all \
         Returns:
             str: The tinted color as a hex string.
         """
-        log.debug(f"Called Color.tint({percent})")
+        
         rgb_tuple = self.rgb_tuple
         red, green, blue = rgb_tuple
 
@@ -519,7 +519,7 @@ You can also visit the rich library's documentation to view all \
         blue_final = f"{blue_tint:02x}"
 
         tint: str = f"#{red_final}{green_final}{blue_final}"
-        log.debug(f"Tinting by {percent * 100}%: {tint}")
+        
         return tint
 
     def darken(self, percent: float = 0.5) -> str:
@@ -532,7 +532,7 @@ You can also visit the rich library's documentation to view all \
         Returns:
             str: The darkened color as a hex string.
         """
-        log.debug(f"Called Color.dark({percent})")
+        
         rgb_tuple = self.rgb_tuple
         red, green, blue = rgb_tuple
 
@@ -546,13 +546,13 @@ You can also visit the rich library's documentation to view all \
         blue_final = f"{dark_blue:02x}"
 
         dark: str = f"#{red_final}{green_final}{blue_final}"
-        log.debug(f"Darken by {percent * 100}%: {dark}")
+        
         return dark
 
     @classmethod
     def named_table(cls) -> Columns:
         """Return a table of named colors."""
-        log.debug("Generating named color table.")
+        
         colors = []
         for color in GC.NAMES:
             colors.append(Color(color))
@@ -563,7 +563,7 @@ You can also visit the rich library's documentation to view all \
         """Return a table of all colors."""
         tables: List[Table] = []
         for colors in [Rich, X11]:
-            log.debug("Generating color table.")
+            
             title = colors.get_title()
             table = Table(title=title, show_header=True, header_style="bold.magenta")
             table.add_column("Example", justify="center")

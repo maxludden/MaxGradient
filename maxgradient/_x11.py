@@ -8,7 +8,7 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient.log import Log, Console
+from maxgradient.log import Console, Log
 
 console = Console()
 log = Log()
@@ -647,7 +647,7 @@ class X11:
     @staticmethod
     def rgb_to_tuple(rgb: str) -> Optional[Tuple[int, int, int]]:
         """Convert a rgb string to a tuple of ints"""
-        log.debug(f"Converting {rgb} to tuple...")
+
         rgb_match = findall(r"r?g?b?\((\d+),(\d+),(\d+)\)", rgb)
         if rgb_match:
             return tuple(int(x) for x in rgb_match[0])

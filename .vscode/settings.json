@@ -1,12 +1,11 @@
 {
   "git.enableSmartCommit": true,
   "python.venvFolders": [
-    "~/.config/.pyenv/plugins/pyenv-virtualenvwrapper",
+    "Users/maxluden/dev/venvs/",
     "~/.config/.pyenv/versions",
-    "~/dev/venvs/"
   ],
-  "python.venvPath": "~/dev/venvs",
-  "python.pythonPath": "/Users/maxludden/dev/venvs/maxgradient/bin/python",
+  "python.venvPath": "$HOME/dev/venvs",
+  "python.pythonPath": "/Users/maxludden/dev/venvs/MaxGradient/bin/python",
   "cSpell.userWords": [
     "greylock",
     "maxbook",
@@ -165,7 +164,7 @@
   },
   "remote.tunnels.access.hostNameOverride": "maxbook",
   "editor.colorDecoratorsLimit": 800,
-  "python.defaultInterpreterPath": "/Users/maxludden/dev/venvs/maxgradient/bin/python",
+  "python.defaultInterpreterPath": "/Users/maxludden/dev/venvs/MaxGradient/bin/python",
   "explorer.confirmDragAndDrop": false,
   "errorLens.excludeBySource": [
     "Pylint(F0002:astroid-error)"

@@ -4,15 +4,13 @@ from io import StringIO
 from sys import stdout
 from typing import List
 
-from rich.text import Text
+# from rich.text import Text
 from typer import Argument, BadParameter, Exit, Option, Typer
 from typing_extensions import Annotated
 
 from maxgradient import Console
-from maxgradient import __version__ as version
 from maxgradient.color import Color, ColorParseError
 from maxgradient.gradient import Gradient
-from maxgradient.theme import GradientTheme
 
 app = Typer(name="gradient", help="Print a gradient.")
 
@@ -106,6 +104,15 @@ magenta, violet, purple, blue, lightblue, cyan, green/green, yellow, orange, \
 and red.",
         ),
     ] = None,
+    panel: Annotated[
+        bool,
+        Option(
+            "--panel",
+            "-p",
+            show_default=False,
+            help="Whether to print the gradient in a panel.",
+        ),
+    ] = False,
     verbose: Annotated[
         bool,
         Option(
