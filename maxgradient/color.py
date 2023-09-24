@@ -484,15 +484,11 @@ You can also visit the rich library's documentation to view all \
             if VERBOSE:
                 msg = f"[b {self.hex}]Color's contrast: [b #ffffff]White[/]"
                 log.success(msg)
-            else:
-                
             return "#ffffff"
         else:
             if VERBOSE:
                 msg = f"[b {self.hex}]Color's contrast: [b #000000]Black[/]"
                 log.success(msg)
-            else:
-                
             return "#000000"
 
     def lighten(self, percent: float = 0.5) -> str:

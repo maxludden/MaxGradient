@@ -461,10 +461,8 @@ class Gradient(Text):
             if verbose:
                 log.success(
                     f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}"
-                )
-            else:
-                
-        return indexes
+                )         
+            return indexes
 
     def generate_substrings(self, indexes: List[List[int]], text: str) -> List[str]:
         """Generate a list of substrings for the gradient.

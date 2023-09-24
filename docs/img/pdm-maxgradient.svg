@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 352.83">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        clip-path: url(#clippath);
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-4, .cls-5, .cls-6, .cls-7 {
+        stroke-width: 0px;
+      }
+
+      .cls-8 {
+        fill: #d1d3d4;
+        font-family: Urbanist-Light, Urbanist;
+        font-size: 24px;
+        font-weight: 300;
+      }
+
+      .cls-9 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-10 {
+        fill: #231f20;
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+        stroke-width: .84px;
+      }
+
+      .cls-11 {
+        fill: #fff;
+      }
+
+      .cls-11, .cls-12 {
+        font-family: MesloLGS-NF-Regular, 'MesloLGS NF';
+        font-size: 48px;
+      }
+
+      .cls-13 {
+        letter-spacing: 0em;
+      }
+
+      .cls-12 {
+        fill: none;
+      }
+
+      .cls-5 {
+        fill: #28c840;
+      }
+
+      .cls-6 {
+        fill: #ff5f57;
+      }
+
+      .cls-7 {
+        fill: #febc2e;
+      }
+    </style>
+    <clipPath id="clippath">
+      <text class="cls-12" transform="translate(140.92 199.64)"><tspan x="0" y="0">pdm</tspan></text>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="112.7" y1="174.02" x2="755.08" y2="174.02" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f0f"/>
+      <stop offset=".5" stop-color="#af00ff"/>
+      <stop offset="1" stop-color="#5f00ff"/>
+    </linearGradient>
+    <clipPath id="clippath-1">
+      <text class="cls-12" transform="translate(373.23 199.64)"><tspan x="0" y="0">maxgradient</tspan></text>
+    </clipPath>
+  </defs>
+  <rect class="cls-10" width="1000" height="352.83" rx="13.77" ry="13.77"/>
+  <circle class="cls-6" cx="30.22" cy="32.52" r="11.88"/>
+  <circle class="cls-7" cx="65.57" cy="32.52" r="11.88"/>
+  <circle class="cls-5" cx="98.68" cy="32.52" r="11.88"/>
+  <text class="cls-8" transform="translate(475.56 44.41)"><tspan class="cls-3" x="0" y="0">P</tspan><tspan class="cls-13" x="12.34" y="0">D</tspan><tspan class="cls-1" x="28.34" y="0">M</tspan></text>
+  <text class="cls-11" transform="translate(229.27 199.64)"><tspan x="0" y="0" xml:space="preserve"> add </tspan></text>
+  <g class="cls-2">
+    <rect class="cls-4" x="112.7" y="129.1" width="642.37" height="89.83"/>
+  </g>
+  <g class="cls-9">
+    <rect class="cls-4" x="112.7" y="129.1" width="642.37" height="89.83"/>
+  </g>
+</svg>

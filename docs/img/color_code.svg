@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000.94 438.06">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #231f20;
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+        stroke-width: .94px;
+      }
+
+      .cls-2 {
+        font-family: MesloLGS-NF-Bold, 'MesloLGS NF';
+        font-size: 36px;
+        font-weight: 700;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        fill: #e9f284;
+      }
+
+      .cls-5 {
+        fill: #ec008c;
+      }
+
+      .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-7 {
+        fill: #fc77c4;
+      }
+
+      .cls-8 {
+        fill: #86e1f5;
+      }
+
+      .cls-9 {
+        fill: #3ce82e;
+      }
+
+      .cls-10 {
+        fill: #d1d3d4;
+        font-family: Urbanist-Light, Urbanist;
+        font-size: 24px;
+        font-weight: 300;
+      }
+
+      .cls-11 {
+        letter-spacing: 0em;
+      }
+
+      .cls-12 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-13 {
+        fill: #28c840;
+      }
+
+      .cls-13, .cls-14, .cls-15 {
+        stroke-width: 0px;
+      }
+
+      .cls-14 {
+        fill: #ff5f57;
+      }
+
+      .cls-15 {
+        fill: #febc2e;
+      }
+    </style>
+  </defs>
+  <rect class="cls-1" x=".47" y=".47" width="1000" height="437.13" rx="15.33" ry="15.33"/>
+  <circle class="cls-14" cx="30.69" cy="32.99" r="11.88"/>
+  <circle class="cls-15" cx="66.04" cy="32.99" r="11.88"/>
+  <circle class="cls-13" cx="99.15" cy="32.99" r="11.88"/>
+  <text class="cls-10" transform="translate(482.49 44.87) scale(.87 1)"><tspan class="cls-12" x="0" y="0">C</tspan><tspan class="cls-11" x="16.02" y="0">o</tspan><tspan x="29.42" y="0">l</tspan><tspan class="cls-3" x="33.92" y="0">o</tspan><tspan x="47.33" y="0">r</tspan></text>
+  <text class="cls-2" transform="translate(87.27 158.97)"><tspan class="cls-7" x="0" y="0">import </tspan><tspan class="cls-6" x="151.72" y="0">maxgradient </tspan><tspan class="cls-7" x="411.8" y="0">as </tspan><tspan class="cls-6" x="476.82" y="0">mg</tspan><tspan class="cls-6" x="0" y="86.4">console</tspan><tspan class="cls-7" x="151.72" y="86.4"> </tspan><tspan class="cls-5" x="173.39" y="86.4">=</tspan><tspan class="cls-7" x="195.06" y="86.4"> </tspan><tspan class="cls-6" x="216.74" y="86.4">mg</tspan><tspan class="cls-7" x="260.09" y="86.4">.</tspan><tspan class="cls-8" x="281.76" y="86.4">Console</tspan><tspan class="cls-6" x="433.48" y="86.4">()</tspan><tspan class="cls-6" x="0" y="129.6">console</tspan><tspan class="cls-7" x="151.72" y="129.6">.</tspan><tspan class="cls-9" x="173.39" y="129.6">print</tspan><tspan class="cls-6" x="281.76" y="129.6">(</tspan><tspan class="cls-4" x="303.43" y="129.6">&quot;[bold green]This is </tspan><tspan class="cls-4" x="0" y="172.8">a a vibrant green color!&quot;</tspan><tspan class="cls-6" x="541.85" y="172.8">)</tspan></text>
+</svg>

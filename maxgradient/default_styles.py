@@ -7,6 +7,7 @@ from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Text
 from rich.theme import Theme
+from rich.live import Live
 
 GRADIENT_STYLES: Mapping[str, StyleType] = {
     "none": Style.null(),
@@ -575,11 +576,12 @@ def styles_table() -> Table:
 
 def example() -> None:
     """Print the styles table to the console."""
-    theme = Theme(GRADIENT_STYLES)
-    console = Console(theme=theme)
-    console.line(3)
-    console.print(styles_table(), justify="center")
-    console.line(3)
+    with Live(refresh_per_second=10):
+        theme = Theme(GRADIENT_STYLES)
+        console = Console(theme=theme)
+        console.line(3)
+        console.print(styles_table(), justify="center")
+        console.line(3)
 
 
 if __name__ == "__main__":

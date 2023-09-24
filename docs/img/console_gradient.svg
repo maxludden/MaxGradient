@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 352.83">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-2 {
+        font-family: MesloLGS-NF-Bold, 'MesloLGS NF';
+        font-size: 36px;
+        font-weight: 700;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        fill: #e9f284;
+      }
+
+      .cls-5 {
+        fill: #fff;
+      }
+
+      .cls-6 {
+        fill: #ff0080;
+      }
+
+      .cls-7 {
+        fill: #fc77c4;
+      }
+
+      .cls-8 {
+        fill: #86e1f5;
+      }
+
+      .cls-9 {
+        fill: #bd93f9;
+      }
+
+      .cls-10 {
+        fill: #2ce52c;
+      }
+
+      .cls-11 {
+        fill: #d1d3d4;
+        font-family: Urbanist-Light, Urbanist;
+        font-size: 24px;
+        font-weight: 300;
+      }
+
+      .cls-12 {
+        letter-spacing: 0em;
+      }
+
+      .cls-13 {
+        fill: #231f20;
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+        stroke-width: .84px;
+      }
+
+      .cls-14 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-15 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-16 {
+        fill: #28c840;
+      }
+
+      .cls-16, .cls-17, .cls-18 {
+        stroke-width: 0px;
+      }
+
+      .cls-17 {
+        fill: #ff5f57;
+      }
+
+      .cls-18 {
+        fill: #febc2e;
+      }
+    </style>
+  </defs>
+  <rect class="cls-13" width="1000" height="352.83" rx="13.77" ry="13.77"/>
+  <circle class="cls-17" cx="30.22" cy="32.52" r="11.88"/>
+  <circle class="cls-18" cx="65.57" cy="32.52" r="11.88"/>
+  <circle class="cls-16" cx="98.68" cy="32.52" r="11.88"/>
+  <text class="cls-11" transform="translate(430.98 44.41)"><tspan class="cls-15" x="0" y="0">M</tspan><tspan class="cls-12" x="19.75" y="0">a</tspan><tspan x="34.01" y="0">x</tspan><tspan class="cls-3" x="45.9" y="0">G</tspan><tspan class="cls-1" x="63.84" y="0">r</tspan><tspan class="cls-14" x="71.24" y="0">a</tspan><tspan x="85.27" y="0">di</tspan><tspan class="cls-12" x="103.93" y="0">e</tspan><tspan x="117.31" y="0">nt</tspan></text>
+  <text class="cls-2" transform="translate(77.46 138.17)"><tspan class="cls-7" x="0" y="0">import </tspan><tspan class="cls-5" x="151.72" y="0">maxgradient </tspan><tspan class="cls-7" x="411.8" y="0">as</tspan><tspan class="cls-9" x="455.15" y="0"> </tspan><tspan class="cls-5" x="476.82" y="0">mg</tspan><tspan class="cls-5" x="0" y="86.4">console </tspan><tspan class="cls-6" x="173.39" y="86.4">=</tspan><tspan class="cls-9" x="195.06" y="86.4"> </tspan><tspan class="cls-5" x="216.74" y="86.4">mg</tspan><tspan class="cls-7" x="260.09" y="86.4">.</tspan><tspan class="cls-8" x="281.76" y="86.4">Console</tspan><tspan class="cls-5" x="433.48" y="86.4">()</tspan><tspan class="cls-5" x="0" y="129.6">console</tspan><tspan class="cls-7" x="151.72" y="129.6">.</tspan><tspan class="cls-10" x="173.39" y="129.6">gradient</tspan><tspan class="cls-5" x="346.78" y="129.6">(</tspan><tspan class="cls-4" x="368.46" y="129.6">&quot;Hello, World!&quot;</tspan><tspan class="cls-5" x="693.56" y="129.6">)</tspan></text>
+</svg>
