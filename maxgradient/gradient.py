@@ -11,7 +11,7 @@ import numpy as np
 from nptyping import NDArray, Shape
 from rich.box import Box
 from rich.cells import cell_len
-from rich.console import Console, ConsoleOptions
+from rich.console import Console, ConsoleOptions, StyleType
 from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
@@ -81,7 +81,7 @@ class Gradient(Text):
         invert: bool = False,
         hues: Optional[int] = None,
         color_sample: bool = False,
-        style: Style = Style.null(),
+        style: StyleType = Style.null(),
         *,
         justify: Optional[str] = None,
         overflow: Optional[str] = None,
@@ -461,7 +461,7 @@ class Gradient(Text):
             if verbose:
                 log.success(
                     f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}"
-                )         
+                )
             return indexes
 
     def generate_substrings(self, indexes: List[List[int]], text: str) -> List[str]:
