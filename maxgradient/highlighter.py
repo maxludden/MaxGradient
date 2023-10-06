@@ -1,6 +1,5 @@
-"""Custom highlighter to support highlighting gradient colors as well as the default repr highlighting."""
-# disable: pylint=[E0f04,W0012]
-# disable: pylint
+"""Custom highlighter to support highlighting gradient 
+colors as well as the default repr highlighting."""
 from typing import Tuple
 
 from rich.columns import Columns
@@ -73,9 +72,10 @@ RGB_TUPLE: Tuple[Tuple[int, int, int], ...] = (
 class ColorReprHighlighter(RegexHighlighter):
     """Apply style to anything that looks like an email."""
 
-    base_style = "bold."
+    base_style = ""
     highlights = [
-        r"(?P<magenta>magenta\b|#[Ff]0[Ff]\b|#[Ff]{2}00[Ff]{2}\b|r?g?b?\(255, ?0, ?255\))",
+        r"(?P<magenta>magenta\b|#[Ff]0[Ff]\b|",
+        r"(?P<magenta>#[Ff]{2}00[Ff]{2}\b|r?g?b?\(255, ?0, ?255\))",
         r"(?P<violet>violet\b|#a0[Ff]\b|#a[Ff]00[Ff]{2}\b|r?g?b?\(175, ?0, ?255\))",
         r"(?P<purple>purple\b|#50[Ff]\b|#5[Ff]00[Ff]{2}\b|r?g?b?\(95, ?0, ?255\))",
         r"(?P<blue>blue\b|#00[Ff]\b|#0{4}[Ff]{2}\b|r?g?b?\(0, ?0, ?255\))",
