@@ -5,6 +5,10 @@ from typing import Tuple
 from rich.columns import Columns
 from rich.highlighter import RegexHighlighter, _combine_regex
 
+# from snoop import snoop
+# from cheap_repr import register_repr, normal_repr
+
+
 # from maxgradient._gc import GradientColor as GC
 
 NAMES: Tuple[str, ...] = (
@@ -44,16 +48,16 @@ HEX3: Tuple[str, ...] = (
     "#f00",
 )
 RGB: Tuple[str, ...] = (
-    "rgb(255,0,255)",
-    "rgb(175,0,255)",
-    "rgb(95,0,255)",
-    "rgb(0,0,255)",
-    "rgb(0,136,255)",
-    "rgb(0,255,255)",
-    "rgb(0,255,0)",
-    "rgb(255,255,0)",
-    "rgb(255,136,0)",
-    "rgb(255,0,0)",
+    "rgb(255, 0, 255)",
+    "rgb(175, 0, 255)",
+    "rgb(95, 0, 255)",
+    "rgb(0, 0, 255)",
+    "rgb(0, 136, 255)",
+    "rgb(0, 255, 255)",
+    "rgb(0, 255, 0)",
+    "rgb(255, 255, 0)",
+    "rgb(255, 136, 0)",
+    "rgb(255, 0, 0)",
 )
 RGB_TUPLE: Tuple[Tuple[int, int, int], ...] = (
     (255, 0, 255),
@@ -72,31 +76,16 @@ RGB_TUPLE: Tuple[Tuple[int, int, int], ...] = (
 class ColorReprHighlighter(RegexHighlighter):
     """Apply style to anything that looks like an email."""
 
-    base_style = ""
+    base_style = "repr."
     highlights = [
-        r"(?P<magenta>magenta\b|#[Ff]0[Ff]\b|",
-        r"(?P<magenta>#[Ff]{2}00[Ff]{2}\b|r?g?b?\(255, ?0, ?255\))",
-        r"(?P<violet>violet\b|#a0[Ff]\b|#a[Ff]00[Ff]{2}\b|r?g?b?\(175, ?0, ?255\))",
-        r"(?P<purple>purple\b|#50[Ff]\b|#5[Ff]00[Ff]{2}\b|r?g?b?\(95, ?0, ?255\))",
-        r"(?P<blue>blue\b|#00[Ff]\b|#0{4}[Ff]{2}\b|r?g?b?\(0, ?0, ?255\))",
-        r"(?P<lightblue>lightblue|#08[Ff]\b|#0088[Ff]{2}|r?g?b?\(0, ?136, ?255\))",
-        r"(?P<cyan>cyan|#0[Ff]{2}\b|#00[Ff]{4}|r?g?b?\(0, ?255, ?255\))",
-        r"(?P<green>green|#0[Ff]0\b|#00[Ff]{2}00|r?g?b?\(0, ?255, ?0\))",
-        r"(?P<green>green|#0[Ff]0\b|#00[Ff]{2}00|r?g?b?\(0, ?255, ?0\))",
-        r"(?P<yellow>yellow|#[Ff]{2}0\b|#[Ff]{4}00|r?g?b?\(255, ?255, ?0\))",
-        r"(?P<orange>orange|#[Ff]80\b|#[Ff]{2}8800|r?g?b?\(255, ?136, ?0\))",
-        r"(?P<red>red|#[Ff]00|#[Ff]{2}0{4}\b|r?g?b?\(255, ?0, ?0\))",
-        # REPR
         r"(?P<tag_start><)(?P<tag_name>[-\w.:|]*)(?P<tag_contents>[\w\W]*)(?P<tag_end>>)",
         r'(?P<attrib_name>[\w_]{1,50})=(?P<attrib_value>"?[\w_]+"?)?',
         r"(?P<brace>[][{}()])",
         _combine_regex(
             r"(?P<ipv4>[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})",
-            r"(?P<ipv6>([A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4})",
-            r"(?P<eui64>(?:[0-9A-Fa-f]{1,2}-){7}[0-9A-Fa-f]{1,2}|(?:[0-9A-Fa-f]{1,2}:){7}[0-9A-Fa-f]{1,2}|\
-                (?:[0-9A-Fa-f]{4}\.){3}[0-9A-Fa-f]{4})",
-            r"(?P<eui48>(?:[0-9A-Fa-f]{1,2}-){5}[0-9A-Fa-f]{1,2}|(?:[0-9A-Fa-f]{1,2}:){5}[0-9A-Fa-f]{1,2}|\
-                (?:[0-9A-Fa-f]{4}\.){2}[0-9A-Fa-f]{4})",
+            r"(?P<ipv6>(\b[A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4})",
+            r"(?P<eui64>(?:[0-9A-Fa-f]{1,2}-){7}[0-9A-Fa-f]{1,2}|(?:[0-9A-Fa-f]{1,2}:){7}[0-9A-Fa-f]{1,2}|(?:[0-9A-Fa-f]{4}\.){3}[0-9A-Fa-f]{4})",
+            r"(?P<eui48>(?:[0-9A-Fa-f]{1,2}-){5}[0-9A-Fa-f]{1,2}|(?:[0-9A-Fa-f]{1,2}:){5}[0-9A-Fa-f]{1,2}|(?:[0-9A-Fa-f]{4}\.){2}[0-9A-Fa-f]{4})",
             r"(?P<uuid>[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})",
             r"(?P<call>[\w.]*?)\(",
             r"\b(?P<bool_true>True)\b|\b(?P<bool_false>False)\b|\b(?P<none>None)\b",
@@ -105,8 +94,27 @@ class ColorReprHighlighter(RegexHighlighter):
             r"(?P<number>(?<!\w)\-?[0-9]+\.?[0-9]*(e[-+]?\d+?)?\b|0x[0-9a-fA-F]*)",
             r"(?P<path>\B(/[-\w._+]+)*\/)(?P<filename>[-\w._+]*)?",
             r"(?<![\\\w])(?P<str>b?'''.*?(?<!\\)'''|b?'.*?(?<!\\)'|b?\"\"\".*?(?<!\\)\"\"\"|b?\".*?(?<!\\)\")",
-            r"(?P<url>(file|https|http|ws|wss)://[-0-9a-zA-Z$_+!`(),.?/;:&=%#]*)",
+            r"(?P<url>(file|https|http|ws|wss)://[-0-9a-zA-Z$_+!`(),.?/;:&=%#~]*)",
         ),
+        # Colors
+        r"(?P<magenta>magenta\b|#[Ff]0[Ff]\b|#[Ff]{2}00[Ff]{2}\b|"
+        r"r?g?b?\(255, ?0, ?255\))",
+        r"(?P<violet>violet\b|#a0[Ff]\b|#a[Ff]00[Ff]{2}\b|"
+        r"r?g?b?\( ?175 ?, ?0 ?, ?255 ?\))",
+        r"(?P<purple>purple\b|#50[Ff]\b|#5[Ff]00[Ff]{2}\b|"
+        r"r?g?b?\( ?95 ?, ?0 ?, ?255 ?\))",
+        r"(?P<blue>blue\b|#00[Ff]\b|#0{4}[Ff]{2}\b|r?g?b?\( ?0 ?, ?0 ?, ?255 ?\))",
+        r"(?P<lightblue>lightblue|#08[Ff]\b|#0088[Ff]{2}|"
+        r"r?g?b?\( ?0 ?, ?136 ?, ?255 ?\))",
+        r"(?P<cyan>cyan|#0[Ff]{2}\b|#00[Ff]{4}|r?g?b?\( ?0 ?, ?255 ?, ?255 ?\))",
+        r"(?P<lime>lime|#0[Ff]0\b|#00[Ff]{2}00|r?g?b?\( ?0 ?, ?255 ?, ?0 ?\))",
+        r"(?P<green>green|#0[Ff]0\b|#00[Ff]{2}00|r?g?b?\( ?0 ?, ?255 ?, ?0 ?\))",
+        r"(?P<yellow>yellow|#[Ff]{2}0\b|#[Ff]{4}00|r?g?b?\( ?255 ?, ?255 ?, ?0 ?\))",
+        r"(?P<orange>orange|#[Ff]80\b|#[Ff]{2}8800|r?g?b?\( ?255 ?, ?136 ?, ?0 ?\))",
+        r"(?P<red>red|#[Ff]00|#[Ff]{2}0{4}\b|r?g?b?\( ?255 ?, ?0 ?, ?0 ?\))",
+        r"[\s\W]?\( ?\d+ ?, ?\d+ ?, ?(?P<rgb_blue>\d+) ?\)",
+        r"[\s\W]?\( ?\d+ ?, ?(?P<rgb_green>\d+) ?, ?\d+ ?\)",
+        r"[\s\W]?\( ?(?P<rgb_red>\d+) ?, ?\d+ ?, ?\d+ ?\)",
     ]
 
 
@@ -116,7 +124,7 @@ if __name__ == "__main__":
     console = Console(highlighter=ColorReprHighlighter())
 
     console.print(
-        "\nThis is a test of the ColorReprHighlighter",
+        "This is a test of the ColorReprHighlighter",
         justify="center",
         highlight=True,
         style="bold",
