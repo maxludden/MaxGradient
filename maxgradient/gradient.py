@@ -9,12 +9,11 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 from nptyping import NDArray, Shape
-from rich.box import Box
 from rich.cells import cell_len
-from rich.console import Console, ConsoleOptions, StyleType
+from rich.console import Console, ConsoleOptions
 from rich.measure import Measurement
 from rich.segment import Segment
-from rich.style import Style
+from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
@@ -47,25 +46,25 @@ class Gradient(Text):
     """Text with gradient color / style.
 
     Args:
-        text(`text): The text to print. Defaults to `""`.\n
-        colors(`List[Optional[Color|Tuple|str|int]]`): A list of colors to use \
+        text (text): The text to print. Defaults to `""`.\n
+        colors (List[Optional[Color|Tuple|str|int]]): A list of colors to use \
             for the gradient. Defaults to None.\n
-        rainbow(`bool`): Whether to print the gradient text in rainbow colors\
-              across the spectrum. Defaults to False.\n
-        invert(`bool`): Reverse the color gradient. Defaults to False.\n
-        hues(`int`): The number of colors in the gradient. Defaults to `3`.\n
-        color_sample(`bool`): Replace text characters with `"█" `. Defaults\
-              to False.\n
-        style(`StyleType`) The style of the gradient text. Defaults to None.\n
-        justify(`Optional[JustifyMethod]`): Justify method: "left", "center",\
-              "full", "right". Defaults to None.\n
-        overflow(`Optional[OverflowMethod]`):  Overflow method: "crop", "fold", \
+        rainbow (bool): Whether to print the gradient text in rainbow colors\
+                across the spectrum. Defaults to False.\n
+        invert (bool): Reverse the color gradient. Defaults to False.\n
+        hues (int): The number of colors in the gradient. Defaults to `3`.\n
+        color_sample (bool): Replace text characters with `"█" `. Defaults\
+                to False.\n
+        style (StyleType) The style of the gradient text. Defaults to None.\n
+        justify (Optional[JustifyMethod]): Justify method: "left", "center",\
+                "full", "right". Defaults to None.\n
+        overflow (Optional[OverflowMethod]):  Overflow method: "crop", "fold", \
             "ellipsis". Defaults to None.\n
         end (str, optional): Character to end text with. Defaults to "\\\\n".\n
         no_wrap (bool, optional): Disable text wrapping, or None for default.\
             Defaults to None.\n
         tab_size (int): Number of spaces per tab, or `None` to use\
-              `console.tab_size`. Defaults to 8.\n
+                `console.tab_size`. Defaults to 8.\n
         spans (List[Span], optional). A list of predefined style spans.\
             Defaults to None.\n
 
@@ -90,22 +89,22 @@ class Gradient(Text):
         tab_size: Optional[int] = 8,
         spans: Optional[List[Span]] = None,
     ) -> None:
-        """Text with gradient color / style.
+        """Text styled with gradient color.
 
         Args:
-            text(`text): The text to print. Defaults to `""`.\n
-            colors(`List[Optional[Color|Tuple|str|int]]`): A list of colors to use \
+            text (text): The text to print. Defaults to `""`.\n
+            colors (List[Optional[Color|Tuple|str|int]]): A list of colors to use \
                 for the gradient. Defaults to None.\n
-            rainbow(`bool`): Whether to print the gradient text in rainbow colors\
+            rainbow (bool): Whether to print the gradient text in rainbow colors\
                   across the spectrum. Defaults to False.\n
-            invert(`bool`): Reverse the color gradient. Defaults to False.\n
-            hues(`int`): The number of colors in the gradient. Defaults to `3`.\n
-            color_sample(`bool`): Replace text characters with `"█" `. Defaults\
+            invert (bool): Reverse the color gradient. Defaults to False.\n
+            hues (int): The number of colors in the gradient. Defaults to `3`.\n
+            color_sample (bool): Replace text characters with `"█" `. Defaults\
                   to False.\n
-            style(`StyleType`) The style of the gradient text. Defaults to None.\n
-            justify(`Optional[JustifyMethod]`): Justify method: "left", "center",\
+            style (StyleType) The style of the gradient text. Defaults to None.\n
+            justify (Optional[JustifyMethod]): Justify method: "left", "center",\
                   "full", "right". Defaults to None.\n
-            overflow(`Optional[OverflowMethod]`):  Overflow method: "crop", "fold", \
+            overflow (Optional[OverflowMethod]):  Overflow method: "crop", "fold", \
                 "ellipsis". Defaults to None.\n
             end (str, optional): Character to end text with. Defaults to "\\\\n".\n
             no_wrap (bool, optional): Disable text wrapping, or None for default.\
@@ -122,7 +121,6 @@ class Gradient(Text):
             text = strip_control_codes(text.plain)
         else:
             self._spans: List[Span] = spans or []
-        # assert isinstance(text, str), f"Text must be a string or Text, not {type(text)}"
         self.text: str = text
         self._length: int = len(text)
 
@@ -290,12 +288,12 @@ class Gradient(Text):
         """Get the colors for the gradient.
 
         Args:
-            colors(`List[Optional[Color|Tuple|str|int]]`): A list of colors to use \
+            colors (List[Optional[Color|Tuple|str|int]]): A list of colors to use \
                 for the gradient. Defaults to None.\n
-            rainbow(`bool`): Whether to print the gradient text in rainbow colors across \
-                the spectrum. Defaults to False.\n
-            invert(`bool`): Reverse the color gradient. Defaults to False.\n
-            verbose(`bool`): Whether to print verbose output. Defaults to True.\n
+            rainbow (bool): Whether to print the gradient text in rainbow colors \
+                across the spectrum. Defaults to False.\n
+            invert (bool): Reverse the color gradient. Defaults to False.\n
+            verbose (bool): Whether to print verbose output. Defaults to True.\n
 
         Returns:
             List[Color]: A list of colors for the gradient.
@@ -453,7 +451,7 @@ class Gradient(Text):
         Returns:
             List[List[int]]: The indexes for the gradient substring.
         """
-        result: NDArray[Shape["*, *"], int] = np.array_split(
+        result: NDArray[Shape["*, *"], int] = np.array_split(  # noqa: F722
             np.arange(self._length), self.hues - 1
         )
         indexes: List[List[int]] = [sublist.tolist() for sublist in result]
@@ -470,7 +468,8 @@ class Gradient(Text):
         Args:
             indexes (List[List[int]]): The indexes for the gradient substring.
             text (str): The text to generate the gradient substring from.
-            verbose (bool, optional): Whether to print verbose output. Defaults to VERBOSE.
+            verbose (bool, optional): Whether to print verbose output.
+                Defaults to VERBOSE.
         """
         substrings: List[str] = []
         for index in indexes:
@@ -484,7 +483,8 @@ class Gradient(Text):
         Args:
             index (List[int]): The index of the substring.
             text (str): The text to generate the gradient substring from.
-            verbose (bool, optional): Whether to print verbose output. Defaults to VERBOSE.
+            verbose (bool, optional): Whether to print verbose output.
+                Defaults to VERBOSE.
 
         Returns:
             str: The substring.
@@ -620,7 +620,7 @@ def pick_bool(value: Optional[bool], default: bool, fallback: bool) -> bool:
 
 
 if __name__ == "__main__":  # pragma: no cover
-    from lorem_text import lorem
+    from lorem_text import lorem  # type: ignore
     from rich.panel import Panel
 
     console.line(2)
