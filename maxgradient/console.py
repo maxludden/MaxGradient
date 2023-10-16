@@ -1,7 +1,8 @@
-"""This module defines a custom themed class inheriting from rich.console.Console called MaxConsole.
-It also defines a metaclass Singleton to create a single global MaxConsole instance.
-The MaxConsole class is a high level interface for the Console class that inherits from rich.console.Console.
-It is a singleton which removes the need to pass around a console object or use the `get_console` method.
+"""This module defines a custom themed class inheriting from rich.console.Console 
+called MaxConsole. It also defines a metaclass Singleton to create a single global 
+MaxConsole instance. The MaxConsole class is a high level interface for the Console 
+class that inherits from rich.console.Console. It is a singleton which removes the 
+need to pass around a console object or use the `get_console` method.
 """
 
 import os
@@ -15,11 +16,8 @@ from rich._export_format import CONSOLE_SVG_FORMAT
 from rich._log_render import FormatTimeCallable
 from rich.align import AlignMethod
 from rich.console import Console as RichConsole
-from rich.console import ConsoleOptions, ConsoleRenderable
-from rich.console import Group as RichGroup
-from rich.console import RenderableType, RenderResult, RichCast
+from rich.console import ConsoleRenderable, RichCast
 from rich.emoji import EmojiVariant
-from rich.highlighter import RegexHighlighter, ReprHighlighter
 from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.terminal_theme import TerminalTheme
@@ -124,8 +122,8 @@ class Console(RichConsole, metaclass=Singleton):
         safe_box (bool, optional): Restrict box options that \
             don't render on legacy Windows.
         get_datetime (Callable[[], datetime], optional): Callable \
-            that gets the current time as a datetime.datetime object (used by Console.log),
-            or None for datetime.now.
+            that gets the current time as a datetime.datetime object (used by \
+            Console.log), or None for datetime.now.
         get_time (Callable[[], time], optional): Callable that \
             gets the current time in seconds, default uses time.monotonic.
             """
@@ -279,10 +277,14 @@ class Console(RichConsole, metaclass=Singleton):
 
         Args:
             title (str, optional): Text to render over the rule. Defaults to "".
-            gradient (bool, optional): Whether to use a gradient for the rule. Defaults to True.
-            thickness (Thickness, optional): Thickness of the rule. Defaults to "medium".
-            align (str, optional): How to align the title, one of "left", "center", or "right". Defaults to "center".
-            justify (str, optional): How to justify the title, one of "left", "center", or "right". Defaults to None.
+            gradient (bool, optional): Whether to use a gradient for the rule. 
+                Defaults to True.
+            thickness (Thickness, optional): Thickness of the rule. 
+                Defaults to "medium".
+            align (str, optional): How to align the title, one of "left", "center", 
+                or "right". Defaults to "center".
+            justify (str, optional): How to justify the title, one of "left", 
+                "center", or "right". Defaults to None.
         """
         rule = GradientRule(
             title=title, gradient=gradient, thickness=thickness, end=end, align=align
@@ -300,21 +302,29 @@ class Console(RichConsole, metaclass=Singleton):
         font_aspect_ratio: float = 0.61,
         unique_id: Optional[str] = None,
     ) -> None:
-        """Generate an SVG file from the console contents (requires record=True in Console constructor).
+        """Generate an SVG file from the console contents (requires record=True in 
+            Console constructor).
 
         Args:
             path (str): The path to write the SVG to.
             title (str, optional): The title of the tab in the output image
-            theme (TerminalTheme, optional): The ``TerminalTheme`` object to use to style the terminal
-            clear (bool, optional): Clear record buffer after exporting. Defaults to ``True``
-            code_format (str, optional): Format string used to generate the SVG. Rich will inject a number of variables
-                into the string in order to form the final SVG output. The default template used and the variables
-                injected by Rich can be found by inspecting the ``console.CONSOLE_SVG_FORMAT`` variable.
-            font_aspect_ratio (float, optional): The width to height ratio of the font used in the ``code_format``
-                string. Defaults to 0.61, which is the width to height ratio of Fira Code (the default font).
-                If you aren't specifying a different font inside ``code_format``, you probably don't need this.
-            unique_id (str, optional): unique id that is used as the prefix for various elements (CSS styles, node
-                ids). If not set, this defaults to a computed value based on the recorded content.
+            theme (TerminalTheme, optional): The ``TerminalTheme`` object to use to 
+                style the terminal
+            clear (bool, optional): Clear record buffer after exporting. 
+                Defaults to ``True``
+            code_format (str, optional): Format string used to generate the SVG. Rich 
+                will inject a number of variables into the string in order to form the 
+                final SVG output. The default template used and the variables injected 
+                by Rich can be found by inspecting the ``console.CONSOLE_SVG_FORMAT`` 
+                variable.
+            font_aspect_ratio (float, optional): The width to height ratio of the font 
+                used in the ``code_format`` string. Defaults to 0.61, which is the 
+                width to height ratio of Fira Code (the default font). If you aren't 
+                specifying a different font inside ``code_format``, you probably 
+                don't need this.
+            unique_id (str, optional): unique id that is used as the prefix for various 
+                elements (CSS styles, node ids). If not set, this defaults to a 
+                computed value based on the recorded content.
         """
         svg = self.export_svg(
             title=title,
@@ -342,13 +352,18 @@ class Console(RichConsole, metaclass=Singleton):
 
         Args:
             path (str | Path): The path to save the SVG file to.
-            title (str, optional): The title of the exported SVG file. Defaults to "MaxGradient".
-            theme (Optional[TerminalTheme], optional): The theme to use when creating the \
-                SVG file. Defaults to GradientTerminalTheme().
-            clear (bool, optional): Whether to clear the console before generating the SVG file. Defaults to True.
-            code_format (str, optional): The format to use on the exported code. Defaults to CONSOLE_SVG_FORMAT.
-            font_aspect_ratio (float, optional): The aspect ration of the exported font. Defaults to 0.61.
-            unique_id (Optional[str], optional): The unique ID of the exported SVG file. Defaults to None.
+            title (str, optional): The title of the exported SVG file. Defaults to 
+                "MaxGradient". 
+            theme (Optional[TerminalTheme], optional): The theme to use when creating 
+                the SVG file. Defaults to GradientTerminalTheme().
+            clear (bool, optional): Whether to clear the console before generating the 
+                SVG file. Defaults to True.
+            code_format (str, optional): The format to use on the exported code. 
+                Defaults to CONSOLE_SVG_FORMAT.
+            font_aspect_ratio (float, optional): The aspect ration of the exported font.
+                Defaults to 0.61.
+            unique_id (Optional[str], optional): The unique ID of the exported SVG file.
+                Defaults to None.
         """
         if not path:
             if "MaxGradient.svg" in (Path.cwd() / "Images").iterdir():
@@ -376,7 +391,7 @@ class Console(RichConsole, metaclass=Singleton):
     def get_title() -> Text:
         """Print out `MaxConsole` in a manual gradient"""
         return Gradient(
-            "GradientConsole",
+            "Console",
             colors=["#5f00ff", "#af00ff", "#ff00ff"],
             style="bold italic",
         )
@@ -389,7 +404,7 @@ class Console(RichConsole, metaclass=Singleton):
             colors=["#0000ff", "#0044ff", "#1199ff", "#44bbff", "#66ffff"],
             style="bold italic",
         )
-        text1 = Text(" is a custom themed terminal console class inheriting from")
+        text1 = Text(" is a custom themed terminal console class inheriting from ")
         text2 = Text.from_markup(
             ". It is a[i #66EE35] global singleton[/] class that can be \
 imported and used anywhere in the project and used as a drop in replacement for "
