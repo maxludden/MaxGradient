@@ -89,7 +89,8 @@ def main(
             "-j",
             case_sensitive=False,
             callback=justify_callback,
-            help="Justify method to use. Valid methods include: default, left, center, right",
+            help="Justify method to use. Valid methods include: \
+default, left, center, right",
         ),
     ] = "default",
     colors: Annotated[
@@ -144,8 +145,9 @@ and red.",
     if justify:
         justify = justify.lower()
         if justify not in valid_justify:
+            error_msg = "[b italic red]Error:[/] Invalid justify method: "
             err_console.print(
-                f"[bold italic red]Error:[/bold italic red] Invalid justify method: {justify}. Valid methods include: {valid_justify}"
+                f"{error_msg}{justify}. Valid methods include: {valid_justify}"
             )
             raise Exit(code=1)
         if verbose:
@@ -161,9 +163,7 @@ and red.",
                 err_console.print(f"[bold italic red]Error:[/bold italic red] {cpe}")
                 raise Exit(code=2) from cpe
         if verbose:
-            console.print(
-                f"[bold italic green]Colors:[/bold italic green] {', '.join(validated_colors)}"
-            )
+            console.print(f"[b i green]Colors:[/] {', '.join(validated_colors)}")
 
         gradient = Gradient(
             text=text,

@@ -63,7 +63,6 @@ class Hex:
         red = int(hex[:2], 16)
         green = int(hex[2:4], 16)
         blue = int(hex[4:], 16)
-        rgb_tuple = (red, green, blue)
         return (red, green, blue)
 
     @property

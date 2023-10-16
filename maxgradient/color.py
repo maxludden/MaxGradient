@@ -6,11 +6,10 @@ from functools import lru_cache
 from re import Match
 from typing import Any, List, Optional, Tuple, Union
 
-from rich import inspect
-from rich.box import HEAVY, SQUARE
+from loguru import logger as log
+from rich.box import HEAVY
 from rich.color import Color as RichColor
-from rich.color import ColorParseError, ColorType
-from rich.color_triplet import ColorTriplet
+from rich.color import ColorParseError
 from rich.columns import Columns
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
@@ -24,11 +23,40 @@ from maxgradient._mode import Mode
 from maxgradient._rgb import RGB
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
-from maxgradient.log import Console, Log, watch
+from maxgradient.log import FORMAT, Console
 from maxgradient.theme import GradientTheme
 
+
 console = Console()
-log = Log()
+log.configure(
+    handlers=[
+        {
+            "sink": "logs/debug.log",
+            "level": "DEBUG",
+            "format": FORMAT,
+            "backtrace": True,
+            "diagnose": True,
+            "colorize": True,
+        },
+        {
+            "sink": "logs/info.log",
+            "level": "INFO",
+            "format": FORMAT,
+            "backtrace": True,
+            "diagnose": True,
+            "colorize": True,
+        },
+        dict(
+            sink=lambda msg: console.print(Text(msg, style="bold #afa")),
+            level="SUCCESS",
+            format="{message}",
+            backtrace=True,
+            diagnose=True,
+            colorize=False
+        ), 
+    ]
+)
+
 
 VERBOSE: bool = False
 
@@ -136,7 +164,7 @@ You can also visit the rich library's documentation to view all \
                 
     https://pdos.csail.mit.edu/~jinyang/rgb.html
 """
-        
+
         self.original: str = str(color)
 
         if isinstance(color, Color):
@@ -197,13 +225,13 @@ You can also visit the rich library's documentation to view all \
     @lru_cache
     def original(self) -> str:
         """Return the original color."""
-        
+
         return self._original
 
     @original.setter
     def original(self, color: str) -> None:
         """Set the original color."""
-        
+
         self._original = color
 
     @property
@@ -257,19 +285,19 @@ You can also visit the rich library's documentation to view all \
     @lru_cache
     def name(self) -> str:
         """Return the name of the color."""
-        
+
         return self._name
 
     @name.setter
     def name(self, name: str) -> None:
         """Set the name of the color."""
-        
+
         self._name = name
 
     @property
     def mode(self) -> Mode:
         """Return the mode of the color."""
-        
+
         return self._mode
 
     @mode.setter
@@ -279,13 +307,13 @@ You can also visit the rich library's documentation to view all \
         Args:
             mode (Mode): The mode of the color.
         """
-        
+
         self._mode = mode
 
     @property
     def hex(self) -> str:
         """Return the hex color code."""
-        
+
         red_str = f"{self.red:02X}"
         green_str = f"{self.green:02X}"
         blue_str = f"{self.blue:02X}"
@@ -294,25 +322,25 @@ You can also visit the rich library's documentation to view all \
     @property
     def rgb(self) -> str:
         """Return the rgb color code."""
-        
+
         return f"rgb({self.red},{self.green},{self.blue})"
 
     @property
     def rgb_tuple(self) -> Tuple[int, int, int]:
         """Return the rgb color code as a tuple."""
-        
+
         return (self.red, self.green, self.blue)
 
     @property
     def style(self) -> Style:
         """Return the style of the color."""
-        
+
         return Style(color=self.hex)
 
     @property
     def bg_style(self) -> Style:
         """Return a style with the color as the background."""
-        
+
         foreground: str = self.get_contrast()
         return Style(color=foreground, bgcolor=self.hex)
 
@@ -326,13 +354,13 @@ You can also visit the rich library's documentation to view all \
         name = self._original
         for char in name:
             hash_value += ord(char)
-            # 
-        # 
+            #
+        #
         return hash_value
 
     def __rich__(self) -> Panel:
         """Return the rich console representation of a color."""
-        
+
         table = Table(
             # title=self.name.capitalize(),
             show_header=False,
@@ -382,7 +410,7 @@ You can also visit the rich library's documentation to view all \
 
     def color_title(self) -> Text:
         """Generate a title bar for the color."""
-        
+
         name = self.name.capitalize()
         length = len(name)
         # Calculate
@@ -418,32 +446,31 @@ You can also visit the rich library's documentation to view all \
 
     def hex_components(self, hex_str: str) -> None:
         """Parse color components from a hex string."""
-        
+
         if "#" in hex_str:
             hex_str = hex_str.replace("#", "")
         if len(hex_str) == 3:
             hex_str = "".join([char * 2 for char in hex_str])
         self.red = int(hex_str[0:2], 16)
-        
+
         self.green = int(hex_str[2:4], 16)
-        
+
         self.blue = int(hex_str[4:6], 16)
-        
 
     def rgb_components(self, rgb_str: str) -> None:
         """Parse the components from an RGB string."""
-        
+
         REGEX = re.compile(
-            r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)[ ,]? ?(?P<blue>\d+\.?\d*)\)"
+            r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)",
+            r"[ ,]? ?(?P<blue>\d+\.?\d*)\)",
         )
         match: Match = REGEX.match(rgb_str)
         if match:
             self.red = int(match.group("red"))
-            
+
             self.green = int(match.group("green"))
-            
+
             self.blue = int(match.group("blue"))
-            
 
     def get_contrast(self) -> str:
         """Generate a foreground color for the color style.
@@ -501,7 +528,7 @@ You can also visit the rich library's documentation to view all \
         Returns:
             str: The tinted color as a hex string.
         """
-        
+
         rgb_tuple = self.rgb_tuple
         red, green, blue = rgb_tuple
 
@@ -515,7 +542,7 @@ You can also visit the rich library's documentation to view all \
         blue_final = f"{blue_tint:02x}"
 
         tint: str = f"#{red_final}{green_final}{blue_final}"
-        
+
         return tint
 
     def darken(self, percent: float = 0.5) -> str:
@@ -528,7 +555,7 @@ You can also visit the rich library's documentation to view all \
         Returns:
             str: The darkened color as a hex string.
         """
-        
+
         rgb_tuple = self.rgb_tuple
         red, green, blue = rgb_tuple
 
@@ -542,13 +569,13 @@ You can also visit the rich library's documentation to view all \
         blue_final = f"{dark_blue:02x}"
 
         dark: str = f"#{red_final}{green_final}{blue_final}"
-        
+
         return dark
 
     @classmethod
     def named_table(cls) -> Columns:
         """Return a table of named colors."""
-        
+
         colors = []
         for color in GC.NAMES:
             colors.append(Color(color))
@@ -559,7 +586,6 @@ You can also visit the rich library's documentation to view all \
         """Return a table of all colors."""
         tables: List[Table] = []
         for colors in [Rich, X11]:
-            
             title = colors.get_title()
             table = Table(title=title, show_header=True, header_style="bold.magenta")
             table.add_column("Example", justify="center")
@@ -590,5 +616,7 @@ You can also visit the rich library's documentation to view all \
 
 if __name__ == "__main__":
     console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
+    console.print(Color.named_table(), justify="center")
+    console.print(Color.color_table(), justify="center")
     console.print(Color.named_table(), justify="center")
     console.print(Color.color_table(), justify="center")
