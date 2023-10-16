@@ -5,17 +5,51 @@ edit_uri: root/docs
 site_description: Document MaxGradient, a python library built on the wonderful `rich` library that makes printing gradient colored text to the console easy.
 site_author: Max Ludden
 nav:
-    - Home: "index.md"
+    - Getting Started: "index.md"
     - User Guide:
-        - Console: 'console.md'
-        - Gradient: 'gradient.md'
-        - Color: 'color.md'
+          - Console: "console.md"
+          - Gradient: "gradient.md"
+          - Color: "color.md"
     - References:
-        - maxgradient.console.Console: 'console_ref.md'
-        - maxgradient.gradient.Gradient: 'gradient_ref.md'
-        - maxgradient.color.Color: 'color_ref.md'
-        - Color: 'color_ref.md'
-theme: 
+          - Console: "console_ref.md"
+          - Gradient: "gradient_ref.md"
+          - Color: "color_ref.md"
+
+theme:
     name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - python
+        - shell
+    hljs_style: tokyo-night-dark
     logo: img/MaxGradient.svg
     include_homepage_in_sidebar: True
+    features:
+        - navigation.instant
+        - navigation.instant.prefetch
+        - navigation.tracking
+        - content.code.annotate
+        - toc.integrate
+        - toc.follow
+        - navigation.path
+        - navigation.top
+        - content.code.copy
+    palette:
+        # Note: Using the system theme works with the insiders version
+        # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#automatic-light-dark-mode
+        - media: "(prefers-color-scheme)"
+          toggle:
+              icon: material/brightness-auto
+              name: Switch to light mode
+        - media: "(prefers-color-scheme: light)"
+          scheme: astral-light
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+        - media: "(prefers-color-scheme: dark)"
+          scheme: astral-dark
+          toggle:
+              icon: material/brightness-4
+              name: Switch to system preference
+extra_css:
+  - "styles/style.css"

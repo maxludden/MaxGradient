@@ -1,4 +1,4 @@
-<!--<img src="img/maxgradient_banner.png" class="banner" alt="MaxGradient Banner">-->
+<img src="img/maxgradient_banner.png" class="banner" alt="MaxGradient Banner">
 
 MaxGradient automates the printing gradient colored text to the console. It's built upon the great rich library. It contains a Console that can serve as a drop in replacement for rich.rich.Console and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions.
 
@@ -19,8 +19,8 @@ pip install maxgradient
 ```
 
 ---
-<h1 class=rainbow-wipe>Usage</h1>
 
+<h1 class=rainbow-wipe>Usage</h1>
 
 ## <span class="pdm-wipe">Quick Start</span>
 
@@ -62,6 +62,7 @@ console.gradient(
 <p>Let's take a look at some examples:</p>
 
 <!--Code Block Start | 1 -->
+
 ### <span class="pdm">Example 1</span>
 
 ```python
@@ -76,6 +77,7 @@ console.gradient(
         "purple"
     ])
 ```
+
 <figure>
     <img src="img/gradient_with_color_1.svg" alt="Hello, World!">
 </figure>
@@ -102,6 +104,7 @@ console.gradient(
     ]
 )
 ```
+
 <figure>
     <img src="img/gradient_with_color_2.svg" alt="Hello, World!">
 </figure>

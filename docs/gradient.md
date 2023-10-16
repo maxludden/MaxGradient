@@ -4,20 +4,14 @@ Maxgradient.gradient.Gradient is a subclass of [rich.text.Text](https://github.c
 
 If you need more control over the gradient, you can pass a list of colors to the gradient. The gradient will be evenly distributed between the colors in the list. The gradient will be applied to the text in the order it is given in the list.
 
-## Examples
+## Example 1: Random Gradient
 
-<figure>
-    <img src="/img/random_gradient.svg" alt="Gradient Examples">
-</figure>
+![Random Gradient Example](img/random_gradient.svg)
 
-<br><hr><br>
+## Example 2: Rainbow Gradient
 
-<figure>
-    <img src="/img/rainbow_gradient.svg" alt="Rainbow Gradient Examples">
-</figure>
+![Rainbow Gradient Example](img/rainbow_gradient.svg)
 
-<br><hr><br>
+## Example 3: Gradient with Specified Colors
 
-<figure>
-    <img src="/img/red_orange_yellow_gradient.svg" alt="Red, orange, and yellow gradient">
-</figure>
+![Gradient with Specified Colors Example](img/red_orange_yellow_gradient.svg)

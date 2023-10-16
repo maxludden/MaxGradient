@@ -7,8 +7,6 @@ Color extends the [Rich.color.Color](https://github.com/Textualize/rich/blob/mas
 - Hex codes (3-digit and 6-digit)
 - RGB values (with or without the 'rgb' prefix)
 
-## Color may be generated from Strings
-
 A color can be represented as a string in numerous ways. The easiest is the name of the color:
 
 - <span style="color:#f00;">red</span>
@@ -22,14 +20,12 @@ You can also use the hex code of the color:
 
 Or the rgb values of the color:
 
-- <span style="color:#050;">rgb(0 85 0)</span> (with 'rgb' prefix)
-- <span style="color:#0f0;">(0, 255, 0)</span> ('rgb' tuple without prefix)
+- <span style="color:#050;">rgb(0,85,0)</span> (with `rgb` prefix)
+- <span style="background:#0f0;">(0, 255, 0)</span> (`rgb` tuple without prefix)
 
 In addition to common names, MaxGradient also supports the entire rich color standard color palette. But we didn't stop there, in addition to rich's standard library, MaxGradient also supports the entire X11 color palette. That's over 200 colors!
 
-### Examples
-
-##### <span style="color:red;background:#222;padding:20px;border-radius:20px;">Color("red")</span>
+## Example 1: <span style="color:#ff0000;">Color("red")</span>
 
 ```python
 from maxgradient import Color, Console
@@ -41,13 +37,9 @@ console.print(
 )
 ```
 
-<figure>
-    <img src="/img/color_red.svg" alt="Color('red')">
-</figure>
+![Color('red')](img/color_red.svg)
 
-<br /><hr><br />
-
-##### <span style="color:#afa;background:#222;padding:20px;border-radius:20px;">Color("#AAFFAA")</span>
+## Example 2: <span style="background-color:#AAFFAA;"> Color("#AAFFAA") </span>
 
 ```python
 console.print(
@@ -56,13 +48,9 @@ console.print(
 )
 ```
 
-<figure>
-    <img src="/img/color_aaffaa.svg" alt="Color('#AAFFAA')">
-</figure>
+![Color('#AAFFAA')](img/color_aaffaa.svg)
 
-<br /><hr><br />
-
-##### <span style="color:#aaf;background:#222;padding:20px;border-radius:20px;">Color("DarkOrchid")</span>
+## Example 3: <span style="color:darkOrchid;">Color("DarkOrchid")</span>
 
 ```python
 console.print(
@@ -71,9 +59,7 @@ console.print(
 )
 ```
 
-<figure>
-    <img src="/img/color_darkorchid.svg" alt="Color('#AAFFAA')">
-</figure>
+![Color('DarkOrchid')](img/color_darkorchid.svg)
 
 ## Possible Colors
 
