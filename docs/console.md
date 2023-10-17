@@ -58,7 +58,7 @@ console.gradient(
 from maxgradient.console import Console
 
 console = Console()
-console.gradient_rule("Medium Thick Gradient Rule")
+console.gradient_rule("Medium Gradient Rule")
 ```
 
 ![console.gradient_rule()](img/console_gradient_rule_medium.svg)

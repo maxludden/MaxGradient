@@ -35,21 +35,49 @@ theme:
         - navigation.top
         - content.code.copy
     palette:
-        # Note: Using the system theme works with the insiders version
-        # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#automatic-light-dark-mode
+        # Palette toggle for automatic mode
         - media: "(prefers-color-scheme)"
           toggle:
               icon: material/brightness-auto
               name: Switch to light mode
+
+        # Palette toggle for light mode
         - media: "(prefers-color-scheme: light)"
-          scheme: astral-light
+          scheme: default
           toggle:
               icon: material/brightness-7
               name: Switch to dark mode
+
+        # Palette toggle for dark mode
         - media: "(prefers-color-scheme: dark)"
-          scheme: astral-dark
+          scheme: slate
           toggle:
               icon: material/brightness-4
               name: Switch to system preference
+
 extra_css:
-  - "styles/style.css"
+    - "styles/style.css"
+    - "styles/purple.css"
+markdown_extensions:
+    # Python Markdown
+    - pymdownx.highlight:
+        anchor_linenums: true
+    - pymdownx.superfences
+    - abbr
+    - admonition
+    - attr_list
+    - def_list
+    - footnotes
+    - md_in_html
+    - toc:
+          permalink: true
+    # Python Markdown Extensions
+    - pymdownx.arithmatex:
+          generic: true
+    - pymdownx.betterem:
+          smart_enable: all
+    - pymdownx.tabbed:
+          alternate_style: true
+    - pymdownx.tasklist:
+          custom_checkbox: true
+    - pymdownx.tilde

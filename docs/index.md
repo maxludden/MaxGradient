@@ -1,4 +1,5 @@
-<img src="img/maxgradient_banner.png" class="banner" alt="MaxGradient Banner">
+<!--<img src="img/maxgradient_banner.png" class="banner" alt="MaxGradient Banner">-->
+![MaxGradient](img/MaxGradient.svg)
 
 MaxGradient automates the printing gradient colored text to the console. It's built upon the great rich library. It contains a Console that can serve as a drop in replacement for rich.rich.Console and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions.
 

@@ -219,14 +219,14 @@
   },
   "editor.tokenColorCustomizations": {
     "textMateRules": [
-        {
-            "scope": "string.quoted.double.json meta.structure.dictionary.json string.quoted.double.json",
-            "settings": {
-                "foreground": "#00FF00"
-            }
+      {
+        "scope": "string.quoted.double.json meta.structure.dictionary.json string.quoted.double.json",
+        "settings": {
+          "foreground": "#00FF00"
         }
+      }
     ]
-},
+  },
   "better-comments.tags": [
     {
       "tag": "!",
@@ -591,6 +591,7 @@
     ".github/workflows/jekyll-gh-pages.yml"
   ],
   "cSpell.words": [
+    "Donath",
     "maxgradient"
   ]
 }
