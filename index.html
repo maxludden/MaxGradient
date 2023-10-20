@@ -99,11 +99,11 @@
 
 <p>MaxGradient can be installed from PyPi using your favorite python package manager:</p>
 <h2 id="pdm-recommended"><span class="pdm-wipe">PDM (Recommended)</span><a class="headerlink" href="#pdm-recommended" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pdm<span class="w"> </span>add<span class="w"> </span>maxgradient
-</code></pre></div>
+<pre><code class="language-shell">pdm add maxgradient
+</code></pre>
 <h2 id="pip"><span class="pdm-wipe">PIP</span><a class="headerlink" href="#pip" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>maxgradient
-</code></pre></div>
+<pre><code class="language-shell">pip install maxgradient
+</code></pre>
 <hr />
 <h1 class=rainbow-wipe>Usage</h1>
 
@@ -111,15 +111,15 @@
 <p>The basic usage is to create a console object and use it to print gradient text. MaxGradient.Console is a drop in replacement for rich.rich.Console and can be used in the same way. It does, however, have some additional methods like <span class="green-wipe"> gradient</span><span class="black">()</span>.</p>
 <h2 class="pdm-wipe">Example</h2>
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">#import console from MaxGradient</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span> <span class="nn">maxgradient</span> <span class="k">as</span> <span class="nn">mg</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">console</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">Console</span><span class="p">()</span> <span class="c1"># Initialize a console</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">console</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="s2">&quot;Hello, World!&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">justify</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">#import console from MaxGradient
+import maxgradient as mg
+
+console = mg.Console() # Initialize a console
+console.gradient(
+    &quot;Hello, World!&quot;,
+    justify = &quot;center&quot;
+)
+</code></pre>
 <!--Caption Start-->
 <figure>
     <!--<figcaption>Produces the following:</figcaption>-->
@@ -144,17 +144,17 @@
 <!--Code Block Start | 1 -->
 
 <h3 id="example-1"><span class="pdm">Example 1</span><a class="headerlink" href="#example-1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span> <span class="nn">maxgradient</span> <span class="k">as</span> <span class="nn">mg</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">console</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">Console</span><span class="p">()</span> <span class="c1"># Initialize a console</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">console</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="s2">&quot;This gradient contains the colors: magenta, violet, and purple.&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="s2">&quot;magenta&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        <span class="s2">&quot;violet&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="s2">&quot;purple&quot;</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="p">])</span>
-</code></pre></div>
+<pre><code class="language-python">import maxgradient as mg
+
+console = mg.Console() # Initialize a console
+console.gradient(
+    &quot;This gradient contains the colors: magenta, violet, and purple.&quot;,
+    colors = [
+        &quot;magenta&quot;,
+        &quot;violet&quot;,
+        &quot;purple&quot;
+    ])
+</code></pre>
 <figure>
     <img src="img/gradient_with_color_1.svg" alt="Hello, World!">
 </figure>
@@ -165,18 +165,18 @@
 
 <h3 id="example-2"><span class="pdm">Example 2</span><a class="headerlink" href="#example-2" title="Permanent link">&para;</a></h3>
 <p>You are not just stuck with ROY G BIV colors, you can use any colors you want. Let's make a gradient with the colors: magenta, violet, purple, blue, lightblue, and cyan.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">console</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="s2">&quot;This gradient contains the colors: magenta, violet, purple, blue, lightblue, and cyan.&quot;</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s2">&quot;rgb(255,0,255)&quot;</span><span class="p">,</span> <span class="c1"># rgb</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="s2">&quot;violet&quot;</span><span class="p">,</span> <span class="c1"># named</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="s2">&quot;#5f00ff&quot;</span><span class="p">,</span> <span class="c1"># hex</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="s2">&quot;rgb(0, 136, 255)&quot;</span><span class="p">,</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="s2">&quot;cyan&quot;</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="p">]</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">console.gradient(
+    &quot;This gradient contains the colors: magenta, violet, purple, blue, lightblue, and cyan.&quot;,
+    colors = [
+        &quot;rgb(255,0,255)&quot;, # rgb
+        &quot;violet&quot;, # named
+        &quot;#5f00ff&quot;, # hex
+        &quot;blue&quot;,
+        &quot;rgb(0, 136, 255)&quot;,
+        &quot;cyan&quot;
+    ]
+)
+</code></pre>
 <figure>
     <img src="img/gradient_with_color_2.svg" alt="Hello, World!">
 </figure>
@@ -229,5 +229,5 @@
 
 <!--
 MkDocs version : 1.5.3
-Build Date UTC : 2023-10-20 04:54:06.089107+00:00
+Build Date UTC : 2023-10-20 05:17:30.755322+00:00
 -->

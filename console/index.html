@@ -120,11 +120,11 @@
                 <h1 id="console">Console<a class="headerlink" href="#console" title="Permanent link">&para;</a></h1>
 <p>MaxGradient.console.Console() is a subclass of rich.console.Console() that adds gradient functionality to the console. Just it can be instantiated in multiple ways:</p>
 <p><strong>Directly:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">maxgradient</span> <span class="kn">import</span> <span class="n">Console</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[bold lime]Hello, World![/]&quot;</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">from maxgradient import Console
+
+console = Console()
+console.print(&quot;[bold lime]Hello, World![/]&quot;)
+</code></pre>
 <p><img alt="console.print()" src="../img/console_print.svg" /></p>
 <h2 id="new-methods">New Methods<a class="headerlink" href="#new-methods" title="Permanent link">&para;</a></h2>
 <p>Console also has two new methods that you can take advantage of in your projects:</p>
@@ -132,19 +132,19 @@
 <h4 id="consolegradient"><span class="class-type">Console</span>.<span class="classmethod">gradient</span>()<a class="headerlink" href="#consolegradient" title="Permanent link">&para;</a></h4>
 <p>There's and low level look at <code>MaxGradient.gradient.Gradient</code>'s class in the next section. For now, just know that any of the parameters that can be used by <a href="../gradient_ref/"><code>MaxGradient.gradient.Gradient()</code></a> can also be used by <code>console.gradient()</code>.</p>
 <h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">console</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="s2">&quot;This is by far the simplest way to print </span><span class="se">\</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="s2">        gradient colored text to the console.&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s2">&quot;red&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="s2">&quot;green&quot;</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="p">],</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">justify</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;bold&quot;</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">console.gradient(
+    &quot;This is by far the simplest way to print \
+        gradient colored text to the console.&quot;,
+    colors = [
+        &quot;red&quot;,
+        &quot;orange&quot;,
+        &quot;yellow&quot;,
+        &quot;green&quot;
+    ],
+    justify = &quot;center&quot;,
+    style = &quot;bold&quot;
+)
+</code></pre>
 <p><img alt="console.print" src="../img/console_gradient_example.svg" /></p>
 <hr />
 <h3 id="second-new-method">Second New Method<a class="headerlink" href="#second-new-method" title="Permanent link">&para;</a></h3>
@@ -152,11 +152,11 @@
 <p><code>Console.gradient_rule()</code> expands on <code>rich.rule.Rule()</code> by allowing you to specify both the colors of the rule's gradient, as well as the rule's thickness.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
 <h4 id="gradient-rule">Gradient Rule<a class="headerlink" href="#gradient-rule" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">maxgradient.console</span> <span class="kn">import</span> <span class="n">Console</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">console</span><span class="o">.</span><span class="n">gradient_rule</span><span class="p">(</span><span class="s2">&quot;Medium Gradient Rule&quot;</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">from maxgradient.console import Console
+
+console = Console()
+console.gradient_rule(&quot;Medium Gradient Rule&quot;)
+</code></pre>
 <p><img alt="console.gradient_rule()" src="../img/console_gradient_rule_medium.svg" /></p>
               
             </div>
