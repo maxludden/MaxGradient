@@ -59,10 +59,6 @@ extra_css:
     - "styles/style.css"
     - "styles/purple.css"
 markdown_extensions:
-    # Python Markdown
-    - pymdownx.highlight:
-        anchor_linenums: true
-    - pymdownx.superfences
     - abbr
     - admonition
     - attr_list
@@ -71,13 +67,3 @@ markdown_extensions:
     - md_in_html
     - toc:
           permalink: true
-    # Python Markdown Extensions
-    - pymdownx.arithmatex:
-          generic: true
-    - pymdownx.betterem:
-          smart_enable: all
-    - pymdownx.tabbed:
-          alternate_style: true
-    - pymdownx.tasklist:
-          custom_checkbox: true
-    - pymdownx.tilde

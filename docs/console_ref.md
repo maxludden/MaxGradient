@@ -4,10 +4,15 @@
     <dt class="sig sig-object py" id="maxgradient.console.Console">
         <em class="property">
             <span class="pre">class</span>
-            <span class="w"> </span>
+            <span class="w"></span>
         </em>
-        <span class="sig-prename descclassname"><span class="pre">maxgradient.console.</span></span><span class="sig-name descname"><span class="pre">Console</span></span>
-        <span class="sig-paren">(</span>
+        <span class="sig-prename descclassname">
+            <span class="pre">maxgradient.console.</span>
+        </span>
+        <span class="sig-name descname">
+            <span class="pre">Console</span>
+        </span>
+        <span class="sig-paren"> (</span>
         <em class="sig-param">
             <span class="n">
                 <span class="pre">*</span>
@@ -140,7 +145,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd">
     <ul class="simple">
-        <li><p><strong>color_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – 
+        <li><p><strong>color_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) –
         The color system supported by your terminal. Valid values are:
             <ul>
                 <li><code class="docutils literal notranslate"><span class="pre">"auto",</span></code></li>
@@ -149,7 +154,8 @@
                 <li><code class="docutils literal notranslate"><span class="pre">"truecolor",</span></code></li>
             </ul>
         <div>Leave as <pre style="display:inline;">"auto"</pre> to autodetect.</em></p>
-        </li><li>
+        </li>
+        <li>
             <p>
                 <strong>force_terminal</strong>
                     (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em>
