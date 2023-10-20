@@ -11,6 +11,7 @@ from rich.box import HEAVY
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
 from rich.columns import Columns
+from rich.console import Console
 from rich.highlighter import ReprHighlighter
 from rich.panel import Panel
 from rich.style import Style
@@ -23,39 +24,38 @@ from maxgradient._mode import Mode
 from maxgradient._rgb import RGB
 from maxgradient._rich import Rich
 from maxgradient._x11 import X11
-from maxgradient.log import FORMAT, Console
 from maxgradient.theme import GradientTheme
 
 
 console = Console()
-log.configure(
-    handlers=[
-        {
-            "sink": "logs/debug.log",
-            "level": "DEBUG",
-            "format": FORMAT,
-            "backtrace": True,
-            "diagnose": True,
-            "colorize": True,
-        },
-        {
-            "sink": "logs/info.log",
-            "level": "INFO",
-            "format": FORMAT,
-            "backtrace": True,
-            "diagnose": True,
-            "colorize": True,
-        },
-        dict(
-            sink=lambda msg: console.print(Text(msg, style="bold #afa")),
-            level="SUCCESS",
-            format="{message}",
-            backtrace=True,
-            diagnose=True,
-            colorize=False
-        ), 
-    ]
-)
+# log.configure(
+#     handlers=[
+#         {
+#             "sink": "logs/debug.log",
+#             "level": "DEBUG",
+#             "format": FORMAT,
+#             "backtrace": True,
+#             "diagnose": True,
+#             "colorize": True,
+#         },
+#         {
+#             "sink": "logs/info.log",
+#             "level": "INFO",
+#             "format": FORMAT,
+#             "backtrace": True,
+#             "diagnose": True,
+#             "colorize": True,
+#         },
+#         dict(
+#             sink=lambda msg: console.print(Text(msg, style="bold #afa")),
+#             level="SUCCESS",
+#             format="{message}",
+#             backtrace=True,
+#             diagnose=True,
+#             colorize=False
+#         ), 
+#     ]
+# )
 
 
 VERBOSE: bool = False
@@ -616,7 +616,5 @@ You can also visit the rich library's documentation to view all \
 
 if __name__ == "__main__":
     console = Console(theme=GradientTheme(), highlighter=ReprHighlighter())
-    console.print(Color.named_table(), justify="center")
-    console.print(Color.color_table(), justify="center")
     console.print(Color.named_table(), justify="center")
     console.print(Color.color_table(), justify="center")
