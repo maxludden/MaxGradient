@@ -1,0 +1,11 @@
+.class-type {
+  color: #7fd6e8;
+  font-family: "Fira Code", monospace;
+}
+.classmethod {
+  color: #00d000;
+  font-family: "Fira Code", monospace;
+}
+.banner {
+  width: 100%;
+}

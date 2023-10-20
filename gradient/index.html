@@ -8,7 +8,9 @@
     <title>Gradient - MaxGradient</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css" />
+        <link href="../styles/style.css" rel="stylesheet" />
+        <link href="../styles/purple.css" rel="stylesheet" />
     
       <script>
         // Current page data
@@ -21,6 +23,8 @@
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/shell.min.js"></script>
       <script>hljs.highlightAll();</script> 
 </head>
 
@@ -41,7 +45,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                <li class="toctree-l1"><a class="reference internal" href="..">Getting Started</a>
                 </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -50,7 +54,11 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Gradient</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+    <li class="toctree-l2"><a class="reference internal" href="#example-1-random-gradient">Example 1: Random Gradient</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example-2-rainbow-gradient">Example 2: Rainbow Gradient</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example-3-gradient-with-specified-colors">Example 3: Gradient with Specified Colors</a>
     </li>
     </ul>
                   </li>
@@ -59,11 +67,9 @@
               </ul>
               <p class="caption"><span class="caption-text">References</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">maxgradient.console.Console</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">Console</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../gradient_ref/">maxgradient.gradient.Gradient</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../color_ref/">maxgradient.color.Color</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../gradient_ref/">Gradient</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../color_ref/">Color</a>
                   </li>
@@ -81,8 +87,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-          <li>User Guide &raquo;</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Guide</li>
       <li class="breadcrumb-item active">Gradient</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://GitHub.com/maxludden/maxgradient/root/docs/gradient.md">Edit on MaxGradient</a>
@@ -93,23 +99,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="maxgradientgradient"><span class="rainbow-wipe">MaxGradient.Gradient</span></h1>
+                <h1 id="maxgradientgradient"><span class="rainbow-wipe">MaxGradient.Gradient</span><a class="headerlink" href="#maxgradientgradient" title="Permanent link">&para;</a></h1>
 <p>Maxgradient.gradient.Gradient is a subclass of <a href="https://github.com/Textualize/rich/blob/master/rich/text.py">rich.text.Text</a>, and can be used in the same way. If a gradient is made with just a string, the gradient will automatically generate colors for you. If that's not colorful enough for you, you can pass the rainbow argument to the gradient to generate a rainbow gradient.</p>
 <p>If you need more control over the gradient, you can pass a list of colors to the gradient. The gradient will be evenly distributed between the colors in the list. The gradient will be applied to the text in the order it is given in the list.</p>
-<h2 id="examples">Examples</h2>
-<figure>
-    <img src="/img/random_gradient.svg" alt="Gradient Examples">
-</figure>
-
-<p><br><hr><br></p>
-<figure>
-    <img src="/img/rainbow_gradient.svg" alt="Rainbow Gradient Examples">
-</figure>
-
-<p><br><hr><br></p>
-<figure>
-    <img src="/img/red_orange_yellow_gradient.svg" alt="Red, orange, and yellow gradient">
-</figure>
+<h2 id="example-1-random-gradient">Example 1: Random Gradient<a class="headerlink" href="#example-1-random-gradient" title="Permanent link">&para;</a></h2>
+<p><img alt="Random Gradient Example" src="../img/random_gradient.svg" /></p>
+<h2 id="example-2-rainbow-gradient">Example 2: Rainbow Gradient<a class="headerlink" href="#example-2-rainbow-gradient" title="Permanent link">&para;</a></h2>
+<p><img alt="Rainbow Gradient Example" src="../img/rainbow_gradient.svg" /></p>
+<h2 id="example-3-gradient-with-specified-colors">Example 3: Gradient with Specified Colors<a class="headerlink" href="#example-3-gradient-with-specified-colors" title="Permanent link">&para;</a></h2>
+<p><img alt="Gradient with Specified Colors Example" src="../img/red_orange_yellow_gradient.svg" /></p>
               
             </div>
           </div><footer>

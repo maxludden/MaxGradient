@@ -8,7 +8,9 @@
     <title>Color - MaxGradient</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css" />
+        <link href="../styles/style.css" rel="stylesheet" />
+        <link href="../styles/purple.css" rel="stylesheet" />
     
       <script>
         // Current page data
@@ -21,6 +23,8 @@
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/shell.min.js"></script>
       <script>hljs.highlightAll();</script> 
 </head>
 
@@ -41,7 +45,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                <li class="toctree-l1"><a class="reference internal" href="..">Getting Started</a>
                 </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -52,19 +56,11 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Color</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#color-may-be-generated-from-strings">Color may be generated from Strings</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#colorred">Color("red")</a>
+    <li class="toctree-l2"><a class="reference internal" href="#example-1-colorred">Example 1: Color("red")</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#coloraaffaa">Color("#AAFFAA")</a>
+    <li class="toctree-l2"><a class="reference internal" href="#example-2-coloraaffaa">Example 2:  Color("#AAFFAA") </a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#colordarkorchid">Color("DarkOrchid")</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
+    <li class="toctree-l2"><a class="reference internal" href="#example-3-colordarkorchid">Example 3: Color("DarkOrchid")</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#possible-colors">Possible Colors</a>
     </li>
@@ -73,11 +69,9 @@
               </ul>
               <p class="caption"><span class="caption-text">References</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">maxgradient.console.Console</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">Console</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../gradient_ref/">maxgradient.gradient.Gradient</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../color_ref/">maxgradient.color.Color</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../gradient_ref/">Gradient</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../color_ref/">Color</a>
                   </li>
@@ -95,8 +89,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-          <li>User Guide &raquo;</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Guide</li>
       <li class="breadcrumb-item active">Color</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://GitHub.com/maxludden/maxgradient/root/docs/color.md">Edit on MaxGradient</a>
@@ -107,7 +101,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="maxgradientcolor"><span class="rainbow-wipe">MaxGradient.Color</span></h1>
+                <h1 id="maxgradientcolor"><span class="rainbow-wipe">MaxGradient.Color</span><a class="headerlink" href="#maxgradientcolor" title="Permanent link">&para;</a></h1>
 <p>Color extends the <a href="https://github.com/Textualize/rich/blob/master/rich/color.py">Rich.color.Color</a> class to allow colors to be parsed from:</p>
 <ul>
 <li><a href="https://www.w3schools.com/colors/colors_x11.asp">X11</a> color names (over 200 colors)</li>
@@ -115,7 +109,6 @@
 <li>Hex codes (3-digit and 6-digit)</li>
 <li>RGB values (with or without the 'rgb' prefix)</li>
 </ul>
-<h2 id="color-may-be-generated-from-strings">Color may be generated from Strings</h2>
 <p>A color can be represented as a string in numerous ways. The easiest is the name of the color:</p>
 <ul>
 <li><span style="color:#f00;">red</span></li>
@@ -129,57 +122,45 @@
 </ul>
 <p>Or the rgb values of the color:</p>
 <ul>
-<li><span style="color:#050;">rgb(0 85 0)</span> (with 'rgb' prefix)</li>
-<li><span style="color:#0f0;">(0, 255, 0)</span> ('rgb' tuple without prefix)</li>
+<li><span style="color:#050;">rgb(0,85,0)</span> (with <code>rgb</code> prefix)</li>
+<li><span style="background:#0f0;">(0, 255, 0)</span> (<code>rgb</code> tuple without prefix)</li>
 </ul>
 <p>In addition to common names, MaxGradient also supports the entire rich color standard color palette. But we didn't stop there, in addition to rich's standard library, MaxGradient also supports the entire X11 color palette. That's over 200 colors!</p>
-<h3 id="examples">Examples</h3>
-<h5 id="colorred"><span style="color:red;background:#222;padding:20px;border-radius:20px;">Color("red")</span></h5>
-<pre><code class="language-python">from maxgradient import Color, Console
-
-console = Console()
-console.print(
-    Color(&quot;red&quot;),
-    justify=&quot;center&quot;
-)
-</code></pre>
-<figure>
-    <img src="/img/color_red.svg" alt="Color('red')">
-</figure>
-
-<p><br /><hr><br /></p>
-<h5 id="coloraaffaa"><span style="color:#afa;background:#222;padding:20px;border-radius:20px;">Color("#AAFFAA")</span></h5>
-<pre><code class="language-python">console.print(
-    Color(&quot;#aaffaa&quot;),
-    justify = &quot;center&quot;
-)
-</code></pre>
-<figure>
-    <img src="/img/color_aaffaa.svg" alt="Color('#AAFFAA')">
-</figure>
-
-<p><br /><hr><br /></p>
-<h5 id="colordarkorchid"><span style="color:#aaf;background:#222;padding:20px;border-radius:20px;">Color("DarkOrchid")</span></h5>
-<pre><code class="language-python">console.print(
-    Color(&quot;DarkOrchid&quot;),
-    justify = &quot;center&quot;
-)
-</code></pre>
-<figure>
-    <img src="/img/color_darkorchid.svg" alt="Color('#AAFFAA')">
-</figure>
-
-<h2 id="possible-colors">Possible Colors</h2>
+<h2 id="example-1-colorred">Example 1: <span style="color:#ff0000;">Color("red")</span><a class="headerlink" href="#example-1-colorred" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">maxgradient</span> <span class="kn">import</span> <span class="n">Color</span><span class="p">,</span> <span class="n">Console</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">Color</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Color('red')" src="../img/color_red.svg" /></p>
+<h2 id="example-2-coloraaffaa">Example 2: <span style="background-color:#AAFFAA;"> Color("#AAFFAA") </span><a class="headerlink" href="#example-2-coloraaffaa" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">Color</span><span class="p">(</span><span class="s2">&quot;#aaffaa&quot;</span><span class="p">),</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">justify</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Color('#AAFFAA')" src="../img/color_aaffaa.svg" /></p>
+<h2 id="example-3-colordarkorchid">Example 3: <span style="color:darkOrchid;">Color("DarkOrchid")</span><a class="headerlink" href="#example-3-colordarkorchid" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">Color</span><span class="p">(</span><span class="s2">&quot;DarkOrchid&quot;</span><span class="p">),</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">justify</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span>
+</code></pre></div>
+<p><img alt="Color('DarkOrchid')" src="../img/color_darkorchid.svg" /></p>
+<h2 id="possible-colors">Possible Colors<a class="headerlink" href="#possible-colors" title="Permanent link">&para;</a></h2>
 <p>To view all of the available colors run the following command in the console:</p>
-<pre><code class="language-shell">python -m maxgradient.color
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>maxgradient.color
+</code></pre></div>
 <p><img alt="Gradients are cool!" src="../img/available_colors.svg" /></p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../gradient/" class="btn btn-neutral float-left" title="Gradient"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../console_ref/" class="btn btn-neutral float-right" title="maxgradient.console.Console">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../console_ref/" class="btn btn-neutral float-right" title="Console">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>

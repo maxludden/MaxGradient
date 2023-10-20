@@ -8,7 +8,9 @@
     <title>Console - MaxGradient</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css" />
+        <link href="../styles/style.css" rel="stylesheet" />
+        <link href="../styles/purple.css" rel="stylesheet" />
     
       <script>
         // Current page data
@@ -21,6 +23,8 @@
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/shell.min.js"></script>
       <script>hljs.highlightAll();</script> 
 </head>
 
@@ -41,7 +45,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                <li class="toctree-l1"><a class="reference internal" href="..">Getting Started</a>
                 </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -50,15 +54,23 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#new-methods">New Methods</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#consolegradient">Console.gradient()</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#consolegradient_rule">Console.gradient_rule()</a>
+    <li class="toctree-l3"><a class="reference internal" href="#first-new-method">First New Method</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#thin-gradient-rule">Thin Gradient Rule</a>
+    <li class="toctree-l4"><a class="reference internal" href="#consolegradient">Console.gradient()</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#medium-gradient-rule">Medium Gradient Rule</a>
+    <li class="toctree-l4"><a class="reference internal" href="#example">Example</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#thick-gradient-rule">Thick Gradient Rule</a>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#second-new-method">Second New Method</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#consolegradient_rule">Console.gradient_rule()</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#gradient-rule">Gradient Rule</a>
     </li>
         </ul>
     </li>
@@ -73,11 +85,9 @@
               </ul>
               <p class="caption"><span class="caption-text">References</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">maxgradient.console.Console</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">Console</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../gradient_ref/">maxgradient.gradient.Gradient</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../color_ref/">maxgradient.color.Color</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../gradient_ref/">Gradient</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../color_ref/">Color</a>
                   </li>
@@ -95,8 +105,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-          <li>User Guide &raquo;</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Guide</li>
       <li class="breadcrumb-item active">Console</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://GitHub.com/maxludden/maxgradient/root/docs/console.md">Edit on MaxGradient</a>
@@ -107,86 +117,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="console"><span class=rainbow-wipe>Console</span></h1>
-<p><span class="white">MaxGradient</span>.console.<span class="class">Console</span> is a drop in replacement for <a href="https://github.com/Textualize/rich/blob/master/rich/console.py" alt="Rich"><span class="white">rich</span>.console.<span class="class">Console</span></a> and can be used in the same way. It does, however, have some additional methods like <span class="green">gradient</span>(). You can initialize a console object with the following code:</p>
-<pre><code class="language-python">from maxgradient import Console
-
-console = Console()
-console.print(&quot;[bold lime]Hello, World![/]&quot;)
-</code></pre>
-<figure>
-    <img src="/img/console_print.svg" alt="console.print()">
-</figure>
-
-<p><br /><hr><br /></p>
-<h2 id="new-methods">New Methods</h2>
-<h3 id="consolegradient">Console.gradient()</span></h3>
-<p>We will take an in depth look at the <span class="class">Gradient</span> class in the next section. For now, just know that any of the parameters that can be used by <code>MaxGradient.gradient.Gradient()</code> can also be used by <code>console.gradient()</code>.</p>
-<p>Example:</p>
-<pre><code class="language-python">console.gradient(
-    &quot;This is by far the simplest way to print gradient colored text to the console.&quot;,
-    colors = [
-        &quot;red&quot;,
-        &quot;orange&quot;,
-        &quot;yellow&quot;,
-        &quot;green&quot;
-    ],
-    justify = &quot;center&quot;,
-    style = &quot;bold&quot;
-)
-</code></pre>
-<figure>
-    <img src="/img/console_gradient_example.svg" alt="console.print()">
-</figure>
-
-<p><br ><hr><br ></p>
-<h3 id="consolegradient_rule">Console.gradient_rule()</h3>
-<p><span class="class">Console</span>.<span class="green">gradient_rule</span>() expands on <span class="class">rich</span>.rule.<span class="white">Rule()</span> by allowing you to specify both the colors of the rule's gradient, as well as the rule's thickness.</p>
-<h4 id="thin-gradient-rule">Thin Gradient Rule</h4>
-<pre><code class="language-python">from maxgradient.console import Console
-
-console = Console()
-console.gradient_rule(
-    title = &quot;Thin Gradient Rule&quot;,
-    thickness = &quot;thin&quot;
-)
-</code></pre>
-<figure>
-    <img src="/img/console_gradient_rule_thin.svg" alt="console.print()">
-</figure>
-
-<p><br /><hr><br /></p>
-<h4 id="medium-gradient-rule">Medium Gradient Rule</span></h4>
-<pre><code class="language-python">from maxgradient.console import Console
-
-console = Console()
-console.gradient_rule(
-    title = &quot;Medium Gradient Rule&quot;,
-    thickness = &quot;medium&quot;
-)
-</code></pre>
-<figure>
-    <img src="/img/console_gradient_rule_medium.svg" alt="console.print()">
-</figure>
-
-<p><br /><hr><br /></p>
-<h4 id="thick-gradient-rule">Thick Gradient Rule</h4>
-<pre><code class="language-python">from maxgradient.console import Console
-
-console = Console()
-console.gradient_rule(
-    title = &quot;Thick Gradient Rule&quot;,
-    thickness = &quot;thick&quot;
-)
-</code></pre>
-<figure>
-    <img src="/img/console_gradient_rule_thick.svg" alt="console.print()">
-</figure>
+                <h1 id="console">Console<a class="headerlink" href="#console" title="Permanent link">&para;</a></h1>
+<p>MaxGradient.console.Console() is a subclass of rich.console.Console() that adds gradient functionality to the console. Just it can be instantiated in multiple ways:</p>
+<p><strong>Directly:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">maxgradient</span> <span class="kn">import</span> <span class="n">Console</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;[bold lime]Hello, World![/]&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="console.print()" src="../img/console_print.svg" /></p>
+<h2 id="new-methods">New Methods<a class="headerlink" href="#new-methods" title="Permanent link">&para;</a></h2>
+<p>Console also has two new methods that you can take advantage of in your projects:</p>
+<h3 id="first-new-method">First New Method<a class="headerlink" href="#first-new-method" title="Permanent link">&para;</a></h3>
+<h4 id="consolegradient"><span class="class-type">Console</span>.<span class="classmethod">gradient</span>()<a class="headerlink" href="#consolegradient" title="Permanent link">&para;</a></h4>
+<p>There's and low level look at <code>MaxGradient.gradient.Gradient</code>'s class in the next section. For now, just know that any of the parameters that can be used by <a href="../gradient_ref/"><code>MaxGradient.gradient.Gradient()</code></a> can also be used by <code>console.gradient()</code>.</p>
+<h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">console</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="s2">&quot;This is by far the simplest way to print </span><span class="se">\</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="s2">        gradient colored text to the console.&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="s2">&quot;green&quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="p">],</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">justify</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;bold&quot;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">)</span>
+</code></pre></div>
+<p><img alt="console.print" src="../img/console_gradient_example.svg" /></p>
+<hr />
+<h3 id="second-new-method">Second New Method<a class="headerlink" href="#second-new-method" title="Permanent link">&para;</a></h3>
+<h4 id="consolegradient_rule"><span class="class-type">Console</span>.<span class="classmethod">gradient_rule</span>()<a class="headerlink" href="#consolegradient_rule" title="Permanent link">&para;</a></h4>
+<p><code>Console.gradient_rule()</code> expands on <code>rich.rule.Rule()</code> by allowing you to specify both the colors of the rule's gradient, as well as the rule's thickness.</p>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
+<h4 id="gradient-rule">Gradient Rule<a class="headerlink" href="#gradient-rule" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">maxgradient.console</span> <span class="kn">import</span> <span class="n">Console</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">console</span><span class="o">.</span><span class="n">gradient_rule</span><span class="p">(</span><span class="s2">&quot;Medium Gradient Rule&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="console.gradient_rule()" src="../img/console_gradient_rule_medium.svg" /></p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href=".." class="btn btn-neutral float-left" title="Getting Started"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../gradient/" class="btn btn-neutral float-right" title="Gradient">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 

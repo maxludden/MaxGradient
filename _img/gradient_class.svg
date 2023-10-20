@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 910.45 761.19">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16, .cls-17, .cls-18, .cls-19, .cls-20 {
+        font-family: MesloLGS-NF-Bold, 'MesloLGS NF';
+      }
+
+      .cls-4, .cls-21, .cls-22 {
+        fill: #bd93f9;
+      }
+
+      .cls-5, .cls-14, .cls-23, .cls-24, .cls-25 {
+        fill: #86e1f5;
+      }
+
+      .cls-6, .cls-13, .cls-26, .cls-27 {
+        fill: #ff79c6;
+      }
+
+      .cls-7, .cls-16, .cls-28, .cls-29 {
+        fill: #ec008c;
+      }
+
+      .cls-8, .cls-15 {
+        fill: #e9f284;
+      }
+
+      .cls-9, .cls-18, .cls-30, .cls-31, .cls-32 {
+        fill: #fff;
+      }
+
+      .cls-10 {
+        fill: #fc77c4;
+      }
+
+      .cls-11, .cls-17, .cls-33, .cls-34 {
+        fill: #ffb86c;
+      }
+
+      .cls-12 {
+        fill: #fbb040;
+      }
+
+      .cls-13, .cls-14, .cls-15, .cls-16, .cls-17, .cls-18, .cls-19, .cls-33, .cls-23, .cls-20, .cls-35 {
+        font-weight: 700;
+      }
+
+      .cls-19, .cls-36 {
+        fill: #6272a4;
+      }
+
+      .cls-33, .cls-23, .cls-25, .cls-29, .cls-31 {
+        font-family: MesloLGS-NF-Bold-Italic, 'MesloLGS NF';
+        font-style: italic;
+      }
+
+      .cls-37 {
+        fill: #1ae532;
+      }
+
+      .cls-38 {
+        fill: #d1d3d4;
+        font-family: Urbanist-Light, Urbanist;
+        font-size: 24px;
+        font-weight: 300;
+      }
+
+      .cls-22, .cls-27, .cls-32 {
+        font-family: MesloLGS-NF-Regular, 'MesloLGS NF';
+      }
+
+      .cls-39 {
+        letter-spacing: 0em;
+      }
+
+      .cls-40 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-41 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-42 {
+        font-size: 21px;
+      }
+
+      .cls-43 {
+        letter-spacing: 0em;
+      }
+
+      .cls-44 {
+        letter-spacing: 0em;
+      }
+
+      .cls-45 {
+        fill: #28c840;
+      }
+
+      .cls-45, .cls-46, .cls-47, .cls-48 {
+        stroke-width: 0px;
+      }
+
+      .cls-46 {
+        fill: #231f20;
+      }
+
+      .cls-47 {
+        fill: #ff5f57;
+      }
+
+      .cls-48 {
+        fill: #febc2e;
+      }
+    </style>
+  </defs>
+  <rect class="cls-46" width="910.45" height="761.19" rx="13.3" ry="13.3"/>
+  <text class="cls-42" transform="translate(66.07 123.97)"><tspan class="cls-35"><tspan class="cls-10" x="0" y="0">class</tspan><tspan class="cls-9" x="63.22" y="0"> </tspan><tspan class="cls-5" x="75.86" y="0">Gradient</tspan><tspan class="cls-9" x="177" y="0">(</tspan><tspan class="cls-25" x="189.65" y="0">rich</tspan><tspan class="cls-9" x="240.22" y="0">.</tspan><tspan class="cls-25" x="252.86" y="0">rich</tspan><tspan class="cls-9" x="303.43" y="0">.</tspan><tspan class="cls-25" x="316.08" y="0">Text</tspan><tspan class="cls-9" x="366.65" y="0">):</tspan></tspan><tspan class="cls-20"><tspan class="cls-30" x="0" y="25.2" xml:space="preserve">    </tspan><tspan class="cls-36" x="50.57" y="25.2">&quot;&quot;&quot;Text with gradient color / style.&quot;&quot;&quot;</tspan></tspan><tspan class="cls-20"><tspan class="cls-30" x="0" y="75.6" xml:space="preserve">    </tspan><tspan class="cls-26" x="50.57" y="75.6">def </tspan><tspan class="cls-21" x="101.14" y="75.6">__init__</tspan><tspan class="cls-30" x="202.29" y="75.6" xml:space="preserve"> (</tspan></tspan><tspan class="cls-32" x="0" y="100.8" xml:space="preserve">        </tspan><tspan class="cls-33" x="101.14" y="100.8">ext</tspan><tspan class="cls-27" x="139.07" y="100.8">:</tspan><tspan class="cls-32" x="151.72" y="100.8"> </tspan><tspan class="cls-18" x="164.36" y="100.8">Optional</tspan><tspan class="cls-13" x="265.5" y="100.8">[</tspan><tspan class="cls-23" x="278.15" y="100.8">str</tspan><tspan class="cls-14" x="316.08" y="100.8"> </tspan><tspan class="cls-13" x="328.72" y="100.8">|</tspan><tspan class="cls-18" x="341.36" y="100.8"> </tspan><tspan class="cls-14" x="354.01" y="100.8">Text</tspan><tspan class="cls-13" x="404.58" y="100.8">]</tspan><tspan class="cls-18" x="417.22" y="100.8"> </tspan><tspan class="cls-16" x="429.86" y="100.8">=</tspan><tspan class="cls-18" x="442.51" y="100.8"> </tspan><tspan class="cls-15" x="455.15" y="100.8">&quot;&quot;</tspan><tspan class="cls-18" x="480.44" y="100.8">,</tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="126" xml:space="preserve">        </tspan><tspan class="cls-11" x="101.14" y="126">colors</tspan><tspan class="cls-6" x="177" y="126">:</tspan><tspan class="cls-9" x="189.65" y="126" xml:space="preserve"> Optional</tspan><tspan class="cls-6" x="303.43" y="126">[</tspan><tspan class="cls-25" x="316.08" y="126">str</tspan><tspan class="cls-6" x="354.01" y="126">|</tspan><tspan class="cls-5" x="366.65" y="126">List[Color </tspan><tspan class="cls-6" x="505.72" y="126">|</tspan><tspan class="cls-9" x="518.36" y="126"> </tspan><tspan class="cls-5" x="531.01" y="126">Tuple </tspan><tspan class="cls-6" x="606.86" y="126">|</tspan><tspan class="cls-9" x="619.5" y="126"> </tspan><tspan class="cls-5" x="632.15" y="126">str]</tspan><tspan class="cls-6" x="682.72" y="126">]</tspan><tspan class="cls-9" x="695.36" y="126"> </tspan><tspan class="cls-7" x="708" y="126">=</tspan><tspan class="cls-9" x="720.65" y="126"> </tspan><tspan class="cls-4" x="733.29" y="126">None</tspan><tspan class="cls-9" x="783.86" y="126">,</tspan></tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="151.2" xml:space="preserve">        </tspan><tspan class="cls-11" x="101.14" y="151.2">rainbow</tspan><tspan class="cls-6" x="189.65" y="151.2">:</tspan><tspan class="cls-9" x="202.29" y="151.2"> </tspan><tspan class="cls-25" x="214.93" y="151.2">bool</tspan><tspan class="cls-29" x="265.5" y="151.2"> </tspan><tspan class="cls-7" x="278.15" y="151.2">=</tspan><tspan class="cls-9" x="290.79" y="151.2"> </tspan><tspan class="cls-4" x="303.43" y="151.2">False</tspan><tspan class="cls-9" x="366.65" y="151.2">,</tspan></tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="176.4" xml:space="preserve">       </tspan><tspan class="cls-11" x="88.5" y="176.4" xml:space="preserve"> invert</tspan><tspan class="cls-6" x="177" y="176.4">:</tspan><tspan class="cls-9" x="189.65" y="176.4"> </tspan><tspan class="cls-25" x="202.29" y="176.4">bool </tspan><tspan class="cls-7" x="265.5" y="176.4">=</tspan><tspan class="cls-9" x="278.15" y="176.4"> </tspan><tspan class="cls-4" x="290.79" y="176.4">False</tspan><tspan class="cls-9" x="354.01" y="176.4">,</tspan></tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="201.6" xml:space="preserve">        </tspan><tspan class="cls-11" x="101.14" y="201.6">hues</tspan><tspan class="cls-6" x="151.72" y="201.6">:</tspan><tspan class="cls-9" x="164.36" y="201.6" xml:space="preserve"> Optional[</tspan><tspan class="cls-25" x="290.79" y="201.6">int</tspan><tspan class="cls-9" x="328.72" y="201.6">] </tspan><tspan class="cls-7" x="354.01" y="201.6">=</tspan><tspan class="cls-9" x="366.65" y="201.6"> </tspan><tspan class="cls-4" x="379.29" y="201.6">None</tspan><tspan class="cls-9" x="429.86" y="201.6">,</tspan></tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="226.8" xml:space="preserve">        </tspan><tspan class="cls-12" x="101.14" y="226.8">color_sample</tspan><tspan class="cls-6" x="252.86" y="226.8">:</tspan><tspan class="cls-9" x="265.5" y="226.8"> </tspan><tspan class="cls-25" x="278.15" y="226.8">bool</tspan><tspan class="cls-31" x="328.72" y="226.8"> </tspan><tspan class="cls-7" x="341.36" y="226.8">=</tspan><tspan class="cls-9" x="354.01" y="226.8"> </tspan><tspan class="cls-4" x="366.65" y="226.8">False</tspan><tspan class="cls-9" x="429.86" y="226.8">,</tspan></tspan><tspan class="cls-20"><tspan class="cls-30" x="0" y="252" xml:space="preserve">        </tspan><tspan class="cls-34" x="101.14" y="252">style</tspan><tspan class="cls-26" x="164.36" y="252">:</tspan><tspan class="cls-30" x="177" y="252" xml:space="preserve"> StyleType</tspan><tspan class="cls-28" x="303.43" y="252" xml:space="preserve"> =</tspan><tspan class="cls-30" x="328.72" y="252"> </tspan><tspan class="cls-24" x="341.36" y="252">Style</tspan><tspan class="cls-30" x="404.58" y="252">.</tspan><tspan class="cls-37" x="417.22" y="252">null</tspan><tspan class="cls-26" x="467.79" y="252">()</tspan><tspan class="cls-30" x="493.08" y="252">,</tspan></tspan><tspan class="cls-20"><tspan class="cls-30" x="0" y="277.2" xml:space="preserve">        </tspan><tspan class="cls-26" x="101.14" y="277.2">*</tspan><tspan class="cls-30" x="113.79" y="277.2">,</tspan></tspan><tspan class="cls-19"><tspan x="0" y="302.4" xml:space="preserve">        # The arguments below are used directly by Text</tspan></tspan><tspan class="cls-19"><tspan x="0" y="327.6" xml:space="preserve">        # so I won&apos;t cover them here. If you have</tspan></tspan><tspan class="cls-19"><tspan x="0" y="352.8" xml:space="preserve">        # questions check out the rich documentation.</tspan></tspan><tspan class="cls-20"><tspan class="cls-30" x="0" y="378" xml:space="preserve">        </tspan><tspan class="cls-34" x="101.14" y="378">justify</tspan><tspan class="cls-26" x="189.65" y="378">:</tspan><tspan class="cls-30" x="202.29" y="378" xml:space="preserve"> Optional</tspan><tspan class="cls-26" x="316.08" y="378">[</tspan><tspan class="cls-30" x="328.72" y="378">JustifyMethod</tspan><tspan class="cls-26" x="493.08" y="378">]</tspan><tspan class="cls-30" x="505.72" y="378"> </tspan><tspan class="cls-28" x="518.36" y="378">= </tspan><tspan class="cls-21" x="543.65" y="378">None</tspan><tspan class="cls-30" x="594.22" y="378">,</tspan></tspan><tspan class="cls-20"><tspan class="cls-30" x="0" y="403.2" xml:space="preserve">        </tspan><tspan class="cls-34" x="101.14" y="403.2">overflow</tspan><tspan class="cls-26" x="202.29" y="403.2">:</tspan><tspan class="cls-30" x="214.93" y="403.2" xml:space="preserve"> Optional</tspan><tspan class="cls-26" x="328.72" y="403.2">[</tspan><tspan class="cls-30" x="341.36" y="403.2">OverflowMethod</tspan><tspan class="cls-26" x="518.36" y="403.2">] </tspan><tspan class="cls-28" x="543.65" y="403.2">= </tspan><tspan class="cls-21" x="568.93" y="403.2">None</tspan><tspan class="cls-30" x="619.5" y="403.2">,</tspan></tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="428.4" xml:space="preserve">        </tspan><tspan class="cls-11" x="101.14" y="428.4">no_wrap</tspan><tspan class="cls-6" x="189.65" y="428.4">:</tspan><tspan class="cls-9" x="202.29" y="428.4" xml:space="preserve"> Optional</tspan><tspan class="cls-6" x="316.08" y="428.4">[</tspan><tspan class="cls-25" x="328.72" y="428.4">bool</tspan><tspan class="cls-6" x="379.29" y="428.4">]</tspan><tspan class="cls-9" x="391.94" y="428.4"> </tspan><tspan class="cls-7" x="404.58" y="428.4">=</tspan><tspan class="cls-9" x="417.22" y="428.4"> </tspan><tspan class="cls-4" x="429.86" y="428.4">None</tspan><tspan class="cls-9" x="480.44" y="428.4">,</tspan></tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="453.6" xml:space="preserve">        </tspan><tspan class="cls-11" x="101.14" y="453.6">end</tspan><tspan class="cls-10" x="139.07" y="453.6">:</tspan><tspan class="cls-9" x="151.72" y="453.6"> </tspan><tspan class="cls-25" x="164.36" y="453.6">str</tspan><tspan class="cls-31" x="202.29" y="453.6"> </tspan><tspan class="cls-6" x="214.93" y="453.6">=</tspan><tspan class="cls-9" x="227.58" y="453.6"> </tspan><tspan class="cls-8" x="240.22" y="453.6">&quot;</tspan><tspan class="cls-6" x="252.86" y="453.6">\n</tspan><tspan class="cls-8" x="278.15" y="453.6">&quot;</tspan><tspan class="cls-9" x="290.79" y="453.6">,</tspan></tspan><tspan class="cls-35"><tspan class="cls-9" x="0" y="478.8" xml:space="preserve">        </tspan><tspan class="cls-11" x="101.14" y="478.8">tab_size</tspan><tspan class="cls-6" x="202.29" y="478.8">:</tspan><tspan class="cls-9" x="214.93" y="478.8" xml:space="preserve"> Optional</tspan><tspan class="cls-6" x="328.72" y="478.8">[</tspan><tspan class="cls-25" x="341.36" y="478.8">int</tspan><tspan class="cls-6" x="379.29" y="478.8">]</tspan><tspan class="cls-9" x="391.94" y="478.8"> </tspan><tspan class="cls-7" x="404.58" y="478.8">=</tspan><tspan class="cls-9" x="417.22" y="478.8"> </tspan><tspan class="cls-4" x="429.86" y="478.8">8</tspan><tspan class="cls-9" x="442.51" y="478.8">,</tspan></tspan><tspan class="cls-18" x="0" y="504" xml:space="preserve">        </tspan><tspan class="cls-17" x="101.14" y="504">spans</tspan><tspan class="cls-13" x="164.36" y="504">:</tspan><tspan class="cls-18" x="177" y="504" xml:space="preserve"> Optional</tspan><tspan class="cls-13" x="290.79" y="504">[</tspan><tspan class="cls-18" x="303.43" y="504">List</tspan><tspan class="cls-14" x="354.01" y="504">[</tspan><tspan class="cls-18" x="366.65" y="504">Span</tspan><tspan class="cls-14" x="417.22" y="504">]</tspan><tspan class="cls-13" x="429.86" y="504">]</tspan><tspan class="cls-18" x="442.51" y="504"> </tspan><tspan class="cls-16" x="455.15" y="504">=</tspan><tspan class="cls-18" x="467.79" y="504"> </tspan><tspan class="cls-22" x="480.44" y="504">None</tspan><tspan class="cls-32" x="531.01" y="504">) </tspan><tspan class="cls-27" x="556.29" y="504">-&gt;</tspan><tspan class="cls-32" x="581.58" y="504"> </tspan><tspan class="cls-22" x="594.22" y="504">None</tspan><tspan class="cls-32" x="644.79" y="504">:</tspan></text>
+  <circle class="cls-47" cx="30.72" cy="29.98" r="11.88"/>
+  <circle class="cls-48" cx="66.07" cy="29.98" r="11.88"/>
+  <circle class="cls-45" cx="99.18" cy="29.98" r="11.88"/>
+  <text class="cls-38" transform="translate(352.09 41.86)"><tspan class="cls-43" x="0" y="0">t</tspan><tspan class="cls-40" x="7.86" y="0">h</tspan><tspan class="cls-1" x="20.2" y="0">e </tspan><tspan class="cls-3" x="39.37" y="0">G</tspan><tspan class="cls-2" x="57.31" y="0">r</tspan><tspan class="cls-41" x="64.72" y="0">a</tspan><tspan class="cls-44" x="78.74" y="0">di</tspan><tspan class="cls-39" x="97.4" y="0">e</tspan><tspan x="110.78" y="0">nt </tspan><tspan class="cls-39" x="137.28" y="0">c</tspan><tspan x="149.46" y="0">lass</tspan></text>
+</svg>

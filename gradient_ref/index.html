@@ -5,14 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Max Ludden" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>maxgradient.gradient.Gradient - MaxGradient</title>
+    <title>Gradient - MaxGradient</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css" />
+        <link href="../styles/style.css" rel="stylesheet" />
+        <link href="../styles/purple.css" rel="stylesheet" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "maxgradient.gradient.Gradient";
+        var mkdocs_page_name = "Gradient";
         var mkdocs_page_input_path = "gradient_ref.md";
         var mkdocs_page_url = null;
       </script>
@@ -21,6 +23,8 @@
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/shell.min.js"></script>
       <script>hljs.highlightAll();</script> 
 </head>
 
@@ -41,7 +45,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                <li class="toctree-l1"><a class="reference internal" href="..">Getting Started</a>
                 </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -55,13 +59,11 @@
               </ul>
               <p class="caption"><span class="caption-text">References</span></p>
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">maxgradient.console.Console</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../console_ref/">Console</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">maxgradient.gradient.Gradient</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Gradient</a>
     <ul class="current">
     </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../color_ref/">maxgradient.color.Color</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../color_ref/">Color</a>
                   </li>
@@ -79,9 +81,9 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-          <li>References &raquo;</li>
-      <li class="breadcrumb-item active">maxgradient.gradient.Gradient</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">References</li>
+      <li class="breadcrumb-item active">Gradient</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://GitHub.com/maxludden/maxgradient/root/docs/gradient_ref.md">Edit on MaxGradient</a>
     </li>
@@ -91,34 +93,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="gradient-reference"><span class="cool-wipe-header">Gradient Reference</span></h1>
+                <h1 id="gradient-reference"><span class="cool-wipe-header">Gradient Reference</span><a class="headerlink" href="#gradient-reference" title="Permanent link">&para;</a></h1>
 <p><span class="rainbow-wipe">maxgradient.gradient.Gradient</span> is at the core of MaxGradient. Gradient is a subclass of <span class="green-wipe">rich.text.Text</span>, and can be used in the same way. The Gradient class however also incorporates <span class="rainbow-wipe">maxgradient.color.Color</span> which is an expanded version of <span class="green-wipe">rich.color.Color</span>. Gradient can be used to create a gradient of colors or styles. Gradient can also be used to create a rainbow effect, or to invert the colors of the gradient.</p>
-<pre><code class="language-python">class Gradient(rich.rich.Text):
-    &quot;&quot;&quot;Text with gradient color / style.&quot;&quot;&quot;
-
-    def __init__ (
-        text: Optional[str | Text] = &quot;&quot;,
-        colors: Optional[str|List[Color | Tuple | str]] = None,
-        rainbow: bool = False,
-        invert: bool = False,
-        hues: Optional[int] = None,
-        color_sample: bool = False,
-        style: StyleType = Style.null(),
-        *,
-        # The arguments below are used directly by Text
-        justify: Optional[JustifyMethod] = None,
-        overflow: Optional[OverflowMethod] = None,
-        no_wrap: Optional[bool] = None,
-        end: str = &quot;\n&quot;,
-        tab_size: Optional[int] = 8,
-        spans: Optional[List[Span]] = None,) -&gt; None:
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span> <span class="nc">Gradient</span><span class="p">(</span><span class="n">rich</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Text with gradient color / style.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Text</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="n">colors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="o">|</span><span class="n">List</span><span class="p">[</span><span class="n">Color</span> <span class="o">|</span> <span class="n">Tuple</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="n">rainbow</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="n">invert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="n">hues</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="n">color_sample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="n">style</span><span class="p">:</span> <span class="n">StyleType</span> <span class="o">=</span> <span class="n">Style</span><span class="o">.</span><span class="n">null</span><span class="p">(),</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">justify</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">JustifyMethod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="n">overflow</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OverflowMethod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="n">no_wrap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="n">end</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="n">tab_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="n">spans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Span</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</code></pre></div>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../console_ref/" class="btn btn-neutral float-left" title="maxgradient.console.Console"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../color_ref/" class="btn btn-neutral float-right" title="maxgradient.color.Color">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../console_ref/" class="btn btn-neutral float-left" title="Console"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../color_ref/" class="btn btn-neutral float-right" title="Color">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>

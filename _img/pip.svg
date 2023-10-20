@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 352.83">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #bd93f9;
+      }
+
+      .cls-4 {
+        fill: #38f441;
+      }
+
+      .cls-5 {
+        fill: #d1d3d4;
+        font-family: Urbanist-Light, Urbanist;
+        font-size: 24px;
+        font-weight: 300;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+
+      .cls-7 {
+        fill: #231f20;
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+        stroke-width: .84px;
+      }
+
+      .cls-8 {
+        fill: #28c840;
+      }
+
+      .cls-8, .cls-9, .cls-10 {
+        stroke-width: 0px;
+      }
+
+      .cls-9 {
+        fill: #ff5f57;
+      }
+
+      .cls-10 {
+        fill: #febc2e;
+      }
+
+      .cls-11 {
+        font-family: MesloLGS-NF-Bold, 'MesloLGS NF';
+        font-size: 48px;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <rect class="cls-7" width="1000" height="352.83" rx="13.77" ry="13.77"/>
+  <circle class="cls-9" cx="30.22" cy="32.52" r="11.88"/>
+  <circle class="cls-10" cx="65.57" cy="32.52" r="11.88"/>
+  <circle class="cls-8" cx="98.68" cy="32.52" r="11.88"/>
+  <text class="cls-5" transform="translate(485.36 44.41)"><tspan class="cls-1" x="0" y="0">P</tspan><tspan class="cls-6" x="12.34" y="0">I</tspan><tspan x="17.14" y="0">P</tspan></text>
+  <text class="cls-11" transform="translate(179.42 189.66)"><tspan class="cls-2" x="0" y="0">pip</tspan><tspan class="cls-3" x="86.7" y="0"> </tspan><tspan class="cls-4" x="115.59" y="0">add </tspan><tspan class="cls-2" x="231.19" y="0">maxgradient</tspan></text>
+</svg>
