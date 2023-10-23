@@ -1,5 +1,7 @@
 <!--<img src="img/maxgradient_banner.png" class="banner" alt="MaxGradient Banner">-->
-![MaxGradient](img/MaxGradient.svg)
+<!-- ![MaxGradient](img/MaxGradient.svg) -->
+
+<img src="img/MaxGradient.svg" alt="MaxGradient" style="display:block; margin:auto; width:40%;">
 
 MaxGradient automates the printing gradient colored text to the console. It's built upon the great rich library. It contains a Console that can serve as a drop in replacement for rich.rich.Console and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions.
 
@@ -41,10 +43,8 @@ console.gradient(
 ```
 
 <!--Caption Start-->
-<figure>
-    <!--<figcaption>Produces the following:</figcaption>-->
-    <img src="img/hello_world.svg" alt="Hello, World!">
-</figure>
+![Hello, World!](img/hello_world.svg)
+
 <!--Caption End-->
 
 ## <span class="cool-wipe">Gradient with Color</span>
@@ -79,9 +79,8 @@ console.gradient(
     ])
 ```
 
-<figure>
-    <img src="img/gradient_with_color_1.svg" alt="Hello, World!">
-</figure>
+![Hello, World!](img/gradient_with_color_1.svg)
+
 <!--Result | 1 -->
 
 <br /><hr><br />
@@ -106,7 +105,6 @@ console.gradient(
 )
 ```
 
-<figure>
-    <img src="img/gradient_with_color_2.svg" alt="Hello, World!">
-</figure>
+![Hello, World!](img/gradient_with_color_2.svg)
+
 <!--Result End | 2 -->

@@ -14,16 +14,12 @@ nav:
           - Console: "console_ref.md"
           - Gradient: "gradient_ref.md"
           - Color: "color_ref.md"
+          - Possible Colors: "possible_colors.md"
 
 theme:
-    name: readthedocs
-    highlightjs: true
-    hljs_languages:
-        - python
-        - shell
-    hljs_style: tokyo-night-dark
+    name: material
     logo: img/MaxGradient.svg
-    include_homepage_in_sidebar: True
+    favicon: img/MaxGradient.svg
     features:
         - navigation.instant
         - navigation.instant.prefetch
@@ -35,22 +31,20 @@ theme:
         - navigation.top
         - content.code.copy
     palette:
-        # Palette toggle for automatic mode
+        # Note: Using the system theme works with the insiders version
+        # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#automatic-light-dark-mode
         - media: "(prefers-color-scheme)"
+          scheme: astral-dark
           toggle:
-              icon: material/brightness-auto
+              icon: material/brightness-4
               name: Switch to light mode
-
-        # Palette toggle for light mode
         - media: "(prefers-color-scheme: light)"
-          scheme: default
+          scheme: astral-light
           toggle:
               icon: material/brightness-7
               name: Switch to dark mode
-
-        # Palette toggle for dark mode
         - media: "(prefers-color-scheme: dark)"
-          scheme: slate
+          scheme: astral-dark
           toggle:
               icon: material/brightness-4
               name: Switch to system preference
@@ -58,6 +52,7 @@ theme:
 extra_css:
     - "styles/style.css"
     - "styles/purple.css"
+    - "styles/extra.css"
 markdown_extensions:
     - abbr
     - admonition
@@ -67,3 +62,11 @@ markdown_extensions:
     - md_in_html
     - toc:
           permalink: true
+    - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - pymdownx.details

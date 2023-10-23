@@ -1,25 +1,16 @@
 """Parse colors from strings."""
 # pylint: disable=C0209,E0401,W0611,C0103,E0202,E0611,W0622
-import colorsys
-import re
 from functools import lru_cache
 from re import findall
 from typing import Optional, Tuple
 
 from rich.box import SQUARE
-from rich.color import Color as RichColor
-from rich.color import ColorParseError
-from rich.color_triplet import ColorTriplet
-from rich.columns import Columns
 from rich.console import Console
-from rich.highlighter import ReprHighlighter
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
 from maxgradient._mode import Mode
-from maxgradient._rich import Rich
-from maxgradient._x11 import X11
 from maxgradient.log import Console as LogConsole
 from maxgradient.log import Log
 
@@ -187,10 +178,10 @@ class GradientColor:
         """Generate a table of gradient colors."""
         table = Table(title=cls.get_title(), box=SQUARE)
         table.add_column("Sample", justify="center", style="bold")
-        table.add_column("Name", justify="center", style="bold")
+        table.add_column("Name", justify="left", style="bold")
         table.add_column("Hex", justify="center", style="bold")
-        table.add_column("RGB", justify="center", style="bold")
-        table.add_column("RGB Tuple", justify="center", style="bold")
+        table.add_column("RGB", justify="left", style="bold")
+        table.add_column("RGB Tuple", justify="left", style="bold")
         for x in range(10):
             hex = cls.get_hex()[x]
             table.add_row(
@@ -218,8 +209,21 @@ class GradientColor:
         return f"[bold {color}]{capital_name}[/bold {color}]"
 
 
-if __name__ == "__main__":
-    console = Console()
+def print_color_table(save: bool = False) -> None:
+    if save:
+        console = Console(record=True, width=80)
+    else:
+        console = Console()
+
     console.line(2)
     console.print(GradientColor.color_table(), justify="center")
     console.line(2)
+
+    if save:
+        console.save_svg(
+            "docs/img/gc_color_table.svg",
+            title="Gradient Color Table",
+        )
+
+if __name__ == "__main__":
+    print_color_table(True)

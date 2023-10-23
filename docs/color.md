@@ -20,8 +20,8 @@ You can also use the hex code of the color:
 
 Or the rgb values of the color:
 
-- <span style="color:#050;">rgb(0,85,0)</span> (with `rgb` prefix)
-- <span style="background:#0f0;">(0, 255, 0)</span> (`rgb` tuple without prefix)
+- <span style="color:#fff;background:#050;">rgb(0,85,0)</span> (with `rgb` prefix)
+- <span style="color:#0f0;">(0, 255, 0)</span> (`rgb` tuple without prefix)
 
 In addition to common names, MaxGradient also supports the entire rich color standard color palette. But we didn't stop there, in addition to rich's standard library, MaxGradient also supports the entire X11 color palette. That's over 200 colors!
 
@@ -39,7 +39,7 @@ console.print(
 
 ![Color('red')](img/color_red.svg)
 
-## Example 2: <span style="background-color:#AAFFAA;"> Color("#AAFFAA") </span>
+## Example 2: <span style="color:#AAFFAA;"> Color("#AAFFAA") </span>
 
 ```python
 console.print(
@@ -61,6 +61,7 @@ console.print(
 
 ![Color('DarkOrchid')](img/color_darkorchid.svg)
 
+<!-- 
 ## Possible Colors
 
 To view all of the available colors run the following command in the console:
@@ -69,4 +70,4 @@ To view all of the available colors run the following command in the console:
 python -m maxgradient.color
 ```
 
-![Gradients are cool!](img/available_colors.svg)
+![Gradients are cool!](img/available_colors.svg) -->

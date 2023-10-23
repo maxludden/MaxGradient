@@ -4,9 +4,11 @@ from functools import lru_cache
 from re import findall
 from typing import Optional, Tuple
 
+from rich.box import SQUARE
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
+from snoop import snoop  # type: ignore
 
 from maxgradient.log import Console, Log
 
@@ -728,35 +730,48 @@ class X11:
         NAMES = cls.get_names()
         HEX = cls.get_hex()
         RGB = cls.get_rgb()
-        color_table = Table(
-            title=cls.get_title(),
-            show_header=True,
-            border_style="dim white",
-            expand=False,
-            show_lines=False,
-            padding=(0, 2),
-        )
-        sample_text: Text = cls.sample_title()
-        color_table.add_column(sample_text, width=14, justify="center", style="bold")
-        name_text: Text = cls.name_title()
-        color_table.add_column(name_text, width=18, justify="left", style="bold")
-        hex_text: Text = cls.hex_title()
-        color_table.add_column(hex_text, width=10, justify="center", style="bold")
-        rgb_text: Text = cls.rgb_title()
-        color_table.add_column(rgb_text, width=16, justify="left", style="bold")
-        for index, color in enumerate(HEX):
+        color_table = Table(title=cls.get_title(), box=SQUARE)
+        color_table.add_column("Sample", justify="center", style="bold")
+        color_table.add_column("Name", justify="left", style="bold")
+        color_table.add_column("Hex", width=10, justify="center", style="bold")
+        color_table.add_column("RGB", width=16, justify="left", style="bold")
+        color_table.add_column("RGB Tuple", justify="left", style="bold")
+        for index, _ in enumerate(HEX):
             color_name = str(NAMES[index]).capitalize()
             color_hex = str(HEX[index]).upper()
             color_rgb = str(RGB[index]).lower()
+            color_rgb_tuple = str(cls.RGB_TUPLE[index])
             color_table.add_row(
                 Text(color_block, style=color_hex),
                 Text(color_name, style=color_hex),
                 Text(color_hex, style=color_hex),
                 Text(color_rgb, style=color_hex),
+                Text(color_rgb_tuple, style=color_hex),
             )
 
         return color_table
 
+    @classmethod
+    @snoop()
+    def print_class_table(cls, save: bool = False) -> None:
+        """Print the rich library's Standard Colors."""
+        if save:
+            console = Console(record=True, width=100)
+            console.log("[dim green]Saving X11 Color Table to Disk...[/]")
+        else:
+            console = Console(record=False)
+            console.log(("[dim]Printing X11 Color Table to Console...[/]"))
+
+        console.line(2)
+        console.print(cls.color_table(), justify="center")
+        console.line(2)
+
+        if save:
+            console.save_svg(
+                "docs/img/x11_color_table.svg",
+                title="X11 Color Table",
+            )
+
 
 if __name__ == "__main__":
-    console.print(X11.color_table(), justify="center")
+    X11.print_class_table(save=True)
