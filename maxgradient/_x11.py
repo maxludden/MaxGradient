@@ -1,19 +1,19 @@
 """X11 color names"""
-# pylint: disable=E0401
+
 from functools import lru_cache
 from re import findall
 from typing import Optional, Tuple
 
 from rich.box import SQUARE
+from rich.console import Console
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
-from snoop import snoop  # type: ignore
 
-from maxgradient.log import Console, Log
+# from maxgradient.log import Console, Log
 
-console = Console()
-log = Log()
+# console = Console()
+# log = Log()
 
 
 class X11:
@@ -317,6 +317,7 @@ class X11:
         "#FFFF00",
         "#9ACD32",
     )
+
     RGB: Tuple[str, ...] = (
         "rgb(240,248,255)",
         "rgb(250,235,215)",
@@ -692,36 +693,9 @@ class X11:
         ]
         return Text.assemble(*sample)
 
-    @staticmethod
-    def name_title() -> Text:
-        """Generate a colored header."""
-        name = [
-            Text("N", style="bold #FFFF00"),
-            Text("a", style="bold #00FF00"),
-            Text("m", style="bold #00FFFF"),
-            Text("e", style="bold #0088FF"),
-        ]
-        return Text.assemble(*name)
-
-    @staticmethod
-    def hex_title() -> Text:
-        """Generate a colored header."""
-        hex = [
-            Text("H", style="bold #0000FF"),
-            Text("e", style="bold #5F00FF"),
-            Text("x", style="bold #AF00FF"),
-        ]
-        return Text.assemble(*hex)
-
-    @staticmethod
-    def rgb_title() -> Text:
-        """Generate a colored header."""
-        rgb = [
-            Text("R", style="bold #FF00FF"),
-            Text("G", style="bold #ff0000"),
-            Text("B", style="bold #ff8800"),
-        ]
-        return Text.assemble(*rgb)
+    def __rich__(self) -> Table:
+        """Return a table of the X11 Colors."""
+        return self.color_table()
 
     @classmethod
     def color_table(cls) -> Table:
@@ -752,8 +726,7 @@ class X11:
         return color_table
 
     @classmethod
-    @snoop()
-    def print_class_table(cls, save: bool = False) -> None:
+    def print_color_table(cls, save: bool = False) -> None:
         """Print the rich library's Standard Colors."""
         if save:
             console = Console(record=True, width=100)
@@ -763,7 +736,7 @@ class X11:
             console.log(("[dim]Printing X11 Color Table to Console...[/]"))
 
         console.line(2)
-        console.print(cls.color_table(), justify="center")
+        console.print(cls.color_table())
         console.line(2)
 
         if save:
@@ -774,4 +747,4 @@ class X11:
 
 
 if __name__ == "__main__":
-    X11.print_class_table(save=True)
+    X11.print_color_table(save=True)

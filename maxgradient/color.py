@@ -26,7 +26,6 @@ from maxgradient._rich import Rich
 from maxgradient._x11 import X11
 from maxgradient.theme import GradientTheme
 
-
 console = Console()
 # log.configure(
 #     handlers=[
@@ -53,7 +52,7 @@ console = Console()
 #             backtrace=True,
 #             diagnose=True,
 #             colorize=False
-#         ), 
+#         ),
 #     ]
 # )
 
@@ -587,15 +586,17 @@ You can also visit the rich library's documentation to view all \
         tables: List[Table] = []
         for colors in [Rich, X11]:
             title = colors.get_title()
-            table = Table(title=title, show_header=True, header_style="bold.magenta")
-            table.add_column("Example", justify="center")
-            table.add_column("Name", justify="center")
-            table.add_column("Hex", justify="center")
-            table.add_column("RGB", justify="center")
-            table.add_column("RGB Tuple", justify="center")
+            color_table_row = Table(
+                title=title, show_header=True, header_style="bold.magenta"
+            )
+            color_table_row.add_column("Example", justify="center")
+            color_table_row.add_column("Name", justify="center")
+            color_table_row.add_column("Hex", justify="center")
+            color_table_row.add_column("RGB", justify="center")
+            color_table_row.add_column("RGB Tuple", justify="center")
 
             def add_row(
-                color: Color, table: Table = table, end_section: bool = False
+                color: Color, table: Table = color_table_row, end_section: bool = False
             ) -> Table:
                 block = Text("█" * 12, style=f"bold {color.hex}")
                 name = Text(color.name, style=f"bold {color.hex}")
@@ -608,8 +609,8 @@ You can also visit the rich library's documentation to view all \
                 return table
 
             for color in colors.NAMES:
-                table = add_row(cls(color), table)
-            tables.append(table)
+                color_table_row = add_row(cls(color), color_table_row)
+            tables.append(color_table_row)
 
         return Columns(tables, equal=True)
 
