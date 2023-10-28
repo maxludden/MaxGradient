@@ -46,7 +46,7 @@ class Gradient(Text):
     """Text with gradient color / style.
 
     Args:
-        text (text): The text to print. Defaults to `""`.\n
+        text (Text): The text to print. Defaults to `""`.\n
         colors (List[Optional[Color|Tuple|str|int]]): A list of colors to use \
             for the gradient. Defaults to None.\n
         rainbow (bool): Whether to print the gradient text in rainbow colors\
@@ -86,7 +86,7 @@ class Gradient(Text):
         overflow: Optional[str] = None,
         no_wrap: Optional[bool] = None,
         end: str = "\n",
-        tab_size: Optional[int] = 8,
+        tab_size: Optional[int] = 4,
         spans: Optional[List[Span]] = None,
     ) -> None:
         """Text styled with gradient color.
@@ -110,7 +110,7 @@ class Gradient(Text):
             no_wrap (bool, optional): Disable text wrapping, or None for default.\
                 Defaults to None.\n
             tab_size (int): Number of spaces per tab, or `None` to use\
-                  `console.tab_size`. Defaults to 8.\n
+                  `console.tab_size`. Defaults to 4.\n
             spans (List[Span], optional). A list of predefined style spans.\
                 Defaults to None.\n
 

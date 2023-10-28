@@ -1,4 +1,5 @@
 """MaxGradient.main"""
+# ruff: noqa: F841
 from typing import Iterable
 
 from lorem_text import lorem
@@ -8,7 +9,7 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
 
-from maxgradient.console import Console
+from maxgradient._console import Console
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
 
@@ -43,9 +44,9 @@ console.print(
             # background_color="#222222",
             padding=(1, 2),
         )
-        code.stylize_range("italic #83DDF0", (5,13), (5,20)) # Console
-        code.stylize_range("#50FA7B", (7,8), (7,13)) # print
-        code.stylize_range("italic #83DDF0", (8,7), (8,15)) # Gradient
+        code.stylize_range("italic #83DDF0", (5, 13), (5, 20))  # Console
+        code.stylize_range("#50FA7B", (7, 8), (7, 13))  # print
+        code.stylize_range("italic #83DDF0", (8, 7), (8, 15))  # Gradient
         return code
 
     def gradient() -> Gradient:
@@ -77,7 +78,10 @@ the available options present in the `",
             Text("\n\nIn the following example we'll use the ", style="#ffffff"),
             Text("rainbow", style="bold #FFB86C"),
             Text(" keyword argument to create a rainbow gradient.", style="#ffffff"),
-            Text("\n\nNote: that in this example we are also using the ", style="i #aaaaaa"),
+            Text(
+                "\n\nNote: that in this example we are also using the ",
+                style="i #aaaaaa",
+            ),
             Text("style", style="italic bold #FFB86C"),
             Text(" keyword argument to make the gradient bold.", style="i #aaaaaa"),
         ]
@@ -98,8 +102,8 @@ console.gradient(TEXT, rainbow=True, style="bold")"""
             padding=(1, 2),
             start_line=10,
         )
-        code.stylize_range("italic #83DDF0", (1,13), (1,20)) # Console
-        code.stylize_range("#50FA7B", (2,7), (2,16)) # gradient
+        code.stylize_range("italic #83DDF0", (1, 13), (1, 20))  # Console
+        code.stylize_range("#50FA7B", (2, 7), (2, 16))  # gradient
 
         return code
 
@@ -117,6 +121,7 @@ console.gradient(TEXT, rainbow=True, style="bold")"""
         gradient(),
     )
 
+
 def gen_red_orange_yellow_group() -> Group:
     """Generate the syntax for a red, orange, yellow gradient and the result."""
 
@@ -126,15 +131,21 @@ def gen_red_orange_yellow_group() -> Group:
             Text(
                 "You're not just stuck to creating random or rainbow gradients.\
  If you would like more control of the gradient, simply pass the Gradient object \
-the ", style="#ffffff"),
+the ",
+                style="#ffffff",
+            ),
             Text("colors", style="bold #FFB86C"),
-            Text(" keyword argument with a list of colors you would like to use.", style="#ffffff")
+            Text(
+                " keyword argument with a list of colors you would like to use.",
+                style="#ffffff",
+            ),
         ]
         return Text.assemble(*text)
 
     def syntax() -> Syntax:
         """Generate the syntax for a red, orange, yellow gradient."""
-        code = Syntax("""console = mg.Console()
+        code = Syntax(
+            """console = mg.Console()
 
 console.print(
     mg.Gradient(
@@ -148,10 +159,11 @@ console.print(
             line_numbers=True,
             indent_guides=False,
             word_wrap=True,
-            start_line=12)
-        code.stylize_range("italic #83DDF0", (1,13), (1,20)) # Console
-        code.stylize_range("#50FA7B", (3,7), (3,13)) # print
-        code.stylize_range("italic #83DDF0", (4,7), (4,15)) # Gradient
+            start_line=12,
+        )
+        code.stylize_range("italic #83DDF0", (1, 13), (1, 20))  # Console
+        code.stylize_range("#50FA7B", (3, 7), (3, 13))  # print
+        code.stylize_range("italic #83DDF0", (4, 7), (4, 15))  # Gradient
         return code
 
     def gradient() -> Gradient:
@@ -161,25 +173,29 @@ console.print(
             colors=["red", "orange", "yellow"],
             style="bold italic",
         )
-    
+
     return Group(
         explination(),
         NewLine(),
         syntax(),
         NewLine(),
         GradientRule("Results as"),
-        NewLine(), 
-        gradient()
+        NewLine(),
+        gradient(),
     )
-    
+
+
 def gen_cool_group() -> Group:
     """Generate the syntax for a cool gradient and the result."""
+
     def explination() -> Text:
         """Generate the explination for a cool gradient."""
         return Text(
-                "You can also use any valid X11 color name, hex code, or rgb value \
+            "You can also use any valid X11 color name, hex code, or rgb value \
 to create a gradient. In the following example we'll use a combination of all three \
-to create a cool gradient.", style="#ffffff")
+to create a cool gradient.",
+            style="#ffffff",
+        )
 
     def syntax() -> Syntax:
         """Generate the syntax for a cool gradient."""
@@ -208,18 +224,25 @@ console.print(
             word_wrap=True,
             padding=(1, 2),
         )
-        code.stylize_range("italic #83DDF0", (1,13), (1,20)) # Console
-        code.stylize_range("#50FA7B", (3,7), (3,16)) # print
-        code.stylize_range("italic #83DDF0", (4,7), (4,15)) # Gradient
+        code.stylize_range("italic #83DDF0", (1, 13), (1, 20))  # Console
+        code.stylize_range("#50FA7B", (3, 7), (3, 16))  # print
+        code.stylize_range("italic #83DDF0", (4, 7), (4, 15))  # Gradient
         return code
 
     def gradient() -> Gradient:
         """Generate a cool gradient."""
         return Gradient(
             TEXT,
-            colors=["#00ffff", "#0088ff", "rgb(0,0,255)", "#5f00ff", "#af00ff", "magenta"],
+            colors=[
+                "#00ffff",
+                "#0088ff",
+                "rgb(0,0,255)",
+                "#5f00ff",
+                "#af00ff",
+                "magenta",
+            ],
             style="underline",
-            justify='default'
+            justify="default",
         )
 
     return Group(
@@ -231,6 +254,7 @@ console.print(
         NewLine(),
         gradient(),
     )
+
 
 def generate_panels() -> Iterable[Panel]:
     """Generate panels for the examples of gradients."""
@@ -246,7 +270,7 @@ def generate_panels() -> Iterable[Panel]:
     c_text = "[#B088E7]TEXT[/]"
     c_true = "[#B088E7]True[/]"
     equal = "[#Fb508e]=[/]"
-    cyan = "[#00ffff]cyan[/]"
+    cyan = "[#2b3030]cyan[/]"
     c_cyan = "[bold #00ffff]Cyan[/]"
     lightblue = "[#0088ff]lightblue[/]"
     c_lightblue = f"[bold #0088ff]Lightblue[/]{comma}"
@@ -280,9 +304,9 @@ def generate_panels() -> Iterable[Panel]:
         gen_rainbow_group(),
         title=Gradient("Rainbow Gradient", rainbow=True, style="bold"),
         padding=(2, 4),
-#         subtitle=f"{c_gradient}{r_para}{c_text}{comma} \
-# {c_rainbow}{equal}{c_true}{l_para}",
-#         subtitle_align="right",
+        #         subtitle=f"{c_gradient}{r_para}{c_text}{comma} \
+        # {c_rainbow}{equal}{c_true}{l_para}",
+        #         subtitle_align="right",
         width=80,
     )
 

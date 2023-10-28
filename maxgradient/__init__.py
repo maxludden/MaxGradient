@@ -1,4 +1,5 @@
 """Import the classes from the different modules of gradient"""
+# ruff: noqa: F401
 from os import environ
 
 from dotenv import load_dotenv
@@ -12,7 +13,7 @@ from rich.text import Span, Text, TextType
 
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList, TintList
-from maxgradient.console import Console
+from maxgradient._console import Console
 from maxgradient.gradient import Gradient
 from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.rule import GradientRule

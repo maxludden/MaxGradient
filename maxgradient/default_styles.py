@@ -556,7 +556,7 @@ EDITED_STYLES: Dict[str, str] = {
 }
 
 
-def get_default_styles():
+def get_default_styles() -> dict[str, Style]:
     """Retrieve the defaults styles from GRADIENT_STYLES."""
     return GRADIENT_STYLES
 

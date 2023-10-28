@@ -1,4 +1,5 @@
 """MaxGradient.main"""
+# ruff: noqa: F401
 from typing import Iterable
 
 from lorem_text import lorem

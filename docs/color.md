@@ -9,18 +9,18 @@ Color extends the [Rich.color.Color](https://github.com/Textualize/rich/blob/mas
 
 A color can be represented as a string in numerous ways. The easiest is the name of the color:
 
-- <span style="color:#f00;">red</span>
-- <span style="color:#f0f;">magenta</span>
-- <span style="color:#00f;">blue</span>
+- <span class="red">red</span>
+- <span class="magenta">magenta</span>
+- <span class="blue">blue</span>
 
 You can also use the hex code of the color:
 
-- <span style="color:#f00;">#ff0000</span> (six digit hex code)
-- <span style="color:#f0f;">#f0f</span> (three digit hex code)
+- <span class="red">#ff0000</span> (six digit hex code)
+- <span class="magenta">#F0F</span> (three digit hex code)
 
 Or the rgb values of the color:
 
-- <span style="color:#fff;background:#050;">rgb(0,85,0)</span> (with `rgb` prefix)
+- <span class="light-green">rgb(170,255,170)</span> (with `rgb` prefix)
 - <span style="color:#0f0;">(0, 255, 0)</span> (`rgb` tuple without prefix)
 
 In addition to common names, MaxGradient also supports the entire rich color standard color palette. But we didn't stop there, in addition to rich's standard library, MaxGradient also supports the entire X11 color palette. That's over 200 colors!

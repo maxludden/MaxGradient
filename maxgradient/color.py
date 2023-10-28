@@ -460,8 +460,7 @@ You can also visit the rich library's documentation to view all \
         """Parse the components from an RGB string."""
 
         REGEX = re.compile(
-            r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)",
-            r"[ ,]? ?(?P<blue>\d+\.?\d*)\)",
+            r"r?g?b? ?\((?P<red>\d+), ?(?P<green>\d+), ?(?P<blue>\d+)\)"
         )
         match: Match = REGEX.match(rgb_str)
         if match:

@@ -730,13 +730,11 @@ class X11:
         """Print the rich library's Standard Colors."""
         if save:
             console = Console(record=True, width=100)
-            console.log("[dim green]Saving X11 Color Table to Disk...[/]")
         else:
             console = Console(record=False)
-            console.log(("[dim]Printing X11 Color Table to Console...[/]"))
 
         console.line(2)
-        console.print(cls.color_table())
+        console.print(cls.color_table(), justify="center")
         console.line(2)
 
         if save:

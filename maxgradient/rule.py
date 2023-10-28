@@ -1,12 +1,11 @@
 """Rule class for maxgradient package."""
-from typing import Literal, Union
+from typing import Literal, Union, Optional
 
 from rich.align import AlignMethod
 from rich.cells import cell_len, set_cell_size
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.jupyter import JupyterMixin
 from rich.measure import Measurement
-from rich.rule import Rule as RichRule
 from rich.text import Text
 
 from maxgradient.color_list import ColorList
@@ -27,7 +26,8 @@ class GradientRule(JupyterMixin):
         gradient (bool, optional): Whether to use gradient colors. Defaults to True.
         thickness (Thickness, optional): Thickness of the rule. Defaults to "medium".
         end (str, optional): Character at end of Rule. defaults to "\\\\n"
-        align (str, optional): How to align the title, one of "left", "center", or "right". Defaults to "center".
+        align (str, optional): How to align the title, one of "left",
+            "center", or "right". Defaults to "center".
     """
 
     # @spy
@@ -40,12 +40,10 @@ class GradientRule(JupyterMixin):
         end: str = "\n",
         align: AlignMethod = "center",
     ) -> None:
-        self.gradient = gradient
-        if thickness not in ["thin", "medium", "thick"]:
-            raise ValueError(
-                f"thickness must be one of 'thin', 'medium', or 'thick' (not {thickness!r})"
-            )
-        self.thickness = thickness
+        self.gradient: bool = gradient
+        assert thickness in ["thin", "medium", "thick"], "Invalid thickness"
+        assert thickness is not None, "Invalid thickness"
+        self.thickness = thickness  # type: ignore
         if self.thickness == "thin":
             self.characters = "─"
         elif self.thickness == "medium":
@@ -57,20 +55,19 @@ class GradientRule(JupyterMixin):
             raise ValueError(
                 "'characters' argument must have a cell width of at least 1"
             )
-        if align not in ("left", "center", "right"):
-            raise ValueError(
-                f'invalid value for align, expected "left", "center", "right" (not {align!r})'
-            )
-        self.title = title
-        self.thickness = thickness
+        assert align in ("left", "center", "right"), "Invalid align"
+
+        self.title: str | Text = title
         self.end = end
         self.align = align
-        color_list = ColorList(5)
-        self.left_colors = [color_list[0], color_list[1], color_list[2]]
-        self.right_colors = [color_list[2], color_list[3], color_list[4]]
+
+        rule_color_list: ColorList = ColorList(5)
+
+        self.left_colors = [rule_color_list[0], rule_color_list[1], rule_color_list[2]]
+        self.right_colors = [rule_color_list[2], rule_color_list[3], rule_color_list[4]]
 
     def __repr__(self) -> str:
-        return f"Rule({self.title!r}, {self.characters!r})"
+        return f"Rule<{self.title!r}, {self.characters!r}>"
 
     # @spy
     def __rich_console__(
@@ -100,7 +97,7 @@ class GradientRule(JupyterMixin):
             return
 
         if isinstance(self.title, Text):
-            self.title_text = self.title
+            self.title_text: Text = self.title
         else:
             self.title_text = console.render_str(self.title, style="rule.text")
 
@@ -167,7 +164,7 @@ class GradientRule(JupyterMixin):
             width (int): Width of the rule.
         """
         self.title_text.truncate(truncate_width, overflow="ellipsis")
-        self.side_width = (width - cell_len(self.title_text.plain)) // 2
+        self.side_width: int = (width - cell_len(self.title_text.plain)) // 2
         if self.gradient:
             rule_text.append(
                 Gradient(
@@ -212,10 +209,7 @@ class GradientRule(JupyterMixin):
     # @spy
     @thickness.setter
     def thickness(self, thickness: Thickness) -> None:
-        if thickness not in ("thin", "medium", "thick"):
-            raise ValueError(
-                f'invalid value for thickness, expected "thin", "medium", "thick" (not {thickness!r})'
-            )
+        assert thickness in ("thin", "medium", "thick"), "Invalid thickness"
         self._thickness = thickness
 
     @property
@@ -224,12 +218,14 @@ class GradientRule(JupyterMixin):
         return self._characters
 
     @characters.setter
-    def characters(self, characters: str) -> None:
+    def characters(self, characters: Optional[str]) -> None:
         """Set or generate the characters to draw the rule."""
-        #
+        # If being set by the user, use the value they provided
         if characters is not None:
             self._characters = characters
             return
+        
+        # If no characters are set, generate them based on the thickness
         else:
             if self.thickness == "thin":
                 self.characters = "─"
@@ -246,13 +242,14 @@ class GradientRule(JupyterMixin):
         from rich.console import Console
 
         try:
-            text = sys.argv[1]
+            sys.argv[1]
         except IndexError:
-            text = "Gradient Rule"
+            pass
         console = Console()
+        console.line(2)
         console.print("[u b #ffffff]Rule Examples[/]", justify="center")
         console.line()
-        console.print("[#ffffff]Gradient Rule without a title ⬇︎[/]", justify="center")
+        console.print("[dim]Gradient Rule without a title ⬇︎[/]", justify="center")
         console.print(GradientRule(thickness="thin"))
         console.line()
         console.print(

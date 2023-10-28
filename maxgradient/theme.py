@@ -8,7 +8,6 @@ from rich.terminal_theme import TerminalTheme
 from rich.theme import Theme
 
 from maxgradient.default_styles import GRADIENT_STYLES, styles_table
-from maxgradient.highlighter import RegexHighlighter
 
 _ColorTuple = Tuple[int, int, int]
 

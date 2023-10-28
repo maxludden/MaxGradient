@@ -57,7 +57,7 @@ class ColorList(list):
     def __call__(self):
         return self.color_list
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int):
         return self.color_list[index]
 
     def __len__(self):
@@ -66,11 +66,11 @@ class ColorList(list):
     def reverse(self):
         self.color_list.reverse()
 
-    def get_first_color(self):
+    def get_first_color(self) -> Color:
         """Return the first color in the list."""
         return self.color_list[0]
 
-    def get_last_color(self):
+    def get_last_color(self) -> Color:
         """Return the last color in the list."""
         return self.color_list[-1]
 
@@ -153,11 +153,11 @@ class TintList(List):
     def reverse(self):
         self.tint_list.reverse()
 
-    def get_first_color(self):
+    def get_first_color(self) -> Color:
         """Return the first color in the list."""
         return self.tint_list[0]
 
-    def get_last_color(self):
+    def get_last_color(self) -> Color:
         """Return the last color in the list."""
         return self.tint_list[-1]
 

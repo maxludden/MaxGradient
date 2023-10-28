@@ -1,13 +1,10 @@
 """Gradient logging module"""
-# pylint: disable=E0401,W0611,C0103,E0611
 from __future__ import annotations
 
 import re
 from datetime import datetime
 from functools import wraps
-from os import environ
 from pathlib import Path
-from sys import stderr, stdout
 from typing import Any, Optional, Self
 
 import loguru
@@ -440,7 +437,8 @@ class Log:
         """Enable logging.
 
         Args:
-            module (str, optional): Module to enable logging for. Defaults to "maxgradient".
+            module (str, optional): The module to enable 
+                logging for. Defaults to "maxgradient".
         """
         self.logger.enable(module)
 
@@ -453,8 +451,10 @@ def watch(
     Args:
         level (str, optional): The level to log to. Defaults to "DEBUG".
         depth (int, optional): The depth to log. Defaults to 1.
-        entry (bool, optional): Whether to log the entry of a function and the arguments. Defaults to True.
-        exit (bool, optional): Whether to log the exit and result of the function. Defaults to True.
+        entry (bool, optional): Whether to log the entry of a function and the
+            arguments. Defaults to True.
+        exit (bool, optional): Whether to log the exit and result of the 
+            function. Defaults to True.
     """
 
     def wrapper(func):

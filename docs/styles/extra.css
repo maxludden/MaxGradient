@@ -35,14 +35,53 @@
   src: url('/Users/maxludden/Library/Fonts/Urbanist-VariableFont_wght.ttf');
 }
 
+@font-face {
+  font-family: 'Urbanist-Thin', sans-serif;
+  src: url('/Users/maxludden/Library/Fonts/Urbanist-Thin.ttf');
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  color: #eeeeee
 }
 
-th, {
+table.params {
+  border-collapse: collapse;
+  border-spacing: 0;
   color: #eeeeee;
-  background: #af00ff;
+  width: 100%;
+  font-family: Urbanist-Black, sans-serif;
+}
+
+th {
+  color: #2D183B;
+  background: #cccccc;
+  font-size: 1.25em;
+  text-align: left;
+  padding: 10px 30px;
+}
+
+table.params td {
+  color: #cccccc;
+  background: #2D183B;
+  font-size: 1em;
+  font-family: "Urbanist", sans-serif;
+  text-align: left;
+  width: 30%;
+  padding: 10px 30px;
+}
+
+table.params th:nth-child(even){
+  width: 30%;
+}
+
+table.params th:nth-child(even) {
+  width: 70%;
+}
+
+tr:nth-child(even) {
+  background: #321744;
 }
 
 .md-typeset .admonition.note,
@@ -159,12 +198,6 @@ th, {
   border-radius: 5px;
 }
 
-.lime {
-  color:#23132E;
-  background: #00ff00;
-  padding: 5px;
-  border-radius: 5px;
-}
 
 .violet {
   color: #eeeeee;
@@ -174,14 +207,9 @@ th, {
 }
 
 .purple {
-  color: #5F00ff;
-  ""
-
-}
-
-.blue {
-  color: #23132E;
-  background: #00aaff;
+  color: #ffffff;
+  background: #5F00ff;
   padding: 5px;
   border-radius: 5px;
 }
+

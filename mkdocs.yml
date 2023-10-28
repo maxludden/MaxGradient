@@ -11,7 +11,7 @@ nav:
           - Gradient: "gradient.md"
           - Color: "color.md"
     - References:
-          - Console: "console_ref.md"
+          - Console: "console.rst"
           - Gradient: "gradient_ref.md"
           - Color: "color_ref.md"
           - Possible Colors: "possible_colors.md"
@@ -19,6 +19,9 @@ nav:
 theme:
     name: material
     logo: img/MaxGradient.svg
+    icon:
+        tag: 
+            arrow: material/arrow-right-circle
     favicon: img/MaxGradient.svg
     features:
         - navigation.instant
@@ -51,6 +54,7 @@ theme:
           toggle:
               icon: material/brightness-4
               name: Switch to system preference
+    
 
 extra_css:
     - "styles/style.css"
@@ -73,3 +77,6 @@ markdown_extensions:
     - pymdownx.snippets
     - pymdownx.superfences
     - pymdownx.details
+    - pymdownx.emoji:
+        emoji_index: !!python/name:material.extensions.emoji.twemoji 
+        emoji_generator: !!python/name:material.extensions.emoji.to_svg

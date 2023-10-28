@@ -119,7 +119,7 @@ class ColorReprHighlighter(RegexHighlighter):
 
 
 if __name__ == "__main__":
-    from maxgradient.console import Console
+    from maxgradient._console import Console
 
     console = Console(highlighter=ColorReprHighlighter())
 
