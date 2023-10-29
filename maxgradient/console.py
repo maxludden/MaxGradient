@@ -609,10 +609,6 @@ def detect_legacy_windows() -> bool:
     return WINDOWS and not get_windows_console_features().vt
 
 
-"""
-This module defines a Console class that provides a high level console interface.
-It allows for customization of various console settings such as color system, terminal control codes, Jupyter rendering, interactive mode, soft wrap, theme, output file, output suppression, terminal dimensions, style, tab size, recording, markup, emoji, highlight, logging, highlighter, legacy Windows mode, safe box, and traceback.
-"""
 class Console:
     """A high level console interface.
 
@@ -2886,10 +2882,12 @@ if __name__ == "__main__":  # pragma: no cover
     console.line()
     console.gradient_rule("Print a Gradient")
     console.line()
-    console.gradient("Minim deserunt ullamco id incididunt eu do ullamco do \
+    console.gradient(
+        "Minim deserunt ullamco id incididunt eu do ullamco do \
 exercitation elit sint est eu ipsum et. Consectetur aliqua occaecat pariatur \
 magna minim sit consequat ea. Excepteur officia et laboris enim nostrud \
 Lorem culpa ea. Occaecat mollit eiusmod adipisicing voluptate ad mollit ex \
 nisi voluptate incididunt pariatur proident elit. Reprehenderit id dolor \
 pariatur ea laborum qui. Velit commodo ad eiusmod Lorem qui do quis pariatur. \
-Quis amet qui Lorem amet magna ut incididunt occaecat deserunt enim.")
+Quis amet qui Lorem amet magna ut incididunt occaecat deserunt enim."
+    )

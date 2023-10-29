@@ -3,10 +3,9 @@
 
 [metadata]
 groups = ["default", "dev"]
-cross_platform = true
-static_urls = false
-lock_version = "4.3"
-content_hash = "sha256:a3b34e6bc1c8d94ce634e69d1b79fa9f6255d5196105f53b40a10445ac40b81c"
+strategy = ["cross_platform"]
+lock_version = "4.4"
+content_hash = "sha256:4b0d347d0057b5d2301625c1ee76f6cf3a7adf76c9dab0731a4f82b90cd2ddc4"
 
 [[package]]
 name = "annotated-types"
@@ -311,6 +310,20 @@ summary = "Extension pack for Python Markdown and MkDocs Material."
 files = [
     {file = "mkdocs_material_extensions-1.2-py3-none-any.whl", hash = "sha256:c767bd6d6305f6420a50f0b541b0c9966d52068839af97029be14443849fb8a1"},
     {file = "mkdocs_material_extensions-1.2.tar.gz", hash = "sha256:27e2d1ed2d031426a6e10d5ea06989d67e90bb02acd588bc5673106b5ee5eedf"},
+]
+
+[[package]]
+name = "mkdocs"
+version = "1.5.3"
+extras = ["all"]
+requires_python = ">=3.7"
+summary = "Project documentation with Markdown."
+dependencies = [
+    "mkdocs==1.5.3",
+]
+files = [
+    {file = "mkdocs-1.5.3-py3-none-any.whl", hash = "sha256:3b3a78e736b31158d64dbb2f8ba29bd46a379d0c6e324c2246c3bc3d2189cfc1"},
+    {file = "mkdocs-1.5.3.tar.gz", hash = "sha256:eb7c99214dcb945313ba30426c2451b735992c73c2e10838f76d09e39ff4d0e2"},
 ]
 
 [[package]]

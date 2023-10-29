@@ -1,7 +1,7 @@
 
 [project]
 name = "maxgradient"
-version = "0.2.2"
+version = "0.2.3"
 description = "MaxGradient automates the printing gradient colored text to the console. It's built upon the great rich library. It contains a Console that can serve as a drop in replacement for rich.rich.Console and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions."
 authors = [
     { name = "Max Ludden", email = "dev@maxludden.com" }
@@ -19,6 +19,7 @@ dependencies = [
     "pydantic>=2.3.0",
     "sh>=2.0.6",
     "mkdocs-material>=9.4.6",
+    "mkdocs[all]>=1.5.3",
 ]
 requires-python = ">=3.11"
 readme = "README.md"

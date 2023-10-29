@@ -11,9 +11,9 @@ nav:
           - Gradient: "gradient.md"
           - Color: "color.md"
     - References:
-          - Console: "console.rst"
-          - Gradient: "gradient_ref.md"
-          - Color: "color_ref.md"
+          - Console Reference: "console_ref.md"
+          - Gradient Reference: "gradient_ref.md"
+          - Color Reference: "color_ref.md"
           - Possible Colors: "possible_colors.md"
 
 theme:

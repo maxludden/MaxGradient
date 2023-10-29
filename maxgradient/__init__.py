@@ -19,4 +19,4 @@ from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.rule import GradientRule
 from maxgradient.theme import GradientTerminalTheme, GradientTheme
 
-__version__ = "0.2.2"
+__version__ = "0.2.3"

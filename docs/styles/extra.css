@@ -170,6 +170,9 @@ tr:nth-child(even) {
   display: table;
 }
 
+.invis {
+  color:#23132E;
+}
 .grey93 {
   color: #23132E;
   background: #eee;

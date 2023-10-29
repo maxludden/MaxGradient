@@ -108,3 +108,21 @@ console.gradient(
 ![Hello, World!](img/gradient_with_color_2.svg)
 
 <!--Result End | 2 -->
+
+## Changelog
+
+### v0.2.3 Completed Docs
+
+- Added more documentation
+- Changed MKDocs theme to Material
+    - Added Material plugins
+    - Added Material python markdown extensions
+    - Added Favicon
+- Added type hints and typeshed
+
+### v0.2.2 Initial Docs
+
+- Added initial documentation
+- Added initial tests
+- Fixed minor bugs including correcting Gradient's style attribute from accepting `Style` to `StyleType`
+- Updated examples and example images
