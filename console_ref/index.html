@@ -24,7 +24,7 @@
     
     
       
-        <title>Console - MaxGradient</title>
+        <title>Console Reference - MaxGradient</title>
       
     
     
@@ -36,6 +36,17 @@
       
 
 
+  
+  
+    
+    
+      
+    
+    
+  
+  
+  <style>.md-tag--arrow{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6v2Z"/></svg>');}</style>
+
     
     
       
@@ -45,8 +56,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Urbanist:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Urbanist";--md-code-font:"Fira Code"}</style>
       
     
     
@@ -85,7 +96,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#console" class="md-skip">
+        <a href="#maxgradientconsoleconsole" class="md-skip">
           Skip to content
         </a>
       
@@ -120,7 +131,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Console
+              Console Reference
             
           </span>
         </div>
@@ -439,15 +450,52 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Console Reference
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Console
+    Console Reference
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initialize" class="md-nav__link">
+    Initialize
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -464,7 +512,7 @@
         
   
   <span class="md-ellipsis">
-    Gradient
+    Gradient Reference
   </span>
   
 
@@ -484,7 +532,7 @@
         
   
   <span class="md-ellipsis">
-    Color
+    Color Reference
   </span>
   
 
@@ -539,283 +587,83 @@
   
 
 
-<h1 id="console">Console<a class="headerlink" href="#console" title="Permanent link">&para;</a></h1>
-<dl class="py class">
-    <dt class="sig sig-object py" id="maxgradient.console.Console">
-        <em class="property">
-            <span class="pre">class</span>
-            <span class="w"></span>
-        </em>
-        <span class="sig-prename descclassname">
-            <span class="pre">maxgradient.console.</span>
-        </span>
-        <span class="sig-name descname">
-            <span class="pre">Console</span>
-        </span>
-        <span class="sig-paren"> (</span>
-        <em class="sig-param">
-            <span class="n">
-                <span class="pre">*</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">color_system='auto'</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">force_terminal=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">force_jupyter=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">force_interactive=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">soft_wrap=False</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">theme=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">stderr=False</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">file=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">quiet=False</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">width=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">height=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">style=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">no_color=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">tab_size=4</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">record=False</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">markup=True</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">emoji=True</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">emoji_variant=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">highlight=True</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">log_time=True</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">log_path=True</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">log_time_format='[%X]'</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">highlighter=None()</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">legacy_windows=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">safe_box=True</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">get_datetime=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">get_time=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">traceback=None</span>
-            </span>
-        </em>, <em class="sig-param">
-            <span class="n">
-                <span class="pre">_environ=None</span>
-            </span>
-        </em>
-        <span class="sig-paren">)</span>
-            <a class="reference internal" href="../_modules/rich/console.html#Console">
-                <span class="viewcode-link">
-                    <span class="pre">[source]</span>
-                </span>
-            </a><a class="headerlink" href="#rich.console.Console" title="Permalink to this definition">¶</a></dt>
-<dd><p>A custom-themed high level interface for the Console class that inherits from rich.console.Console. This class is a singleton which removes the need to pass around a console object or use the `get_console` method.</p>
+<h1 id="maxgradientconsoleconsole">maxgradient.console.Console<a class="headerlink" href="#maxgradientconsoleconsole" title="Permanent link">&para;</a></h1>
+<p>A custom-themed high level interface for the Console class that inherits from MMoMmaxgradient.console.Console. This class is a singleton which removes the need to pass around a console object or use the <code>get_console</code> method.</p>
+<h2 id="initialize">Initialize<a class="headerlink" href="#initialize" title="Permanent link">&para;</a></h2>
+<div class="class-init">
+    <span class="class">class </span><span class="white-mono">Console</span> <span class="pink-brac">(</span><br>
+    <span class="self">&nbsp;&nbsp;&nbsp;&nbsp;self</span>
+    <span class="punc">,</span><br>
+    <span class="pink-brac">&nbsp;&nbsp;&nbsp;&nbsp;*</span>
+    <span class="punc">,</span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;color_system</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><br><span class="class">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Literal<span class="purple-brac">[</span><span class="yellow">"auto"</span>,<span class="yellow"> "standard"</span>,<span class="yellow"> "256"</span>, <span class="yellow">"truecolor"</span>,<span class="yellow"> "windows"</span><span class="purple-brac">]</span><br><span class="blue-brac">&nbsp;&nbsp;&nbsp;&nbsp;]</span><span class="pink-brac"> = <span><span class="yellow">"auto"</span></span></span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;force_terminal</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">bool</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;force_jupyter</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">bool</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;force_interactive</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">bool</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;soft_wrap</span><span class="punc">: </span><span class="type">bool</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;theme</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">Theme</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="class">GradientTheme</span><span class="white-mono">()</span></span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;stderr</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;file</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">IO</span><span class="purple-brac">[</span><span class="class">str</span><span class="purple-brac">]</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="white-mono">stdout</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;quiet</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;width</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">int</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;height</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">int</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;style</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="white-mono">StyleType</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;no_color</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">bool</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;tab_size</span><span class="punc">: </span><span class="class">int</span><span class="pink-brac"> = <span><span class="purple-brac">4</span></span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;record</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;markup</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;emoji</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;emoji_variant</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="white-mono">EmojiVariant</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;highlight</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;log_time</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;log_path</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;log_time_format</span><span class="punc">: </span><span class="class">Union</span><span class="blue-brac">[</span><span class="type">str</span>, <span class="white-mono">FormatTimeCallable</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="yellow">"</span><span class="blue-brac">[</span><span class="none">%X</span><span class="blue-brac">]</span><span class="yellow">"</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;highlighter</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="white-mono">HighlighterType</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span><span class="class">ColorReprHightlighter</span><span class="white-mono">()</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;legacy_windows</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="type">bool</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;safe_box</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;get_datetime</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">Callable</span><span class="purple-brac">[</span><span class="pink-brac">[]</span>, <span class="class">datetime</span><span class="purple-brac">]</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;get_time</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">Callable</span><span class="purple-brac">[</span><span class="pink-brac">[]</span>, <span class="type">float</span><span class="purple-brac">]</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;traceback</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;traceback</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">True</span><span class="punc">,<br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;_environ</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">Mapping</span><span class="purple-brac">[</span><span class="type">str</span>, <span class="type">str</span><span class="purple-brac">]</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span>) -> </span><span class="none">None</span><span class="punc">: </span><br>
+</div>
+
+<dd><p>A high level console interface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd">
-    <ul class="simple">
-        <li><p><strong>color_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) –
-        The color system supported by your terminal. Valid values are:
-            <ul>
-                <li><code class="docutils literal notranslate"><span class="pre">"auto",</span></code></li>
-                <li><code class="docutils literal notranslate"><span class="pre">"standard",</span></code></li>
-                <li><code class="docutils literal notranslate"><span class="pre">"256",</span></code></li>
-                <li><code class="docutils literal notranslate"><span class="pre">"truecolor",</span></code></li>
-            </ul>
-        <div>Leave as <pre style="display:inline;">"auto"</pre> to autodetect.</em></p>
-        </li>
-        <li>
-            <p>
-                <strong>force_terminal</strong>
-                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em>
-                    <em>, </em>
-                    <em>optional</em>) – Enable/disable terminal control codes, or None to auto-detect terminal. Defaults to None.
-            </p>
-        </li><li>
-            <p>
-                <strong>force_jupyter</strong>
-                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable Jupyter rendering, or None to auto-detect Jupyter. Defaults to None.
-            </p>
-        </li><li>
-            <p>
-                <strong>force_interactive</strong>
-                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable interactive mode, or None to auto detect. Defaults to None.
-            </p>
-        </li><li>
-            <p>
-                <strong>soft_wrap</strong>
-                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Set soft wrap default on print method. Defaults to False.
-            </p>
-        </li><li>
-            <p>
-                <strong>theme</strong>
-                    (<a class="reference internal" href="theme.html#maxgradient.theme.Theme" title="rich.theme.Theme"><em>Theme</em></a><em>, </em><em>optional</em>) – An optional style theme object, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for default theme, GradientTheme()
-            </p>
-        <li><li>
-            <p>
-                <strong>stderr</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Use stderr rather than stdout if `file`</span></code> is not specified. Defaults to False.
-            </p>
-        </li><li>
-            <p>
-                <strong>file</strong>
-                    (<em>IO</em><em>, </em><em>optional</em>) – A file object where the console should write to. Defaults to stdout.
-            </p>
-        </li><li>
-            <p>
-                <strong>quiet</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>Optional</em>) – Boolean to suppress all output. Defaults to False.
-            </p>
-        </li><li>
-            <p>
-                <strong>width</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The width of the terminal. Leave as default to auto-detect width.
-            </p>
-        </li><li>
-            <p>
-                <strong>height</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The height of the terminal. Leave as default to auto-detect height.
-            </p>
-        </li><li>
-            <p>
-                <strong>style</strong>
-                    (<em>StyleType</em><em>, </em><em>optional</em>) – Style to apply to all output, or None for no style. Defaults to None.
-            </p>
-        </li><li>
-            <p>
-                <strong>no_color</strong>
-                    (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enabled no color mode, or None to auto detect. Defaults to None.
-                    </p>
-        </li><li>
-            <p>
-                <strong>tab_size</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of spaces used to replace a tab character. Defaults to 4.</p>
-        </li><li>
-            <p>
-                <strong>record</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable recording of terminal output, required to call <a class="reference internal" href="#maxgradient.console.Console.export_html" title="maxgradient.console.Console.export_html">export_html()</a>, <a class="reference internal" href="#rich.console.Console.export_svg" title="rich.console.Console.export_svg">export_svg()</a>, and <a class="reference internal" href="#rich.console.Console.export_text" title="rich.console.Console.export_text">export_text()</a>. Defaults to False.</p>
-        </li><li>
-            <p>
-                <strong>markup</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable <a class="reference internal" href="../markup.html#console-markup"><span class="std std-ref">Console Markup</span></a>. Defaults to True.</p>
-        </li><li>
-            <p>
-                <strong>emoji</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable emoji code. Defaults to True.</p>
-        </li><li>
-            <p>
-                <strong>emoji_variant</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Optional emoji variant, either “text” or “emoji”. Defaults to None.</p>
-        </li><li>
-            <p>
-                <strong>highlight</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable automatic highlighting. Defaults to True.</p>
-        </li><li>
-            <p>
-                <strong>log_time</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable logging of time by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log">log()</a> methods. Defaults to True.</p>
-        </li><li>
-            <p>
-                <strong>log_path</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable the logging of the caller by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log">log()</a>. Defaults to True.</p>
-        </li><li>
-            <p>
-                <strong>log_time_format</strong>
-                    (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>TimeFormatterCallable</em><em>]</em><em>, </em><em>optional</em>) – If <span class="pre">`log_time`</span> is enabled, either string for strftime or callable that formats the time. Defaults to “[%X] “.</p>
-        </li><li>
-            <p>
-                <strong>highlighter</strong>
-                    (<em>HighlighterType</em><em>, </em><em>optional</em>) – Default highlighter.</p>
-        </li><li>
-            <p>
-                <strong>legacy_windows</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable legacy Windows mode, or `None` to auto detect. Defaults to `None`.</p>
-        </li><li>
-            <p>
-                <strong>safe_box</strong>
-                    (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Restrict box options that don’t render on legacy Windows.</p>
-        </li><li>
-            <p>
-                <strong>get_datetime</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>datetime</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time as a datetime.datetime object (used by Console.log), or None for datetime.now.</p>
-        </li><li>
-            <p>
-                <strong>get_time</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>time</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time in seconds, default uses time.monotonic.</p>
-        </li><li>
-            <p>
-                <strong>_environ</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p>
-        </li>
-    </ul>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – The color system supported by your terminal,
+either <code class="docutils literal notranslate"><span class="pre">"standard"</span></code>, <code class="docutils literal notranslate"><span class="pre">"256"</span></code> or <code class="docutils literal notranslate"><span class="pre">"truecolor"</span></code>. Leave as <code class="docutils literal notranslate"><span class="pre">"auto"</span></code> to autodetect.</p></li>
+<li><p><strong>force_terminal</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable terminal control codes, or None to auto-detect terminal. Defaults to None.</p></li>
+<li><p><strong>force_jupyter</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable Jupyter rendering, or None to auto-detect Jupyter. Defaults to None.</p></li>
+<li><p><strong>force_interactive</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enable/disable interactive mode, or None to auto detect. Defaults to None.</p></li>
+<li><p><strong>soft_wrap</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Set soft wrap default on print method. Defaults to False.</p></li>
+<li><p><strong>theme</strong> (<a class="reference internal" href="theme.html#rich.theme.Theme" title="rich.theme.Theme"><em>Theme</em></a><em>, </em><em>optional</em>) – An optional style theme object, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for default theme.</p></li>
+<li><p><strong>stderr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Use stderr rather than stdout if <code class="docutils literal notranslate"><span class="pre">file</span></code> is not specified. Defaults to False.</p></li>
+<li><p><strong>file</strong> (<em>IO</em><em>, </em><em>optional</em>) – A file object where the console should write to. Defaults to stdout.</p></li>
+<li><p><strong>quiet</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>Optional</em>) – Boolean to suppress all output. Defaults to False.</p></li>
+<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The width of the terminal. Leave as default to auto-detect width.</p></li>
+<li><p><strong>height</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – The height of the terminal. Leave as default to auto-detect height.</p></li>
+<li><p><strong>style</strong> (<em>StyleType</em><em>, </em><em>optional</em>) – Style to apply to all output, or None for no style. Defaults to None.</p></li>
+<li><p><strong>no_color</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>]</em><em>, </em><em>optional</em>) – Enabled no color mode, or None to auto detect. Defaults to None.</p></li>
+<li><p><strong>tab_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of spaces used to replace a tab character. Defaults to 8.</p></li>
+<li><p><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable recording of terminal output,
+required to call <a class="reference internal" href="#rich.console.Console.export_html" title="rich.console.Console.export_html"><code class="xref py py-meth docutils literal notranslate"><span class="pre">export_html()</span></code></a>, <a class="reference internal" href="#rich.console.Console.export_svg" title="rich.console.Console.export_svg"><code class="xref py py-meth docutils literal notranslate"><span class="pre">export_svg()</span></code></a>, and <a class="reference internal" href="#rich.console.Console.export_text" title="rich.console.Console.export_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">export_text()</span></code></a>. Defaults to False.</p></li>
+<li><p><strong>markup</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable <a class="reference internal" href="../markup.html#console-markup"><span class="std std-ref">Console Markup</span></a>. Defaults to True.</p></li>
+<li><p><strong>emoji</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable emoji code. Defaults to True.</p></li>
+<li><p><strong>emoji_variant</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Optional emoji variant, either “text” or “emoji”. Defaults to None.</p></li>
+<li><p><strong>highlight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable automatic highlighting. Defaults to True.</p></li>
+<li><p><strong>log_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable logging of time by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log"><code class="xref py py-meth docutils literal notranslate"><span class="pre">log()</span></code></a> methods. Defaults to True.</p></li>
+<li><p><strong>log_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Boolean to enable the logging of the caller by <a class="reference internal" href="#rich.console.Console.log" title="rich.console.Console.log"><code class="xref py py-meth docutils literal notranslate"><span class="pre">log()</span></code></a>. Defaults to True.</p></li>
+<li><p><strong>log_time_format</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>TimeFormatterCallable</em><em>]</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">log_time</span></code> is enabled, either string for strftime or callable that formats the time. Defaults to “[%X] “.</p></li>
+<li><p><strong>highlighter</strong> (<em>HighlighterType</em><em>, </em><em>optional</em>) – Default highlighter.</p></li>
+<li><p><strong>legacy_windows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Enable legacy Windows mode, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to auto detect. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>safe_box</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Restrict box options that don’t render on legacy Windows.</p></li>
+<li><p><strong>get_datetime</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>datetime</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time as a datetime.datetime object (used by Console.log),
+or None for datetime.now.</p></li>
+<li><p><strong>get_time</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>time</em><em>]</em><em>, </em><em>optional</em>) – Callable that gets the current time in seconds, default uses time.monotonic.</p></li>
+<li><p><strong>_environ</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>]</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
@@ -981,7 +829,7 @@ Defaults to False.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rich.console.Console.export_svg">
-<span class="sig-name descname"><span class="pre">export_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Rich'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;svg</span> <span class="pre">class="rich-terminal"</span> <span class="pre">viewBox="0</span> <span class="pre">0</span> <span class="pre">{width}</span> <span class="pre">{height}"</span> <span class="pre">xmlns="http://www.w3.org/2000/svg"&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;!--</span> <span class="pre">Generated</span> <span class="pre">with</span> <span class="pre">Rich</span> <span class="pre">https://www.textualize.io</span> <span class="pre">--&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;style&gt;\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">@font-face</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">"Fira</span> <span class="pre">Code";\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">src:</span> <span class="pre">local("FiraCode-Regular"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Regular.woff2")</span> <span class="pre">format("woff2"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Regular.woff")</span> <span class="pre">format("woff");\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-style:</span> <span class="pre">normal;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-weight:</span> <span class="pre">400;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">@font-face</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">"Fira</span> <span class="pre">Code";\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">src:</span> <span class="pre">local("FiraCode-Bold"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Bold.woff2")</span> <span class="pre">format("woff2"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Bold.woff")</span> <span class="pre">format("woff");\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-style:</span> <span class="pre">bold;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-weight:</span> <span class="pre">700;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">.{unique_id}-matrix</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">Fira</span> <span class="pre">Code,</span> <span class="pre">monospace;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-size:</span> <span class="pre">{char_height}px;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">line-height:</span> <span class="pre">{line_height}px;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-variant-east-asian:</span> <span class="pre">full-width;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">.{unique_id}-title</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-size:</span> <span class="pre">18px;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-weight:</span> <span class="pre">bold;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">arial;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{styles}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/style&gt;\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;defs&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;clipPath</span> <span class="pre">id="{unique_id}-clip-terminal"&gt;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">&lt;rect</span> <span class="pre">x="0"</span> <span class="pre">y="0"</span> <span class="pre">width="{terminal_width}"</span> <span class="pre">height="{terminal_height}"</span> <span class="pre">/&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/clipPath&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{lines}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/defs&gt;\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{chrome}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;g</span> <span class="pre">transform="translate({terminal_x},</span> <span class="pre">{terminal_y})"</span> <span class="pre">clip-path="url(#{unique_id}-clip-terminal)"&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{backgrounds}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;g</span> <span class="pre">class="{unique_id}-matrix"&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{matrix}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/g&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/g&gt;\n&lt;/svg&gt;\n'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_aspect_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.61</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.export_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.export_svg" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">export_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaxGradient'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">svg</span><span class="pre"></span>, <span class="pre">font_aspect_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.61</span>,<br></span></em><em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.export_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.export_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an SVG from the console contents (requires record=True in Console constructor).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1520,7 +1368,7 @@ you print or log a string.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rich.console.Console.save_html">
-<span class="sig-name descname"><span class="pre">save_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;!DOCTYPE</span> <span class="pre">html&gt;\n&lt;html&gt;\n&lt;head&gt;\n&lt;meta</span> <span class="pre">charset="UTF-8"&gt;\n&lt;style&gt;\n{stylesheet}\nbody</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">color:</span> <span class="pre">{foreground};\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">background-color:</span> <span class="pre">{background};\n}}\n&lt;/style&gt;\n&lt;/head&gt;\n&lt;body&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;pre</span> <span class="pre">style="font-family:Menlo,\'DejaVu</span> <span class="pre">Sans</span> <span class="pre">Mono\',consolas,\'Courier</span> <span class="pre">New\',monospace"&gt;&lt;code&gt;{code}&lt;/code&gt;&lt;/pre&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inline_styles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.save_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.save_html" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_format</span></span><span class="o"><span class="pre">=</span></span><span class="pre">inline_styles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.save_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.save_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate HTML from console contents and write to a file (requires record=True argument in constructor).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1543,7 +1391,7 @@ Defaults to False.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rich.console.Console.save_svg">
-<span class="sig-name descname"><span class="pre">save_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Rich'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;svg</span> <span class="pre">class="rich-terminal"</span> <span class="pre">viewBox="0</span> <span class="pre">0</span> <span class="pre">{width}</span> <span class="pre">{height}"</span> <span class="pre">xmlns="http://www.w3.org/2000/svg"&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;!--</span> <span class="pre">Generated</span> <span class="pre">with</span> <span class="pre">Rich</span> <span class="pre">https://www.textualize.io</span> <span class="pre">--&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;style&gt;\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">@font-face</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">"Fira</span> <span class="pre">Code";\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">src:</span> <span class="pre">local("FiraCode-Regular"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Regular.woff2")</span> <span class="pre">format("woff2"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Regular.woff")</span> <span class="pre">format("woff");\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-style:</span> <span class="pre">normal;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-weight:</span> <span class="pre">400;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">@font-face</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">"Fira</span> <span class="pre">Code";\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">src:</span> <span class="pre">local("FiraCode-Bold"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Bold.woff2")</span> <span class="pre">format("woff2"),\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Bold.woff")</span> <span class="pre">format("woff");\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-style:</span> <span class="pre">bold;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-weight:</span> <span class="pre">700;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">.{unique_id}-matrix</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">Fira</span> <span class="pre">Code,</span> <span class="pre">monospace;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-size:</span> <span class="pre">{char_height}px;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">line-height:</span> <span class="pre">{line_height}px;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-variant-east-asian:</span> <span class="pre">full-width;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">.{unique_id}-title</span> <span class="pre">{{\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-size:</span> <span class="pre">18px;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-weight:</span> <span class="pre">bold;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">font-family:</span> <span class="pre">arial;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">}}\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{styles}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/style&gt;\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;defs&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;clipPath</span> <span class="pre">id="{unique_id}-clip-terminal"&gt;\n</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">&lt;rect</span> <span class="pre">x="0"</span> <span class="pre">y="0"</span> <span class="pre">width="{terminal_width}"</span> <span class="pre">height="{terminal_height}"</span> <span class="pre">/&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/clipPath&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{lines}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/defs&gt;\n\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{chrome}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;g</span> <span class="pre">transform="translate({terminal_x},</span> <span class="pre">{terminal_y})"</span> <span class="pre">clip-path="url(#{unique_id}-clip-terminal)"&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{backgrounds}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;g</span> <span class="pre">class="{unique_id}-matrix"&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">{matrix}\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/g&gt;\n</span>&nbsp;&nbsp;&nbsp; <span class="pre">&lt;/g&gt;\n&lt;/svg&gt;\n'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_aspect_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.61</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.save_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.save_svg" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Rich'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_format</span>=svg, <span class="pre">font_aspect_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.61</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.save_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.save_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an SVG file from the console contents (requires record=True in Console constructor).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1807,8 +1655,66 @@ since the feature may be unsupported/disabled in some terminals.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="rich.console.Console.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren"> (</span><em class="sig-param"><span class="n"><span class="pre"> text="", colors=None, rainbow=False, invert=False, hues=3, color_sample=False, style=Style.null(), justify=None, overflow=None, end="\n", no_wrap=None, tab_size=4, spans=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.set_live"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.set_live" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints gradient text to the console.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd">
+    <p><strong>text</strong> (<em><a href="https://docs.python.org/3/library/stdtypes.html#str" alt="str">str</a>|<a href="https://github.com/Textualize/rich/blob/master/rich/text.py" alt="rich.text.Text">rich.text.Text</a></em></a>) – The text to print in gradient color.</p>
+    <p><strong>colors</strong> (<em>List[<a href="https://GitHub.com/maxludden/maxgradient/color#Color" alt="maxgraident.color.Color">Color</a>|<a href="https://docs.python.org/3/library/stdtypes.html#str" alt="str">str</a>|Tuple]|<a href="https://docs.python.org/3/library/stdtypes.html#str" alt="str">str</a></em>) - The colors from which to generate the gradient.</p>
+    <p><strong>rainbow</strong> (<em><a href="https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not" alt="bool">bool</a></em>) - Whether to print a full spectrum gradient or not. Defaults to False.</p>
+    <p><strong>invert</strong> (<em><a href="https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not" alt="bool">bool</a></em>) - Whenter to invert the order of entered colors or not. Defaults to False.</p>
+    <p><strong>hues</strong> (<em><a href="https://docs.python.org/3.9/library/typing.html#typing.Optional" alt="Optional">Optional</a>[<a href="https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex" alt="int">int</a>]</em>) - The number of colors from which to generate a random gradient. Defualts to 3.</p>
+    <p><strong>color_sample</strong> (<em><a href="https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not" alt="bool">bool</a></em>) - Whether to print blocks of color rather than letters. Defaults to False.</p>
+    <p><strong>style</strong> (<em><a href="https://github.com/Textualize/rich/blob/01d01ed5ee322f65ef5c333955570552c68a40d8/rich/style.py#L31" alt="StyleType">StyleType</a></em>) - The style to print the gradient in. Valid styles are <span class="yellow">"bold", "italic", </span>or <span class="yellow">"underline"</span></p>
+    <p><strong>justify</strong> (<em><a href="https://github.com/Textualize/rich/blob/01d01ed5ee322f65ef5c333955570552c68a40d8/rich/console.py#L82C1-L82C15" alt="JustifyMethod">JustifyMethod</a></em>) - How to justify the gradient. Defualts to 'default'.</p>
+    <p><strong>overflow</strong> (<em><a href="https://github.com/Textualize/rich/blob/01d01ed5ee322f65ef5c333955570552c68a40d8/rich/console.py#L83C2-L83C2" alt="OverflowMethod">OverflowMethod</a></em>) - How to handle text that overlows the given space. Defaults to 'default'</p>
+    <p><strong>end</strong> (<em><a href="https://docs.python.org/3.9/library/typing.html#typing.Optional" alt="Optional">Optional</a>[<a href="https://docs.python.org/3/library/stdtypes.html#str" alt="str">str</a>]</em>) - The character to end the gradient with. Defaults to "\n".</p>
+    <p><strong>no_wrap</strong> (<em><a href="https://docs.python.org/3.9/library/typing.html#typing.Optional" alt="Optional">Optional</a>[<a href="https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not" alt="bool">bool</a>]</em>) - Disable text wrapping, or None for default. Defaults to None.</p>
+    <p><strong>tab_size</strong> (<em><a href="https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex" alt="int">int</a></em>) - Number of spaces per tab, or `None` to use `console.tab_size`. Defaults to 4.</p>
+    <p><strong>spans</strong> (<em><a href="https://docs.python.org/3.9/library/typing.html#typing.List" alt="List">List</a>[<a href="https://github.com/Textualize/rich/blob/01d01ed5ee322f65ef5c333955570552c68a40d8/rich/text.py#L46" alt="Span">Span</a>]</em>) - A list of predefinded style spans. Defaults to None.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong><a href="https://github.com/Textualize/rich/blob/01d01ed5ee322f65ef5c333955570552c68a40d8/rich/color.py#L288" alt="ColorParseError">ColorParseError</a></strong> – If this Console recieves an invalid color from which to create a gradient, this error is raised.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
-<p>```</p>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="maxgradient.console.Console.gradient_rule">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren"> (</span><em class="sig-param">< class="n"><span class="pre"> title="", gradient=True, thickness="medium", end="\n", align="center"</span></em><span class="sig-paren">)</span><a class="reference internal" href="https://github.com/maxludden/MaxGradient/blob/6b6075e97edd5dcd76972e906e797f878f0b2672/maxgradient/gradient.py#L45"><span class="viewcode-link"><a href="https://github.com/maxludden/MaxGradient/blob/6b6075e97edd5dcd76972e906e797f878f0b2672/maxgradient/rule.py#L21"><span class="pre">[source]</span></a><a class="headerlink" href="https://github.com/maxludden/MaxGradient/blob/6b6075e97edd5dcd76972e906e797f878f0b2672/maxgradient/rule.py#L21" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints rule to the console in gradient color. The rule may have an optional title that may be aligned to the left of the rule, the right of the rule, or the center of the rule. The horizontal rule's thickness is also variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd">
+    <p><strong>title</strong> (<em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><em>Union</em></a><em>[</em><a href="https://docs.python.org/3/library/stdtypes.html#str" alt="str">str</a>, <a href="https://github.com/Textualize/rich/blob/master/rich/text.py" alt="rich.text.Text">rich.text.Text</a></em></a>) – The optional title of the rule.</p>
+    <p><strong>gradient</strong> (<em><a href="https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not" alt="bool">bool</a></em>) - Whether to print the rule to the console in gradient color or not. Defaults to True.</p>
+    <p><strong>thickness</strong> (<em><a href="https://github.com/maxludden/MaxGradient/blob/6b6075e97edd5dcd76972e906e797f878f0b2672/maxgradient/rule.py#L15" alt="bool">Thickness</a></em>) - The thickness of the rule. Valid values are:<br><ul>
+        <li><span class="yellow">"thin"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;────────</li>
+        <li><span class="yellow">"medium"</span>&nbsp;&nbsp;&nbsp;&nbsp;━━━━━━━━</li>
+        <li><span class="yellow">"thick"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;████████</li>
+    </ul>
+    <p><strong>end</strong> (<em><a href="https://docs.python.org/3/library/stdtypes.html#str" alt="str">str</a></em>) - Character at end of Rule. defaults to <span class="yellow">"</span><span class="pink-brac">\n</span><span class="yellow">"</span></span>.</p>
+    <p><strong>align</strong> (<em><a href="https://github.com/Textualize/rich/blob/01d01ed5ee322f65ef5c333955570552c68a40d8/rich/align.py#L19" alt="AlignMethod">AlignMethod</a></em>) - How to align the title of the rule, valid values are:
+    <ul>
+        <li><span class="yellow">"left"</span></li>
+        <li><span class="yellow">"center"</span></li>
+        <li><span class="yellow">"right"</span></li>
+    </ul>&nbsp;&nbsp;&nbsp;&nbsp;Defaults to <span class="yellow">"center"</span>.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong><a href="https://github.com/Textualize/rich/blob/01d01ed5ee322f65ef5c333955570552c68a40d8/rich/color.py#L288" alt="ColorParseError">ValueError</a></strong> – If the gradient rule is supplied an invalid value for thickness.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 
 

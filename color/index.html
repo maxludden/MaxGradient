@@ -36,6 +36,17 @@
       
 
 
+  
+  
+    
+    
+      
+    
+    
+  
+  
+  <style>.md-tag--arrow{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6v2Z"/></svg>');}</style>
+
     
     
       
@@ -45,8 +56,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Urbanist:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Urbanist";--md-code-font:"Fira Code"}</style>
       
     
     
@@ -433,13 +444,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#possible-colors" class="md-nav__link">
-    Possible Colors
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -502,7 +506,7 @@
         
   
   <span class="md-ellipsis">
-    Console
+    Console Reference
   </span>
   
 
@@ -522,7 +526,7 @@
         
   
   <span class="md-ellipsis">
-    Gradient
+    Gradient Reference
   </span>
   
 
@@ -542,7 +546,7 @@
         
   
   <span class="md-ellipsis">
-    Color
+    Color Reference
   </span>
   
 
@@ -607,18 +611,18 @@
 </ul>
 <p>A color can be represented as a string in numerous ways. The easiest is the name of the color:</p>
 <ul>
-<li><span style="color:#f00;">red</span></li>
-<li><span style="color:#f0f;">magenta</span></li>
-<li><span style="color:#00f;">blue</span></li>
+<li><span class="red">red</span></li>
+<li><span class="magenta">magenta</span></li>
+<li><span class="blue">blue</span></li>
 </ul>
 <p>You can also use the hex code of the color:</p>
 <ul>
-<li><span style="color:#f00;">#ff0000</span> (six digit hex code)</li>
-<li><span style="color:#f0f;">#f0f</span> (three digit hex code)</li>
+<li><span class="red">#ff0000</span> (six digit hex code)</li>
+<li><span class="magenta">#F0F</span> (three digit hex code)</li>
 </ul>
 <p>Or the rgb values of the color:</p>
 <ul>
-<li><span style="color:#fff;background:#050;">rgb(0,85,0)</span> (with <code>rgb</code> prefix)</li>
+<li><span class="light-green">rgb(170,255,170)</span> (with <code>rgb</code> prefix)</li>
 <li><span style="color:#0f0;">(0, 255, 0)</span> (<code>rgb</code> tuple without prefix)</li>
 </ul>
 <p>In addition to common names, MaxGradient also supports the entire rich color standard color palette. But we didn't stop there, in addition to rich's standard library, MaxGradient also supports the entire X11 color palette. That's over 200 colors!</p>
@@ -646,11 +650,15 @@
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Color('DarkOrchid')" src="../img/color_darkorchid.svg" /></p>
-<h2 id="possible-colors">Possible Colors<a class="headerlink" href="#possible-colors" title="Permanent link">&para;</a></h2>
-<p>To view all of the available colors run the following command in the console:</p>
+<!-- 
+## Possible Colors
+
+To view all of the available colors run the following command in the console:
+
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>maxgradient.color
 </span></code></pre></div>
-<p><img alt="Gradients are cool!" src="../img/available_colors.svg" /></p>
+
+![Gradients are cool!](img/available_colors.svg) -->
 
 
 

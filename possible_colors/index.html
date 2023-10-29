@@ -34,6 +34,17 @@
       
 
 
+  
+  
+    
+    
+      
+    
+    
+  
+  
+  <style>.md-tag--arrow{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6v2Z"/></svg>');}</style>
+
     
     
       
@@ -43,8 +54,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Urbanist:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Urbanist";--md-code-font:"Fira Code"}</style>
       
     
     
@@ -432,7 +443,7 @@
         
   
   <span class="md-ellipsis">
-    Console
+    Console Reference
   </span>
   
 
@@ -452,7 +463,7 @@
         
   
   <span class="md-ellipsis">
-    Gradient
+    Gradient Reference
   </span>
   
 
@@ -472,7 +483,7 @@
         
   
   <span class="md-ellipsis">
-    Color
+    Color Reference
   </span>
   
 
@@ -547,6 +558,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#x11-colors" class="md-nav__link">
+    X11 Colors
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -583,17 +601,57 @@
 
 <h1 id="possible-colors">Possible Colors<a class="headerlink" href="#possible-colors" title="Permanent link">&para;</a></h1>
 <h2 id="gradient-colors">Gradient Colors<a class="headerlink" href="#gradient-colors" title="Permanent link">&para;</a></h2>
-<details class="note gradient colors" open="open">
-<summary>Note</summary>
-<p>When not provided a list of colors, MaxGradient will generate a random gradient from the following colors:</p>
-</details>
 <p><img alt="Gradient Colors" src="../img/gc_color_table.svg" /></p>
+<hr />
 <h2 id="rich-standard-colors">Rich Standard Colors<a href="https://rich.readthedocs.io/en/stable/appendix/colors.html"></a><a class="headerlink" href="#rich-standard-colors" title="Permanent link">&para;</a></h2>
-<details class="note rich standard colors" open="open">
-<summary>Note</summary>
-<p>MaxGradient supports all of the rich library's standard color names as well as the their hex color codes, RGB color codes, as well as RGB color tuples.</p>
-</details>
+<p>MaxGradient supports all of the Rich Standard Colors:</p>
 <p><a href="https://rich.readthedocs.io/en/stable/appendix/colors.html"><img alt="Rich Standard Colors" src="../img/rich_color_table.svg" /></a></p>
+<details class="note">
+<summary>Rich Color Accepted Formats</summary>
+<p>Can parse rich colors in multiple formats:</p>
+<ul>
+<li>Name: Case insensitive.</li>
+<li>HEX: Case insensitive.</li>
+<li>RGB: With or without the <code>rgb</code> prefix.</li>
+<li>RGB: With or without spaces between the numbers.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Type</th>
+<th style="text-align: left;">Example 1</th>
+<th style="text-align: left;">Example 2</th>
+<th style="text-align: left;">Example 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Name</td>
+<td style="text-align: left;"><span class = "grey93">grey93</span>  (case insensitive)</td>
+<td style="text-align: left;"><span class = "salmon1">Salmon1</span></td>
+<td style="text-align: left;"><span class = "spring_green1">Spring-green1</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">Hex</td>
+<td style="text-align: left;"><span class = "grey93">#eeeeee</span>  (case insensitive)</td>
+<td style="text-align: left;"><span class  = "salmon1">#FF875F</span></td>
+<td style="text-align: left;"><span class  = "spring_green1">#00ff87</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">RGB</td>
+<td style="text-align: left;"><span class = "grey93">(238,238,238)</span> (without 'rgb')</td>
+<td style="text-align: left;"><span class = "salmon1">rgb(255,135,95)</span> (with 'rgb')</td>
+<td style="text-align: left;"><span class = "spring_green1">rgb(0, 255, 135)</span>  (with spaces)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<h2 id="x11-colors">X11 Colors<a href="https://en.wikipedia.org/wiki/X11_color_names"></a><a class="headerlink" href="#x11-colors" title="Permanent link">&para;</a></h2>
+<p>MaxGradient also supports all of the X11 color names as well as the their hex color codes, RGB color codes, as well as RGB color tuples.</p>
+<p><a href="https://en.wikipedia.org/wiki/X11_color_names"><img alt="X11 Colors" src="../img/x11_color_table.svg" /></a></p>
+<p>Here's some text with an inline admonition to the left:</p>
+<p>!!! note class="left"
+This is the text that appears to the left of the admonition.</p>
 
 
 

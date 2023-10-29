@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Urbanist:wght@100;200;400&display=swap');
+
 .class-type {
   color: #7fd6e8;
   font-family: "Fira Code", monospace;
@@ -8,4 +10,228 @@
 }
 .banner {
   width: 100%;
+}
+
+#pdm-recommended,
+#console,
+#maxgradientconsoleconsole,
+#maxgradientgradient,
+#maxgradientcolorcolor-reference,
+#maxgradientcolor,
+#possible-colors {
+  font-weight: 400;
+  font-family: "Urbanist", monospace;
+  background: linear-gradient(
+    to right,
+    #ff00ff 20%,
+    #af00ff 30%,
+    #5f00ff 40%,
+    #5f00ff 60%,
+    #af00ff 70%,
+    #ff00ff 80%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 1s linear infinite;
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+}
+#gradient-init {
+  margin: auto;
+}
+
+#gradient-reference{
+  font-weight: 400;
+  font-family: "Urbanist", sans-serif;
+  text-decoration: underline;
+  background: linear-gradient(
+    to right,
+    #ff00ff 10%,
+    #5f00ff 15%,
+    #08f 20%,
+    #0ff 25%,
+    #0f0 30%,
+    #ff0 35%,
+    #f80 40%,
+    #f00 45%,
+    #f00 55%,
+    #f80 60%,
+    #ff0 65%,
+    #0f0 70%,
+    #0ff 75%,
+    #08f 80%,
+    #5f00ff 85%,
+    #ff00ff 90%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 10ms linear infinite;
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+}
+p.attr-line {
+  line-height: 0vw;
+}
+.red {
+  padding: 5px;
+  color: #23132E;
+  background: #ff0000;
+  border-radius: 10px;
+}
+
+.magenta {
+  padding: 5px;
+  color: #23132E;
+  background: #ff00ff;
+  border-radius: 10px;
+}
+
+.blue {
+  padding: 5px;
+  color: #23132E;
+  background: #00aaff;
+  border-radius: 10px;
+}
+
+.light-green {
+  padding: 5px;
+  color: #23132E;
+  background: #aaffaa;
+  border-radius: 10px;
+}
+
+.lime {
+  padding: 5px;
+  color: #23132E;
+  background: #00ff00;
+  border-radius: 10px;
+}
+
+.class-init {
+  padding: 25px;
+  background: #47265d;
+  color: #af99ff;
+}
+
+.class {
+  color: #8BE9FD;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
+.attr {
+  color: #50FA7B;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.white-mono {
+  color: #f8f8f2;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
+.pink-brac {
+  color: #ff79c6;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+.blue-brac {
+  color: #31C2F2;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+.purple-brac {
+  color: #8080FF;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+.self {
+  color: #c779ff;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.punc {
+  color: #eeeeee;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
+.type {
+  color: #aaffaa;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
+.yellow {
+  color: #f5ffaa;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
+.lime-text {
+  color: #00ff00;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
+.none {
+  color: #c779ff;
+  font-family: "Fira Code", monospace;
+  font-weight: 400;
+  font-style: none;
+}
+
+.rainbow-wipe-mono {
+  text-align: center;
+  font-size: large;
+  font-weight: 700;
+  font-family: "Fira Code", monospace;
+  background: linear-gradient(
+    to right,
+    #f0f 10%,
+    #50f 15%,
+    #08f 20%,
+    #0ff 25%,
+    #0f0 30%,
+    #ff0 35%,
+    #f80 40%,
+    #f00 45%,
+    #f00 55%,
+    #f80 60%,
+    #ff0 65%,
+    #0f0 70%,
+    #0ff 75%,
+    #08f 80%,
+    #50f 85%,
+    #f0f 90%
+  );
+  background-size: 200% auto;
+
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: shine 1s linear infinite;
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
 }

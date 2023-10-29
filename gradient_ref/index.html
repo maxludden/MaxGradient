@@ -24,7 +24,7 @@
     
     
       
-        <title>Gradient - MaxGradient</title>
+        <title>Gradient Reference - MaxGradient</title>
       
     
     
@@ -36,6 +36,17 @@
       
 
 
+  
+  
+    
+    
+      
+    
+    
+  
+  
+  <style>.md-tag--arrow{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6v2Z"/></svg>');}</style>
+
     
     
       
@@ -45,8 +56,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Urbanist:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Urbanist";--md-code-font:"Fira Code"}</style>
       
     
     
@@ -120,7 +131,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Gradient
+              Gradient Reference
             
           </span>
         </div>
@@ -434,7 +445,7 @@
         
   
   <span class="md-ellipsis">
-    Console
+    Console Reference
   </span>
   
 
@@ -459,15 +470,79 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Gradient Reference
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Gradient
+    Gradient Reference
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initialize" class="md-nav__link">
+    Initialize
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradientas_text" class="md-nav__link">
+    Gradient.as_text()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -484,7 +559,7 @@
         
   
   <span class="md-ellipsis">
-    Color
+    Color Reference
   </span>
   
 
@@ -539,27 +614,97 @@
   
 
 
-<h1 id="gradient-reference"><span class="cool-wipe-header">Gradient Reference</span><a class="headerlink" href="#gradient-reference" title="Permanent link">&para;</a></h1>
+<h1 id="gradient-reference">Gradient Reference<a class="headerlink" href="#gradient-reference" title="Permanent link">&para;</a></h1>
 <p><span class="rainbow-wipe">maxgradient.gradient.Gradient</span> is at the core of MaxGradient. Gradient is a subclass of <span class="green-wipe">rich.text.Text</span>, and can be used in the same way. The Gradient class however also incorporates <span class="rainbow-wipe">maxgradient.color.Color</span> which is an expanded version of <span class="green-wipe">rich.color.Color</span>. Gradient can be used to create a gradient of colors or styles. Gradient can also be used to create a rainbow effect, or to invert the colors of the gradient.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span> <span class="nc">Gradient</span><span class="p">(</span><span class="n">rich</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Text</span><span class="p">):</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Text with gradient color / style.&quot;&quot;&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Text</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="n">colors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="o">|</span><span class="n">List</span><span class="p">[</span><span class="n">Color</span> <span class="o">|</span> <span class="n">Tuple</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="n">rainbow</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="n">invert</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="n">hues</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="n">color_sample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="n">style</span><span class="p">:</span> <span class="n">StyleType</span> <span class="o">=</span> <span class="n">Style</span><span class="o">.</span><span class="n">null</span><span class="p">(),</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="o">*</span><span class="p">,</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">justify</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">JustifyMethod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="n">overflow</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">OverflowMethod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="n">no_wrap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="n">end</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="n">tab_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="n">spans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Span</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span></code></pre></div>
+<h2 id="initialize">Initialize<a class="headerlink" href="#initialize" title="Permanent link">&para;</a></h2>
+<div class="class-init">
+    <span class="class">class </span><span class="white-mono">Gradient</span> <span class="pink-brac">(</span><br>
+    <span class="self">&nbsp;&nbsp;&nbsp;&nbsp;self</span>
+    <span class="punc">,</span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;text</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">str</span><span class="pink-brac">|</span></span></span><span class="class">rich</span><span class="punc">.</span><span class="white-mono">text</span><span class="punc">.</span><span class="type">Text</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="yellow">""</span></span></span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;colors</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="white-mono">List</span><span class="purple-brac">[</span><span class="type">Color</span><span class="pink-brac">|</span><span class="type">Tuple</span><span class="pink-brac">|</span><span class="class">str</span><span class="purple-brac">]</span><span
+    class="pink-brac">|</span><span class="class">str</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;rainbow</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;invert</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;hues</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">int</span><span class="blue-brac">] </span><span class="pink-brac">= <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;color_sample</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;style</span><span class="punc">: </span><span class="white-mono">StyleType</span><span class="pink-brac"> = <span><span class="class">rich</span><span class="punc">.</span><span class="white-mono">text</span><span class="punc">.</span><span class="type">Style</span><span class="punc">.</span><span class="lime-text">null</span><span class="white-mono">()</span><span class="punc">, </span><br>
+    <span class="pink-brac">&nbsp;&nbsp;&nbsp;&nbsp;*</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;justify</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">str</span><span class="blue-brac">] </span><span class="pink-brac">= <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;overflow</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">str</span><span class="blue-brac">] </span><span class="pink-brac">= <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;no_wrap</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">bool</span><span class="blue-brac">] </span><span class="pink-brac">= <span><span class="none">None</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;end</span><span class="punc">: </span><span class="class">str</span> <span class="pink-brac">= <span><span class="yellow">"</span><span class="pink-brac">\n</span><span class="yellow">"</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;tab_size</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">int</span><span class="blue-brac">] </span><span class="pink-brac">= <span><span class="class">8</span><span class="punc">, </span><br>
+    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;spans</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="white-mono">List</span><span class="purple-brac">[</span><span class="type">Span</span><span class="purple-brac">]</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span>
+    <span class="pink-brac">) -> </span><span class="none">None</span><span class="punc">: </span><br>
+</div>
+
+<h2 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameters</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">text</td>
+<td style="text-align: left;">The text to be displayed in gradient color. Can be entered as a string or as an instance of <code>rich.text.Text</code>. Defaults to an empty string.</td>
+</tr>
+<tr>
+<td style="text-align: left;">colors</td>
+<td style="text-align: left;">The colors from which to create the gradient. Can be entered as a list of: <ul><li><code>maxgradient.color.Color</code> objects</li><li>a list of tuples containing rgb values</li><li> a list of strings containing the:<ul><li>the names of colors</li><li>hex color codes</li><li>rgb color codes</li></ul></li></ul>Defaults to None, which will result in a randomlt generated gradient.</td>
+</tr>
+<tr>
+<td style="text-align: left;">rainbow</td>
+<td style="text-align: left;">Whether or not to create a rainbow gradient. Defaults to False.</td>
+</tr>
+<tr>
+<td style="text-align: left;">invert</td>
+<td style="text-align: left;">Whether or not to invert the gradient colors, making the last entered color first, and the first entered color last. Defaults to False.</td>
+</tr>
+<tr>
+<td style="text-align: left;">hues</td>
+<td style="text-align: left;">The number of hues to use when creating a random gradient. Defaults to None, which will result in a gradient of three colors.</td>
+</tr>
+<tr>
+<td style="text-align: left;">color_sample</td>
+<td style="text-align: left;">Whether or not to display the text's background the same color as the text. Results in a block of color rather than text.</td>
+</tr>
+<tr>
+<td style="text-align: left;">style</td>
+<td style="text-align: left;">The style of the text. Unlike Text object where this could determine color, only styles such as bold, underline, or italic will do anything.</td>
+</tr>
+<tr>
+<td style="text-align: left;">justify</td>
+<td style="text-align: left;">The justification of the text. Can be one of: <ul><li><code>left</code></li><li><code>center</code></li><li><code>right</code></li></ul>Defaults to None, which will result in the text being left justified.</td>
+</tr>
+<tr>
+<td style="text-align: left;">overflow</td>
+<td style="text-align: left;">The overflow of the text. Can be one of: <ul><li><code>crop</code></li><li><code>fold</code></li><li><code>ellipsis</code></li></ul>Defaults to None, which will result in the text being cropped.</td>
+</tr>
+<tr>
+<td style="text-align: left;">no_wrap</td>
+<td style="text-align: left;">Whether or not to wrap the text. Defaults to None, which will result in the text being wrapped.</td>
+</tr>
+<tr>
+<td style="text-align: left;">end</td>
+<td style="text-align: left;">The string to be appended to the end of the text. Defaults to <code>\n</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">tab_size</td>
+<td style="text-align: left;">The number of spaces to be used when a tab is encountered. Defaults to 8.</td>
+</tr>
+<tr>
+<td style="text-align: left;">spans</td>
+<td style="text-align: left;">A list of <code>rich.text.Span</code> objects. Defaults to None.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<h3 id="gradientas_text"><span class="class-type">Gradient</span>.<span class="classmethod">as_text</span>()<a class="headerlink" href="#gradientas_text" title="Permanent link">&para;</a></h3>
+<p>as_text() returns the gradient as a <code>rich.text.Text</code> object.</p>
 
 
 
