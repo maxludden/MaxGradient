@@ -107,6 +107,10 @@ console.gradient(
 
 ## Changelog
 
+### v0.2.5
+
+- Added type stubs
+
 ### v0.2.4
 
 - Rewrote `MaxGradient.console.Console` to replicate `rich.console.Console`
