@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Urbanist:wght@100;200;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Urbanist:wght@100;200;400&display=swap");
 
 .class-type {
   color: #7fd6e8;
@@ -37,8 +37,14 @@
   -webkit-text-fill-color: transparent;
   animation: shine 1s linear infinite;
   @keyframes shine {
-    to {
-      background-position: 200% center;
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: 0 0;
     }
   }
 }
@@ -46,7 +52,7 @@
   margin: auto;
 }
 
-#gradient-reference{
+#gradient-reference {
   font-weight: 400;
   font-family: "Urbanist", sans-serif;
   text-decoration: underline;
@@ -86,35 +92,35 @@ p.attr-line {
 }
 .red {
   padding: 5px;
-  color: #23132E;
+  color: #23132e;
   background: #ff0000;
   border-radius: 10px;
 }
 
 .magenta {
   padding: 5px;
-  color: #23132E;
+  color: #23132e;
   background: #ff00ff;
   border-radius: 10px;
 }
 
 .blue {
   padding: 5px;
-  color: #23132E;
+  color: #23132e;
   background: #00aaff;
   border-radius: 10px;
 }
 
 .light-green {
   padding: 5px;
-  color: #23132E;
+  color: #23132e;
   background: #aaffaa;
   border-radius: 10px;
 }
 
 .lime {
   padding: 5px;
-  color: #23132E;
+  color: #23132e;
   background: #00ff00;
   border-radius: 10px;
 }
@@ -126,13 +132,13 @@ p.attr-line {
 }
 
 .class {
-  color: #8BE9FD;
+  color: #8be9fd;
   font-family: "Fira Code", monospace;
   font-weight: 600;
 }
 
 .attr {
-  color: #50FA7B;
+  color: #50fa7b;
   font-family: "Fira Code", monospace;
   font-weight: 600;
   font-style: italic;
@@ -144,18 +150,24 @@ p.attr-line {
   font-weight: 600;
 }
 
+.basic-type {
+  color: #0ff;
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+}
+
 .pink-brac {
   color: #ff79c6;
   font-family: "Fira Code", monospace;
   font-weight: 600;
 }
 .blue-brac {
-  color: #31C2F2;
+  color: #31c2f2;
   font-family: "Fira Code", monospace;
   font-weight: 600;
 }
 .purple-brac {
-  color: #8080FF;
+  color: #8080ff;
   font-family: "Fira Code", monospace;
   font-weight: 600;
 }

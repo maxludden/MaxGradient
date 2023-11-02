@@ -31,8 +31,3 @@ MaxGradient supports all of the Rich Standard Colors:
 MaxGradient also supports all of the X11 color names as well as the their hex color codes, RGB color codes, as well as RGB color tuples.
 
 [![X11 Colors](img/x11_color_table.svg)](https://en.wikipedia.org/wiki/X11_color_names)
-
-Here's some text with an inline admonition to the left:
-
-!!! note class="left"
-This is the text that appears to the left of the admonition.

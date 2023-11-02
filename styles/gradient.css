@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
 :root {
   --gradient-shadow: linear-gradient(
     45deg,
@@ -168,7 +168,6 @@ h5 {
   text-decoration: underline;
   text-shadow: 0 0 1px;
   padding: 20px;
-
 }
 img.badge {
   margin: 5px;
@@ -184,7 +183,7 @@ pre {
 pre.code {
   font-family: "Fira Code", monospace;
   font-size: 0.8em;
-  color: rgb(35,35,35);
+  color: rgb(35, 35, 35);
   box-shadow: linear-gradient(
       to right,
       #ff00ff 10%,
@@ -208,8 +207,11 @@ pre.code {
   background-size: 200% auto;
   animation: shine 1s linear infinite;
   @keyframes shine {
-    to {
-      background-position: 200% center;
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 200% 0;
     }
   }
 }
@@ -230,15 +232,15 @@ svg {
 }
 
 @keyframes animate {
-	0% {
-		background-position: 0 0;
-	}
-	50% {
-		background-position: 300% 0;
-	}
-	100% {
-		background-position: 0 0;
-	}
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 300% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 .badge {
   display: flex;
@@ -352,7 +354,7 @@ svg {
   text-decoration: none;
 }
 .console {
-  color: #83DDF0;
+  color: #83ddf0;
 }
 .cool-wipe {
   font-weight: 700;
@@ -496,17 +498,17 @@ div.code-head {
   color: #fb508e;
 }
 .ex-1 {
-    font-family: "Fira Code", monospace;
-    background: linear-gradient(to right, #ff00ff, #af00ff, #5f00ff);
-    display: inline-block;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-decoration: none;
-  }
+  font-family: "Fira Code", monospace;
+  background: linear-gradient(to right, #ff00ff, #af00ff, #5f00ff);
+  display: inline-block;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-decoration: none;
+}
 .example-2 {
   font-family: "Fira Code", monospace;
-  background: linear-gradient(to right, #0000ff,#0088ff,#00ffff);
+  background: linear-gradient(to right, #0000ff, #0088ff, #00ffff);
   display: inline-block;
   -webkit-background-clip: text;
   background-clip: text;
@@ -618,10 +620,10 @@ div.code-head {
   }
 }
 .keyword {
-  color: #BD93F9;
+  color: #bd93f9;
 }
 .purple {
-  color: #BD93F9;
+  color: #bd93f9;
 }
 .none {
   color: #8b48ff;
@@ -1427,7 +1429,7 @@ div.code-head {
   }
 }
 .var {
-  color: #FCB56B;
+  color: #fcb56b;
   font-weight: 400;
 }
 .warm {
