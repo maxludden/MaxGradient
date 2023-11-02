@@ -455,6 +455,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Color Reference
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -464,6 +475,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initialize" class="md-nav__link">
+    Initialize
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -515,8 +573,110 @@
   
 
 
-<h1 id="maxgradientcolorcolor-reference">maxgradient.color.Color Reference<a class="headerlink" href="#maxgradientcolorcolor-reference" title="Permanent link">&para;</a></h1>
-<p>class Color:</p>
+<h1 id="maxgradientcolorcolor-reference">MaxGradient.color.Color Reference<a class="headerlink" href="#maxgradientcolorcolor-reference" title="Permanent link">&para;</a></h1>
+<p>A class to represent a color that inherits and expands <code>rich.rich.Color</code>
+to include X11 named colors as well as multiple formats of hex and rgb colors.</p>
+<h2 id="initialize">Initialize<a class="headerlink" href="#initialize" title="Permanent link">&para;</a></h2>
+<div class="class-init">
+    <span class="class">class </span><span class="white-mono">Color</span> <span class="pink-brac">(</span><span class="self">self</span><span class="punc">, </span><span class="attr">color</span><span class="punc">: </span><span class="class">Any</span><span class="pink-brac">) -> </span><span class="none">None</span><span class="punc">: </span><br>
+</div>
+
+<h2 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">color</td>
+<td style="text-align: left;">Union[<a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a>, Color]</td>
+<td style="text-align: left;">The color to be represented.<br>The color may be:<ul><li>the color name<ul><li>color names (<span style="color:#ff0000">red</span>, <span style="color:#ff8800;">orange</span>, <span style="color:#ffff00;">yellow</span>, <span style="color:#0f0;">green</span>, <span style="color:#0ff;">cyan</span>, <span style="color: #08f;">lightblue</span>, <span style="color:#00f;">blue</span>, <span style="color:#5f00ff;">purple</span>, <span style="color:#af00ff;">violet</span>, <span style="color:#f0f;">magenta</span>)</li><li>hex color codes (3-digit -&gt; <span style="color:#f0f;">#f0f</span>, 6-digit -&gt; <span style="color:#f0f;">#ff00ff</span>)</li><li>rgb color codes</li><li>X11 named colors</li><li>as well as any colors from rich's standard library.</li></ul></li><li>the hex color code</li><li>the rgb color code</li><li>the rgb color tuple</li><li>a <code>maxgradient.color.Color</code> object</li></td>
+</tr>
+</tbody>
+</table>
+<h2 id="attributes">Attributes<a class="headerlink" href="#attributes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">original</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
+<td style="text-align: left;">The original color passed to the constructor.</td>
+</tr>
+<tr>
+<td style="text-align: left;">red</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
+<td style="text-align: left;">The red value of the color.</td>
+</tr>
+<tr>
+<td style="text-align: left;">green</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
+<td style="text-align: left;">The green value of the color.</td>
+</tr>
+<tr>
+<td style="text-align: left;">blue</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/functions.html#int">int</a></td>
+<td style="text-align: left;">The blue value of the color.</td>
+</tr>
+<tr>
+<td style="text-align: left;">name</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
+<td style="text-align: left;">The name of the color. If the color is not a named color, this will default to the hex color code.</td>
+</tr>
+<tr>
+<td style="text-align: left;">hex</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
+<td style="text-align: left;">The hex color code of the color.</td>
+</tr>
+<tr>
+<td style="text-align: left;">rgb</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></td>
+<td style="text-align: left;">The rgb color code of the color.</td>
+</tr>
+<tr>
+<td style="text-align: left;">rgb_tuple</td>
+<td style="text-align: left;"><a href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a></td>
+<td style="text-align: left;">The rgb color tuple of the color.</td>
+</tr>
+<tr>
+<td style="text-align: left;">style</td>
+<td style="text-align: left;"><a href="https://rich.readthedocs.io/en/latest/style.html#style-class">rich.style.Style</a></td>
+<td style="text-align: left;">A style object with the color as the foreground color.</td>
+</tr>
+<tr>
+<td style="text-align: left;">bg_style</td>
+<td style="text-align: left;"><a href="https://rich.readthedocs.io/en/latest/style.html#style-class">rich.style.Style</a></td>
+<td style="text-align: left;">A style object with the color as the background color.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<ul>
+<li><span class="classmethod">get_contrast</span><span class="white-mono">(</span><span class="self">self</span><span class="white-mono">) -&gt; <span class="attr">str</span><span class="punc">:</span></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>Generate the color of the foreground if the color is the background. Ie. lighter colors with return black, and darker colors will return white.</em></p>
+<ul>
+<li><span class="classmethod">lighten</span><span class="white-mono">(</span><span class="self">self</span><span class="punc">, </span><span class="attr">percent</span><span class="white-mono">: </span><span class="class">float</span><span class="white-mono"> = </span><span class="basic-type">0.5</span><span class="white-mono">) -&gt; </span><span class="attr">str</span><span class="punc">:</span></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>Generate a tint of the color.</em>
+   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - percent (<a href="https://docs.python.org/3/library/functions.html#float" alt="float">float</a>): The amount of white to add to the color.</li>
+</ul></p>
+<ul>
+<li><span class="classmethod">darken</span><span class="white-mono">(</span><span class="self">self</span><span class="punc">, </span><span class="attr">percent</span><span class="white-mono">: </span><span class="class">float</span><span class="white-mono"> = </span><span class="basic-type">0.5</span><span class="white-mono">) -&gt; </span><span class="attr">str</span><span class="punc">:</span></li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>Generate a tint of the color.</em><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- percent (<a href="https://docs.python.org/3/library/functions.html#float" alt="float">float</a>): The amount of black to add to the color.</li>
+</ul></p>
 
 
 
