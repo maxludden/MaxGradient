@@ -16,6 +16,15 @@ nav:
           - Color Reference: "color_ref.md"
           - Possible Colors: "possible_colors.md"
 
+plugins:
+    - mkdocstrings:
+        enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
+        default_handler: python
+        handlers:
+            python:
+                options:
+                    show_source: false
+
 theme:
     name: material
     logo: img/MaxGradient.svg

@@ -4,12 +4,12 @@
     </head>
     <body>
         <!--MaxGradient Banner-->
-        <img src="https://raw.githubusercontent.com/maxludden/maxludden/621fcb611c1e52160d89d33e1441b34948c37752/maxgradient_banner.svg" alt="MaxGradient" width="100%">
+        <img src="docs/img/MaxGradient.svg" alt="MaxGradient" width="100%">
         <!--End of Banner-->
 ​        <div class="badges">
-​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11-blue?logo=python" alt="PyPI - MaxGradient"></a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11 | 3.12 -blue?logo=python" alt="PyPI - MaxGradient"></a>
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.2-bbbbbb" alt="Version 0.2.2"></a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.4-bbbbbb" alt="Version 0.2.4"></a>
 ​            <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
 ​        </div>
         <!--End of badges-->
@@ -67,6 +67,22 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 <img class="result" src="docs/img/color_example.svg" alt="Color Example">
 
 ### Changelog
+
+#### v0.2.4
+
+- Rewrote `MaxGradient.console.Console` to replicate `rich.console.Console`
+    - added `gradient` method
+    - added `gradient_rule` method
+- Switched to [`ruff`](https://docs.astral.sh/ruff/) for linting
+- Pruned dependencies
+- Updated default_styles.GRADIENT_STYLES
+
+#### v0.2.3
+
+- Updated docs and added more examples and reference
+- Fixed bugs
+    - Fixed bug where gradient would not print if gradient was the only thing in the console
+    - Fixed bug where gradient wouldn't print if the style wasn't a `rich.style.Style` object
 
 #### v0.2.2
 

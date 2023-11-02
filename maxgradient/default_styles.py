@@ -1,6 +1,6 @@
 """A container for the default styles used by GradientConsole."""
 # pylint: disable=redefined-outer-name,consider-using-dict-items
-from typing import Dict, Mapping
+from typing import Dict, Optional
 
 from rich.console import Console
 from rich.live import Live
@@ -9,7 +9,7 @@ from rich.table import Table
 from rich.text import Text
 from rich.theme import Theme
 
-GRADIENT_STYLES: Mapping[str, StyleType] = {
+GRADIENT_STYLES: Dict[str, StyleType] = {
     "none": Style.null(),
     "reset": Style(
         color="default",
@@ -287,7 +287,6 @@ GRADIENT_STYLES: Mapping[str, StyleType] = {
     "repr.rgb_green": Style(color="#44ff44", bold=True, italic=True),
     "repr.rgb_blue": Style(color="#44aaff", bold=True, italic=True),
     "repr.rgb_parentheses": Style(color="#ffffff", bold=True, italic=False),
-    
 }
 
 """ A dictionary that contains if a style is new, edited, or\
@@ -556,7 +555,7 @@ EDITED_STYLES: Dict[str, str] = {
 }
 
 
-def get_default_styles() -> dict[str, Style]:
+def get_default_styles() -> Dict[str, StyleType]:
     """Retrieve the defaults styles from GRADIENT_STYLES."""
     return GRADIENT_STYLES
 
@@ -600,10 +599,10 @@ GradientTheme.",
     )
     table.add_column("[bold.cyan]Updated[/]", justify="center", vertical="middle")
 
-    for (
-        style_name
-    ) in GRADIENT_STYLES.keys():  # pylint: disable=consider-iterating-dictionary
-        style = GRADIENT_STYLES.get(style_name)
+    for style_name in GRADIENT_STYLES.keys():
+        temp_style: Optional[StyleType] = GRADIENT_STYLES.get(style_name)
+        assert temp_style is not None, "Style should not be None"
+        style: Style = Style.parse(temp_style)
         style_string = str(style)
         if "grey" in style_name:
             style_string = f"{style_string} [dim]*Supports alternate spelling[/dim]"

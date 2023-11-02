@@ -1,6 +1,3 @@
-<!--<img src="img/maxgradient_banner.png" class="banner" alt="MaxGradient Banner">-->
-<!-- ![MaxGradient](img/MaxGradient.svg) -->
-
 <img src="img/MaxGradient.svg" alt="MaxGradient" style="display:block; margin:auto; width:40%;">
 
 MaxGradient automates the printing gradient colored text to the console. It's built upon the great rich library. It contains a Console that can serve as a drop in replacement for rich.rich.Console and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions.
@@ -42,10 +39,7 @@ console.gradient(
 )
 ```
 
-<!--Caption Start-->
 ![Hello, World!](img/hello_world.svg)
-
-<!--Caption End-->
 
 ## <span class="cool-wipe">Gradient with Color</span>
 
@@ -95,12 +89,12 @@ You are not just stuck with ROY G BIV colors, you can use any colors you want. L
 console.gradient(
     "This gradient contains the colors: magenta, violet, purple, blue, lightblue, and cyan.",
     colors = [
-        "rgb(255,0,255)", # rgb
+        "rgb(255,0,255)", # rgb | magenta
         "violet", # named
-        "#5f00ff", # hex
-        "blue",
-        "rgb(0, 136, 255)",
-        "cyan"
+        "#5f00ff", # hex | purple
+        "blue", # another named
+        "rgb(0, 136, 255)", # rgb | lightblue
+        "cyan" # and another
     ]
 )
 ```
@@ -109,20 +103,29 @@ console.gradient(
 
 <!--Result End | 2 -->
 
+---
+
 ## Changelog
 
-### v0.2.3 Completed Docs
+### v0.2.4
 
-- Added more documentation
-- Changed MKDocs theme to Material
-    - Added Material plugins
-    - Added Material python markdown extensions
-    - Added Favicon
-- Added type hints and typeshed
+- Rewrote `MaxGradient.console.Console` to replicate `rich.console.Console`
+    - added `gradient` method
+    - added `gradient_rule` method
+- Switched to [`ruff`](https://docs.astral.sh/ruff/) for linting
+- Pruned dependencies
+- Updated default_styles.GRADIENT_STYLES
 
-### v0.2.2 Initial Docs
+### v0.2.3
 
-- Added initial documentation
-- Added initial tests
-- Fixed minor bugs including correcting Gradient's style attribute from accepting `Style` to `StyleType`
-- Updated examples and example images
+- Updated docs and added more examples and reference
+- Fixed bugs
+    - Fixed bug where gradient would not print if gradient was the only thing in the console
+    - Fixed bug where gradient wouldn't print if the style wasn't a `rich.style.Style` object
+
+### v0.2.2
+
+- Added examples to docs and fixed some typos and bugs
+- Disabled logging
+- Fixed gradient class
+- Added gradient rules

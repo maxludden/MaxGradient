@@ -1,27 +1,23 @@
 
 [project]
 name = "maxgradient"
-version = "0.2.3"
-description = "MaxGradient automates the printing gradient colored text to the console. It's built upon the great rich library. It contains a Console that can serve as a drop in replacement for rich.rich.Console and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions."
+version = "0.2.4"
+description = "MaxGradient automates the printing gradient colored text to the console."
 authors = [
     { name = "Max Ludden", email = "dev@maxludden.com" }
 ]
 dependencies = [
     "rich>=13.5.3",
-    "nptyping>=2.5.0",
-    "numpy>=1.25.2",
     "lorem-text>=2.1",
     "typer[all]>=0.9.0",
     "python-dotenv>=1.0.0",
     "loguru>=0.7.2",
-    "mongoengine>=0.27.0",
     "PyYAML>=6.0.1",
-    "pydantic>=2.3.0",
     "sh>=2.0.6",
-    "mkdocs-material>=9.4.6",
-    "mkdocs[all]>=1.5.3",
+    "numpy>=1.25.2",
+    "nptyping>=2.5.0",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
 
@@ -32,6 +28,8 @@ build-backend = "pdm.backend"
 [tool.pdm.dev-dependencies]
 dev = [
     "mkdocs>=1.5.2",
+    "mkdocs-material>=9.4.7",
+    "mkdocstrings[python]>=0.18",
 ]
 
 [tool.pdm.dependencies]
@@ -41,37 +39,40 @@ typer = { extras = ["all"], version = "^0.1.0" }
 [tool.pdm.scripts]
 gradient = { call = "maxgradient.cli:app" }
 
-[tool.pyright]
-include = ["maxgradient"]
-ignore = ["tests"]
-pythonVersion = "3.11"
-reportGeneralTypeIssues = false
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
 
-[tool.pylint]
-max-line-length = 120
-disable = [
-    "C0103",
-    "C0301",
-    "C0415",
-    "E0001",
-    "E0f04",
-    "E0401",
-    "E0611",
-    "E1124",
-    "W0012",
-    "W0102",
-    "W0612",
-    "W0621",
-    "W0201",
-    "W0613",
-    "W0622",
-    "W0404",
-    "R0903",
-    "R0902",
-    "R0912", 
-    "R0913",
-    "W0622",
-    "W1401",
-    "W0611",
-    "W0212",
+# Same as Black.
+line-length = 88
+
+# Assume Python 3.8
+target-version = "py38"
+
+# Use the same default ignore list as Black.
+ignore = [
+    "E203",  # Whitespace before ':'
+    "E501",  # Line too long
 ]
