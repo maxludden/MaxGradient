@@ -2,7 +2,7 @@
 # pylint: disable=E0401
 from functools import lru_cache
 from re import findall
-from typing import Tuple
+from typing import Tuple, Optional
 
 from rich.style import Style
 from rich.table import Table
@@ -10,7 +10,7 @@ from rich.text import Text
 from rich.box import SQUARE
 from rich.console import Console
 
-from maxgradient.log import Log, Optional
+from maxgradient.log import Log
 
 console = Console()
 log = Log()

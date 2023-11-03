@@ -3,7 +3,7 @@ import os
 import platform
 import sys
 import threading
-import zlib
+import zlib  # type: ignore
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -11,9 +11,9 @@ from functools import wraps
 from getpass import getpass
 from html import escape
 from inspect import isclass
-from itertools import islice
-from math import ceil
-from time import monotonic
+from itertools import islice  # type: ignore
+from math import ceil  # type: ignore
+from time import monotonic  # type: ignore
 from types import FrameType, ModuleType, TracebackType
 from typing import (
     IO,
@@ -323,7 +323,7 @@ class ScreenUpdate:
         x = self.x
         move_to = Control.move_to
         for offset, line in enumerate(self._lines, self.y):
-            yield move_to(x, offset)
+            yield move_to(x, offset)  # type: ignore
             yield from line
 
 
@@ -447,8 +447,8 @@ class ScreenContext:
                 change. Defaults to None.
         """
         if renderables:
-            self.screen.renderable = (
-                Group(*renderables) if len(renderables) > 1 else renderables[0]
+            self.screen.renderable = (  # type: ignore
+                Group(*renderables) if len(renderables) > 1 else renderables[0]  # type: ignore
             )
         if style is not None:
             self.screen.style = style
@@ -498,7 +498,7 @@ class Group:
         self, console: "Console", options: "ConsoleOptions"
     ) -> "Measurement":
         if self.fit:
-            return measure_renderables(console, options, self.renderables)
+            return measure_renderables(console, options, self.renderables)  # type: ignore
         else:
             return Measurement(options.max_width, options.max_width)
 
@@ -796,7 +796,7 @@ class Console:
         self._live: Optional["Live"] = None
         self._is_alt_screen = False
         if traceback:
-            install_rich_traceback(console=self)
+            install_rich_traceback(console=self)  # type: ignore
 
     def __repr__(self) -> str:
         return f"<console width={self.width} {self._color_system!s}>"
@@ -1225,8 +1225,8 @@ class Console:
         from rich.status import Status
 
         status_renderable = Status(
-            status,
-            console=self,
+            status,  # type: ignore
+            console=self,  # type: ignore
             spinner=spinner,
             spinner_style=spinner_style,
             speed=speed,
@@ -1342,7 +1342,7 @@ class Console:
         Returns:
             Measurement: A measurement of the renderable.
         """
-        measurement = Measurement.get(self, options or self.options, renderable)
+        measurement = Measurement.get(self, options or self.options, renderable)  # type: ignore
         return measurement
 
     def render(
@@ -1370,16 +1370,16 @@ class Console:
             return
         render_iterable: RenderResult
 
-        renderable = rich_cast(renderable)
+        renderable = rich_cast(renderable)  # type: ignore
         if hasattr(renderable, "__rich_console__") and not isclass(renderable):
-            render_iterable = renderable.__rich_console__(
+            render_iterable = renderable.__rich_console__(  # type: ignore
                 self, _options
             )  # type: ignore[union-attr]
         elif isinstance(renderable, str):
             text_renderable = self.render_str(
                 renderable, highlight=_options.highlight, markup=_options.markup
             )
-            render_iterable = text_renderable.__rich_console__(self, _options)
+            render_iterable = text_renderable.__rich_console__(self, _options)  # type: ignore
         else:
             raise errors.NotRenderableError(
                 f"Unable to render {renderable!r}; "
@@ -1596,7 +1596,7 @@ class Console:
         if justify in ("left", "center", "right"):
 
             def align_append(renderable: RenderableType) -> None:
-                _append(Align(renderable, cast(AlignMethod, justify)))
+                _append(Align(renderable, cast(AlignMethod, justify)))  # type: ignore
 
             append = align_append
 
@@ -1607,7 +1607,7 @@ class Console:
         def check_text() -> None:
             if text:
                 sep_text = Text(sep, justify=justify, end=end)
-                append(sep_text.join(text))
+                append(sep_text.join(text))  # type: ignore
                 text.clear()
 
         for renderable in objects:
@@ -1625,7 +1625,7 @@ class Console:
                 append(renderable)
             elif is_expandable(renderable):
                 check_text()
-                append(Pretty(renderable, highlighter=_highlighter))
+                append(Pretty(renderable, highlighter=_highlighter))  # type: ignore
             else:
                 append_text(_highlighter(str(renderable)))
 
@@ -1633,7 +1633,7 @@ class Console:
 
         if self.style is not None:
             style = self.get_style(self.style)
-            renderables = [Styled(renderable, style) for renderable in renderables]
+            renderables = [Styled(renderable, style) for renderable in renderables]  # type: ignore
 
         return renderables
 
@@ -2065,7 +2065,7 @@ class Console:
                 highlight=highlight,
             )
             if style is not None:
-                renderables = [Styled(renderable, style) for renderable in renderables]
+                renderables = [Styled(renderable, style) for renderable in renderables]  # type: ignore
 
             filename, line_no, locals = self._caller_frame_info(_stack_offset)
             link_path = None if filename.startswith("<") else os.path.abspath(filename)
@@ -2076,26 +2076,26 @@ class Console:
                     for key, value in locals.items()
                     if not key.startswith("__")
                 }
-                renderables.append(render_scope(locals_map, title="[i]locals"))
+                renderables.append(render_scope(locals_map, title="[i]locals"))  # type: ignore
 
             renderables = [
                 self._log_render(
-                    self,
-                    renderables,
+                    self,  # type: ignore
+                    renderables,  # type: ignore
                     log_time=self.get_datetime(),
                     path=path,
                     line_no=line_no,
                     link_path=link_path,
-                )
+                )  # type: ignore
             ]
             for hook in render_hooks:
-                renderables = hook.process_renderables(renderables)
+                renderables = hook.process_renderables(renderables)  # type: ignore
             new_segments: List[Segment] = []
             extend = new_segments.extend
             render = self.render
             render_options = self.options
             for renderable in renderables:
-                extend(render(renderable, render_options))
+                extend(render(renderable, render_options))  # type: ignore
             buffer_extend = self._buffer.extend
             for line in Segment.split_and_crop_lines(
                 new_segments, self.width, pad=False
@@ -2790,7 +2790,7 @@ href="{style.link}">{text}</a>'
         title: TextType = "",
         *,
         gradient: bool = True,
-        thickness: Thickness = "medium",
+        thickness: Thickness = "medium",  # type: ignore
         end: str = "\n",
         align: AlignMethod = "center",
     ) -> None:
