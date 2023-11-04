@@ -1,7 +1,10 @@
 from _typeshed import Incomplete
 from datetime import datetime
 from maxgradient.color import Color as Color
-from maxgradient.rule import Thickness as Thickness
+from maxgradient.gradient import Gradient as Gradient
+from maxgradient.highlighter import ColorReprHighlighter as ColorReprHighlighter
+from maxgradient.rule import GradientRule as GradientRule, Thickness as Thickness
+from maxgradient.theme import GradientTerminalTheme as GradientTerminalTheme, GradientTheme as GradientTheme
 from pathlib import Path
 from rich._log_render import FormatTimeCallable as FormatTimeCallable
 from rich.align import AlignMethod as AlignMethod
@@ -9,7 +12,7 @@ from rich.console import Console as RichConsole
 from rich.emoji import EmojiVariant as EmojiVariant
 from rich.style import StyleType as StyleType
 from rich.terminal_theme import TerminalTheme as TerminalTheme
-from rich.text import Span as Span, Text as Text, TextType as TextType
+from rich.text import Span as Span, Text, TextType as TextType
 from rich.theme import Theme as Theme
 from typing import Callable, IO, List, Literal, Mapping, Optional, Tuple, Union
 
@@ -19,7 +22,7 @@ JustifyMethod: Incomplete
 OverflowMethod: Incomplete
 
 class Singleton(type):
-    def __call__(cls, *args, **kwargs) -> None: ...
+    def __call__(cls, *args, **kwargs): ...
 
 class Console(RichConsole, metaclass=Singleton):
     theme: Theme

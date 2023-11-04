@@ -1,8 +1,6 @@
-"""Types for _x11.py"""
+from rich.table import Table as Table
+from rich.text import Text as Text
 from typing import Optional, Tuple
-
-from rich.table import Table
-from rich.text import Text
 
 class X11:
     NAMES: Tuple[str, ...]

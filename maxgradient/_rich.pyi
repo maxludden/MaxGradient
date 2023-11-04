@@ -1,9 +1,8 @@
-"""Types for _rich.py"""
-from maxgradient.log import Log
-from rich.table import Table
-from rich.text import Text
-from rich.console import Console
-from typing import Tuple, Optional
+from maxgradient.log import Log as Log
+from rich.console import Console as Console
+from rich.table import Table as Table
+from rich.text import Text as Text
+from typing import Optional, Tuple
 
 console: Console
 log: Log

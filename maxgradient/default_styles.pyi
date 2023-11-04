@@ -1,10 +1,7 @@
-"""Types for default_styles.py"""
+from rich.style import Style as Style, StyleType as StyleType
+from rich.table import Table as Table
+from rich.text import Text as Text
 from typing import Dict, Mapping
-
-from rich.style import Style
-from rich.style import StyleType as StyleType
-from rich.table import Table
-from rich.text import Text
 
 GRADIENT_STYLES: Mapping[str, StyleType]
 EDITED_STYLES: Dict[str, str]

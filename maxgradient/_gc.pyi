@@ -1,12 +1,9 @@
-"""Types for _gc.py"""
-from typing import Optional, Tuple
-
-from rich.console import Console
-from rich.table import Table
-from rich.text import Text
-
 from maxgradient._mode import Mode as Mode
 from maxgradient.log import Log as Log
+from rich.console import Console as Console
+from rich.table import Table as Table
+from rich.text import Text as Text
+from typing import Optional, Tuple
 
 console: Console
 log: Log

@@ -1,22 +1,17 @@
-from typing import Any, Tuple, Union
-
-from rich.color import Color as RichColor
-from rich.columns import Columns
-from rich.console import Console
-from rich.panel import Panel
-from rich.style import Style
-from rich.text import Text
-
 from maxgradient._hex import Hex as Hex
 from maxgradient._mode import Mode as Mode
-from maxgradient._rgb import RGB as RGB
-from maxgradient._rich import Rich as Rich
 from maxgradient._x11 import X11 as X11
-from maxgradient.theme import GradientTheme as GradientTheme
+from rich.color import Color as RichColor
+from rich.columns import Columns as Columns
+from rich.console import Console as Console
+from rich.panel import Panel as Panel
+from rich.style import Style as Style
+from rich.text import Text as Text
+from typing import Any, Tuple, Union
 
 console: Console
 VERBOSE: bool
-ColorType: Union[Hex, "Color", RichColor, str, Tuple[int, int, int], X11]
+ColorType: Union[Hex, 'Color', RichColor, str, Tuple[int, int, int], X11]
 
 class Color:
     def __init__(self, color: Any) -> None: ...
