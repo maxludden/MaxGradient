@@ -7,6 +7,7 @@ extendable. It is also designed to be used as a library or as a command line too
 """
 # ruff: noqa: F401
 from os import environ
+from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
 from rich import inspect, print
@@ -17,12 +18,43 @@ from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
 
+from maxgradient.console import Console
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList, TintList
-from maxgradient._console import Console
 from maxgradient.gradient import Gradient
 from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.rule import GradientRule
 from maxgradient.theme import GradientTerminalTheme, GradientTheme
 
 __version__ = "0.2.4"
+
+__all__ = [
+    "Color",
+    "ColorList",
+    "Gradient",
+    "GradientRule",
+    "GradientTerminalTheme",
+    "GradientTheme",
+    "ColorReprHighlighter",
+    "Console",
+    "ConsoleOptions",
+    "Gradient",
+    "GradientRule",
+    "GradientTheme",
+    "GradientTerminalTheme",
+    "Group",
+    "Layout",
+    "Panel",
+    "Progress",
+    "RenderableType",
+    "RenderResult",
+    "Span",
+    "Style",
+    "StyleType",
+    "Task",
+    "Text",
+    "TextType",
+    "Console",
+    "TintList"
+]
+

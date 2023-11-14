@@ -1,8 +1,8 @@
 """X11 color names"""
-
+# DONE add stubs
 from functools import lru_cache
 from re import findall
-from typing import Optional, Tuple
+from typing import Any, Tuple
 
 from rich.box import SQUARE
 from rich.console import Console
@@ -638,22 +638,36 @@ class X11:
 
     @classmethod
     @lru_cache(maxsize=147, typed=False)
-    def get_color(cls, color: str) -> Optional[Tuple[int, int, int]]:
+    def get_color(cls, color: str) -> Tuple[int, int, int]:
         """Parse rich colors for color"""
         for group in [X11.get_names(), X11.get_hex(), X11.get_rgb()]:
             if color in group:
                 index = group.index(color)
                 rgb = X11.get_rgb()[index]
                 return X11.rgb_to_tuple(rgb)
-        return None
+        raise ValueError(f"Invalid color: {color}")
 
     @staticmethod
-    def rgb_to_tuple(rgb: str) -> Optional[Tuple[int, int, int]]:
-        """Convert a rgb string to a tuple of ints"""
+    def rgb_to_tuple(rgb: str) -> Tuple[int, int, int]:
+        """Convert a rgb string to a tuple of ints.
 
-        rgb_match = findall(r"r?g?b?\((\d+),(\d+),(\d+)\)", rgb)
-        if rgb_match:
-            return tuple(int(x) for x in rgb_match[0])
+        Args:
+            rgb (str): The rgb string to convert.
+
+        Raises:
+            ValueError: If the rgb string is invalid.
+
+        Returns:
+            Tuple[int, int, int]: The rgb tuple.
+        """
+        rgb_match: list[Any] = findall(r"r?g?b?\((\d+),(\d+),(\d+)\)", rgb)
+        if not rgb_match:
+            raise ValueError(f"Invalid rgb string: {rgb}")
+        else:
+            red = int(rgb_match[0][0])
+            green = int(rgb_match[0][1])
+            blue = int(rgb_match[0][2])
+            return (red, green, blue)
 
     @staticmethod
     def get_title() -> Text:

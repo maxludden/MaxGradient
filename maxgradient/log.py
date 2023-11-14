@@ -17,10 +17,10 @@ from rich.traceback import install as install_rich_traceback
 
 from maxgradient.theme import GradientTheme
 
-CWD = Path.cwd()
-DEBUG_LOG = CWD / "logs" / "debug.log"
-INFO_LOG = CWD / "logs" / "info.log"
-FORMAT = "{time:hh:mm:ss:SSS A} | {file.name: ^13} |\
+CWD: Path = Path.cwd()
+DEBUG_LOG: Path = CWD / "logs" / "debug.log"
+INFO_LOG: Path = CWD / "logs" / "info.log"
+FORMAT: str = "{time:hh:mm:ss:SSS A} | {file.name: ^13} |\
     Line {line: ^5} | {level: ^8} ﰲ  {message}"
 VERBOSE: bool = False
 
@@ -37,9 +37,9 @@ def _combine_regex(*regexes: str) -> str:
 class Singleton(type):
     """A metaclass to create a single global MaxConsole instance."""
 
-    _instances = {}
+    _instances: dict[type, Any] = {}
 
-    def __call__(cls, *args, **kwargs):
+    def __call__(cls, *args: Any, **kwargs: Any) -> Any:
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
@@ -48,8 +48,8 @@ class Singleton(type):
 class ColorHighlighter(RegexHighlighter):
     """Apply style to anything that looks like an email."""
 
-    base_style = "bold."
-    highlights = [
+    base_style: str = "bold."
+    highlights: list[str] = [
         r"(?P<magenta>magenta|#[Ff]0[Ff]|#[Ff]{2}00[Ff]{2}|r?g?b?\(255, ?0, ?255\))",
         r"(?P<purple>purple|#50[Ff]|#5[Ff]00[Ff]{2}|r?g?b?\(95, ?0, ?255\))",
         r"(?P<blue>blue|#00[Ff]|#0{4}[Ff]{2}|r?g?b?\(0, ?0, ?255\))",
@@ -78,7 +78,7 @@ class Console(RichConsole, metaclass=Singleton):
         install_rich_traceback(console=self)
 
 
-console_ = Console()
+console_: Console = Console()
 
 
 class Log:
@@ -437,7 +437,7 @@ class Log:
         """Enable logging.
 
         Args:
-            module (str, optional): The module to enable 
+            module (str, optional): The module to enable
                 logging for. Defaults to "maxgradient".
         """
         self.logger.enable(module)
@@ -453,7 +453,7 @@ def watch(
         depth (int, optional): The depth to log. Defaults to 1.
         entry (bool, optional): Whether to log the entry of a function and the
             arguments. Defaults to True.
-        exit (bool, optional): Whether to log the exit and result of the 
+        exit (bool, optional): Whether to log the exit and result of the
             function. Defaults to True.
     """
 

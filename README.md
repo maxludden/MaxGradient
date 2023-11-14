@@ -71,6 +71,13 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 #### v0.2.5
 
 - Added type stubs
+- Removed erroneous `maxgradient._console.py` file
+- Renamed several files:
+    - `maxgradient._gc.py` -> `maxgradient._gradient_color.py`
+    - `maxgradient._hex.py` -> `maxgradient._hex_color.py`
+    - `maxgradient._rgb.py` -> `maxgradient._rgb_color.py`
+    - `maxgradient._x11.py` -> `maxgradient._x11_color`
+    - `maxgradient._rich.py` -> `maxgradient._rich_color.py`
 
 #### v0.2.4
 

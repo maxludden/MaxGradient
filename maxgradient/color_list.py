@@ -57,8 +57,8 @@ class ColorList(list):
     def __call__(self):
         return self.color_list
 
-    def __getitem__(self, index: int):
-        return self.color_list[index]
+    # def __getitem__(self, index: int):
+    #     return self.color_list[index]
 
     def __len__(self):
         return len(self.color_list)
@@ -144,8 +144,8 @@ class TintList(List):
     def __call__(self):
         return self.tint_list
 
-    def __getitem__(self, index):
-        return self.tint_list[index]
+    # def __getitem__(self, index):
+    #     return self.tint_list[index]
 
     def __len__(self):
         return len(self.tint_list)
@@ -196,7 +196,7 @@ if __name__ == "__main__":
     console.print(color_list, justify="center")
 
     last_color = color_list.get_last_color()
-    last_color_color = f"[{last_color.style}]{last_color.name.capitalize()}[/]"
+    last_color_color = f"[{last_color.style}]{str(last_color.name).capitalize()}[/]"
     console.print(
         f"[{last_color.style}]Last Color:[/] {last_color_color}",
         justify="center",
@@ -207,7 +207,7 @@ if __name__ == "__main__":
     console.print(tint_list, justify="center")
 
     last_tint = tint_list.get_last_color()
-    last_tint_color = f"[{last_tint.style}]{last_tint.name.capitalize()}[/]"
+    last_tint_color = f"[{last_tint.style}]{str(last_tint.name).capitalize()}[/]"
     console.print(
         f"[{last_tint.style}]Last Tint:[/] {last_tint_color}",
         justify="center",

@@ -1,8 +1,8 @@
 """Parse colors from strings."""
 # pylint: disable=C0209,E0401,W0611,C0103,E0202,E0611,W0622
 from functools import lru_cache
-from re import findall
-from typing import Optional, Tuple
+from re import search
+from typing import Tuple
 
 from rich.box import SQUARE
 from rich.console import Console
@@ -103,20 +103,21 @@ class GradientColor:
 
     @classmethod
     @lru_cache(maxsize=10, typed=True)
-    def get_rgb_tuple(cls) -> Tuple[Tuple[int, int, int]]:
+    def get_rgb_tuple(cls) -> Tuple[Tuple[int, int, int], ...]:
         """Retrieve gradient RGB tuples."""
-        return cls.RGB_TUPLE
+        rgb_tuple: Tuple[Tuple[int, int, int], ...] = cls.RGB_TUPLE
+        return rgb_tuple
 
     @classmethod
     @lru_cache(maxsize=10, typed=True)
-    def get_color(cls, color: str) -> Optional[Tuple[int, int, int]]:
+    def get_color(cls, color: str) -> Tuple[int, int, int]:
         """Retrieve gradient RGB tuples.
 
         Args:
             color (str): A gradient color.
 
         Returns:
-            Optional[int]: The index of the gradient color.
+            int: The index of the gradient color.
         """
         for group in [
             cls.get_names(),
@@ -127,15 +128,21 @@ class GradientColor:
             if color in group:
                 index = group.index(color)
                 return cls.get_rgb_tuple()[index]
-        return None
+            else:
+                raise ValueError(f"Invalid Color: {color} not in any color group.")
+
+        raise ValueError(f"Invalid color: {color}")
 
     @staticmethod
     def rgb_to_tuple(rgb: str) -> Tuple[int, int, int]:
         """Convert a rgb string to a tuple of ints"""
 
-        rgb_match = findall(r"r?g?b?\((\d+),(\d+),(\d+)\)", rgb)
+        rgb_match = search(r"r?g?b?\((?P<red>\d+),(?P<green>\d+),(?P<blue>\d+)\)", rgb)
         if rgb_match:
-            return tuple(int(x) for x in rgb_match[0])
+            red: int = int(rgb_match.group("red"))
+            green: int = int(rgb_match.group("green"))
+            blue: int = int(rgb_match.group("blue"))
+            return (red, green, blue)
         raise ValueError(f"Invalid rgb string: {rgb}")
 
     @staticmethod
@@ -197,16 +204,27 @@ class GradientColor:
         return table
 
     @classmethod
-    def as_title(cls, color: str) -> Text:
+    def as_title(cls, color: str, console: Console = console) -> Text:
         """Capitalize, format, and color a gradient color's name.
 
         Returns:
-            Text: Colorized gradient color's capitalized name.
+            text: Colorized gradient_color's capitalized name.
         """
-        index: int = cls.get_color(color)
-        name = cls.NAMES[index]
-        capital_name = name.capitalize()
-        return f"[bold {color}]{capital_name}[/bold {color}]"
+        color = str(color).lower()
+        parsed_color: str = ""
+        if color in cls.NAMES:
+            return Text(f"[bold {color}]{str(color).capitalize()}[/bold {color}]")
+        else:
+            for group in [cls.HEX, cls.RGB, cls.RGB_TUPLE]:
+                if color in group:
+                    index = group.index(color)
+                    parsed_color = cls.NAMES[index]
+                    break
+                else:
+                    continue
+            return Text(f"[bold {parsed_color}]{str(parsed_color).capitalize()}[/bold {parsed_color}]")
+                
+        
 
 
 def print_color_table(save: bool = False) -> None:

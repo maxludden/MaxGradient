@@ -16,6 +16,8 @@ dependencies = [
     "sh>=2.0.6",
     "numpy>=1.25.2",
     "nptyping>=2.5.0",
+    "pydantic>=2.5.0",
+    "pendulum>=2.1.2",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -76,3 +78,9 @@ ignore = [
     "E203",  # Whitespace before ':'
     "E501",  # Line too long
 ]
+
+[[tool.mypy.overrides]]
+module = 'maxgradient'
+ignore_missing_imports = true
+
+

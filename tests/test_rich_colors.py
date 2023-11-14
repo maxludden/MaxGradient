@@ -1,7 +1,7 @@
 """Test Rich colors."""
 # pylint: disable=E0401
 import unittest
-from maxgradient._rich import Rich
+from maxgradient._rich_color import Rich
 
 
 class RichTests(unittest.TestCase):

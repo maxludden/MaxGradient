@@ -1,7 +1,7 @@
 from maxgradient.console import Console
 from maxgradient.gradient import Gradient
 from maxgradient.color import Color
-from maxgradient._gc import GradientColor as GC
+from maxgradient._gradient_color import GradientColor as GC
 
 console = Console()
 console.line(2)

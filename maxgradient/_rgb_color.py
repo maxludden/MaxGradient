@@ -1,16 +1,16 @@
 """RGB Color Class"""
 import re
-from functools import lru_cache
+from functools import _lru_cache_wrapper
 from random import choice
 from re import Match, Pattern
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Any
 
 from rich.box import HEAVY_EDGE
 from rich.panel import Panel
 from rich.text import Text
 
 from maxgradient._mode import Mode
-from maxgradient._rich import Rich
+from maxgradient._rich_color import Rich
 from maxgradient.log import Console, Log
 
 console = Console()
@@ -27,12 +27,10 @@ class RGB:
 
     def __init__(self, rgb: str) -> None:
         """Create a new RGB object."""
-
-        self.original: str = rgb
+        self.original: str|_lru_cache_wrapper = rgb
         self.value = rgb
 
     @property
-    @lru_cache(maxsize=1)
     def original(self) -> str:  # type: ignore
         """Return the original RGB color string."""
 
@@ -41,11 +39,10 @@ class RGB:
     @original.setter
     def original(self, rgb: str) -> None:  # type: ignore
         """Validate and initialize the rgb value."""
-
+        assert isinstance(rgb, str)
         self._original = rgb
 
     @property
-    @lru_cache(maxsize=1)
     def red(self) -> int:  # type: ignore
         """Return the red component of the RGB color."""
 
@@ -58,7 +55,6 @@ class RGB:
         self._red: int = self._parse_component(red)
 
     @property
-    @lru_cache(maxsize=1)
     def green(self) -> int:  # type: ignore
         """Return the green component of the RGB color."""
 
@@ -71,7 +67,6 @@ class RGB:
         self._green: int = self._parse_component(green)
 
     @property
-    @lru_cache
     def blue(self) -> int:  # type: ignore
         """Return the blue component of the RGB color."""
 
@@ -101,7 +96,6 @@ class RGB:
             self._value: str = parsed_rgb
 
     @property
-    @lru_cache(maxsize=1)
     def as_hex(self) -> str:
         """Return the RGB color string."""
 
@@ -112,14 +106,11 @@ class RGB:
         return hex
 
     @property
-    @lru_cache
     def as_tuple(self) -> Tuple[int, int, int]:
         """Return the RGB color as a tuple."""
-
-        return (self.red, self.green, self.blue)
+        return (int(self.red), int(self.green), int(self.blue))
 
     @property
-    @lru_cache
     def mode(self) -> Mode:
         """Return the color mode."""
         return Mode.RGB
@@ -127,12 +118,20 @@ class RGB:
     @staticmethod
     def _parse_component(component: str | int) -> int:
         """Parse a string component to an integer."""
-
-        try:
-            component = int(component)
-        except ValueError:
-            component = int(float(component) * 255)
-        return component
+        if isinstance(component, str):
+            try:
+                component = int(component.strip())
+            except ValueError:
+                component = int(float(str(component).strip()) * 255)
+            return component
+        elif isinstance(component, int):
+            try:
+                component = int(component)
+            except ValueError:
+                component = int(float(component) * 255)
+            return component
+        else:
+            raise TypeError(f"Invalid component type: {type(component)}")
 
     def parse(self, rgb: str) -> Optional[str]:
         """Parse a string to validate it is a rgb color. If it is, \
@@ -176,9 +175,8 @@ class RGB:
             box=HEAVY_EDGE,
         )
 
-    def __eq__(self, other: "RGB") -> bool:
+    def __eq__(self, other: Any) -> bool:
         """Return True if the RGB color values are equal."""
-
         if isinstance(other, RGB):
             return self.as_tuple == other.as_tuple
         return False

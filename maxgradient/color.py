@@ -18,12 +18,12 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient._gc import GradientColor as GC
-from maxgradient._hex import Hex
+from maxgradient._gradient_color import GradientColor as GC
+from maxgradient._hex_color import Hex
 from maxgradient._mode import Mode
-from maxgradient._rgb import RGB
-from maxgradient._rich import Rich
-from maxgradient._x11 import X11
+from maxgradient._rgb_color import RGB
+from maxgradient._rich_color import Rich
+from maxgradient._x11_color import X11
 from maxgradient.theme import GradientTheme
 
 console = Console()

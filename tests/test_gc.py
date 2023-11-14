@@ -2,7 +2,7 @@
 # pylint: disable=W0105
 
 import unittest
-from maxgradient._gc import GradientColor
+from maxgradient._gradient_color import GradientColor
 
 
 class TestGetNames(unittest.TestCase):

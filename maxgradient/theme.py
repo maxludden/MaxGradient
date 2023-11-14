@@ -20,7 +20,7 @@ class GradientTheme(Theme):
         inherit (bool, optional): Inherit default styles. Defaults to True.
     """
 
-    styles: Dict[str, Style]
+    styles: Dict[str, StyleType]
 
     def __init__(
         self, styles: Optional[Mapping[str, StyleType]] = None, inherit: bool = True
@@ -38,11 +38,11 @@ class GradientTheme(Theme):
     def __repr__(self) -> str:
         return f"GradientTheme({self.styles!r})"
 
-    def __rich__(self) -> str:
+    def __rich__(self) -> Table:
         return styles_table()
 
     def __getitem__(self, name: str) -> Style:
-        return self.styles[name]
+        return Style.parse(str(self.styles[name]))
 
     @classmethod
     def get_theme_table(cls) -> Table:

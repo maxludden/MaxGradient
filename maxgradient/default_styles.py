@@ -1,13 +1,22 @@
 """A container for the default styles used by GradientConsole."""
-# pylint: disable=redefined-outer-name,consider-using-dict-items
-from typing import Dict, Optional
 
-from rich.console import Console
-from rich.live import Live
-from rich.style import Style, StyleType
-from rich.table import Table
-from rich.text import Text
-from rich.theme import Theme
+from typing import TYPE_CHECKING, Dict, Optional
+
+if TYPE_CHECKING:
+    from rich.console import Console
+    from rich.live import Live
+    from rich.style import Style, StyleType
+    from rich.table import Table
+    from rich.text import Text
+    from rich.theme import Theme
+else:
+    from rich.console import Console
+    from rich.live import Live
+    from rich.style import Style, StyleType
+    from rich.table import Table
+    from rich.text import Text
+    from rich.theme import Theme
+
 
 GRADIENT_STYLES: Dict[str, StyleType] = {
     "none": Style.null(),
@@ -585,7 +594,7 @@ def styles_table() -> Table:
     table = Table(
         title=formatted_title(),
         border_style="bold.white",
-        caption="These styles are used when instantiating gradient.gradient.\
+        caption="These styles are used when instantiating MaxGradient.gradient.\
 GradientTheme.",
         caption_style="dim",
         caption_justify="right",
@@ -602,7 +611,7 @@ GradientTheme.",
     for style_name in GRADIENT_STYLES.keys():
         temp_style: Optional[StyleType] = GRADIENT_STYLES.get(style_name)
         assert temp_style is not None, "Style should not be None"
-        style: Style = Style.parse(temp_style)
+        style: Style = Style.parse(str(temp_style))
         style_string = str(style)
         if "grey" in style_name:
             style_string = f"{style_string} [dim]*Supports alternate spelling[/dim]"

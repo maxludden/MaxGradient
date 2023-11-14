@@ -1,14 +1,14 @@
 """Purpose: Contains a tuple of all the colors that the Rich library supports."""
 # pylint: disable=E0401
+import re
 from functools import lru_cache
-from re import findall
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
+from rich.box import SQUARE
+from rich.console import Console
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
-from rich.box import SQUARE
-from rich.console import Console
 
 from maxgradient.log import Log
 
@@ -861,22 +861,26 @@ class Rich:
 
     @classmethod
     @lru_cache(maxsize=10, typed=False)
-    def get_color(cls, color: str) -> Optional[Tuple[int, int, int]]:
+    def get_color(cls, color: str) -> Tuple[int, int, int]:
         """Parse rich colors for color"""
         for group in [cls.get_names(), cls.get_hex(), cls.get_rgb()]:
             if color in group:
                 index = group.index(color)
                 rgb = cls.get_rgb()[index]
-                return tuple(map(int, rgb[4:-1].split(",")))
-        return None
+                rgb_tuple: Tuple[int, int, int] = cls.rgb_to_tuple(rgb)
+                return rgb_tuple
+
+        raise ValueError(f"Invalid color: {color}")
 
     @staticmethod
     def rgb_to_tuple(rgb: str) -> Tuple[int, int, int]:
         """Convert a rgb string to a tuple of ints"""
 
-        rgb_match = findall(r"r?g?b?\((\d+),(\d+),(\d+)\)", rgb)
-        if rgb_match:
-            return tuple(int(x) for x in rgb_match[0])
+        match: Optional[re.Match] = re.search(
+            r"r?g?b?\((?P<red>\d+),(?P<green>\d+),(?P<blue>\d+)\)", rgb
+        )
+        if match:
+            return (match.group("red"), match.group("green"), match.group("blue"))
         raise ValueError(f"Invalid rgb string: {rgb}")
 
     @staticmethod
@@ -957,10 +961,7 @@ class Rich:
         NAMES = cls.get_names()
         HEX = cls.get_hex()
         RGB = cls.get_rgb()
-        color_table = Table(
-            title=cls.get_title(),
-            box=SQUARE
-        )
+        color_table = Table(title=cls.get_title(), box=SQUARE)
         color_table.add_column("Sample", justify="center", style="bold")
         color_table.add_column("Name", justify="left", style="bold")
         color_table.add_column("Hex", width=10, justify="center", style="bold")
@@ -988,16 +989,18 @@ class Rich:
             console = Console(record=True, width=100)
         else:
             console = Console()
-        
+
         console.line(2)
         console.print(cls.color_table(), justify="center")
         console.line(2)
-        
+
         if save:
             console.save_svg(
                 "docs/img/rich_color_table.svg",
                 title="Rich Color Table",
             )
+
+
 if __name__ == "__main__":
     Rich.print_class_table(save=True)
     # console.print(color_table, justify="center")

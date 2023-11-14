@@ -1,7 +1,7 @@
 """Test X11 colors."""
 # pylint: disable=E0401
 import unittest
-from maxgradient._x11 import X11
+from maxgradient._x11_color import X11
 
 
 class X11ColorTestCase(unittest.TestCase):

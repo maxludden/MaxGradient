@@ -2,6 +2,7 @@
 from enum import Enum
 
 from rich.text import Text
+from typing import Any
 
 
 class Mode(Enum):
@@ -18,7 +19,7 @@ class Mode(Enum):
     RICH = "RICH"
     X11 = "X11"
 
-    def __eq__(self, other: "Mode") -> bool:
+    def __eq__(self, other: Any) -> bool:
         """Return True if the color mode is equal to another."""
         if isinstance(other, Mode):
             return self.value == other.value
