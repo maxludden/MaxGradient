@@ -18,6 +18,7 @@ dependencies = [
     "nptyping>=2.5.0",
     "pydantic>=2.5.0",
     "pendulum>=2.1.2",
+    "ipython>=8.17.2",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -32,6 +33,8 @@ dev = [
     "mkdocs>=1.5.2",
     "mkdocs-material>=9.4.7",
     "mkdocstrings[python]>=0.18",
+    "snoop>=0.4.3",
+    "cheap-repr>=0.5.1",
 ]
 
 [tool.pdm.dependencies]

@@ -18,7 +18,7 @@ else:
     from rich.theme import Theme
 
 
-GRADIENT_STYLES: Dict[str, StyleType] = {
+GRADIENT_STYLES: dict[str, StyleType] = {
     "none": Style.null(),
     "reset": Style(
         color="default",

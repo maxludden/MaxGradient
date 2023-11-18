@@ -2,12 +2,14 @@
 # pylint: disable=W0621,C0103,W0622,E0401,E0611,C0412, w1203
 import re
 from functools import partial
+
+# from itertools import groupby
 from operator import itemgetter
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 from rich.cells import cell_len
-from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
+from rich.console import Console, ConsoleOptions
 from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style, StyleType
@@ -21,9 +23,12 @@ from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.log import Log
 from maxgradient.theme import GradientTheme
 
+JustifyMethod = Literal["default", "left", "center", "right", "full"]
+OverflowMethod = Literal["fold", "crop", "ellipsis", "ignore"]
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
-DEFAULT_JUSTIFY: JustifyMethod = "default"
-DEFAULT_OVERFLOW: OverflowMethod = "fold"
+
+DEFAULT_JUSTIFY: "JustifyMethod" = "default"
+DEFAULT_OVERFLOW: "OverflowMethod" = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 console = Console(theme=GradientTheme(), highlighter=ColorReprHighlighter())
@@ -47,6 +52,8 @@ class Gradient(Text):
                 across the spectrum. Defaults to False.\n
         invert (bool): Reverse the color gradient. Defaults to False.\n
         hues (int): The number of colors in the gradient. Defaults to `3`.\n
+        color_sample (bool): Replace text characters with `"█" `. Defaults\
+                to False.\n
         style (StyleType) The style of the gradient text. Defaults to None.\n
         justify (Optional[JustifyMethod]): Justify method: "left", "center",\
                 "full", "right". Defaults to None.\n
@@ -62,7 +69,15 @@ class Gradient(Text):
 
     """
 
-    __slots__ = ["colors", "_text" "_length", "_hues", "_style", "_spans"]
+    __slots__ = [
+        "colors",
+        "_color_sample",
+        "_hues",
+        "_length",
+        "_spans",
+        "_style",
+        "_text",
+    ]
 
     def __init__(
         self,
@@ -71,6 +86,7 @@ class Gradient(Text):
         rainbow: bool = False,
         invert: bool = False,
         hues: Optional[int] = None,
+        color_sample: bool = False,
         style: StyleType = Style.null(),
         *,
         justify: Optional[JustifyMethod] = None,
@@ -78,7 +94,7 @@ class Gradient(Text):
         no_wrap: Optional[bool] = None,
         end: str = "\n",
         tab_size: Optional[int] = 4,
-        spans: Optional[List[Span]] = None,
+        spans: Optional[List[Span]] = None,  # type: ignore
     ) -> None:
         """Text styled with gradient color.
 
@@ -90,6 +106,8 @@ class Gradient(Text):
                   across the spectrum. Defaults to False.\n
             invert (bool): Reverse the color gradient. Defaults to False.\n
             hues (int): The number of colors in the gradient. Defaults to `3`.\n
+            color_sample (bool): Replace text characters with `"█" `. Defaults\
+                  to False.\n
             style (StyleType) The style of the gradient text. Defaults to None.\n
             justify (Optional[JustifyMethod]): Justify method: "left", "center",\
                   "full", "right". Defaults to None.\n
@@ -106,13 +124,12 @@ class Gradient(Text):
         """
         # Parse text input
         if isinstance(text, Text):
-            self._spans: List[Span] = text.spans
+            if spans is None:
+                spans = text.spans
             text = strip_control_codes(text.plain)
-        else:
-            self._spans = spans or []
-            text = strip_control_codes(str(text))
-        self._text: str = text
-        self._length: int = len(text)
+        assert isinstance(text, str), f"Text must be a string: {type(text)}"
+        self._text = text
+        self._length = len(text)
 
         super().__init__(
             text=text,
@@ -128,8 +145,7 @@ class Gradient(Text):
         self._hues: int = hues or 3
         self.colors = self.get_colors(colors, rainbow, invert)
         self._hues = len(self.colors)
-        gradient_substrings: Text = self.generate_gradient_substrings(True)
-        self._spans = gradient_substrings.spans
+        self._spans = self.generate_gradient_substrings(True)
 
     def __str__(self) -> str:
         return self.plain
@@ -201,7 +217,7 @@ class Gradient(Text):
             sanitized_text = strip_control_codes(text.plain)
             self._length = len(sanitized_text)
             self._text = sanitized_text
-            self._spans: List[Span] = text.spans
+            self._spans = text.spans
         if isinstance(text, str):
             if text == "":
                 raise ValueError("Text cannot be empty.")
@@ -293,15 +309,11 @@ class Gradient(Text):
             if self.validate_colors(colors):
                 return colors
             else:
-                raise ValueError("Colors are invalid.")
+                raise ValueError(f"Invalid colors: {colors}")
         if isinstance(input_colors, str):
-            colors = self.mono(input_colors)
-            if self.validate_colors(colors):
-                return colors
-            else:
-                raise ValueError("Colors are invalid.")
+            return self.mono(input_colors)
         if input_colors is not None:
-            colors: List[Color] = []
+            colors = []
             for color in input_colors:
                 try:
                     color = Color(color)
@@ -311,13 +323,13 @@ class Gradient(Text):
             if self.validate_colors(colors):
                 return colors
             else:
-                raise ValueError("Colors are invalid.")
+                raise ValueError(f"Invalid colors: {colors}")
         color_list = ColorList(self.hues, invert).color_list
         colors = color_list[: self.hues]
         if self.validate_colors(colors):
             return colors
         else:
-            raise ValueError("Colors are invalid.")
+            raise ValueError(f"Invalid colors: {colors}")
 
     def mono(self, color: str | Color) -> List[Color]:
         """Create a list of monochromatic hues from a color.
@@ -354,7 +366,7 @@ class Gradient(Text):
             return True
         return False
 
-    def generate_gradient_substrings(self, verbose: bool = False) -> Text:
+    def generate_gradient_substrings(self, verbose: bool = False) -> List[Span]:
         """Generate gradient spans.
 
         Returns:
@@ -362,8 +374,8 @@ class Gradient(Text):
         """
         text = self.generate_text()
         gradient_string = Text()
-        indexes: List[List[int]] = self.generate_indexes()
-        substrings: List[str] = self.generate_substrings(indexes, text)
+        indexes: List[List[int]] = self.generate_indexes(True)
+        substrings: List[str] = self.generate_substrings(indexes, text, True)
 
         if verbose:
             substrings_table = Table(
@@ -372,7 +384,14 @@ class Gradient(Text):
 
         for index, substring in enumerate(substrings):
             gradient_length = len(substring)
-            substring = Text(substring)
+            if index < self.hues - 1:
+                substring = Text(substring)
+                log.success(f"[b white]Substring {index+1}/{len(indexes)}:[/][i #ffff88]{substring}[/]")
+            else:
+                substring = Text(
+                    self._text[indexes[index][0]:],
+                    
+                )
             if verbose:
                 substrings_table.add_row(  # type: ignore
                     str(index),
@@ -395,7 +414,9 @@ class Gradient(Text):
                 green = int(g1 + (blend * dg))  # type: ignore
                 blue = int(b1 + (blend * db))  # type: ignore
                 color = f"#{red:02X}{green:02X}{blue:02X}"
+                assert isinstance(substring, Text), "Substring must be a Text object."
                 substring.stylize(color, subindex, subindex + 1)
+                
 
             if verbose:
                 gradient_string = Text.assemble(
@@ -411,7 +432,8 @@ class Gradient(Text):
                 substrings_table.add_row(  # type: ignore
                     f"{index}", substring, f"{len(gradient_string)}"
                 )
-        return gradient_string
+        return gradient_string.spans
+
 
     def clean_spans(self, gradient_string: Text) -> List[Span]:
         """Clean up redundant spans"""
@@ -428,6 +450,27 @@ class Gradient(Text):
                 continue
             spans.append(Span(start, end, style))
         return spans
+
+    # multiprocessing
+    def mp_generate_substrings(
+        self, indexes: List[List[int]],
+        text: str,
+        verbose: bool = False) -> List[str]:
+        """Generate a list of substrings for the gradient.
+
+        Args:
+            indexes (List[List[int]]): The indexes for the gradient substring.
+            text (str): The text to generate the gradient substring from.
+            verbose (bool, optional): Whether to print verbose output.
+                Defaults to VERBOSE.
+        """
+        substrings: List[str] = []
+        for index in indexes:
+            substring: str = text[index[0]:index[-1]]
+            if verbose:
+                log.success(f"[b white]Substring {index}:[/][i #ffff88]{substring}[/]")
+            substrings.append(substring)
+        return substrings
 
     def generate_text(self) -> str:
         """Get the gradient text.
@@ -455,40 +498,62 @@ class Gradient(Text):
                 log.success(
                     f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}"
                 )
+        indexes = self.validate_indexes(indexes, verbose)
         return indexes
 
-    def generate_substrings(self, indexes: List[List[int]], text: str) -> List[str]:
+    def validate_indexes(self, indexes: List[List[int]], verbose: bool = True) -> List[List[int]]:
+        """Validate the indexes for the gradient substring.
+
+        Returns:
+            List[List[int]]: The indexes for the gradient substring.
+        """
+        indexes_1: List[List[int]] = indexes
+        if not indexes_1:
+            raise ValueError("Indexes cannot be empty.")
+        num: int = len(indexes_1) - 1
+        length: int = self._length
+        if indexes_1[num][-1] != length:
+            if verbose:
+                log.success(
+                    f"[i dim]Fixing last index from {indexes_1[num]} to {list(range(indexes[-1][0], length))}[/]"
+                )
+            indexes_2: List[List[int]] = indexes_1[0:num]
+            indexes_2.append(list(range(indexes[-1][0], length)))
+            return indexes_2
+        else:
+            return indexes_1
+
+    from typing import Generator
+
+    def generate_substrings(
+        self,
+        indexes: List[List[int]],
+        text: str,
+        verbose: bool = False) -> List[str]:
         """Generate a list of substrings for the gradient.
 
         Args:
             indexes (List[List[int]]): The indexes for the gradient substring.
             text (str): The text to generate the gradient substring from.
-            verbose (bool, optional): Whether to print verbose output.
-                Defaults to VERBOSE.
-        """
-        substrings: List[str] = []
-        for index in indexes:
-            substring = self.generate_substring(index, text)
-            substrings.append(substring)
-        return substrings
-
-    def generate_substring(self, index: List[int], text: str) -> str:
-        """Generate a string to make a GradientSubstring.
-
-        Args:
-            index (List[int]): The index of the substring.
-            text (str): The text to generate the gradient substring from.
-            verbose (bool, optional): Whether to print verbose output.
-                Defaults to VERBOSE.
+            verbose (bool, optional): Whether to print the logs to the console. Defaults to False.
 
         Returns:
-            str: The substring.
+            List[str]: The substrings
         """
-        substring_list: List[str] = []
-        for num in index:
-            substring_list.append(text[num])
-        substring = "".join(substring_list)
-        return substring
+        substrings: List[str] = []
+        
+        for index_no, index in enumerate(indexes, 1):
+            start: int = index[0]
+            if verbose:
+                log.success(f"[b white]Index {index_no}:[/][i #ffff88]{start}[/]")
+            end: int = index[-1]
+            if verbose:
+                log.success(f"[b white]Index {index_no}:[/][i #ffff88]{end}[/]")
+            substring: str = text[start:end]
+            if verbose:
+                log.success(f"[b white]Substring {index_no}: {index}[/][i #ffff88]{substring}[/]")
+            substrings.append(substring)
+        return substrings
 
     def __rich_console__(
         self, console: "Console", options: "ConsoleOptions"
@@ -497,7 +562,7 @@ class Gradient(Text):
         justify = self.justify or options.justify or DEFAULT_JUSTIFY
 
         overflow = self.overflow or options.overflow or DEFAULT_OVERFLOW
-
+         
         lines = self.wrap(
             console,
             options.max_width,
@@ -594,15 +659,9 @@ class Gradient(Text):
         )
 
 
-# register_repr(Gradient)(normal_repr)
-
-
 def strip_control_codes(text: str) -> str:
     """Remove control codes from a string."""
     return "".join(char for char in text if ord(char) >= 32)
-
-
-# def cell_len(text: str) -> int:Y
 
 
 def pick_bool(value: Optional[bool], default: bool, fallback: bool) -> bool:
@@ -615,27 +674,13 @@ def pick_bool(value: Optional[bool], default: bool, fallback: bool) -> bool:
 
 
 if __name__ == "__main__":  # pragma: no cover
+    from lorem_text import lorem  # type: ignore
     from rich.panel import Panel
 
-    PLACEHOLDER: str = """Excepteur incididunt ex laborum amet non aute ullamco \
-nostrud non dolore aute do fugiat esse amet. Laborum nulla non mollit et ad. \
-Adipisicing labore ut sunt sit id ea cillum labore id. Ea reprehenderit laborum \
-sit laboris et Lorem proident elit cillum nisi sint ea excepteur Lorem et. Qui \
-sint nulla labore aliqua do Lorem incididunt occaecat exercitation minim culpa \
-in. Duis duis ad velit dolore ullamco labore eu enim velit quis eu mollit amet \
-elit. Irure adipisicing pariatur pariatur eu tempor sunt irure exercitation duis 
-do magna duis est. Exercitation dolore ipsum tempor cillum minim irure ipsum \
-nisi quis pariatur excepteur elit exercitation nostrud do. Ex qui aliquip anim \
-minim ullamco nisi. Mollit fugiat enim cupidatat ad fugiat occaecat officia \
-fugiat Lorem nisi occaecat amet. Eu sit adipisicing sint ad nisi ut et sit do \
-aliquip anim et laborum officia aute. Non cillum et dolor ipsum elit consequat \
-id anim ex aute ex. In consequat occaecat pariatur incididunt sit. Aliqua \
-excepteur fugiat irure proident enim. Nulla duis elit ut labore eiusmod \
-proident qui tempor Lorem occaecat ullamco."""
     console.line(2)
     gradient = Panel(
         Gradient(
-            PLACEHOLDER,
+            lorem.paragraph(),
             colors=["red", "orange", "yellow", "green", "cyan"],
             justify="left",
             style="bold",

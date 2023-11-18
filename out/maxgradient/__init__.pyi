@@ -1,11 +1,11 @@
 from dotenv import load_dotenv as load_dotenv
-from maxgradient._console import Console as Console
+from maxgradient._gradient import Console as Console
 from maxgradient.color import Color as Color
 from maxgradient.color_list import ColorList as ColorList, TintList as TintList
-from maxgradient.gradient import Gradient as Gradient
+from maxgradient._gradient import Gradient as Gradient
 from maxgradient.highlighter import ColorReprHighlighter as ColorReprHighlighter
 from maxgradient.rule import GradientRule as GradientRule
-from maxgradient.theme import GradientTerminalTheme as GradientTerminalTheme, GradientTheme as GradientTheme
+from maxgradient._theme import GradientTerminalTheme as GradientTerminalTheme, GradientTheme as GradientTheme
 from os import environ as environ
 from rich import inspect as inspect, print as print
 from rich.console import ConsoleOptions as ConsoleOptions, Group as Group, RenderResult as RenderResult, RenderableType as RenderableType

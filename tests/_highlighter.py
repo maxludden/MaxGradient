@@ -6,7 +6,7 @@ from rich.segment import Segment
 from rich.style import Style
 
 from maxgradient.color import Color
-from maxgradient.console import Console
+from maxgradient._console import Console
 from maxgradient.highlighter import ColorReprHighlighter
 
 
@@ -17,7 +17,7 @@ class TestColorHighlighter(unittest.TestCase):
         """Tests that the ColorReprHighlighter applies style to color names and hex codes"""
         from rich.segment import Segment
 
-        from maxgradient.console import Console
+        from maxgradient._console import Console
 
         console = Console(highlighter=ColorReprHighlighter())
         result = console.render_lines("magenta\n#f0f\nrgb(255, 0, 255)")

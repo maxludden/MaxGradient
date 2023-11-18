@@ -1,6 +1,6 @@
-from maxgradient.console import Console
+from maxgradient._console import Console
 from maxgradient.color import Color
-from maxgradient.theme import GradientTerminalTheme
+from maxgradient._theme import GradientTerminalTheme
 
 
 def color_red() -> None:

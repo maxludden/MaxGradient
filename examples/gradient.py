@@ -6,10 +6,10 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
 
-from maxgradient.console import Console
-from maxgradient.gradient import Gradient
+from maxgradient._console import Console
+from maxgradient._gradient import Gradient
 from maxgradient.rule import GradientRule
-from maxgradient.theme import GradientTerminalTheme
+from maxgradient._theme import GradientTerminalTheme
 
 TEXT = lorem.paragraphs(2)
 

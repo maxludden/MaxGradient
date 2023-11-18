@@ -15,7 +15,7 @@ from rich.highlighter import RegexHighlighter
 from rich.table import Table
 from rich.traceback import install as install_rich_traceback
 
-from maxgradient.theme import GradientTheme
+from maxgradient._theme import GradientTheme
 
 CWD: Path = Path.cwd()
 DEBUG_LOG: Path = CWD / "logs" / "debug.log"

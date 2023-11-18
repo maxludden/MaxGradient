@@ -11,20 +11,27 @@ from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
 from rich import inspect, print
-from rich.console import ConsoleOptions, Group, RenderableType, RenderResult
+from rich.console import (
+    ConsoleOptions,
+    Group,
+    RenderableType,
+    RenderResult,
+    JustifyMethod,
+    OverflowMethod
+)
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
 
-from maxgradient.console import Console
+from maxgradient._console import Console
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList, TintList
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.rule import GradientRule
-from maxgradient.theme import GradientTerminalTheme, GradientTheme
+from maxgradient._theme import GradientTerminalTheme, GradientTheme
 
 __version__ = "0.2.4"
 

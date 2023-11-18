@@ -24,7 +24,7 @@ from maxgradient._mode import Mode
 from maxgradient._rgb_color import RGB
 from maxgradient._rich_color import Rich
 from maxgradient._x11_color import X11
-from maxgradient.theme import GradientTheme
+from maxgradient._theme import GradientTheme
 
 console = Console()
 # log.configure(

@@ -10,7 +10,7 @@ from typing_extensions import Annotated
 
 from maxgradient import Console
 from maxgradient.color import Color, ColorParseError
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 
 app = Typer(name="gradient", help="Print a gradient.")
 
@@ -166,7 +166,7 @@ and red.",
             console.print(f"[b i green]Colors:[/] {', '.join(validated_colors)}")
 
         gradient = Gradient(
-            text=text,
+            gradient_text=text,
             colors=validated_colors,
             style=style,
             rainbow=rainbow,
@@ -174,9 +174,9 @@ and red.",
         )
 
     elif rainbow:
-        gradient = Gradient(text=text, style=style, rainbow=rainbow)
+        gradient = Gradient(gradient_text=text, style=style, rainbow=rainbow)
     else:
-        gradient = Gradient(text=text, style=style)
+        gradient = Gradient(gradient_text=text, style=style)
     console.line()
     console.print(gradient, justify=justify)
 

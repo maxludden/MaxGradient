@@ -1,6 +1,5 @@
-from maxgradient.console import Console
-from maxgradient.gradient import Gradient
-from maxgradient.theme import GradientTerminalTheme
+from maxgradient._console import Console
+from maxgradient._theme import GradientTerminalTheme
 
 def console_print() -> None:
     """Console Hello, World!"""
@@ -8,7 +7,7 @@ def console_print() -> None:
     console.line()
     console.print("\t[bold #00ff00]Hello, World![/]")  # Uses the gradient function of console
     console.line(2)
-    console.save_max_svg(
+    console.save_svg(
         "docs/img/console_print.svg",
         title="Console Print Result",
         theme=GradientTerminalTheme(),
@@ -30,7 +29,7 @@ def console_gradient_example() -> None:
         style = "bold"
     )
     console.line(2)
-    console.save_max_svg(
+    console.save_svg(
         "docs/img/console_gradient_example.svg",
         title="Console Gradient Example",
         theme=GradientTerminalTheme(),
@@ -45,7 +44,7 @@ def console_gradient_rule_thin() -> None:
         thickness="thin"
     )
     console.line(2)
-    console.save_max_svg(
+    console.save_svg(
         "docs/img/console_gradient_rule_thin.svg",
         title="Console Gradient Rule Thin",
         theme=GradientTerminalTheme(),
@@ -60,7 +59,7 @@ def console_gradient_rule_medium() -> None:
         thickness="medium"
     )
     console.line(2)
-    console.save_max_svg(
+    console.save_svg(
         "docs/img/console_gradient_rule_medium.svg",
         title="Console Gradient Rule Medium",
         theme=GradientTerminalTheme(),
@@ -75,7 +74,7 @@ def console_gradient_rule_thick() -> None:
         thickness="thick"
     )
     console.line(2)
-    console.save_max_svg(
+    console.save_svg(
         "docs/img/console_gradient_rule_thick.svg",
         title="Console Gradient Rule Thick",
         theme=GradientTerminalTheme(),

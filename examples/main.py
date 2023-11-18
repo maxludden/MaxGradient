@@ -8,9 +8,9 @@ from rich.layout import Layout
 from rich.panel import Panel
 
 import maxgradient as mg
-from maxgradient.console import Console
-from maxgradient.gradient import Gradient
-from maxgradient.theme import GradientTheme
+from maxgradient._console import Console
+from maxgradient._gradient import Gradient
+from maxgradient._theme import GradientTheme
 
 console = Console()
 console.print(f"Console Width: {console.width}")

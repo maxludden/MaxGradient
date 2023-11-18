@@ -1,5 +1,5 @@
 """Rule class for maxgradient package."""
-from typing import Literal, Union, Optional
+from typing import Literal, Optional, Union
 
 from rich.align import AlignMethod
 from rich.cells import cell_len, set_cell_size
@@ -9,7 +9,7 @@ from rich.measure import Measurement
 from rich.text import Text
 
 from maxgradient.color_list import ColorList
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 from maxgradient.log import Log
 
 Thickness = Literal["thin", "medium", "thick"]
@@ -163,6 +163,8 @@ class GradientRule(JupyterMixin):
             chars_len (int): Width of the rule characters.
             width (int): Width of the rule.
         """
+        if rule_text is None:
+            rule_text = Text()
         self.title_text.truncate(truncate_width, overflow="ellipsis")
         self.side_width: int = (width - cell_len(self.title_text.plain)) // 2
         if self.gradient:
@@ -183,7 +185,7 @@ class GradientRule(JupyterMixin):
         if self.gradient:
             rule_text.append(
                 Gradient(
-                    text=self.characters * (self.side_width // chars_len + 1),
+                    self.characters * (self.side_width // chars_len + 1),
                     colors=self.right_colors,
                     end=" ",
                 )
@@ -202,7 +204,7 @@ class GradientRule(JupyterMixin):
         return Measurement(1, 1)
 
     @property
-    def thickness(self) -> None:
+    def thickness(self) -> str:
         """Thickness of the rule line."""
         return self._thickness
 
@@ -224,7 +226,7 @@ class GradientRule(JupyterMixin):
         if characters is not None:
             self._characters = characters
             return
-        
+
         # If no characters are set, generate them based on the thickness
         else:
             if self.thickness == "thin":
