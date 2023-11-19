@@ -15,10 +15,10 @@ from rich.table import Table
 from rich.text import Span, Text
 from rich.traceback import install as install_rich_traceback
 
+from maxgradient.__log import Log
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.highlighter import ColorReprHighlighter
-from maxgradient.__log import Log
 from maxgradient.theme import GradientTheme
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
@@ -62,7 +62,7 @@ class Gradient(Text):
 
     """
 
-    __slots__ = ["colors", "_text" "length", "_hues", "_style", "_spans"]
+    __slots__ = ["colors", "_text", "_length", "length", "_hues", "_style", "_spans"]
 
     def __init__(
         self,
@@ -231,20 +231,6 @@ class Gradient(Text):
         if hues < 2:
             raise ValueError("Gradient must have at least two colors.")
         self._hues = hues
-
-    @property
-    def color_sample(self) -> bool:
-        """Whether the gradient is a color sample."""
-
-        return self._color_sample
-
-    @color_sample.setter
-    def color_sample(self, color_sample: bool) -> None:
-        """Set whether the gradient is a color sample."""
-
-        if color_sample:
-            self.text = "█" * self._length
-        self._color_sample = color_sample
 
     @property
     def style(self) -> Style:
