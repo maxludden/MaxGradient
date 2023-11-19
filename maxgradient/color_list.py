@@ -9,7 +9,7 @@ from rich.table import Table
 from rich.text import Text
 
 from maxgradient.color import Color
-from maxgradient.log import Console, Log
+from maxgradient.__log import Console, Log
 
 console = Console()
 log = Log()

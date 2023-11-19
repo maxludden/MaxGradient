@@ -41,7 +41,7 @@ class Mode(Enum):
 
 
 if __name__ == "__main__":
-    from maxgradient.log import Console
+    from maxgradient.__log import Console
 
     console = Console()
     console.line()

@@ -10,7 +10,7 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient.log import Log
+from maxgradient.__log import Log
 
 console = Console()
 log = Log()

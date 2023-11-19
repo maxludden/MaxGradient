@@ -19,6 +19,7 @@ dependencies = [
     "pydantic>=2.5.0",
     "pendulum>=2.1.2",
     "ipython>=8.17.2",
+    "loguru-config>=0.1.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -68,6 +69,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "text.py"
 ]
 
 # Same as Black.

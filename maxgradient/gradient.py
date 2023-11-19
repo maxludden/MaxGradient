@@ -18,7 +18,7 @@ from rich.traceback import install as install_rich_traceback
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.highlighter import ColorReprHighlighter
-from maxgradient.log import Log
+from maxgradient.__log import Log
 from maxgradient.theme import GradientTheme
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
@@ -62,7 +62,7 @@ class Gradient(Text):
 
     """
 
-    __slots__ = ["colors", "_text" "_length", "_hues", "_style", "_spans"]
+    __slots__ = ["colors", "_text" "length", "_hues", "_style", "_spans"]
 
     def __init__(
         self,
@@ -111,8 +111,8 @@ class Gradient(Text):
         else:
             self._spans = spans or []
             text = strip_control_codes(str(text))
-        self._text: str = text
-        self._length: int = len(text)
+        # self._text: str = text
+        # self._length: int = len(text)
 
         super().__init__(
             text=text,
@@ -199,15 +199,20 @@ class Gradient(Text):
 
         if isinstance(text, Text):
             sanitized_text = strip_control_codes(text.plain)
-            self._length = len(sanitized_text)
+            length = len(sanitized_text)
+            self.length: int = length
             self._text = sanitized_text
-            self._spans: List[Span] = text.spans
-        if isinstance(text, str):
+            self._spans = text.spans
+        elif isinstance(text, str):
             if text == "":
                 raise ValueError("Text cannot be empty.")
             sanitized_text = strip_control_codes(text)
             self._length = len(sanitized_text)
             self._text = sanitized_text
+        elif text is None:
+            raise ValueError("Text cannot be None.")
+        else:
+            raise TypeError(f"Text must be a string or Text, not {type(text)}")
 
     @property
     def hues(self) -> int:
@@ -301,7 +306,7 @@ class Gradient(Text):
             else:
                 raise ValueError("Colors are invalid.")
         if input_colors is not None:
-            colors: List[Color] = []
+            colors = []
             for color in input_colors:
                 try:
                     color = Color(color)
@@ -372,11 +377,11 @@ class Gradient(Text):
 
         for index, substring in enumerate(substrings):
             gradient_length = len(substring)
-            substring = Text(substring)
+            subtext = Text(substring)
             if verbose:
                 substrings_table.add_row(  # type: ignore
                     str(index),
-                    substring,
+                    subtext,
                     str(gradient_length),
                 )
 
@@ -395,12 +400,12 @@ class Gradient(Text):
                 green = int(g1 + (blend * dg))  # type: ignore
                 blue = int(b1 + (blend * db))  # type: ignore
                 color = f"#{red:02X}{green:02X}{blue:02X}"
-                substring.stylize(color, subindex, subindex + 1)
+                subtext.stylize(color, subindex, subindex + 1)
 
             if verbose:
                 gradient_string = Text.assemble(
                     gradient_string,
-                    substring,
+                    subtext,
                     style=self.style,
                     justify=self.justify,
                     overflow=self.overflow,
@@ -409,7 +414,7 @@ class Gradient(Text):
                     tab_size=self.tab_size or 4,
                 )
                 substrings_table.add_row(  # type: ignore
-                    f"{index}", substring, f"{len(gradient_string)}"
+                    f"{index}", subtext, f"{len(gradient_string)}"
                 )
         return gradient_string
 

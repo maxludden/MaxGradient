@@ -20,7 +20,7 @@ from rich.traceback import install as install_rich_traceback
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.highlighter import ColorReprHighlighter
-from maxgradient.log import Log
+from maxgradient.__log import Log
 from maxgradient.theme import GradientTheme
 
 JustifyMethod = Literal["default", "left", "center", "right", "full"]

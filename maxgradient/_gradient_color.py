@@ -11,8 +11,8 @@ from rich.table import Table
 from rich.text import Text
 
 from maxgradient._mode import Mode
-from maxgradient.log import Console as LogConsole
-from maxgradient.log import Log
+from maxgradient.__log import Console as LogConsole
+from maxgradient.__log import Log
 
 console = LogConsole()
 log = Log()
