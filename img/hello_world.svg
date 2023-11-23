@@ -53,13 +53,13 @@
       <rect x="0" y="0" width="853.0" height="96.6" />
     </clipPath>
     <clipPath id="terminal-3004564467-line-0">
-    <rect x="0" y="1.5" width="854" height="24.65"/>
+    <rect x="0" y="1.5" width="854" height="24.65"/> 
             </clipPath>
 <clipPath id="terminal-3004564467-line-1">
-    <rect x="0" y="25.9" width="854" height="24.65"/>
+    <rect x="0" y="25.9" width="854" height="24.65"/> 
             </clipPath>
 <clipPath id="terminal-3004564467-line-2">
-    <rect x="0" y="50.3" width="854" height="24.65"/>
+    <rect x="0" y="50.3" width="854" height="24.65"/> 
             </clipPath>
     </defs>
 
