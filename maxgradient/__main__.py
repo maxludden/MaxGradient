@@ -9,8 +9,7 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
 
-from maxgradient._gradient import Console
-from maxgradient._gradient import Gradient
+from maxgradient.gradient import Console, Gradient
 from maxgradient.rule import GradientRule
 
 TEXT = "Lorem nulla consequat enim adipisicing excepteur nostrud pariatur est. \

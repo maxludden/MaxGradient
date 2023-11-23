@@ -5,12 +5,6 @@ from typing import Tuple
 from rich.columns import Columns
 from rich.highlighter import RegexHighlighter, _combine_regex
 
-# from snoop import snoop
-# from cheap_repr import register_repr, normal_repr
-
-
-# from maxgradient._gc import GradientColor as GC
-
 NAMES: Tuple[str, ...] = (
     "magenta",
     "violet",
@@ -119,7 +113,7 @@ class ColorReprHighlighter(RegexHighlighter):
 
 
 if __name__ == "__main__":
-    from maxgradient._gradient import Console
+    from maxgradient.gradient import Console
 
     console = Console(highlighter=ColorReprHighlighter())
 

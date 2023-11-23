@@ -5,15 +5,16 @@ from random import choice
 from typing import Tuple
 
 from rich.box import HEAVY_EDGE
+from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 
 from maxgradient._mode import Mode
 from maxgradient._rich_color import Rich
-from maxgradient.__log import Console, Log
+
+# from maxgradient.log import log
 
 console = Console()
-log = Log()
 
 
 class HexParseError(ValueError):

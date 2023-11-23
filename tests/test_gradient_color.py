@@ -2,7 +2,8 @@
 # pylint: disable=W0105
 
 import unittest
-from maxgradient._gradient_color import GradientColor
+
+from maxgradient.gradient_color import GradientColor
 
 
 class TestGetNames(unittest.TestCase):
@@ -43,7 +44,7 @@ class TestGetNames(unittest.TestCase):
     def test_edge_case_non_string_color_raises_type_error(self):
         """Tests that the method raises a TypeError when called with a color that is not a string"""
         with self.assertRaises(TypeError):
-            GradientColor.get_names(123) # pylint: disable=E1121
+            GradientColor.get_names(123)  # pylint: disable=E1121
 
     def test_general_behavior_returns_correct_number_of_colors(self):
         """Tests that the method returns the correct number of colors."""

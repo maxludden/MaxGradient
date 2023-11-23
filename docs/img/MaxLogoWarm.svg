@@ -2,33 +2,33 @@
 <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280">
    <defs>
       <linearGradient id='a' gradientUnits='objectBoundingBox' x1='0' y1='0' x2='1' y2='1'>
-         <stop offset='0' stop-color='#ff00ff'>
+         <stop offset='0' stop-color='lime'>
             <animate attributeName="stop-color"
-                values="#ff00ff;#af00ff;#5f00ff;0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;" dur="30s" repeatCount="indefinite">
+                values="lime;yellow;orange;red;lime;" dur="20s" repeatCount="indefinite">
             </animate>
          </stop>
-         <stop offset='.5' stop-color='#af00ff'>
+         <stop offset='.5' stop-color='yellow'>
             <animate attributeName="stop-color"
-               values="#af00ff;#5f00ff;0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;#af00ff;" dur="15s" repeatCount="indefinite">
+               values="yellow;orange;red;lime;yellow;" dur="20s" repeatCount="indefinite">
             </animate>
          </stop>
          <stop offset='1' stop-color='orange'>
             <animate attributeName="stop-color"
-               values="#5f00ff;0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;#af00ff;#5f00ff;" dur="5s" repeatCount="indefinite">
+               values="orange;red;lime;yellow;orange;" dur="20s" repeatCount="indefinite">
             </animate>
          </stop>
          <animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5"
            dur="20s" repeatCount="indefinite" />
       </linearGradient>
       <linearGradient id='b' gradientUnits='objectBoundingBox' x1='0' y1='1' x2='1' y2='1'>
-         <stop offset='0' stop-color='#ff00ff'>
+         <stop offset='0' stop-color='lime'>
             <animate attributeName="stop-color"
-               values="#ff00ff;#af00ff;#5f00ff;0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;" dur="30s" repeatCount="indefinite">
+               values="lime;yellow;orange;red;lime;" dur="20s" repeatCount="indefinite">
             </animate>
          </stop>
-         <stop offset='1' stop-color='#af00ff' stop-opacity="0">
+         <stop offset='1' stop-color='yellow' stop-opacity="0">
             <animate attributeName="stop-color"
-               values="#af00ff;#5f00ff;0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;#af00ff" dur="15s" repeatCount="indefinite">
+               values="yellow;orange;red;lime;yellow;" dur="20s" repeatCount="indefinite">
             </animate>
          </stop>
         <animateTransform attributeName="gradientTransform" type="rotate" values="360 .5 .5;0 .5 .5" class="ignore"

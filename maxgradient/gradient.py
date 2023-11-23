@@ -1,5 +1,4 @@
 """Streamline Gradient class"""
-# pylint: disable=W0621,C0103,W0622,E0401,E0611,C0412, w1203
 import re
 from functools import partial
 from operator import itemgetter
@@ -7,19 +6,19 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 from rich.cells import cell_len
-from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
+from rich.console import ConsoleOptions, JustifyMethod, OverflowMethod
 from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
-from rich.traceback import install as install_rich_traceback
 
-from maxgradient.__log import Log
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.highlighter import ColorReprHighlighter
+from maxgradient.log import log
 from maxgradient.theme import GradientTheme
+from rich.console import Console
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -27,10 +26,6 @@ DEFAULT_OVERFLOW: OverflowMethod = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
 console = Console(theme=GradientTheme(), highlighter=ColorReprHighlighter())
-install_rich_traceback(console=console, show_locals=True)
-log = Log()
-
-
 DEFAULT_JUSTIFY = "left"
 DEFAULT_OVERFLOW = "crop"
 VERBOSE = True

@@ -10,15 +10,13 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient.__log import Log
-
-console = Console()
-log = Log()
+# from maxgradient.log import log
 
 
 class Rich:
     """Rich standard colors."""
 
+    console = Console()
     NAMES: Tuple[str, ...] = (
         "black",
         "red",
@@ -880,7 +878,11 @@ class Rich:
             r"r?g?b?\((?P<red>\d+),(?P<green>\d+),(?P<blue>\d+)\)", rgb
         )
         if match:
-            return (match.group("red"), match.group("green"), match.group("blue"))
+            return (
+                int(match.group("red")),
+                int(match.group("green")),
+                int(match.group("blue")),
+            )
         raise ValueError(f"Invalid rgb string: {rgb}")
 
     @staticmethod
@@ -979,28 +981,17 @@ class Rich:
                 Text(color_rgb, style=color_hex),
                 Text(str(color_rgb_tuple), style=color_hex),
             )
-
         return color_table
 
-    @classmethod
-    def print_class_table(cls, save: bool = False) -> None:
+    def print_class_table(self) -> None:
         """Print the rich library's Standard Colors."""
-        if save:
-            console = Console(record=True, width=100)
-        else:
-            console = Console()
+        console: Console = Console(record=True)
 
         console.line(2)
-        console.print(cls.color_table(), justify="center")
+        console.print(self.color_table(), justify="center")
         console.line(2)
-
-        if save:
-            console.save_svg(
-                "docs/img/rich_color_table.svg",
-                title="Rich Color Table",
-            )
 
 
 if __name__ == "__main__":
-    Rich.print_class_table(save=True)
-    # console.print(color_table, justify="center")
+    rich = Rich()
+    rich.print_class_table()

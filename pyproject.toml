@@ -1,11 +1,9 @@
 
 [project]
 name = "maxgradient"
-version = "0.2.5"
+version = "0.2.7"
 description = "MaxGradient automates the printing gradient colored text to the console."
-authors = [
-    { name = "Max Ludden", email = "dev@maxludden.com" }
-]
+authors = [{ name = "Max Ludden", email = "dev@maxludden.com" }]
 dependencies = [
     "rich>=13.5.3",
     "lorem-text>=2.1",
@@ -20,6 +18,7 @@ dependencies = [
     "pendulum>=2.1.2",
     "ipython>=8.17.2",
     "loguru-config>=0.1.0",
+    "loguru-mypy>=0.0.4",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -69,7 +68,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
-    "text.py"
+    "text.py",
 ]
 
 # Same as Black.
@@ -80,12 +79,14 @@ target-version = "py38"
 
 # Use the same default ignore list as Black.
 ignore = [
-    "E203",  # Whitespace before ':'
-    "E501",  # Line too long
+    "E203", # Whitespace before ':'
+    "E501", # Line too long
 ]
+
 
 [[tool.mypy.overrides]]
 module = 'maxgradient'
 ignore_missing_imports = true
+
 
 

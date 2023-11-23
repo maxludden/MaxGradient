@@ -10,7 +10,7 @@ from typing_extensions import Annotated
 
 from maxgradient import Console
 from maxgradient.color import Color, ColorParseError
-from maxgradient._gradient import Gradient
+from maxgradient.gradient import Gradient
 
 app = Typer(name="gradient", help="Print a gradient.")
 

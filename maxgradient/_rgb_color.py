@@ -8,14 +8,12 @@ from typing import Optional, Tuple, Any
 from rich.box import HEAVY_EDGE
 from rich.panel import Panel
 from rich.text import Text
+from rich.console import Console
 
 from maxgradient._mode import Mode
 from maxgradient._rich_color import Rich
-from maxgradient.__log import Console, Log
 
 console = Console()
-log = Log()
-log.enable("_rgb")
 
 
 class RGB:

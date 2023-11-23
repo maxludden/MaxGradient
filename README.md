@@ -1,6 +1,6 @@
 <html>
     <head>
-        <link href="styles/gradient.css" rel="stylesheet">
+        <link href="styles/style.css" rel="stylesheet">
     </head>
     <body>
         <!--MaxGradient Banner-->
@@ -9,8 +9,11 @@
 ​        <div class="badges">
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11 | 3.12 -blue?logo=python" alt="PyPI - MaxGradient"></a>
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.5-bbbbbb" alt="Version 0.2.5"></a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.7-bbbbbb" alt="Version 0.2.7"></a>
 ​            <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
+            <a href="https://codecov.io/gh/yourusername/yourrepo">
+                <img src="https://codecov.io/gh/maxludden/maxgradient/branch/main/graph/badge.svg?token=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" class="badge" alt="codecov" />
+            </a>
 ​        </div>
         <!--End of badges-->
 ​        <div class="summary">
@@ -65,12 +68,28 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 ![Color](docs/img/color_code.svg)
 
 <img class="result" src="docs/img/color_example.svg" alt="Color Example">
+<br /><br /></br />
+<figure style="display:flex;align-content:center;">
+    <p style="text-align:center;">Created by</p>
+    <img style="margin:auto;" width="25%" src="https://user-images.githubusercontent.com/51646468/284406500-dff29293-4afb-40a5-8e1a-275108898845.svg" alt="Max Ludden's Logo" />
+</figure>
 
-### Changelog
+## Changelog
 
-#### v0.2.5
+### v0.2.7 | Bug Fixes
 
-- Added type stubs
+- Combined multiple CSS stylesheets into one:
+    - `next-btn.css` -> `style.css`
+    - `gradient.css` -> `style.css`
+- General corrects to everyfile to fin
+
+### v0.2.6 | Type Stubs
+
+- Added type stubs - Mypy should work now
+- Simplified `maxgradient.log.py` and fixed line lengths
+
+### v0.2.5 | Renamed Files
+
 - Removed erroneous `maxgradient._console.py` file
 - Renamed several files:
     - `maxgradient._gc.py` -> `maxgradient._gradient_color.py`
@@ -79,7 +98,7 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
     - `maxgradient._x11.py` -> `maxgradient._x11_color`
     - `maxgradient._rich.py` -> `maxgradient._rich_color.py`
 
-#### v0.2.4
+### v0.2.4 | Converted to linting with [`ruff`](https://docs.astral.sh/ruff/)
 
 - Rewrote `MaxGradient.console.Console` to replicate `rich.console.Console`
     - added `gradient` method
@@ -88,21 +107,21 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 - Pruned dependencies
 - Updated default_styles.GRADIENT_STYLES
 
-#### v0.2.3
+### v0.2.3
 
 - Updated docs and added more examples and reference
 - Fixed bugs
     - Fixed bug where gradient would not print if gradient was the only thing in the console
     - Fixed bug where gradient wouldn't print if the style wasn't a `rich.style.Style` object
 
-#### v0.2.2
+### v0.2.2
 
 - Added examples to docs and fixed some typos and bugs
 - Disabled logging
 - Fixed gradient class
 - Added gradient rules
 
-#### v0.1.6
+### v0.1.6
 
 - Added docs
 - Changed docs to readthedocs theme.

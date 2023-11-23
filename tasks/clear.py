@@ -3,7 +3,7 @@ import os
 from rich.console import Console
 from rich.panel import Panel
 
-from maxgradient._gradient import Gradient
+from maxgradient.gradient import Gradient
 
 console = Console()
 

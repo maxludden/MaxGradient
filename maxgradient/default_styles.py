@@ -595,7 +595,7 @@ def styles_table() -> Table:
         title=formatted_title(),
         border_style="bold.white",
         caption="These styles are used when instantiating MaxGradient.gradient.\
-GradientTheme.",
+GradientTheme",
         caption_style="dim",
         caption_justify="right",
     )

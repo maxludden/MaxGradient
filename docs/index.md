@@ -101,15 +101,21 @@ console.gradient(
 
 ![Hello, World!](img/gradient_with_color_2.svg)
 
-<!--Result End | 2 -->
+---
+
+<div style="margin:auto; text-align:center;">
+    <span style="font-size:1.5em; vertical-align:middle;">Created by<br />
+    <img src="img/MaxLogo.svg" alt="Max Ludden's Logo" style="width:25%; margin:auto; padding:20px;"><br /> Max Ludden</span>
+</div>
 
 ---
 
 ## Changelog
 
-### v0.2.5
+### v0.2.6 | <span style="color:#aaff00;">November 18, 2023</span>
 
-- Added type stubs
+- Added type stubs - Mypy should work now
+- Simplified `maxgradient.log.py` and fixed line lengths
 
 ### v0.2.4
 

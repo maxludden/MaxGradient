@@ -18,13 +18,13 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient._gradient_color import GradientColor as GC
 from maxgradient._hex_color import Hex
 from maxgradient._mode import Mode
 from maxgradient._rgb_color import RGB
 from maxgradient._rich_color import Rich
+from maxgradient.theme import GradientTheme
 from maxgradient._x11_color import X11
-from maxgradient._theme import GradientTheme
+from maxgradient._gradient_color import GradientColor as GC
 
 console = Console()
 # log.configure(
@@ -326,7 +326,6 @@ You can also visit the rich library's documentation to view all \
         self._original = color
 
     @property
-    @lru_cache
     def red(self) -> int:  # type: ignore
         """Return the red value of the color."""
         return self._red
@@ -342,7 +341,6 @@ You can also visit the rich library's documentation to view all \
 
     # type: ignore
     @property
-    @lru_cache
     def green(self) -> int:  # type: ignore
         """Return the green value of the color."""
         return self._green
@@ -359,7 +357,6 @@ You can also visit the rich library's documentation to view all \
             self._green = green
 
     @property
-    @lru_cache
     def blue(self) -> int:  # type: ignore
         """Return the blue value of the color."""
         return self._blue
@@ -374,7 +371,6 @@ You can also visit the rich library's documentation to view all \
             self._blue = blue
 
     @property
-    @lru_cache
     def name(self) -> str:  # type: ignore
         """Return the name of the color."""
 

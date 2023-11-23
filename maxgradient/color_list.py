@@ -7,13 +7,12 @@ from typing import List
 
 from rich.table import Table
 from rich.text import Text
+from rich.console import Console
 
 from maxgradient.color import Color
-from maxgradient.__log import Console, Log
+from maxgradient.log import log
 
 console = Console()
-log = Log()
-
 
 class ColorList(list):
     """ColorList is a list of colors. It is used to generate a spectrum of\
@@ -55,6 +54,7 @@ class ColorList(list):
         # return self.color_list
 
     def __call__(self):
+        log.debug(f"ColorList.__call__(): {self.color_list}")
         return self.color_list
 
     # def __getitem__(self, index: int):

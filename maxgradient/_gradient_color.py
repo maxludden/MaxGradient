@@ -1,5 +1,4 @@
 """Parse colors from strings."""
-# pylint: disable=C0209,E0401,W0611,C0103,E0202,E0611,W0622
 from functools import lru_cache
 from re import search
 from typing import Tuple
@@ -11,11 +10,8 @@ from rich.table import Table
 from rich.text import Text
 
 from maxgradient._mode import Mode
-from maxgradient.__log import Console as LogConsole
-from maxgradient.__log import Log
 
-console = LogConsole()
-log = Log()
+console = Console()
 
 
 class GradientColor:
@@ -222,9 +218,9 @@ class GradientColor:
                     break
                 else:
                     continue
-            return Text(f"[bold {parsed_color}]{str(parsed_color).capitalize()}[/bold {parsed_color}]")
-                
-        
+            return Text(
+                f"[bold {parsed_color}]{str(parsed_color).capitalize()}[/bold {parsed_color}]"
+            )
 
 
 def print_color_table(save: bool = False) -> None:
@@ -242,6 +238,7 @@ def print_color_table(save: bool = False) -> None:
             "docs/img/gc_color_table.svg",
             title="Gradient Color Table",
         )
+
 
 if __name__ == "__main__":
     print_color_table(True)

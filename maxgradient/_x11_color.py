@@ -743,7 +743,7 @@ class X11:
     def print_color_table(cls, save: bool = False) -> None:
         """Print the rich library's Standard Colors."""
         if save:
-            console = Console(record=True, width=100)
+            console: Console = Console(record=True, width=100)
         else:
             console = Console(record=False)
 
@@ -752,11 +752,14 @@ class X11:
         console.line(2)
 
         if save:
-            console.save_svg(
-                "docs/img/x11_color_table.svg",
-                title="X11 Color Table",
-            )
+            try:
+                console.save_svg( # type: ignore
+                    "docs/img/x11_color_table.svg",
+                    title="X11 Color Table",
+                )
+            except ImportError:
+                pass
 
 
 if __name__ == "__main__":
-    X11.print_color_table(save=True)
+    X11.print_color_table()

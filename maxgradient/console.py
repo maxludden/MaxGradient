@@ -2134,7 +2134,9 @@ class Console:
                                 )
 
                         if use_legacy_windows_render:
-                            from rich._win32_console import LegacyWindowsTerm
+                            from rich._win32_console import (
+                                LegacyWindowsTerm,  # type:ignore
+                            )
                             from rich._windows_renderer import legacy_windows_render
 
                             buffer = self._buffer[:]
@@ -2773,7 +2775,6 @@ href="{style.link}">{text}</a>'
                 rainbow=rainbow,
                 invert=invert,
                 hues=hues,
-                color_sample=color_sample,
                 style=style,
                 justify=justify,
                 overflow=overflow,
@@ -2891,3 +2892,5 @@ nisi voluptate incididunt pariatur proident elit. Reprehenderit id dolor \
 pariatur ea laborum qui. Velit commodo ad eiusmod Lorem qui do quis pariatur. \
 Quis amet qui Lorem amet magna ut incididunt occaecat deserunt enim."
     )
+
+

@@ -47,7 +47,6 @@ else:
 
 HighlighterType = Callable[[Union[str, "Text"]], "Text"]
 
-from rich.console import Console as RichConsole, JustifyMethod, OverflowMethod
 from rich import errors, themes
 from rich._emoji_replace import _emoji_replace
 from rich._export_format import CONSOLE_HTML_FORMAT, CONSOLE_SVG_FORMAT
@@ -55,6 +54,7 @@ from rich._fileno import get_fileno
 from rich._log_render import FormatTimeCallable, LogRender
 from rich.align import Align, AlignMethod
 from rich.color import ColorSystem, blend_rgb
+from rich.console import JustifyMethod, OverflowMethod
 from rich.control import Control
 from rich.emoji import EmojiVariant
 from rich.highlighter import NullHighlighter
@@ -74,7 +74,6 @@ from rich.text import Span, Text, TextType
 from rich.theme import ThemeStack
 from rich.traceback import install as install_rich_traceback
 
-
 from maxgradient.color import Color
 from maxgradient.gradient import Gradient
 from maxgradient.highlighter import ColorReprHighlighter
@@ -89,8 +88,6 @@ if TYPE_CHECKING:
 JUPYTER_DEFAULT_COLUMNS = 115
 JUPYTER_DEFAULT_LINES = 100
 WINDOWS = platform.system() == "Windows"
-
-
 
 
 class NoChange:
@@ -2137,7 +2134,9 @@ class Console:
                                 )
 
                         if use_legacy_windows_render:
-                            from rich._win32_console import LegacyWindowsTerm # type: ignore
+                            from rich._win32_console import (
+                                LegacyWindowsTerm,  # type: ignore
+                            )
                             from rich._windows_renderer import legacy_windows_render
 
                             buffer = self._buffer[:]
