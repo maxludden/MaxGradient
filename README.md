@@ -77,10 +77,13 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 
 - Updated changlog to have dates
 
-### v0.2.9 | <span style="color:#aaff00;">November 25, 2023</span> |Updated Banner
+### v0.2.9 | <span style="color:#aaff00;">November 25, 2023</span> | Updated Banner
 
-- Updated MaxGradient Logo and Favicon
-- Updated banner to include new logo as http rather than refernceing the svg file locally.
+- Updated MaxGradient Logo:
+<img src="docs/img/MaxGradient.svg" width="5%" alt="MaxGradient Logo" />
+- and Favicon:
+<img src="docs/img/MaxGradient_favicon.svg" width="5%" alt="MaxGradient Favicon" />
+- Updated banner to include new logo as http rather than referencing the SVG file locally.
 
 ### v0.2.8 | <span style="color:#aaff00;">November 25, 2023</span> | Fixed `cli.py`
 
