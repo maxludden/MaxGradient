@@ -9,7 +9,7 @@
 ​        <div class="badges">
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11 | 3.12 -blue?logo=python" alt="PyPI - MaxGradient"></a>
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.7-bbbbbb" alt="Version 0.2.7"></a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.9-bbbbbb" alt="Version 0.2.9"></a>
 ​            <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
 ​        </div>
         <!--End of badges-->
@@ -68,17 +68,27 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 <br /><br /></br />
 <figure style="display:flex;align-content:center;">
     <p style="text-align:center;">Created by</p>
-    <img style="margin:auto;" width="25%" src="https://user-images.githubusercontent.com/51646468/284406500-dff29293-4afb-40a5-8e1a-275108898845.svg" alt="Max Ludden's Logo" />
+    <img style="margin:auto;" width="25%" src="docs/img/MaxLogo.svg" alt="Max Ludden's Logo" />
 </figure>
 
 ## Changelog
+
+### v0.2.9 | Updated Banner
+
+- Updated MaxGradient Logo and Favicon
+- Updated banner to include new logo as http rather than refernceing the svg file locally.
+
+### v0.2.8 | Fixed `cli.py`
+
+- Fixed `cli.py` so that it works with the new `gradient` method
+- Removed logging
 
 ### v0.2.7 | Bug Fixes
 
 - Combined multiple CSS stylesheets into one:
     - `next-btn.css` -> `style.css`
     - `gradient.css` -> `style.css`
-- General corrects to everyfile to fin
+- General corrections to every file after correcting for Mypy
 
 ### v0.2.6 | Type Stubs
 

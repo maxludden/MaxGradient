@@ -12,7 +12,7 @@ from rich.text import Text
 from maxgradient._mode import Mode
 from maxgradient._rich_color import Rich
 
-# from maxgradient.log import log
+# # from maxgradient.log import log
 
 console = Console()
 

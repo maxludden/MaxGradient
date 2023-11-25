@@ -105,12 +105,29 @@ console.gradient(
 
 <div style="margin:auto; text-align:center;">
     <span style="font-size:1.5em; vertical-align:middle;">Created by<br />
-    <img src="img/MaxLogo.svg" alt="Max Ludden's Logo" style="width:25%; margin:auto; padding:20px;"><br /> Max Ludden</span>
+    <img src="https://user-images.githubusercontent.com/51646468/284406500-dff29293-4afb-40a5-8e1a-275108898845.svg" alt="Max Ludden's Logo" style="width:25%; margin:auto; padding:20px;"><br /> Max Ludden</span>
 </div>
 
 ---
 
 ## Changelog
+
+### v0.2.9 | Updated Banner
+
+- Updated MaxGradient Logo and Favicon
+- Updated banner to include new logo as http rather than refernceing the svg file locally.
+
+### v0.2.8 | <span style="color:#aaff00;">November 25, 2023</span> | Fixed `cli.py`
+
+- Fixed `cli.py` so that it works with the new `gradient` method
+- Removed logging
+
+### v0.2.7 | <span style="color:#aaff00;">November 25, 2023</span> | Bug Fixes
+
+- Combined multiple CSS stylesheets into one:
+    - `next-btn.css` -> `style.css`
+    - `gradient.css` -> `style.css`
+- General corrections to every file after correcting for Mypy
 
 ### v0.2.6 | <span style="color:#aaff00;">November 18, 2023</span>
 

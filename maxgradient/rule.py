@@ -1,7 +1,8 @@
 """Rule class for maxgradient package."""
 # ruff: noqa: F401
-from typing import Literal, Optional, Union, List
+from typing import List, Literal, Optional, Union
 
+from loguru import logger as log
 from rich.align import AlignMethod
 from rich.cells import cell_len, set_cell_size
 from rich.console import Console, ConsoleOptions, RenderResult
@@ -9,12 +10,12 @@ from rich.jupyter import JupyterMixin
 from rich.measure import Measurement
 from rich.text import Text
 from snoop import snoop
-from loguru import logger as log
 
-from maxgradient.gradient import Gradient
-from maxgradient.color_list import ColorList
 from maxgradient.color import Color
-# from maxgradient.log import log
+from maxgradient.color_list import ColorList
+from maxgradient.gradient import Gradient
+
+# # from maxgradient.log import log
 Thickness = Literal["thin", "medium", "thick"]
 
 console = Console()
@@ -31,6 +32,7 @@ class GradientRule(JupyterMixin):
         align (str, optional): How to align the title, one of "left",
             "center", or "right". Defaults to "center".
     """
+
     def __init__(
         self,
         title: Union[str, Text] = "",
@@ -62,8 +64,16 @@ class GradientRule(JupyterMixin):
         self.align = align
 
         rule_color_list = ColorList(5).color_list
-        self.left_colors: List[Color] = [rule_color_list[0], rule_color_list[1], rule_color_list[2]]
-        self.right_colors: List[Color] = [rule_color_list[2], rule_color_list[3], rule_color_list[4]]
+        self.left_colors: List[Color] = [
+            rule_color_list[0],
+            rule_color_list[1],
+            rule_color_list[2],
+        ]
+        self.right_colors: List[Color] = [
+            rule_color_list[2],
+            rule_color_list[3],
+            rule_color_list[4],
+        ]
 
     def __repr__(self) -> str:
         return f"Rule<{self.title!r}, {self.characters!r}>"
@@ -122,7 +132,7 @@ class GradientRule(JupyterMixin):
                 rule_text.append(
                     Gradient(
                         characters * (width - self.title_text.cell_len - 1),
-                        colors=self.right_colors, # type: ignore
+                        colors=self.right_colors,  # type: ignore
                     )
                 )
             else:
@@ -132,7 +142,7 @@ class GradientRule(JupyterMixin):
             rule_text.append(
                 Gradient(
                     characters * (width - self.title_text.cell_len - 1),
-                    colors=self.left_colors, # type: ignore
+                    colors=self.left_colors,  # type: ignore
                 )
             )
             rule_text.append(" ")
@@ -145,7 +155,7 @@ class GradientRule(JupyterMixin):
     # @spy
     def _rule_line(self, chars_len: int, width: int) -> Text:
         rule_text = Gradient(
-            self.characters * ((width // chars_len) + 1), colors=self.left_colors # type: ignore
+            self.characters * ((width // chars_len) + 1), colors=self.left_colors  # type: ignore
         )
         rule_text.truncate(width)
         rule_text.plain = set_cell_size(rule_text.plain, width)
@@ -170,7 +180,7 @@ class GradientRule(JupyterMixin):
             rule_text.append(
                 Gradient(
                     self.characters * (self.side_width // chars_len + 1),
-                    colors=self.left_colors, # type: ignore
+                    colors=self.left_colors,  # type: ignore
                     end="",
                 )
             )
@@ -185,7 +195,7 @@ class GradientRule(JupyterMixin):
             rule_text.append(
                 Gradient(
                     self.characters * (self.side_width // chars_len + 1),
-                    colors=self.right_colors, # type: ignore
+                    colors=self.right_colors,  # type: ignore
                     end=" ",
                 )
             )
@@ -243,15 +253,15 @@ class GradientRule(JupyterMixin):
         from rich.console import Console
 
         try:
-            title: str=sys.argv[1]
+            title: str = sys.argv[1]
         except IndexError:
-            title="Rule Examples"
+            title = "Rule Examples"
         console = Console()
         console.line(2)
         console.print("[u b #ffffff]Rule Examples[/]", justify="center")
         console.line()
         console.print("[dim]Gradient Rule without a title ⬇︎[/]", justify="center")
-        console.print(GradientRule(title=f"{title}",thickness="thin"))
+        console.print(GradientRule(title=f"{title}", thickness="thin"))
         console.line()
         console.print(
             GradientRule(
@@ -283,4 +293,5 @@ class GradientRule(JupyterMixin):
 
 
 if __name__ == "__main__":
+    GradientRule.rule_example()
     GradientRule.rule_example()

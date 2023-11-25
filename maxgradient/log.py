@@ -43,38 +43,54 @@ def level_color(msg: loguru.Message) -> Style:
             case "error":
                 return Style(color="#000000", bgcolor="#d37100", bold=True, italic=True)
             case "critical":
-                return Style(color="#ffeeee", bgcolor="#880000", bold=True, italic=True, blink=True)
+                return Style(
+                    color="#ffeeee",
+                    bgcolor="#880000",
+                    bold=True,
+                    italic=True,
+                    blink=True,
+                )
             case _:
-                raise ValueError(f"Level parsed incorrectly. String must be a logging \
-level (`TRACE`, `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITIAL`), you entered: {level}")
+                raise ValueError(
+                    f"Level parsed incorrectly. String must be a logging \
+level (`TRACE`, `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITIAL`), you entered: {level}"
+                )
     elif isinstance(level, int):
         assert level > 0, "Level must be greater than 0."
-        if level <= 5: # trace
+        if level <= 5:  # trace
             return Style(color="#ffd4ff", bold=False, italic=False, dim=True)
-        elif level <= 10: # debug
+        elif level <= 10:  # debug
             return Style(color="#ff00ff", bold=False, italic=True)
-        elif level <= 20: # info
+        elif level <= 20:  # info
             return Style(color="#5f00ff", bold=False, italic=False)
-        elif level <= 25: # success
+        elif level <= 25:  # success
             return Style(color="#00ff00", bold=True, italic=False)
-        elif level <= 30: # warning
+        elif level <= 30:  # warning
             return Style(color="#ffbf00", bold=True, italic=True)
-        elif level <= 40: # error
+        elif level <= 40:  # error
             return Style(color="#000000", bgcolor="#d37100", bold=True, italic=True)
-        elif level <= 50: # critical
-            return Style(color="#ffeeee", bgcolor="#880000", bold=True, italic=True, blink=True)
+        elif level <= 50:  # critical
+            return Style(
+                color="#ffeeee", bgcolor="#880000", bold=True, italic=True, blink=True
+            )
         else:
-            raise ValueError(f"Level parsed incorrectly. Invalid integer: integer \
-level must be a valid logging level between 0 annd 50. You entered:{level}")
+            raise ValueError(
+                f"Level parsed incorrectly. Invalid integer: integer \
+level must be a valid logging level between 0 annd 50. You entered:{level}"
+            )
     else:
-        raise TypeError(f"Level parsed incorrectly. Level must be a string or an \
-integer, you entered: {level}")
-        
+        raise TypeError(
+            f"Level parsed incorrectly. Level must be a string or an \
+integer, you entered: {level}"
+        )
+
+
 def logging_prompt(msg: loguru.Message) -> str:
     """Generate a prompt for the logging levels."""
     record: loguru.Record = msg.record
     level = record["level"].name
     return level
+
 
 CWD = Path.cwd()
 load_dotenv(CWD / ".env")
@@ -109,75 +125,81 @@ def rich_filter(record) -> bool:
 
 
 logger.remove()
-loggers = logger.configure(
-    handlers=[
-        dict(  # 1 - debug.log
-            sink=LOG_DIR / "debug.log",
-            level="DEBUG",
-            format=FORMAT,
-            backtrace=True,
-            diagnose=True,
-            colorize=True,
-        ),
-        dict(  # 2 - info.log
-            sink=LOG_DIR / "info.log",
-            level="INFO",
-            format=FORMAT,
-            backtrace=True,
-            diagnose=True,
-            colorize=True,
-        ),
-        dict(  # 3 - warning.log
-            sink=LOG_DIR / "warning.log",
-            level="WARNING",
-            format=FORMAT,
-            backtrace=True,
-            diagnose=True,
-            colorize=True,
-        ),
-        dict(  # 4 - error.log
-            sink=LOG_DIR / "error.log",
-            level="ERROR",
-            format=FORMAT,
-            backtrace=True,
-            diagnose=True,
-            colorize=True,
-        ),
-        dict(  # 5 - critical.log
-            sink=LOG_DIR / "critical.log",
-            level="CRITICAL",
-            format=FORMAT,
-            backtrace=True,
-            diagnose=True,
-            colorize=True,
-        ),
-        dict(  # 6 - console
-            sink=lambda msg: console.print(Text(f"{logging_prompt(msg)}: {msg}",justify="left",overflow="fold",style=level_color(msg)
-                ),
-                highlight=True
-            ),
-            format="{message}",
-            backtrace=True,
-            diagnose=True,
-            colorize=True,
-            level="SUCCESS"
-        ),
-    ]
-)
-log = logger.bind(name="maxgraient")
+# loggers = logger.configure(
+#     handlers=[
+#         dict(  # 1 - debug.log
+#             sink=LOG_DIR / "debug.log",
+#             level="DEBUG",
+#             format=FORMAT,
+#             backtrace=True,
+#             diagnose=True,
+#             colorize=True,
+#         ),
+#         dict(  # 2 - info.log
+#             sink=LOG_DIR / "info.log",
+#             level="INFO",
+#             format=FORMAT,
+#             backtrace=True,
+#             diagnose=True,
+#             colorize=True,
+#         ),
+#         dict(  # 3 - warning.log
+#             sink=LOG_DIR / "warning.log",
+#             level="WARNING",
+#             format=FORMAT,
+#             backtrace=True,
+#             diagnose=True,
+#             colorize=True,
+#         ),
+#         dict(  # 4 - error.log
+#             sink=LOG_DIR / "error.log",
+#             level="ERROR",
+#             format=FORMAT,
+#             backtrace=True,
+#             diagnose=True,
+#             colorize=True,
+#         ),
+#         dict(  # 5 - critical.log
+#             sink=LOG_DIR / "critical.log",
+#             level="CRITICAL",
+#             format=FORMAT,
+#             backtrace=True,
+#             diagnose=True,
+#             colorize=True,
+#         ),
+#         dict(  # 6 - console
+#             sink=lambda msg: console.print(
+#                 Text(
+#                     f"{logging_prompt(msg)}: {msg}",
+#                     justify="left",
+#                     overflow="fold",
+#                     style=level_color(msg),
+#                 ),
+#                 highlight=True,
+#             ),
+#             format="{message}",
+#             backtrace=True,
+#             diagnose=True,
+#             colorize=True,
+#             level="SUCCESS",
+#         ),
+#     ]
+# )
+# log = logger.bind(name="maxgraient")
+# # log.disable("maxgradient/")
 
-if __name__ == "__main__":
-    log.debug("Debug message.")
-    log.info("Info message.")
-    log.warning("Warning message.")
-    log.error("Error message.")
-    log.critical("Critical message.")
-    log.success("Success message.")
-    log.trace("Trace message.")
-    log.opt(lazy=True).debug("Lazy message.")
-    log.opt(lazy=True).info("Lazy message.")
-    log.opt(lazy=True).warning("Lazy message.")
-    log.opt(lazy=True).error("Lazy message.")
-    log.opt(lazy=True).critical("Lazy message.")
-    log.opt(lazy=True).success("Lazy message.")
-    log.opt(lazy=True).trace("Lazy message.")
+# if __name__ == "__main__":
+#     # log.debug("Debug message.")
+#     # log.info("Info message.")
+#     # log.warning("Warning message.")
+#     # log.error("Error message.")
+#     # log.critical("Critical message.")
+#     # log.success("Success message.")
+#     # log.trace("Trace message.")
+#     # log.opt(lazy=True).debug("Lazy message.")
+#     # log.opt(lazy=True).info("Lazy message.")
+#     # log.opt(lazy=True).warning("Lazy message.")
+#     # log.opt(lazy=True).error("Lazy message.")
+#     # log.opt(lazy=True).critical("Lazy message.")
+#     # log.opt(lazy=True).success("Lazy message.")
+#     # log.opt(lazy=True).trace("Lazy message.")

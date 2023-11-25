@@ -5,8 +5,11 @@ from operator import itemgetter
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
+
+# from snoop import snoop
+from cheap_repr import normal_repr, register_repr
 from rich.cells import cell_len
-from rich.console import ConsoleOptions, JustifyMethod, OverflowMethod
+from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
 from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style, StyleType
@@ -16,9 +19,9 @@ from rich.text import Span, Text
 from maxgradient.color import Color, ColorParseError
 from maxgradient.color_list import ColorList
 from maxgradient.highlighter import ColorReprHighlighter
-from maxgradient.log import log
+
+# from maxgradient.log import log
 from maxgradient.theme import GradientTheme
-from rich.console import Console
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -57,7 +60,16 @@ class Gradient(Text):
 
     """
 
-    __slots__ = ["colors", "_text", "_length", "length", "_hues", "_style", "_spans"]
+    __slots__ = [
+        "_colors",
+        "_text",
+        "_length",
+        "length",
+        "_hues",
+        "_style",
+        "_spans",
+        "_rainbow",
+    ]
 
     def __init__(
         self,
@@ -119,9 +131,10 @@ class Gradient(Text):
             tab_size=tab_size,
             spans=spans,
         )
-        self.colors: List[Color] = []
+        # self.colors: List[Color] = colors or []
+        self.rainbow = rainbow
         self._hues: int = hues or 3
-        self.colors = self.get_colors(colors, rainbow, invert)
+        self.colors = colors or []  # type: ignore
         self._hues = len(self.colors)
         gradient_substrings: Text = self.generate_gradient_substrings(True)
         self._spans = gradient_substrings.spans
@@ -130,7 +143,8 @@ class Gradient(Text):
         return self.plain
 
     def __repr__(self) -> str:
-        return f"<gradient {self!r}>"
+        colors = ", ".join([str(color) for color in self.colors])
+        return f"Gradient<colors=`{colors}`, text=`{self.text}`>"
 
     def __add__(self, other: Any) -> "Text":
         if isinstance(other, (str, Text)):
@@ -212,7 +226,8 @@ class Gradient(Text):
     @property
     def hues(self) -> int:
         """The number of colors in the gradient."""
-
+        if self._hues is None:
+            return 3
         return self._hues
 
     @hues.setter
@@ -252,6 +267,82 @@ class Gradient(Text):
                 self._style = Style.null()
             self._style = Style.parse(style)
 
+    @property
+    def rainbow(self) -> bool:
+        """Whether to print the gradient text in rainbow colors across the spectrum."""
+        if self._rainbow is None:
+            return False
+        else:
+            return self._rainbow
+
+    @rainbow.setter
+    def rainbow(self, value: bool) -> None:
+        """Set whether to print the gradient text in rainbow colors across the spectrum.
+
+        Args:
+            value (bool): Whether to print the gradient text in rainbow colors \
+                across the spectrum.
+        """
+
+        if value is None:
+            self._rainbow = False
+        elif isinstance(value, bool):
+            self._rainbow = value
+        elif isinstance(value, str):
+            if str(value).lower() == "true":
+                self._rainbow = True
+            elif str(value).lower() == "false":
+                self._rainbow = False
+            else:
+                raise ValueError(f"Rainbow must be a bool, not {value}")
+        else:
+            raise TypeError(f"Rainbow must be a bool, not {type(value)}")
+
+    @property
+    def colors(self) -> List[Color]:
+        """The colors of the gradient."""
+        return self._colors
+
+    @colors.setter
+    def colors(self, colors: Optional[List[Color | Tuple | str]]) -> None:
+        """Set the colors of the gradient.
+
+        Args:
+            colors (List[Color|Tuple|str|int]): The colors to set the gradient to.
+        """
+
+        if colors is None or colors == []:
+            if self._hues is None:
+                self._hues = 3
+            if self.rainbow:
+                self._hues = 10
+            _colors: List[Color] = ColorList(self._hues, False).color_list
+            if self.validate_colors(_colors):
+                self._colors: List[Color] = _colors
+            else:
+                raise ValueError("No input colors. Unable to generate colors.")
+        elif isinstance(colors, list):
+            _colors = []
+            for color in colors:
+                if isinstance(color, (str, tuple, Color)):
+                    try:
+                        color = Color(color)
+                        _colors.append(color)
+                    except ColorParseError as cpe:
+                        raise ColorParseError(
+                            f"Could not parse color: {color}"
+                        ) from cpe
+                else:
+                    raise TypeError(
+                        f"Color must be a string, tuple, or Color, not {type(color)}"
+                    )
+            if self.validate_colors(_colors):
+                self._colors = _colors
+            else:
+                raise ValueError("Colors were a list of invalid colors.")
+        else:
+            raise TypeError(f"Colors must be a list, not {type(colors)}")
+
     def get_colors(
         self,
         input_colors: Optional[str | List[Color | Tuple | str]],
@@ -279,13 +370,13 @@ class Gradient(Text):
             if self.validate_colors(colors):
                 return colors
             else:
-                raise ValueError("Colors are invalid.")
+                raise ValueError("Rainbow Colors are invalid.")
         if isinstance(input_colors, str):
             colors = self.mono(input_colors)
             if self.validate_colors(colors):
                 return colors
             else:
-                raise ValueError("Colors are invalid.")
+                raise ValueError("Colors are invalid. Input colors is a string.")
         if input_colors is not None:
             colors = []
             for color in input_colors:
@@ -297,13 +388,21 @@ class Gradient(Text):
             if self.validate_colors(colors):
                 return colors
             else:
-                raise ValueError("Colors are invalid.")
-        color_list = ColorList(self.hues, invert).color_list
-        colors = color_list[: self.hues]
-        if self.validate_colors(colors):
-            return colors
+                raise ValueError("Colors are invalid. Input colors are not None.")
+        elif input_colors is []:
+            color_list = ColorList(self.hues or 3, invert).color_list
+            colors = color_list[: self.hues]
+            if self.validate_colors(colors):
+                return colors
+            else:
+                raise ValueError("Colors are invalid. Input colors: []")
         else:
-            raise ValueError("Colors are invalid.")
+            color_list = ColorList(self.hues, invert).color_list
+            colors = color_list[: self.hues]
+            if self.validate_colors(colors):
+                return colors
+            else:
+                raise ValueError("Colors are invalid.")
 
     def mono(self, color: str | Color) -> List[Color]:
         """Create a list of monochromatic hues from a color.
@@ -332,6 +431,8 @@ class Gradient(Text):
         """Validate self.colors to ensure that it is a list of colors."""
         valid: bool = True
         if colors is None:
+            return False
+        elif colors == []:
             return False
         for color in colors:
             if not isinstance(color, Color):
@@ -434,11 +535,13 @@ class Gradient(Text):
         Returns:
             List[List[int]]: The indexes for the gradient substring.
         """
+        if self.hues < 2:
+            self.hues = 3
         result = np.array_split(np.arange(self._length), self.hues - 1)  # noqa: F722
         indexes: List[List[int]] = [sublist.tolist() for sublist in result]
         for count, index in enumerate(indexes):
             if verbose:
-                log.success(
+                console.log(
                     f"[b white]Index {count}:[/]{', '.join([str(i) for i in index])}"
                 )
         return indexes
@@ -580,7 +683,7 @@ class Gradient(Text):
         )
 
 
-# register_repr(Gradient)(normal_repr)
+register_repr(Gradient)(normal_repr)
 
 
 def strip_control_codes(text: str) -> str:
@@ -634,4 +737,5 @@ proident qui tempor Lorem occaecat ullamco."""
     )
     # inspect(gradient)
     console.print(gradient, justify="center")
+    console.line(2)
     console.line(2)

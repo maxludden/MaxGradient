@@ -2,14 +2,14 @@
 
 from io import StringIO
 from sys import stdout
-from typing import List
+from typing import List, Optional
 
-# from rich.text import Text
+from rich import inspect
+from rich.panel import Panel
 from typer import Argument, BadParameter, Exit, Option, Typer
 from typing_extensions import Annotated
 
 from maxgradient import Console
-from maxgradient.color import Color, ColorParseError
 from maxgradient.gradient import Gradient
 
 app = Typer(name="gradient", help="Print a gradient.")
@@ -28,8 +28,6 @@ valid_colors = [
     "red",
 ]
 
-valid_justify = ["default", "left", "center", "right"]
-
 
 def complete_color(incomplete: str):
     """Complete the color."""
@@ -42,9 +40,9 @@ def complete_color(incomplete: str):
 
 def justify_callback(value: str):
     """Validate the justify value."""
-    if value not in valid_justify:
+    if value not in ["default", "left", "center", "right"]:
         raise BadParameter(
-            f"Invalid justify method: {value}. Valid methods include: {valid_justify}"
+            f"Invalid justify method: {value}. Valid methods include: `default`, `left`, `center`, `right`"
         )
     return value
 
@@ -65,14 +63,14 @@ def parse_console(value: str):
 def main(
     text: Annotated[str, Argument(..., help="Text to print")] = "",
     style: Annotated[
-        List[str],
+        str,
         Option(
             "--style",
             "-s",
             show_default=False,
             help="Style to use. Valid styles include: bold, italic, underline",
         ),
-    ] = ["default"],
+    ] = "default",
     rainbow: Annotated[
         bool,
         Option(
@@ -94,7 +92,7 @@ default, left, center, right",
         ),
     ] = "default",
     colors: Annotated[
-        List[str],
+        Optional[List[str]],
         Option(
             "--colors",
             "-c",
@@ -134,51 +132,43 @@ and red.",
                 "[bold italic red]Error:[/bold italic red] No text provided."
             )
             raise Exit(code=1)
-        if verbose:
-            console.print(f"[bold italic green]Text:[/bold italic green] {text}")
 
-    if style:
+    if isinstance(style, list):
         style = " ".join(style)
-        if verbose:
-            console.print(f"[bold italic green]Style:[/bold italic green] {style}")
 
     if justify:
-        justify = justify.lower()
-        if justify not in valid_justify:
+        justify = justify
+        if justify not in ["default", "left", "center", "right"]:
             error_msg = "[b italic red]Error:[/] Invalid justify method: "
             err_console.print(
-                f"{error_msg}{justify}. Valid methods include: {valid_justify}"
+                f"{error_msg}{justify}. Valid methods include: `default`, `left`, `center`, `right`"
             )
             raise Exit(code=1)
-        if verbose:
-            console.print(f"[bold italic green]Justify:[/bold italic green] {justify}")
 
-    if colors != [] and colors is not None:
-        validated_colors = []
-        for color in colors:
-            try:
-                valid_color = Color(color)
-                validated_colors.append(valid_color)
-            except ColorParseError as cpe:
-                err_console.print(f"[bold italic red]Error:[/bold italic red] {cpe}")
-                raise Exit(code=2) from cpe
-        if verbose:
-            console.print(f"[b i green]Colors:[/] {', '.join(validated_colors)}")
-
+    if colors:
         gradient = Gradient(
-            gradient_text=text,
-            colors=validated_colors,
+            text=text,
+            colors=colors,  # type: ignore
             style=style,
             rainbow=rainbow,
-            justify=justify,
+            justify=justify,  # type: ignore
         )
 
     elif rainbow:
-        gradient = Gradient(gradient_text=text, style=style, rainbow=rainbow)
+        gradient = Gradient(text=text, style=style, rainbow=rainbow)
     else:
-        gradient = Gradient(gradient_text=text, style=style)
+        gradient = Gradient(text=text, style=style)
+    if verbose:
+        inspect(gradient)
     console.line()
-    console.print(gradient, justify=justify)
+
+    if panel:
+        console.print(
+            Panel(gradient, border_style="dim"), justify=justify  # type: ignore
+        )  # type: ignore
+    else:
+        console.print(gradient, justify=justify)  # type: ignore
+    console.line()
 
 
 if __name__ == "__main__":

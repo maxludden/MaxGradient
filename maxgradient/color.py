@@ -2,11 +2,9 @@
 # pylint: disable=C0209,E0401,W0611,C0103,E0202,E0611
 import colorsys
 import re
-from functools import lru_cache
 from re import Match
 from typing import Any, List, Optional, Tuple, Union
 
-from loguru import logger as log
 from rich.box import HEAVY
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
@@ -18,16 +16,16 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
+from maxgradient._gradient_color import GradientColor as GC
 from maxgradient._hex_color import Hex
 from maxgradient._mode import Mode
 from maxgradient._rgb_color import RGB
 from maxgradient._rich_color import Rich
-from maxgradient.theme import GradientTheme
 from maxgradient._x11_color import X11
-from maxgradient._gradient_color import GradientColor as GC
+from maxgradient.theme import GradientTheme
 
 console = Console()
-# log.configure(
+# # log.configure(
 #     handlers=[
 #         {
 #             "sink": "logs/debug.log",
@@ -313,7 +311,6 @@ You can also visit the rich library's documentation to view all \
         raise ColorParseError(f"Unable to parse color: {color}")
 
     @property
-    @lru_cache
     def original(self) -> str:  # type: ignore
         """Return the original color."""
 
@@ -496,6 +493,12 @@ You can also visit the rich library's documentation to view all \
         panel = Panel(sub_panel, border_style="#000000")
         return panel
 
+    def __repr__(self) -> str:
+        """Return the repr of the color."""
+        repr = "MaxGradient.color.Color<"
+        repr = f"{repr}{self.name}>"
+        return repr
+
     def color_title(self) -> Text:
         """Generate a title bar for the color."""
 
@@ -598,13 +601,13 @@ You can also visit the rich library's documentation to view all \
         closest = find_closest_color(self.rgb_tuple, [(0, 0, 0), (255, 255, 255)])
         if closest == (0, 0, 0):
             if VERBOSE:
-                msg = f"[b {self.hex}]Color's contrast: [b #ffffff]White[/]"
-                log.success(msg)
+                pass
+                # # log.
             return "#ffffff"
         else:
             if VERBOSE:
-                msg = f"[b {self.hex}]Color's contrast: [b #000000]Black[/]"
-                log.success(msg)
+                pass
+                # # log.
             return "#000000"
 
     def lighten(self, percent: float = 0.5) -> str:
