@@ -65,8 +65,6 @@
     
       <link rel="stylesheet" href="styles/purple.css">
     
-      <link rel="stylesheet" href="styles/extra.css">
-    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -114,7 +112,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="." title="MaxGradient" class="md-header__button md-logo" aria-label="MaxGradient" data-md-component="logo">
       
-  <img src="img/MaxGradient.svg" alt="logo">
+  <img src="img/MaxGradient_favicon.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -218,7 +216,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="." title="MaxGradient" class="md-nav__button md-logo" aria-label="MaxGradient" data-md-component="logo">
       
-  <img src="img/MaxGradient.svg" alt="logo">
+  <img src="img/MaxGradient_favicon.svg" alt="logo">
 
     </a>
     MaxGradient
@@ -354,6 +352,33 @@
   
     <nav class="md-nav" aria-label="Changelog">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v029-updated-banner" class="md-nav__link">
+    <span class="md-ellipsis">
+      v0.2.9 | Updated Banner
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v028-november-25-2023-fixed-clipy" class="md-nav__link">
+    <span class="md-ellipsis">
+      v0.2.8 | November 25, 2023 | Fixed cli.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v027-november-25-2023-bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      v0.2.7 | November 25, 2023 | Bug Fixes
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#v026-november-18-2023" class="md-nav__link">
@@ -728,11 +753,30 @@
 <hr />
 <div style="margin:auto; text-align:center;">
     <span style="font-size:1.5em; vertical-align:middle;">Created by<br />
-    <img src="img/MaxLogo.svg" alt="Max Ludden's Logo" style="width:25%; margin:auto; padding:20px;"><br /> Max Ludden</span>
+    <img src="https://user-images.githubusercontent.com/51646468/284406500-dff29293-4afb-40a5-8e1a-275108898845.svg" alt="Max Ludden's Logo" style="width:25%; margin:auto; padding:20px;"><br /> Max Ludden</span>
 </div>
 
 <hr />
 <h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h2>
+<h3 id="v029-updated-banner">v0.2.9 | Updated Banner<a class="headerlink" href="#v029-updated-banner" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Updated MaxGradient Logo and Favicon</li>
+<li>Updated banner to include new logo as http rather than refernceing the svg file locally.</li>
+</ul>
+<h3 id="v028-november-25-2023-fixed-clipy">v0.2.8 | <span style="color:#aaff00;">November 25, 2023</span> | Fixed <code>cli.py</code><a class="headerlink" href="#v028-november-25-2023-fixed-clipy" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fixed <code>cli.py</code> so that it works with the new <code>gradient</code> method</li>
+<li>Removed logging</li>
+</ul>
+<h3 id="v027-november-25-2023-bug-fixes">v0.2.7 | <span style="color:#aaff00;">November 25, 2023</span> | Bug Fixes<a class="headerlink" href="#v027-november-25-2023-bug-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Combined multiple CSS stylesheets into one:<ul>
+<li><code>next-btn.css</code> -&gt; <code>style.css</code></li>
+<li><code>gradient.css</code> -&gt; <code>style.css</code></li>
+</ul>
+</li>
+<li>General corrections to every file after correcting for Mypy</li>
+</ul>
 <h3 id="v026-november-18-2023">v0.2.6 | <span style="color:#aaff00;">November 18, 2023</span><a class="headerlink" href="#v026-november-18-2023" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Added type stubs - Mypy should work now</li>
