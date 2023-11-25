@@ -9,7 +9,7 @@
 ​        <div class="badges">
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11 | 3.12 -blue?logo=python" alt="PyPI - MaxGradient"></a>
 ​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.9-bbbbbb" alt="Version 0.2.9"></a>
+​            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.10-bbbbbb" alt="Version 0.2.10"></a>
 ​            <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/acf0526fc1f541f9d980d7983ff5ab8e540cf2136206c2b5dc740f658a37fac0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
 ​        </div>
         <!--End of badges-->
@@ -73,39 +73,33 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 
 ## Changelog
 
-### v0.2.9 | Updated Banner
+### v3.2.10 | <span style="color:#aaff00;">November 25, 2023</span> | Added Dates
+
+- Updated changlog to have dates
+
+### v0.2.9 | <span style="color:#aaff00;">November 25, 2023</span> |Updated Banner
 
 - Updated MaxGradient Logo and Favicon
 - Updated banner to include new logo as http rather than refernceing the svg file locally.
 
-### v0.2.8 | Fixed `cli.py`
+### v0.2.8 | <span style="color:#aaff00;">November 25, 2023</span> | Fixed `cli.py`
 
 - Fixed `cli.py` so that it works with the new `gradient` method
 - Removed logging
 
-### v0.2.7 | Bug Fixes
+### v0.2.7 | <span style="color:#aaff00;">November 25, 2023</span> | Bug Fixes
 
 - Combined multiple CSS stylesheets into one:
     - `next-btn.css` -> `style.css`
     - `gradient.css` -> `style.css`
 - General corrections to every file after correcting for Mypy
 
-### v0.2.6 | Type Stubs
+### v0.2.6 | <span style="color:#aaff00;">November 18, 2023</span> | Type Stubs
 
 - Added type stubs - Mypy should work now
 - Simplified `maxgradient.log.py` and fixed line lengths
 
-### v0.2.5 | Renamed Files
-
-- Removed erroneous `maxgradient._console.py` file
-- Renamed several files:
-    - `maxgradient._gc.py` -> `maxgradient._gradient_color.py`
-    - `maxgradient._hex.py` -> `maxgradient._hex_color.py`
-    - `maxgradient._rgb.py` -> `maxgradient._rgb_color.py`
-    - `maxgradient._x11.py` -> `maxgradient._x11_color`
-    - `maxgradient._rich.py` -> `maxgradient._rich_color.py`
-
-### v0.2.4 | Converted to linting with [`ruff`](https://docs.astral.sh/ruff/)
+### v0.2.4
 
 - Rewrote `MaxGradient.console.Console` to replicate `rich.console.Console`
     - added `gradient` method
@@ -127,11 +121,3 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 - Disabled logging
 - Fixed gradient class
 - Added gradient rules
-
-### v0.1.6
-
-- Added docs
-- Changed docs to readthedocs theme.
-
-</body>
-</html>

@@ -33,7 +33,7 @@ from maxgradient.gradient import Gradient
 from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.rule import GradientRule
 
-__version__ = "0.2.9"
+__version__ = "0.2.10"
 
 __all__ = [
     "Color",

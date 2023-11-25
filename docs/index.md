@@ -112,7 +112,11 @@ console.gradient(
 
 ## Changelog
 
-### v0.2.9 | <span style="color:#aaff00;">November 25, 2023</span> |Updated Banner
+### v3.2.10 | <span style="color:#aaff00;">November 25, 2023</span> | Added Dates
+
+- Updated changlog to have dates
+
+### v0.2.9 | <span style="color:#aaff00;">November 25, 2023</span> | Updated Banner
 
 - Updated MaxGradient Logo and Favicon
 - Updated banner to include new logo as http rather than refernceing the svg file locally.
@@ -129,7 +133,7 @@ console.gradient(
     - `gradient.css` -> `style.css`
 - General corrections to every file after correcting for Mypy
 
-### v0.2.6 | <span style="color:#aaff00;">November 18, 2023</span>
+### v0.2.6 | <span style="color:#aaff00;">November 18, 2023</span> | Type Stubs
 
 - Added type stubs - Mypy should work now
 - Simplified `maxgradient.log.py` and fixed line lengths
