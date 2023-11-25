@@ -76,6 +76,7 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
 ### v3.2.10 | <span style="color:#aaff00;">November 25, 2023</span> | Added Dates
 
 - Updated changlog to have dates
+- added logo and favicon to changelog
 
 ### v0.2.9 | <span style="color:#aaff00;">November 25, 2023</span> | Updated Banner
 
