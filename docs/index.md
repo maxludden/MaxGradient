@@ -112,7 +112,7 @@ console.gradient(
 
 ## Changelog
 
-### v0.2.9 | Updated Banner
+### v0.2.9 | <span style="color:#aaff00;">November 25, 2023</span> |Updated Banner
 
 - Updated MaxGradient Logo and Favicon
 - Updated banner to include new logo as http rather than refernceing the svg file locally.
