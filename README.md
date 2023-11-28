@@ -5,9 +5,9 @@
     <body>
         <!--MaxGradient Banner-->
 	    <picture>
-            <source srcset="img/maxgradient_banner.svg" media="(min-width: 800px)">
-            <source srcset="img/maxgradient_banner_sq.svg" media="(min-width: 600px)">
-            <img src="img/maxGradient.svg" alt="MaxGradient" style="width:auto;">
+            <source srcset="docs/img/maxgradient_banner.svg" media="(min-width: 800px)">
+            <source srcset="docs/img/maxgradient_banner_sq.svg" media="(min-width: 600px)">
+            <img src="docs/img/maxgradient.svg" alt="MaxGradient" style="width:auto;">
         </picture>
         <!--End of Banner-->
         <div class="badges">
@@ -29,7 +29,7 @@
 
 ### PDM <span class="recommend">(Recommended)</span></h3>
 
-![PDM](docs/img/pdm-maxgradient.svg)
+![PDM](docs/img/pdm.svg)
 
 ### Pip
 

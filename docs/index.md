@@ -12,7 +12,7 @@
         <div id="spacer"></div>
         <div class="gradient-border" id="box">
             <div id="title">MaxGradient</div>
-            <p>MaxGradient automates printing gradient colored text to the console. It's built upon the great <a href="https://github.com/Textualize/rich" title="GitHub.com/textualize/rich">rich library</a>. It contains a Console that can serve as a drop in replacement for <a href="https://github.com/Textualize/rich/blob/master/rich/console.py">rich.console.Console</a>and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions.</p>
+            <p>MaxGradient automates printing gradient colored text to the console. It's built upon the great <a href="https://github.com/Textualize/rich" title="GitHub.com/textualize/rich">rich library</a>. It contains a Console that can serve as a drop in replacement for <a href="https://github.com/Textualize/rich/blob/master/rich/console.py">rich.console.Console</a> and has an expanded Color class which can parse X11 color names on top of rich's standard colors. MaxGradient is a work in progress and I'm open to any suggestions or contributions.</p>
         </div>
         <div id="spacer"></div>
 
