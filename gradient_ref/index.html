@@ -596,7 +596,6 @@
     <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;colors</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="white-mono">List</span><span class="purple-brac">[</span><span class="type">Color</span><span class="pink-brac">|</span><span class="type">Tuple</span><span class="pink-brac">|</span><span class="class">str</span><span class="purple-brac">]</span><span
     class="pink-brac">|</span><span class="class">str</span><span class="blue-brac">]</span><span class="pink-brac"> = <span><span class="none">None</span><span class="punc">, </span><br>
     <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;rainbow</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">, </span><br>
-    <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;invert</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">, </span><br>
     <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;hues</span><span class="punc">: </span><span class="class">Optional</span><span class="blue-brac">[</span><span class="class">int</span><span class="blue-brac">] </span><span class="pink-brac">= <span><span class="none">None</span><span class="punc">, </span><br>
     <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;color_sample</span><span class="punc">: </span><span class="class">bool</span><span class="pink-brac"> = <span><span class="none">False</span><span class="punc">, </span><br>
     <span class="attr">&nbsp;&nbsp;&nbsp;&nbsp;style</span><span class="punc">: </span><span class="white-mono">StyleType</span><span class="pink-brac"> = <span><span class="class">rich</span><span class="punc">.</span><span class="white-mono">text</span><span class="punc">.</span><span class="type">Style</span><span class="punc">.</span><span class="lime-text">null</span><span class="white-mono">()</span><span class="punc">, </span><br>
@@ -632,16 +631,8 @@
 <td style="text-align: left;">Whether or not to create a rainbow gradient. Defaults to False.</td>
 </tr>
 <tr>
-<td style="text-align: left;">invert</td>
-<td style="text-align: left;">Whether or not to invert the gradient colors, making the last entered color first, and the first entered color last. Defaults to False.</td>
-</tr>
-<tr>
 <td style="text-align: left;">hues</td>
 <td style="text-align: left;">The number of hues to use when creating a random gradient. Defaults to None, which will result in a gradient of three colors.</td>
-</tr>
-<tr>
-<td style="text-align: left;">color_sample</td>
-<td style="text-align: left;">Whether or not to display the text's background the same color as the text. Results in a block of color rather than text.</td>
 </tr>
 <tr>
 <td style="text-align: left;">style</td>
