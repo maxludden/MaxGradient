@@ -1071,7 +1071,7 @@ since the feature may be unsupported/disabled in some terminals.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rich.console.Console.gradient">
-<span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren"> (</span><em class="sig-param"><span class="n"><span class="pre"> text="", colors=None, rainbow=False, invert=False, hues=3, color_sample=False, style=Style.null(), justify=None, overflow=None, end="\n", no_wrap=None, tab_size=4, spans=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rich/console.html#Console.set_live"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rich.console.Console.set_live" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren"> (</span><em class="sig-param"><span class="n"><span class="pre"> text="", colors=None, rainbow=False, invert=False, hues=3, color_sample=False, style=Style.null(), justify=None, overflow=None, end="\n", no_wrap=None, tab_size=4, spans=None</span></span></em><span class="sig-paren">)</span><a href="../_modules/rich/console.html#Console.set_live"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="https://github.com/maxludden/MaxGradient/blob/main/maxgradient/console.py" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints gradient text to the console.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

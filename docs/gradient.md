@@ -10,7 +10,7 @@ If you need more control over the gradient, you can pass a list of colors to the
 
 ## Example 2: Rainbow Gradient
 
-![Rainbow Gradient Example](img/rainbow_gradient.svg)
+![Rainbow Gradient Example](img/example_random.svg)
 
 ## Example 3: Gradient with Specified Colors
 

@@ -57,6 +57,24 @@ code { font-family: 'Fira Code', monospace; }
 @supports (font-variation-settings: normal) {
   code { font-family: 'Fira Code VF', monospace; }
 }
+/*
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: #1D1F20;
+}
+*/
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Urbanist-", sans-serif;
+  padding: 25px 0px 0px 0px;
+}
 
 table {
   border-collapse: collapse;
@@ -100,6 +118,98 @@ table.params th:nth-child(even) {
 
 tr:nth-child(even) {
   background: #321744;
+}
+
+#title{
+  font-family: "Urbanist-Black", sans-serif;
+  font-size: 5em;
+  color: #eeeeee;
+  text-align: center;
+  padding: 0px 0px 0px 0px;
+  text-decoration: underline;
+  background: linear-gradient(
+    to right,
+    #ff00ff 10%,
+    #5f00ff 15%,
+    #08f 20%,
+    #0ff 25%,
+    #0f0 30%,
+    #ff0 35%,
+    #f80 40%,
+    #f00 45%,
+    #f00 55%,
+    #f80 60%,
+    #ff0 65%,
+    #0f0 70%,
+    #0ff 75%,
+    #08f 80%,
+    #5f00ff 85%,
+    #ff00ff 90%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 10ms linear infinite;
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+}
+
+#desc {
+  padding: 10px;
+  border: 10px solid #ffffff;
+  border-radius: 20px;
+  font-size: 1.25em;
+}
+#box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0px 30px;
+  /* width: 100%; */
+  /* height: 200px; */
+  color: white;
+  font-size: 1.25em;
+}
+.gradient-border {
+  --borderWidth: 10px;
+  background: #2d183b;
+  position: relative;
+  border-radius: calc(3 * var(--borderWidth));
+}
+.gradient-border:after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+  height: calc(100% + var(--borderWidth) * 2);
+  width: calc(100% + var(--borderWidth) * 2);
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  border-radius: calc(3 * var(--borderWidth));
+  z-index: -1;
+  animation: animatedgradient 3s ease alternate infinite;
+  background-size: 300% 300%;
+}
+
+
+@keyframes animatedgradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+#spacer {
+  padding: 30px;
 }
 
 .md-typeset .admonition.note,
