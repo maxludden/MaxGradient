@@ -119,7 +119,9 @@ table.params th:nth-child(even) {
 tr:nth-child(even) {
   background: #321744;
 }
-
+.version{
+  color: #aaff00;
+}
 #title{
   font-family: "Urbanist-Black", sans-serif;
   font-size: 5em;
@@ -151,13 +153,17 @@ tr:nth-child(even) {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 10ms linear infinite;
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
+  animation: shine 40s linear infinite;
+}
+@keyframes shine {
+  0% {
+    background-position: 200% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
   }
 }
+
 
 #desc {
   padding: 10px;
@@ -208,10 +214,17 @@ tr:nth-child(even) {
 		background-position: 0% 50%;
 	}
 }
+
+pre {
+  padding-bottom: 30px;
+}
+
 #spacer {
   padding: 30px;
 }
-
+.vertical_spacer {
+  padding: 30px 0px 30px 0px;
+}
 .md-typeset .admonition.note,
 .md-typeset details.note {
   border-color: #af00ff;
@@ -289,7 +302,23 @@ tr:nth-child(even) {
 [data-md-color-scheme="astral-dark"] img[src$="#gh-dark-mode-only"] {
   display: inline; /* Show dark images in dark mode */
 }
+.badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  padding: 0px 0px 0px 0px;
+  /* width: 100%; */
+  /* height: 200px; */
+  color: white;
+  font-size: 1.25em;
+}
 
+.badge {
+  padding: 10px;
+  font-size: 2em;
+  width: 200%;
+}
 /* See: https://github.com/squidfunk/mkdocs-material/issues/175#issuecomment-616694465 */
 .md-typeset__table {
   min-width: 100%;
@@ -590,3 +619,35 @@ p.attr-line {
     }
   }
 }
+
+.pdm-recommended {
+  font-weight: 400;
+  font-family: "Urbanist", monospace;
+  background: linear-gradient(
+    to right,
+    #ff00ff 20%,
+    #af00ff 30%,
+    #5f00ff 40%,
+    #5f00ff 60%,
+    #af00ff 70%,
+    #ff00ff 80%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 5s linear infinite;
+  @keyframes shine {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 200% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
+}
+
