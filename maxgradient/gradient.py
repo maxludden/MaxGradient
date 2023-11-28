@@ -270,10 +270,8 @@ class Gradient(Text):
     @property
     def rainbow(self) -> bool:
         """Whether to print the gradient text in rainbow colors across the spectrum."""
-        if self._rainbow is None:
-            return False
-        else:
-            return self._rainbow
+        rainbow: bool = self._rainbow if not None else False
+        return rainbow
 
     @rainbow.setter
     def rainbow(self, value: bool) -> None:
@@ -285,7 +283,7 @@ class Gradient(Text):
         """
 
         if value is None:
-            self._rainbow = False
+            self._rainbow: bool = False
         elif isinstance(value, bool):
             self._rainbow = value
         elif isinstance(value, str):
