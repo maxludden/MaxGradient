@@ -2773,7 +2773,6 @@ href="{style.link}">{text}</a>'
                 text=text,
                 colors=colors,
                 rainbow=rainbow,
-                invert=invert,
                 hues=hues,
                 style=style,
                 justify=justify,

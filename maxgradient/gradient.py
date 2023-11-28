@@ -43,7 +43,6 @@ class Gradient(Text):
             for the gradient. Defaults to None.\n
         rainbow (bool): Whether to print the gradient text in rainbow colors\
                 across the spectrum. Defaults to False.\n
-        invert (bool): Reverse the color gradient. Defaults to False.\n
         hues (int): The number of colors in the gradient. Defaults to `3`.\n
         style (StyleType) The style of the gradient text. Defaults to None.\n
         justify (Optional[JustifyMethod]): Justify method: "left", "center",\
@@ -76,7 +75,6 @@ class Gradient(Text):
         text: Optional[str | Text] = "",
         colors: Optional[List[Color | Tuple | str] | str] = None,
         rainbow: bool = False,
-        invert: bool = False,
         hues: Optional[int] = None,
         style: StyleType = Style.null(),
         *,
@@ -95,7 +93,6 @@ class Gradient(Text):
                 for the gradient. Defaults to None.\n
             rainbow (bool): Whether to print the gradient text in rainbow colors\
                   across the spectrum. Defaults to False.\n
-            invert (bool): Reverse the color gradient. Defaults to False.\n
             hues (int): The number of colors in the gradient. Defaults to `3`.\n
             style (StyleType) The style of the gradient text. Defaults to None.\n
             justify (Optional[JustifyMethod]): Justify method: "left", "center",\
@@ -118,8 +115,6 @@ class Gradient(Text):
         else:
             self._spans = spans or []
             text = strip_control_codes(str(text))
-        # self._text: str = text
-        # self._length: int = len(text)
 
         super().__init__(
             text=text,
@@ -131,7 +126,6 @@ class Gradient(Text):
             tab_size=tab_size,
             spans=spans,
         )
-        # self.colors: List[Color] = colors or []
         self.rainbow = rainbow
         self._hues: int = hues or 3
         self.colors = colors or []  # type: ignore
