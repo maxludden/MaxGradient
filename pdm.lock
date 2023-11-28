@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4"
-content_hash = "sha256:6c22e058ecba0b9ee1fe97f375fd7f380b3cc313b97b47774f617bbad52cddeb"
+content_hash = "sha256:23882a035c88a1d38b360e3527d2571e726f2d5e3d3beca40a2a4797ac97042c"
 
 [[package]]
 name = "annotated-types"
@@ -202,6 +202,16 @@ summary = "Internationalized Domain Names in Applications (IDNA)"
 files = [
     {file = "idna-3.5-py3-none-any.whl", hash = "sha256:79b8f0ac92d2351be5f6122356c9a592c96d81c9a79e4b488bf2a6a15f88057a"},
     {file = "idna-3.5.tar.gz", hash = "sha256:27009fe2735bf8723353582d48575b23c533cc2c2de7b5a68908d91b5eb18d08"},
+]
+
+[[package]]
+name = "iniconfig"
+version = "2.0.0"
+requires_python = ">=3.7"
+summary = "brain-dead simple config-ini parsing"
+files = [
+    {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
+    {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
 ]
 
 [[package]]
@@ -642,6 +652,16 @@ files = [
 ]
 
 [[package]]
+name = "pluggy"
+version = "1.3.0"
+requires_python = ">=3.8"
+summary = "plugin and hook calling mechanisms for python"
+files = [
+    {file = "pluggy-1.3.0-py3-none-any.whl", hash = "sha256:d89c696a773f8bd377d18e5ecda92b7a3793cbe66c87060a6fb58c7b6e1061f7"},
+    {file = "pluggy-1.3.0.tar.gz", hash = "sha256:cf61ae8f126ac6f7c451172cf30e3e43d3ca77615509771b3a984a0730651e12"},
+]
+
+[[package]]
 name = "prompt-toolkit"
 version = "3.0.41"
 requires_python = ">=3.7.0"
@@ -789,6 +809,24 @@ dependencies = [
 files = [
     {file = "pymdown_extensions-10.4-py3-none-any.whl", hash = "sha256:cfc28d6a09d19448bcbf8eee3ce098c7d17ff99f7bd3069db4819af181212037"},
     {file = "pymdown_extensions-10.4.tar.gz", hash = "sha256:bc46f11749ecd4d6b71cf62396104b4a200bad3498cb0f5dad1b8502fe461a35"},
+]
+
+[[package]]
+name = "pytest"
+version = "7.4.3"
+requires_python = ">=3.7"
+summary = "pytest: simple powerful testing with Python"
+dependencies = [
+    "colorama; sys_platform == \"win32\"",
+    "exceptiongroup>=1.0.0rc8; python_version < \"3.11\"",
+    "iniconfig",
+    "packaging",
+    "pluggy<2.0,>=0.12",
+    "tomli>=1.0.0; python_version < \"3.11\"",
+]
+files = [
+    {file = "pytest-7.4.3-py3-none-any.whl", hash = "sha256:0d009c083ea859a71b76adf7c1d502e4bc170b80a8ef002da5806527b9591fac"},
+    {file = "pytest-7.4.3.tar.gz", hash = "sha256:d989d136982de4e3b29dabcc838ad581c64e8ed52c11fbe86ddebd9da0818cd5"},
 ]
 
 [[package]]
@@ -1018,6 +1056,16 @@ dependencies = [
 files = [
     {file = "stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695"},
     {file = "stack_data-0.6.3.tar.gz", hash = "sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9"},
+]
+
+[[package]]
+name = "tomli"
+version = "2.0.1"
+requires_python = ">=3.7"
+summary = "A lil' TOML parser"
+files = [
+    {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
+    {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
 
 [[package]]

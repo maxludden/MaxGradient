@@ -3,12 +3,12 @@ import re
 from functools import _lru_cache_wrapper
 from random import choice
 from re import Match, Pattern
-from typing import Optional, Tuple, Any
+from typing import Any, Optional, Tuple
 
 from rich.box import HEAVY_EDGE
+from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
-from rich.console import Console
 
 from maxgradient._mode import Mode
 from maxgradient._rich_color import Rich
@@ -16,22 +16,29 @@ from maxgradient._rich_color import Rich
 console = Console()
 
 
+class InvalidComponent(ValueError):
+    pass
+
+
+class ColorParseError(ValueError):
+    pass
+
+
 class RGB:
     """RGB Color Class"""
 
-    REGEX: Pattern = re.compile(
+    REGEX: Pattern[str] = re.compile(
         r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)[ ,]? ?(?P<blue>\d+\.?\d*)\)"
     )
 
     def __init__(self, rgb: str) -> None:
         """Create a new RGB object."""
-        self.original: str|_lru_cache_wrapper = rgb
+        self.original: str | _lru_cache_wrapper = rgb
         self.value = rgb
 
     @property
     def original(self) -> str:  # type: ignore
         """Return the original RGB color string."""
-
         return self._original
 
     @original.setter
@@ -43,37 +50,31 @@ class RGB:
     @property
     def red(self) -> int:  # type: ignore
         """Return the red component of the RGB color."""
-
         return self._red
 
     @red.setter
     def red(self, red: int | str) -> None:  # type: ignore
         """Set the red component of the RGB color."""
-
         self._red: int = self._parse_component(red)
 
     @property
     def green(self) -> int:  # type: ignore
         """Return the green component of the RGB color."""
-
         return self._green
 
     @green.setter
     def green(self, green: int | str) -> None:  # type: ignore
         """Set the green component of the RGB color."""
-
         self._green: int = self._parse_component(green)
 
     @property
     def blue(self) -> int:  # type: ignore
         """Return the blue component of the RGB color."""
-
         return self._blue
 
     @blue.setter
     def blue(self, blue: int | str) -> None:  # type: ignore
         """Set the blue component of the RGB color."""
-
         self._blue = self._parse_component(blue)
 
     @property
@@ -131,18 +132,77 @@ class RGB:
         else:
             raise TypeError(f"Invalid component type: {type(component)}")
 
-    def parse(self, rgb: str) -> Optional[str]:
+    def parse(self, rgb: str) -> str:
         """Parse a string to validate it is a rgb color. If it is, \
             convert the string to a tuple of integers and return it."""
-
         rgb_match: Optional[Match] = self.REGEX.match(rgb)
         if rgb_match:
-            self.red: int = int(rgb_match.group("red"))
-            self.green: int = int(rgb_match.group("green"))
-            self.blue: int = int(rgb_match.group("blue"))
+            red: str = rgb_match.group("red")
+            self.red: int = self.validate_component(red)
+            green: str = rgb_match.group("green")
+            self.green: int = self.validate_component(green)
+            blue: str = rgb_match.group("blue")
+            self.blue: int = self.validate_component(blue)
 
             return f"rgb({self.red}, {self.green}, {self.blue})"
-        return None
+        raise ColorParseError(f"Invalid RGB color: {rgb}")
+
+    def validate_component(self, value: str) -> int:
+        """Return the interger if the component value is between 0 and 1 or 0 255.
+
+        Args:
+            value (str): the string match of a component value.
+        """
+        if "." in value:
+            try:
+                float_number = float(value)
+                if float_number < 0.0:
+                    raise InvalidComponent(
+                        f"Invalid component: Float value is less than 0.0: {float_number}"
+                    )
+                elif float_number > 1.0:
+                    raise InvalidComponent(
+                        f"Invalid component: Float value is greater than 1.0: {float_number}"
+                    )
+                else:
+                    return int(float_number * 255)
+            except InvalidComponent as ic:
+                raise InvalidComponent(
+                    f"Invalid float component value: {value}"
+                ) from ic
+            except ValueError as ve:
+                raise InvalidComponent(
+                    f"Invalid float component value: {value}"
+                ) from ve
+            except Exception as e:
+                raise InvalidComponent(
+                    f"Invalid component value. Exception: {value}"
+                ) from e
+        else:
+            try:
+                int_number = int(value)
+                if int_number < 0:
+                    raise InvalidComponent(
+                        f"Invalid component: Integer value is less than 0: {int_number}"
+                    )
+                elif int_number > 255:
+                    raise InvalidComponent(
+                        f"Invalid component: Integer value is greater than 255: {int_number}"
+                    )
+                else:
+                    return int_number
+            except InvalidComponent as ic:
+                raise InvalidComponent(
+                    f"Invalid float component value: {value}"
+                ) from ic
+            except ValueError as ve:
+                raise InvalidComponent(
+                    f"Invalid integer component value: {value}"
+                ) from ve
+            except Exception as e:
+                raise InvalidComponent(
+                    f"Invalid component value. Exception: {value}"
+                ) from e
 
     def __str__(self) -> str:
         return self.value
@@ -198,5 +258,5 @@ if __name__ == "__main__":
     rgb = RGB(rgb_str)
     console.print(rgb)
 
-    console.print(f"[white]RGB as Hex:[/] [b {rgb.as_hex}]{rgb.as_hex}[/]")
-    console.print(f"[white]RGB as Tuple:[/]\n      [b {rgb.as_hex}]{rgb.as_tuple}[/]")
+    console.print(f"[i dim]RGB as Hex:[/]   [b {rgb.as_hex}]{rgb.as_hex}[/]")
+    console.print(f"[i dim]RGB as Tuple:[/] [b {rgb.as_hex}]{rgb.as_tuple}[/]")

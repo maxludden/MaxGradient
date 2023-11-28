@@ -20,6 +20,7 @@ dependencies = [
     "loguru-config>=0.1.0",
     "loguru-mypy>=0.0.4",
     "snoop>=0.4.3",
+    "pytest>=7.4.3",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
