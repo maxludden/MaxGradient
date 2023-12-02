@@ -9,7 +9,7 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
 
-from maxgradient.gradient import Console, Gradient
+from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
 
 TEXT = "Lorem nulla consequat enim adipisicing excepteur nostrud pariatur est. \
@@ -344,6 +344,7 @@ def generate_panels() -> Iterable[Panel]:
 
 def main() -> None:
     """Run the main function."""
+    from maxgradient.console import Console  # noqa: F811
 
     console = Console(record=True)
     console.line(2)
@@ -353,7 +354,7 @@ def main() -> None:
         Columns(generate_panels(), padding=(2, 8), equal=True), justify="center"
     )
     console.line()
-    console.save_max_svg(
+    console.save_svg(
         "docs/img/main_examples.svg",
         title="MaxGradient Examples",
     )

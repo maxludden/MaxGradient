@@ -1,26 +1,19 @@
 
 [project]
 name = "maxgradient"
-version = "0.2.11"
+version = "0.2.12"
 description = "MaxGradient automates the printing gradient colored text to the console."
 authors = [{ name = "Max Ludden", email = "dev@maxludden.com" }]
 dependencies = [
-    "rich>=13.5.3",
+    "ipython>=8.18.1",
     "lorem-text>=2.1",
-    "typer[all]>=0.9.0",
-    "python-dotenv>=1.0.0",
     "loguru>=0.7.2",
-    "PyYAML>=6.0.1",
-    "sh>=2.0.6",
     "numpy>=1.25.2",
-    "nptyping>=2.5.0",
-    "pydantic>=2.5.0",
     "pendulum>=2.1.2",
-    "ipython>=8.17.2",
-    "loguru-config>=0.1.0",
-    "loguru-mypy>=0.0.4",
-    "snoop>=0.4.3",
-    "pytest>=7.4.3",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.0",
+    "rich>=13.5.3",
+    "typer[all]>=0.9.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -46,6 +39,10 @@ typer = { extras = ["all"], version = "^0.1.0" }
 [project.scripts]
 gradient = "maxgradient.cli:app" 
 
+[tool.mypy.overrides]
+module = 'maxgradient'
+ignore_missing_imports = true
+
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -70,25 +67,41 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
-    "text.py",
 ]
 
 # Same as Black.
 line-length = 88
+indent-width = 4
 
 # Assume Python 3.8
 target-version = "py38"
 
-# Use the same default ignore list as Black.
-ignore = [
-    "E203", # Whitespace before ':'
-    "E501", # Line too long
-]
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = []
 
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
 
-[[tool.mypy.overrides]]
-module = 'maxgradient'
-ignore_missing_imports = true
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
 
 
 

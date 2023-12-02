@@ -8,14 +8,16 @@ site_author: Max Ludden
 nav:
     - Getting Started: "index.md"
     - User Guide:
-          - Console: "console.md"
-          - Gradient: "gradient.md"
-          - Color: "color.md"
+        - Console: "console.md"
+        - Gradient: "gradient.md"
+        - Color: "color.md"
     - References:
-          - Console Reference: "console_ref.md"
-          - Gradient Reference: "gradient_ref.md"
-          - Color Reference: "color_ref.md"
-          - Possible Colors: "possible_colors.md"
+        - Console Reference: "console_ref.md"
+        - Gradient Reference: "gradient_ref.md"
+        - Color Reference: "color_ref.md"
+        - Possible Colors: "possible_colors.md"
+
+    - Changelog: "CHANGELOG.md"
 
 plugins:
     - mkdocstrings:
@@ -65,7 +67,6 @@ theme:
               icon: material/brightness-4
               name: Switch to system preference
     
-
 extra_css:
     - "styles/style.css"
     - "styles/purple.css"

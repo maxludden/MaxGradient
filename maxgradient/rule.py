@@ -155,7 +155,8 @@ class GradientRule(JupyterMixin):
     # @spy
     def _rule_line(self, chars_len: int, width: int) -> Text:
         rule_text = Gradient(
-            self.characters * ((width // chars_len) + 1), colors=self.left_colors  # type: ignore
+            self.characters * ((width // chars_len) + 1),
+            colors=self.left_colors,  # type: ignore
         )
         rule_text.truncate(width)
         rule_text.plain = set_cell_size(rule_text.plain, width)
@@ -255,13 +256,13 @@ class GradientRule(JupyterMixin):
         try:
             title: str = sys.argv[1]
         except IndexError:
-            title = "Rule Examples"
+            title = "Rule Example"
         console = Console()
         console.line(2)
         console.print("[u b #ffffff]Rule Examples[/]", justify="center")
         console.line()
-        console.print("[dim]Gradient Rule without a title ⬇︎[/]", justify="center")
-        console.print(GradientRule(title=f"{title}", thickness="thin"))
+        # console.print("[dim]Gradient Rule without a title ⬇︎[/]", justify="center")
+        console.print(GradientRule(title=f"{title}", thickness="thin", align="left"))
         console.line()
         console.print(
             GradientRule(
@@ -273,7 +274,7 @@ class GradientRule(JupyterMixin):
         )
         console.line()
         console.print(
-            GradientRule(title="Medium Gradient Rule", gradient=True, align="center")
+            GradientRule(title="Medium Gradient Rule", gradient=True, align="right")
         )
         console.line()
         console.print(

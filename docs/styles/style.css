@@ -72,7 +72,7 @@ body {
 */
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Urbanist-", sans-serif;
+  font-family: "Urbanist-Thin", sans-serif;
   padding: 25px 0px 0px 0px;
 }
 
@@ -122,6 +122,38 @@ tr:nth-child(even) {
 .version{
   color: #aaff00;
 }
+.version {
+  font-weight: 400;
+  font-family: "Urbanist", monospace;
+  background: linear-gradient(
+    to right,
+    #ff00ff 20%,
+    #af00ff 30%,
+    #9f67ff 40%,
+    #9f67ff 60%,
+    #af00ff 70%,
+    #ff00ff 80%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 40s linear infinite;
+}
+@keyframes shine {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+
 #title{
   font-family: "Urbanist-Black", sans-serif;
   font-size: 5em;
@@ -308,7 +340,7 @@ pre {
   align-items: center;
   flex-direction: row;
   padding: 0px 0px 0px 0px;
-  /* width: 100%; */
+  /* width: 200%; */
   /* height: 200px; */
   color: white;
   font-size: 1.25em;
@@ -384,30 +416,24 @@ pre {
   width: 100%;
 }
 
-#pdm-recommended,
-#console,
-#maxgradientconsoleconsole,
-#maxgradientgradient,
-#maxgradientcolorcolor-reference,
-#maxgradientcolor,
 #possible-colors {
   font-weight: 400;
   font-family: "Urbanist", monospace;
   background: linear-gradient(
     to right,
-    #ff00ff 20%,
-    #af00ff 30%,
-    #5f00ff 40%,
-    #5f00ff 60%,
-    #af00ff 70%,
-    #ff00ff 80%
+    #ff68ff 20%,
+    #e6b0ff 30%,
+    #aa79ff 40%,
+    #aa79ff 60%,
+    #e6b0ff 70%,
+    #ff68ff 80%
   );
   background-size: 200% auto;
   color: #000;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 1s linear infinite;
+  animation: shine 20s linear infinite;
   @keyframes shine {
     0% {
       background-position: 0 0;
@@ -619,7 +645,7 @@ p.attr-line {
     }
   }
 }
-
+.highlight1,
 .pdm-recommended {
   font-weight: 400;
   font-family: "Urbanist", monospace;
@@ -627,8 +653,8 @@ p.attr-line {
     to right,
     #ff00ff 20%,
     #af00ff 30%,
-    #5f00ff 40%,
-    #5f00ff 60%,
+    #9f67ff 40%,
+    #9f67ff 60%,
     #af00ff 70%,
     #ff00ff 80%
   );
@@ -637,17 +663,53 @@ p.attr-line {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 5s linear infinite;
-  @keyframes shine {
-    0% {
-      background-position: 0 50%;
-    }
-    50% {
-      background-position: 200% 50%;
-    }
-    100% {
-      background-position: 0 50%;
-    }
+  animation: shine 40s linear infinite;
+}
+@keyframes shine {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: 0 50%;
   }
 }
 
+.highlight2{
+  font-weight: 400;
+  font-family: "Urbanist", monospace;
+  background: linear-gradient(
+    to right,
+    #ff00ff 0%,
+    #9f67ff 25%,
+    #af00ff 50%,
+    #9f67ff 75%,
+    #ff00ff 100%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 40s linear infinite;
+}
+.highlight3{
+  font-weight: 400;
+  font-family: "Urbanist", monospace;
+  background: linear-gradient(
+    to right,
+    #9f67ff 0%,
+    #af00ff 25%,
+    #ff00ff 50%,
+    #af00ff 75%,
+    #9f67ff 100%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 40s linear infinite;
+}
