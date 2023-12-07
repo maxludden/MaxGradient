@@ -33,17 +33,9 @@ from typing import (
     cast,
 )
 
+from pydantic_core import CoreSchema, core_schema
+from pydantic import GetCoreSchemaHandler, TypeAdapter, BaseModel, ConfigDict, ValidationError
 from rich._null_file import NULL_FILE
-
-if sys.version_info >= (3, 8):
-    from typing import Literal, Protocol, runtime_checkable
-else:
-    from typing_extensions import (
-        Literal,
-        Protocol,
-        runtime_checkable,
-    )
-
 from rich import errors, themes
 from rich._emoji_replace import _emoji_replace
 from rich._export_format import CONSOLE_HTML_FORMAT, CONSOLE_SVG_FORMAT
@@ -80,7 +72,14 @@ if TYPE_CHECKING:
     from rich._windows import WindowsConsoleFeatures
     from rich.live import Live
     from rich.status import Status
-
+if sys.version_info >= (3, 8):
+    from typing import Literal, Protocol, runtime_checkable
+# else:
+#     from typing_extensions import (
+#         Literal,
+#         Protocol,
+#         runtime_checkable,
+#     )
 JUPYTER_DEFAULT_COLUMNS = 115
 JUPYTER_DEFAULT_LINES = 100
 WINDOWS = platform.system() == "Windows"
@@ -670,7 +669,7 @@ class Console:
     """
 
     _environ: Mapping[str, str] = os.environ
-
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     def __init__(
         self,
         *,
@@ -798,8 +797,15 @@ class Console:
         if traceback:
             install_rich_traceback(console=self)  # type: ignore
 
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls,
+        source_type: Any,
+        handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_after_validator_function(cls, handler(str)) # type: ignore
+
     def __repr__(self) -> str:
-        return f"<console width={self.width} {self._color_system!s}>"
+        return f"<MaxGradient.console.Console width={self.width}, {self._color_system!s}>"
 
     @property
     def file(self) -> IO[str]:

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.13
+
+<span class="highlight">December 5, 2023</span> | Allowed arbitrary types for console
+
+- I was allowed arbitrary pydantic types for the console class
+
 ## v0.2.12
 
 <span class="highlight">December 1, 2023</span> | Added Tests

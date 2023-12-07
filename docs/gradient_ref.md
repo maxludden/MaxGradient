@@ -4,11 +4,11 @@ Date: 2023-07-26
 CSS: styles/gradient.css
 ---
 
-# Gradient Reference
+# Gradient Reference {.gradient-header1}
 
 <span class="rainbow-wipe">maxgradient.gradient.Gradient</span> is at the core of MaxGradient. Gradient is a subclass of <span class="green-wipe">rich.text.Text</span>, and can be used in the same way. The Gradient class however also incorporates <span class="rainbow-wipe">maxgradient.color.Color</span> which is an expanded version of <span class="green-wipe">rich.color.Color</span>. Gradient can be used to create a gradient of colors or styles. Gradient can also be used to create a rainbow effect, or to invert the colors of the gradient.
 
-## Initialize
+## Initialize {.gradient-header2}
 
 <div class="class-init">
     <span class="class">class </span><span class="white-mono">Gradient</span> <span class="pink-brac">(</span><br>
@@ -31,7 +31,7 @@ CSS: styles/gradient.css
     <span class="pink-brac">) -> </span><span class="none">None</span><span class="punc">: </span><br>
 </div>
 
-## Parameters
+## Parameters {.gradient-header3}
 
 | Parameters | Description |
 | :--------- | :---------- |
@@ -47,7 +47,7 @@ CSS: styles/gradient.css
 | tab_size | The number of spaces to be used when a tab is encountered. Defaults to 8. |
 | spans | A list of `rich.text.Span` objects. Defaults to None. |
 
-## Methods
+## Methods {.gradient-header1}
 
 ### <span class="class-type">Gradient</span>.<span class="classmethod">as_text</span>()
 
