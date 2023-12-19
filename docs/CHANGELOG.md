@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.14
+
+<span class="highlight">December 18, 2023</span> | Updated dependancies
+
+- Updated and locked dependancies to latest versions
+- Added ruff configuration file
+
 ## v0.2.13
 
 <span class="highlight">December 5, 2023</span> | Allowed arbitrary types for console

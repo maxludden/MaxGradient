@@ -1,5 +1,4 @@
 from os import environ as environ
-
 from dotenv import load_dotenv as load_dotenv
 from rich import inspect as inspect
 from rich import print as print
@@ -17,8 +16,8 @@ from rich.text import Span as Span
 from rich.text import Text as Text
 from rich.text import TextType as TextType
 
-from maxgradient._theme import GradientTerminalTheme as GradientTerminalTheme
-from maxgradient._theme import GradientTheme as GradientTheme
+from maxgradient.theme import GradientTerminalTheme as GradientTerminalTheme
+from maxgradient.theme import GradientTheme as GradientTheme
 from maxgradient.color import Color as Color
 from maxgradient.color_list import ColorList as ColorList
 from maxgradient.color_list import TintList as TintList

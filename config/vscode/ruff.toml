@@ -1,50 +1,3 @@
-
-[project]
-name = "maxgradient"
-version = "0.2.14"
-description = "MaxGradient automates the printing gradient colored text to the console."
-authors = [{ name = "Max Ludden", email = "dev@maxludden.com" }]
-dependencies = [
-    "ipython>=8.18.1",
-    "lorem-text>=2.1",
-    "loguru>=0.7.2",
-    "numpy>=1.25.2",
-    "pendulum>=2.1.2",
-    "python-dotenv>=1.0.0",
-    "pydantic>=2.5.0",
-    "rich>=13.5.3",
-    "typer[all]>=0.9.0",
-    "loguru-mypy>=0.0.4",
-]
-requires-python = ">=3.10"
-readme = "README.md"
-license = { text = "MIT" }
-
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "mkdocs>=1.5.2",
-    "mkdocs-material>=9.4.7",
-    "mkdocstrings[python]>=0.18",
-    "snoop>=0.4.3",
-    "cheap-repr>=0.5.1",
-]
-
-[tool.pdm.dependencies]
-python = ">=3.10"
-typer = { extras = ["all"], version = "^0.1.0" }
-
-[project.scripts]
-gradient = "maxgradient.cli:app" 
-
-[tool.mypy.overrides]
-module = 'maxgradient'
-ignore_missing_imports = true
-
-[tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
@@ -75,9 +28,9 @@ line-length = 88
 indent-width = 4
 
 # Assume Python 3.8
-target-version = "py38"
+target-version = "py311"
 
-[tool.ruff.lint]
+[lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
@@ -91,7 +44,7 @@ unfixable = []
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-[tool.ruff.format]
+[format]
 # Like Black, use double quotes for strings.
 quote-style = "double"
 
@@ -103,6 +56,3 @@ skip-magic-trailing-comma = false
 
 # Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
-
-
-

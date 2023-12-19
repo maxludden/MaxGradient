@@ -3,7 +3,7 @@
 
 import unittest
 
-from maxgradient.gradient_color import GradientColor
+from maxgradient._gradient_color import GradientColor
 
 
 class TestGetNames(unittest.TestCase):

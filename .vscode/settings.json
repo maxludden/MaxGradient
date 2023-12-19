@@ -37,7 +37,7 @@
     "editor.snippetSuggestions": "top",
     "editor.trimAutoWhitespace": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     },
     "analysis.diagnosticSeverityOverrides": {
       "reportGeneralTypeIssues": "none"
@@ -127,9 +127,9 @@
     "windir"
   ],
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true,
-    "editor.action.formatDocument": true
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit",
+    "editor.action.formatDocument": "explicit"
   },
   "explorer.confirmDelete": false,
   "CodeGPT.maxTokens": 900,
