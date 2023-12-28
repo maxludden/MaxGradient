@@ -181,3 +181,4 @@ site/
 .flaskenv*
 !.env.project
 !.env.vault
+project.toml

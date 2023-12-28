@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 import inspect
 import os
 import platform
@@ -33,9 +34,19 @@ from typing import (
     cast,
 )
 
-from pydantic_core import CoreSchema, core_schema
-from pydantic import GetCoreSchemaHandler, TypeAdapter, BaseModel, ConfigDict, ValidationError
 from rich._null_file import NULL_FILE
+
+if sys.version_info >= (3, 8):
+    from typing import Literal, Protocol, runtime_checkable
+else:
+    from typing_extensions import (
+        Literal,
+        Protocol,
+        runtime_checkable,
+    )
+
+HighlighterType = Callable[[Union[str, "Text"]], "Text"]
+
 from rich import errors, themes
 from rich._emoji_replace import _emoji_replace
 from rich._export_format import CONSOLE_HTML_FORMAT, CONSOLE_SVG_FORMAT
@@ -43,6 +54,7 @@ from rich._fileno import get_fileno
 from rich._log_render import FormatTimeCallable, LogRender
 from rich.align import Align, AlignMethod
 from rich.color import ColorSystem, blend_rgb
+from rich.console import JustifyMethod, OverflowMethod
 from rich.control import Control
 from rich.emoji import EmojiVariant
 from rich.highlighter import NullHighlighter
@@ -72,21 +84,10 @@ if TYPE_CHECKING:
     from rich._windows import WindowsConsoleFeatures
     from rich.live import Live
     from rich.status import Status
-if sys.version_info >= (3, 8):
-    from typing import Literal, Protocol, runtime_checkable
-# else:
-#     from typing_extensions import (
-#         Literal,
-#         Protocol,
-#         runtime_checkable,
-#     )
+
 JUPYTER_DEFAULT_COLUMNS = 115
 JUPYTER_DEFAULT_LINES = 100
 WINDOWS = platform.system() == "Windows"
-
-HighlighterType = Callable[[Union[str, "Text"]], "Text"]
-JustifyMethod = Literal["default", "left", "center", "right", "full"]
-OverflowMethod = Literal["fold", "crop", "ellipsis", "ignore"]
 
 
 class NoChange:
@@ -169,7 +170,7 @@ class ConsoleOptions:
         Returns:
             ConsoleOptions: a copy of self.
         """
-        options: ConsoleOptions = ConsoleOptions.__new__(ConsoleOptions)
+        options: ConsoleOptions = ConsoleOptions.__new__(ConsoleOptions) # type: ignore
         options.__dict__ = self.__dict__.copy()
         return options
 
@@ -669,7 +670,7 @@ class Console:
     """
 
     _environ: Mapping[str, str] = os.environ
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     def __init__(
         self,
         *,
@@ -797,15 +798,8 @@ class Console:
         if traceback:
             install_rich_traceback(console=self)  # type: ignore
 
-    @classmethod
-    def __get_pydantic_core_schema__(
-        cls,
-        source_type: Any,
-        handler: GetCoreSchemaHandler) -> CoreSchema:
-        return core_schema.no_info_after_validator_function(cls, handler(str)) # type: ignore
-
     def __repr__(self) -> str:
-        return f"<MaxGradient.console.Console width={self.width}, {self._color_system!s}>"
+        return f"<console width={self.width} {self._color_system!s}>"
 
     @property
     def file(self) -> IO[str]:
@@ -2141,7 +2135,7 @@ class Console:
 
                         if use_legacy_windows_render:
                             from rich._win32_console import (
-                                LegacyWindowsTerm,  # type:ignore
+                                LegacyWindowsTerm,  # type: ignore
                             )
                             from rich._windows_renderer import legacy_windows_render
 
@@ -2897,5 +2891,3 @@ nisi voluptate incididunt pariatur proident elit. Reprehenderit id dolor \
 pariatur ea laborum qui. Velit commodo ad eiusmod Lorem qui do quis pariatur. \
 Quis amet qui Lorem amet magna ut incididunt occaecat deserunt enim."
     )
-
-

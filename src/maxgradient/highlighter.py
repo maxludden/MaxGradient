@@ -75,6 +75,25 @@ class ColorReprHighlighter(RegexHighlighter):
         r"(?P<tag_start><)(?P<tag_name>[-\w.:|]*)(?P<tag_contents>[\w\W]*)(?P<tag_end>>)",
         r'(?P<attrib_name>[\w_]{1,50})=(?P<attrib_value>"?[\w_]+"?)?',
         r"(?P<brace>[][{}()])",
+        # Colors
+        r"(?P<magenta>magenta\b|#[Ff]0[Ff]\b|#[Ff]{2}00[Ff]{2}\b|"
+        r"r?g?b?\(255, ?0, ?255\))",
+        r"(?P<violet>violet\b|#a0[Ff]\b|#a[Ff]00[Ff]{2}\b|"
+        r"r?g?b?\( ?175 ?, ?0 ?, ?255 ?\))",
+        r"(?P<purple>purple\b|#50[Ff]\b|#5[Ff]00[Ff]{2}\b|"
+        r"r?g?b?\( ?95 ?, ?0 ?, ?255 ?\))",
+        r"(?P<blue>blue\b|#00[Ff]\b|#0{4}[Ff]{2}\b|r?g?b?\( ?0 ?, ?0 ?, ?255 ?\))",
+        r"(?P<lightblue>lightblue|#08[Ff]\b|#0088[Ff]{2}|"
+        r"r?g?b?\( ?0 ?, ?136 ?, ?255 ?\))",
+        r"(?P<cyan>cyan|#0[Ff]{2}\b|#00[Ff]{4}|r?g?b?\( ?0 ?, ?255 ?, ?255 ?\))",
+        r"(?P<lime>lime|#0[Ff]0\b|#00[Ff]{2}00|r?g?b?\( ?0 ?, ?255 ?, ?0 ?\))",
+        r"(?P<green>green|#0[Ff]0\b|#00[Ff]{2}00|r?g?b?\( ?0 ?, ?255 ?, ?0 ?\))",
+        r"(?P<yellow>yellow|#[Ff]{2}0\b|#[Ff]{4}00|r?g?b?\( ?255 ?, ?255 ?, ?0 ?\))",
+        r"(?P<orange>orange|#[Ff]80\b|#[Ff]{2}8800|r?g?b?\( ?255 ?, ?136 ?, ?0 ?\))",
+        r"(?P<red>red|#[Ff]00|#[Ff]{2}0{4}\b|r?g?b?\( ?255 ?, ?0 ?, ?0 ?\))",
+        r"[\s\W]?\( ?\d+ ?, ?\d+ ?, ?(?P<rgb_blue>\d+) ?\)",
+        r"[\s\W]?\( ?\d+ ?, ?(?P<rgb_green>\d+) ?, ?\d+ ?\)",
+        r"[\s\W]?\( ?(?P<rgb_red>\d+) ?, ?\d+ ?, ?\d+ ?\)",
         _combine_regex(
             r"(?P<ipv4>[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})",
             r"(?P<ipv6>(\b[A-Fa-f0-9]{1,4}::?){1,7}[A-Fa-f0-9]{1,4})",
@@ -119,8 +138,8 @@ if __name__ == "__main__":
 
     console.print(
         "This is a test of the ColorReprHighlighter",
-        justify="center",
-        highlight=True,
+        # justify="center",
+        # highlight=True,
         style="bold",
     )
     # for item in [NAMES, HEX, HEX3, RGB, RGB_TUPLE]:

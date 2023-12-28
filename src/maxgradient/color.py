@@ -3,7 +3,7 @@
 import colorsys
 import re
 from re import Match
-from typing import Any, List, Optional, Tuple, Union
+from typing import Any, List, Optional, Tuple, Union, TypeAlias
 
 from rich.box import HEAVY
 from rich.color import Color as RichColor
@@ -57,7 +57,7 @@ console = Console()
 
 VERBOSE: bool = False
 
-ColorType = Union[Hex, "Color", RichColor, str, Tuple[int, int, int], X11]
+ColorType: TypeAlias = Union[Hex, RichColor, str, Tuple[int, int, int], X11]
 
 
 class Color:
