@@ -41,7 +41,7 @@ console = Console()
 logger.remove()
 logger.add(
     lambda msg: console.print(msg),
-    level="SUCCESSM",
+    level="SUCCESS",
     colorize=False,
     backtrace=True,
     diagnose=True,
