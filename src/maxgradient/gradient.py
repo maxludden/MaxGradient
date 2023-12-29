@@ -1,13 +1,12 @@
-"""Streamline Gradient class"""
 import re
 from functools import partial
 from operator import itemgetter
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
-
-# from snoop import snoop
-from cheap_repr import normal_repr, register_repr
+from maxgradient.color import Color, ColorParseError
+from maxgradient.color_list import ColorList
+from maxgradient.theme import GradientTheme
 from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
 from rich.measure import Measurement
@@ -16,19 +15,12 @@ from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
 
-from maxgradient.color import Color, ColorParseError
-from maxgradient.color_list import ColorList
-from maxgradient.highlighter import ColorReprHighlighter
-
-# from maxgradient.log import log
-from maxgradient.theme import GradientTheme
-
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
 DEFAULT_OVERFLOW: OverflowMethod = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 VERBOSE: bool = False
-console = Console(theme=GradientTheme(), highlighter=ColorReprHighlighter())
+console = Console(theme=GradientTheme())
 DEFAULT_JUSTIFY = "left"
 DEFAULT_OVERFLOW = "crop"
 VERBOSE = True
@@ -674,8 +666,6 @@ class Gradient(Text):
             spans=self.spans,
         )
 
-
-register_repr(Gradient)(normal_repr)
 
 
 def strip_control_codes(text: str) -> str:

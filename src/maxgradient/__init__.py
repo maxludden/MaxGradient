@@ -13,6 +13,12 @@ from os import environ
 from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
+from maxgradient.color import Color
+from maxgradient.color_list import ColorList, TintList
+from maxgradient.console import Console
+from maxgradient.gradient import Gradient
+from maxgradient.rule import GradientRule
+from maxgradient.theme import GradientTerminalTheme, GradientTheme
 from rich import inspect, print
 from rich.console import (
     ConsoleOptions,
@@ -28,14 +34,6 @@ from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
 
-from maxgradient.color import Color
-from maxgradient.color_list import ColorList, TintList
-from maxgradient.console import Console
-from maxgradient.gradient import Gradient
-from maxgradient.highlighter import ColorReprHighlighter
-from maxgradient.rule import GradientRule
-from maxgradient.theme import GradientTerminalTheme, GradientTheme
-
 __version__ = "0.2.12"
 
 __all__ = [
@@ -45,7 +43,6 @@ __all__ = [
     "GradientRule",
     "GradientTerminalTheme",
     "GradientTheme",
-    "ColorReprHighlighter",
     "Console",
     "ConsoleOptions",
     "Gradient",

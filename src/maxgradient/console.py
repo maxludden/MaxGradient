@@ -52,7 +52,7 @@ from rich.align import Align, AlignMethod
 from rich.color import ColorSystem, blend_rgb
 from rich.control import Control
 from rich.emoji import EmojiVariant
-from rich.highlighter import NullHighlighter
+from rich.highlighter import ReprHighlighter, NullHighlighter
 from rich.markup import render as render_markup
 from rich.measure import Measurement, measure_renderables
 from rich.pager import Pager, SystemPager
@@ -71,7 +71,6 @@ from rich.traceback import install as install_rich_traceback
 
 from maxgradient.color import Color
 from maxgradient.gradient import Gradient
-from maxgradient.highlighter import ColorReprHighlighter
 from maxgradient.rule import GradientRule, Thickness
 from maxgradient.theme import GradientTheme as Theme
 
@@ -705,7 +704,7 @@ class Console:
         log_time: bool = True,
         log_path: bool = True,
         log_time_format: Union[str, FormatTimeCallable] = "[%X]",
-        highlighter: Optional["HighlighterType"] = ColorReprHighlighter(),
+        highlighter: Optional["HighlighterType"] = ReprHighlighter(),
         legacy_windows: Optional[bool] = None,
         safe_box: bool = True,
         get_datetime: Optional[Callable[[], datetime]] = None,
@@ -2745,7 +2744,6 @@ href="{style.link}">{text}</a>'
         text: Optional[str | Text] = "",
         colors: Optional[List[Color | Tuple | str]] = None,
         rainbow: bool = False,
-        invert: bool = False,
         hues: Optional[int] = None,
         color_sample: bool = False,
         style: StyleType = Style.null(),

@@ -88,10 +88,10 @@ the available options present in the `",
 
     def syntax() -> Syntax:
         """Generate the syntax for a rainbow gradient."""
-        code = """console = mg.Console()
+        code_str: str = """console = mg.Console()
 console.gradient(TEXT, rainbow=True, style="bold")"""
-        code = Syntax(
-            code,
+        code: Syntax = Syntax(
+            code_str,
             "python",
             theme="dracula",
             line_numbers=True,
