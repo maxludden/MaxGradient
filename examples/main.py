@@ -8,11 +8,11 @@ from rich.layout import Layout
 from rich.panel import Panel
 
 import maxgradient as mg
-from maxgradient.console import Console
+from maxgradient.console import GradientConsole
 from maxgradient.gradient import Gradient
 from maxgradient.theme import GradientTheme
 
-console = Console()
+console = GradientConsole()
 console.print(f"Console Width: {console.width}")
 
 
@@ -136,12 +136,12 @@ def example(record: bool = False) -> None:
         record (bool, optional): Whether to record the examples. Defaults to False.
     """
     if record:
-        example_console = Console(
+        example_console = GradientConsole(
             theme=GradientTheme(),
             record=record,
         )
     else:
-        example_console = Console(
+        example_console = GradientConsole(
             theme=GradientTheme(),
         )
     example_console.rule(Gradient("Color Gradient Examples"))

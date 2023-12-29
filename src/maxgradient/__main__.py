@@ -343,9 +343,9 @@ def generate_panels() -> Iterable[Panel]:
 
 def main() -> None:
     """Run the main function."""
-    from maxgradient.console import Console  # noqa: F811
+    from maxgradient.console import GradientConsole  # noqa: F811
 
-    console = Console(record=True)
+    console = GradientConsole(record=True)
     console.line(2)
     console.gradient_rule("[b]Gradient Color Examples[/]")
     console.line(2)

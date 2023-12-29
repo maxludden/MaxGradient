@@ -6,17 +6,17 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
 
-from maxgradient.console import Console
-from maxgradient.theme import GradientTerminalTheme
+from maxgradient.console import GradientConsole
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
+from maxgradient.theme import GradientTerminalTheme
 
 TEXT = lorem.paragraphs(2)
 
 
 def gradient_hello() -> None:
     """Gradient Hello, World!"""
-    console = Console(width=70, record=True)
+    console = GradientConsole(width=70, record=True)
     console.line()
     console.gradient(
         "Hello, World!", justify="center"
@@ -31,7 +31,7 @@ def gradient_hello() -> None:
 
 def gradient_with_color_1() -> None:
     """Print a gradient with color."""
-    console = Console(width=70, record=True)
+    console = GradientConsole(width=70, record=True)
     console.line()
     console.gradient(
         "This gradient contains the colors: magenta, violet, and purple.",
@@ -48,7 +48,7 @@ def gradient_with_color_1() -> None:
 
 def gradient_with_color_2() -> None:
     """Print a gradient with color."""
-    console = Console(width=80, record=True)
+    console = GradientConsole(width=80, record=True)
     console.line()
     console.gradient(
         "\tThis gradient contains the colors: violet, purple, blue, lightblue, and cyan.",
@@ -66,18 +66,16 @@ def gradient_with_color_2() -> None:
 
 def gradient_cool() -> None:
     """Print a cool gradient."""
-    console = Console(width=40, record=True)
+    console = GradientConsole(width=40, record=True)
     console.line()
     console.gradient("\tGradients are cool!", justify="center")
     console.line(2)
-    console.save_svg(
-        "docs/img/gradient_are_cool.svg", title="Random Gradient Result"
-    )
+    console.save_svg("docs/img/gradient_are_cool.svg", title="Random Gradient Result")
 
 
 def gradient_string_colors() -> None:
     """Create a gradient from strings of color names."""
-    console = Console(width=65, record=True)
+    console = GradientConsole(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -95,7 +93,7 @@ def gradient_string_colors() -> None:
 
 def gradient_hex_colors() -> None:
     """Create a gradient from hex color codes."""
-    console = Console(width=65, record=True)
+    console = GradientConsole(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -117,7 +115,7 @@ def gradient_hex_colors() -> None:
 
 def gradient_rgb_colors() -> None:
     """Create a gradient from rgb color codes and color tuples."""
-    console = Console(width=65, record=True)
+    console = GradientConsole(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -133,7 +131,7 @@ def gradient_rgb_colors() -> None:
     console.save_svg("docs/img/rgb_gradient.svg", title="RGB Color Gradient Result")
 
 
-def gradient_random_panel() -> Panel: # type: ignore
+def gradient_random_panel() -> Panel:  # type: ignore
     """Generate the syntax for a random gradient and the result."""
 
     def group() -> Group:
@@ -169,7 +167,7 @@ console.print(
             syntax(), NewLine(), GradientRule("Results as"), NewLine(), gradient()
         )
 
-    console = Console(width=80, record=True)
+    console = GradientConsole(width=80, record=True)
     console.line()
     console.print(Panel(group(), title=Gradient("Random Gradient"), padding=(2, 4)))
     console.line(2)
@@ -225,7 +223,7 @@ console.gradient(
             syntax(), NewLine(), GradientRule("Results as"), NewLine(), gradient()
         )
 
-    console = Console(width=80, record=True)
+    console = GradientConsole(width=80, record=True)
     console.line()
     console.print(Panel(group(), title=Gradient("Random Gradient"), padding=(2, 4)))
     console.line(2)
@@ -296,7 +294,7 @@ def rainbow_gradient_example() -> None:
             gradient(),
         )
 
-    console = Console(width=80, record=True)
+    console = GradientConsole(width=80, record=True)
     console.line()
     console.print(
         Panel(group(), title=Gradient("Rainbow Gradient", rainbow=True), padding=(2, 4))
@@ -371,7 +369,7 @@ def red_orange_yellow_gradient() -> None:
             gradient(),
         )
 
-    console = Console(width=80, record=True)
+    console = GradientConsole(width=80, record=True)
     console.line()
     panel = Panel(
         group(),

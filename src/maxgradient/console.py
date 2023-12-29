@@ -52,7 +52,7 @@ from rich.align import Align, AlignMethod
 from rich.color import ColorSystem, blend_rgb
 from rich.control import Control
 from rich.emoji import EmojiVariant
-from rich.highlighter import ReprHighlighter, NullHighlighter
+from rich.highlighter import NullHighlighter, ReprHighlighter
 from rich.markup import render as render_markup
 from rich.measure import Measurement, measure_renderables
 from rich.pager import Pager, SystemPager
@@ -135,7 +135,7 @@ class ConsoleDimensions(NamedTuple):
 
 
 @dataclass
-class ConsoleOptions:
+class MaxConsoleOptions:
     """Options for __rich_console__ method."""
 
     size: ConsoleDimensions
@@ -169,13 +169,13 @@ class ConsoleOptions:
         """Check if renderables should use ascii only."""
         return not self.encoding.startswith("utf")
 
-    def copy(self) -> "ConsoleOptions":
+    def copy(self) -> "MaxConsoleOptions":
         """Return a copy of the options.
 
         Returns:
             ConsoleOptions: a copy of self.
         """
-        options: ConsoleOptions = ConsoleOptions.__new__(ConsoleOptions)  # type: ignore
+        options: MaxConsoleOptions = MaxConsoleOptions.__new__(MaxConsoleOptions)  # type: ignore
         options.__dict__ = self.__dict__.copy()
         return options
 
@@ -191,7 +191,7 @@ class ConsoleOptions:
         highlight: Union[Optional[bool], NoChange] = NO_CHANGE,
         markup: Union[Optional[bool], NoChange] = NO_CHANGE,
         height: Union[Optional[int], NoChange] = NO_CHANGE,
-    ) -> "ConsoleOptions":
+    ) -> "MaxConsoleOptions":
         """Update values, return a copy."""
         options = self.copy()
         if not isinstance(width, NoChange):
@@ -216,7 +216,7 @@ class ConsoleOptions:
             options.height = None if height is None else max(0, height)
         return options
 
-    def update_width(self, width: int) -> "ConsoleOptions":
+    def update_width(self, width: int) -> "MaxConsoleOptions":
         """Update just the width, return a copy.
 
         Args:
@@ -229,7 +229,7 @@ class ConsoleOptions:
         options.min_width = options.max_width = max(0, width)
         return options
 
-    def update_height(self, height: int) -> "ConsoleOptions":
+    def update_height(self, height: int) -> "MaxConsoleOptions":
         """Update the height, and return a copy.
 
         Args:
@@ -242,7 +242,7 @@ class ConsoleOptions:
         options.max_height = options.height = height
         return options
 
-    def reset_height(self) -> "ConsoleOptions":
+    def reset_height(self) -> "MaxConsoleOptions":
         """Return a copy of the options with height set to ``None``.
 
         Returns:
@@ -252,7 +252,7 @@ class ConsoleOptions:
         options.height = None
         return options
 
-    def update_dimensions(self, width: int, height: int) -> "ConsoleOptions":
+    def update_dimensions(self, width: int, height: int) -> "MaxConsoleOptions":
         """Update the width and height, and return a copy.
 
         Args:
@@ -269,31 +269,31 @@ class ConsoleOptions:
 
 
 @runtime_checkable
-class RichCast(Protocol):
+class MaxRichCast(Protocol):
     """An object that may be 'cast' to a console renderable."""
 
     def __rich__(
         self,
-    ) -> Union["ConsoleRenderable", "RichCast", str]:  # pragma: no cover
+    ) -> Union["MaxConsoleRenderable", "MaxRichCast", str]:  # pragma: no cover
         ...
 
 
 @runtime_checkable
-class ConsoleRenderable(Protocol):
+class MaxConsoleRenderable(Protocol):
     """An object that supports the console protocol."""
 
     def __rich_console__(
-        self, console: "Console", options: "ConsoleOptions"
-    ) -> "RenderResult":  # pragma: no cover
+        self, console: "GradientConsole", options: "MaxConsoleOptions"
+    ) -> "MaxRenderResult":  # pragma: no cover
         ...
 
 
 # A type that may be rendered by Console.
-RenderableType = Union[ConsoleRenderable, RichCast, str]
+MaxRenderableType = Union[MaxConsoleRenderable, MaxRichCast, str]
 """A string or any object that may be rendered by Rich."""
 
 # The result of calling a __rich_console__ method.
-RenderResult = Iterable[Union[RenderableType, Segment]]
+MaxRenderResult = Iterable[Union[MaxRenderableType, Segment]]
 
 _null_highlighter = NullHighlighter()
 
@@ -309,7 +309,7 @@ class NewLine:
         self.count = count
 
     def __rich_console__(
-        self, console: "Console", options: "ConsoleOptions"
+        self, console: "GradientConsole", options: "MaxConsoleOptions"
     ) -> Iterable[Segment]:
         yield Segment("\n" * self.count)
 
@@ -323,8 +323,8 @@ class ScreenUpdate:
         self.y = y
 
     def __rich_console__(
-        self, console: "Console", options: ConsoleOptions
-    ) -> RenderResult:
+        self, console: "GradientConsole", options: MaxConsoleOptions
+    ) -> MaxRenderResult:
         x = self.x
         move_to = Control.move_to
         for offset, line in enumerate(self._lines, self.y):
@@ -340,7 +340,7 @@ class Capture:
         console (Console): A console instance to capture output.
     """
 
-    def __init__(self, console: "Console") -> None:
+    def __init__(self, console: "GradientConsole") -> None:
         self._console = console
         self._result: Optional[str] = None
 
@@ -369,7 +369,9 @@ class ThemeContext:
     """A context manager to use a temporary theme. See
     :meth:`~rich.console.Console.use_theme` for usage."""
 
-    def __init__(self, console: "Console", theme: Theme, inherit: bool = True) -> None:
+    def __init__(
+        self, console: "GradientConsole", theme: Theme, inherit: bool = True
+    ) -> None:
         self.console = console
         self.theme = theme
         self.inherit = inherit
@@ -393,7 +395,7 @@ class PagerContext:
 
     def __init__(
         self,
-        console: "Console",
+        console: "GradientConsole",
         pager: Optional[Pager] = None,
         styles: bool = False,
         links: bool = False,
@@ -432,7 +434,7 @@ class ScreenContext:
     :meth:`~rich.console.Console.screen` for usage."""
 
     def __init__(
-        self, console: "Console", hide_cursor: bool, style: StyleType = ""
+        self, console: "GradientConsole", hide_cursor: bool, style: StyleType = ""
     ) -> None:
         self.console = console
         self.hide_cursor = hide_cursor
@@ -440,7 +442,7 @@ class ScreenContext:
         self._changed = False
 
     def update(
-        self, *renderables: RenderableType, style: Optional[StyleType] = None
+        self, *renderables: MaxRenderableType, style: Optional[StyleType] = None
     ) -> None:
         """Update the screen.
 
@@ -453,7 +455,7 @@ class ScreenContext:
         """
         if renderables:
             self.screen.renderable = (  # type: ignore
-                Group(*renderables) if len(renderables) > 1 else renderables[0]  # type: ignore
+                GradientGroup(*renderables) if len(renderables) > 1 else renderables[0]  # type: ignore
             )
         if style is not None:
             self.screen.style = style
@@ -477,7 +479,7 @@ class ScreenContext:
                 self.console.show_cursor(True)
 
 
-class Group:
+class GradientGroup:
     """Takes a group of renderables and returns a renderable
         object that renders the group.
 
@@ -488,19 +490,19 @@ class Group:
             or fill available space. Defaults to True.
     """
 
-    def __init__(self, *renderables: "RenderableType", fit: bool = True) -> None:
+    def __init__(self, *renderables: "MaxRenderableType", fit: bool = True) -> None:
         self._renderables = renderables
         self.fit = fit
-        self._render: Optional[List[RenderableType]] = None
+        self._render: Optional[List[MaxRenderableType]] = None
 
     @property
-    def renderables(self) -> List["RenderableType"]:
+    def renderables(self) -> List["MaxRenderableType"]:
         if self._render is None:
             self._render = list(self._renderables)
         return self._render
 
     def __rich_measure__(
-        self, console: "Console", options: "ConsoleOptions"
+        self, console: "GradientConsole", options: "MaxConsoleOptions"
     ) -> "Measurement":
         if self.fit:
             return measure_renderables(console, options, self.renderables)  # type: ignore
@@ -508,12 +510,12 @@ class Group:
             return Measurement(options.max_width, options.max_width)
 
     def __rich_console__(
-        self, console: "Console", options: "ConsoleOptions"
-    ) -> RenderResult:
+        self, console: "GradientConsole", options: "MaxConsoleOptions"
+    ) -> MaxRenderResult:
         yield from self.renderables
 
 
-def group(fit: bool = True) -> Callable[..., Callable[..., Group]]:
+def group(fit: bool = True) -> Callable[..., Callable[..., GradientGroup]]:
     """A decorator that turns an iterable of renderables in to a group.
 
     Args:
@@ -522,15 +524,15 @@ def group(fit: bool = True) -> Callable[..., Callable[..., Group]]:
     """
 
     def decorator(
-        method: Callable[..., Iterable[RenderableType]]
-    ) -> Callable[..., Group]:
+        method: Callable[..., Iterable[MaxRenderableType]]
+    ) -> Callable[..., GradientGroup]:
         """Convert a method that returns an iterable of renderables in to
         a Group."""
 
         @wraps(method)
-        def _replace(*args: Any, **kwargs: Any) -> Group:
+        def _replace(*args: Any, **kwargs: Any) -> GradientGroup:
             renderables = method(*args, **kwargs)
-            return Group(*renderables, fit=fit)
+            return GradientGroup(*renderables, fit=fit)
 
         return _replace
 
@@ -581,8 +583,8 @@ class RenderHook(ABC):
 
     @abstractmethod
     def process_renderables(
-        self, renderables: List[ConsoleRenderable]
-    ) -> List[ConsoleRenderable]:
+        self, renderables: List[MaxConsoleRenderable]
+    ) -> List[MaxConsoleRenderable]:
         """Called with a list of objects to render.
 
         This method can return a new list of renderables, or modify and
@@ -614,7 +616,7 @@ def detect_legacy_windows() -> bool:
     return WINDOWS and not get_windows_console_features().vt
 
 
-class Console:
+class GradientConsole:
     """A high level console interface.
 
     Args:
@@ -911,10 +913,10 @@ class Console:
 
     def pop_render_hook(self) -> None:
         """Pop the last renderhook from the stack."""
-        with self._lock:
+        with self._lock:  # type: ignore
             self._render_hooks.pop()
 
-    def __enter__(self) -> "Console":
+    def __enter__(self) -> "GradientConsole":
         """Own context manager to enter buffer context."""
         self._enter_buffer()
         return self
@@ -1038,9 +1040,9 @@ class Console:
         return self.is_terminal and is_dumb
 
     @property
-    def options(self) -> ConsoleOptions:
+    def options(self) -> MaxConsoleOptions:
         """Get default console options."""
-        return ConsoleOptions(
+        return MaxConsoleOptions(
             max_height=self.size.height,
             size=self.size,
             legacy_windows=self.legacy_windows,
@@ -1213,7 +1215,7 @@ class Console:
 
     def status(
         self,
-        status: RenderableType,
+        status: MaxRenderableType,
         *,
         spinner: str = "dots",
         spinner_style: StyleType = "status.spinner",
@@ -1342,7 +1344,10 @@ class Console:
         return ScreenContext(self, hide_cursor=hide_cursor, style=style or "")
 
     def measure(
-        self, renderable: RenderableType, *, options: Optional[ConsoleOptions] = None
+        self,
+        renderable: MaxRenderableType,
+        *,
+        options: Optional[MaxConsoleOptions] = None,
     ) -> Measurement:
         """Measure a renderable. Returns a :class:`~rich.measure.Measurement` object
             which contains
@@ -1360,7 +1365,7 @@ class Console:
         return measurement
 
     def render(
-        self, renderable: RenderableType, options: Optional[ConsoleOptions] = None
+        self, renderable: MaxRenderableType, options: Optional[MaxConsoleOptions] = None
     ) -> Iterable[Segment]:
         """Render an object in to an iterable of `Segment` instances.
 
@@ -1382,7 +1387,7 @@ class Console:
         if _options.max_width < 1:
             # No space to render anything. This prevents potential recursion errors.
             return
-        render_iterable: RenderResult
+        render_iterable: MaxRenderResult
 
         renderable = rich_cast(renderable)  # type: ignore
         if hasattr(renderable, "__rich_console__") and not isclass(renderable):
@@ -1416,8 +1421,8 @@ class Console:
 
     def render_lines(
         self,
-        renderable: RenderableType,
-        options: Optional[ConsoleOptions] = None,
+        renderable: MaxRenderableType,
+        options: Optional[MaxConsoleOptions] = None,
         *,
         style: Optional[Style] = None,
         pad: bool = True,
@@ -1582,7 +1587,7 @@ class Console:
         emoji: Optional[bool] = None,
         markup: Optional[bool] = None,
         highlight: Optional[bool] = None,
-    ) -> List[ConsoleRenderable]:
+    ) -> List[MaxConsoleRenderable]:
         """Combine a number of renderables and text into one renderable.
 
         Args:
@@ -1601,7 +1606,7 @@ class Console:
         Returns:
             List[ConsoleRenderable]: A list of things to render.
         """
-        renderables: List[ConsoleRenderable] = []
+        renderables: List[MaxConsoleRenderable] = []
         _append = renderables.append
         text: List[Text] = []
         append_text = text.append
@@ -1609,7 +1614,7 @@ class Console:
         append = _append
         if justify in ("left", "center", "right"):
 
-            def align_append(renderable: RenderableType) -> None:
+            def align_append(renderable: MaxRenderableType) -> None:
                 _append(Align(renderable, cast(AlignMethod, justify)))  # type: ignore
 
             append = align_append
@@ -1634,7 +1639,7 @@ class Console:
                 )
             elif isinstance(renderable, Text):
                 append_text(renderable)
-            elif isinstance(renderable, ConsoleRenderable):
+            elif isinstance(renderable, MaxConsoleRenderable):
                 check_text()
                 append(renderable)
             elif is_expandable(renderable):
@@ -1896,10 +1901,10 @@ class Console:
 
     def update_screen(
         self,
-        renderable: RenderableType,
+        renderable: MaxRenderableType,
         *,
         region: Optional[Region] = None,
-        options: Optional[ConsoleOptions] = None,
+        options: Optional[MaxConsoleOptions] = None,
     ) -> None:
         """Update the screen at a given offset.
 
@@ -2149,8 +2154,8 @@ class Console:
 
                         if use_legacy_windows_render:
                             from rich._win32_console import (
-                                LegacyWindowsTerm,  # type:ignore
-                            )
+                                LegacyWindowsTerm,
+                            )  # type:ignore
                             from rich._windows_renderer import legacy_windows_render
 
                             buffer = self._buffer[:]
@@ -2839,7 +2844,7 @@ def _svg_hash(svg_main_code: str) -> str:
 
 
 if __name__ == "__main__":  # pragma: no cover
-    console = Console(record=True)
+    console = GradientConsole(record=True)
     console.line(2)
     console.log(
         "JSONRPC [i]request[/i]",
