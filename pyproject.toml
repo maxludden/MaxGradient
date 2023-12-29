@@ -1,11 +1,11 @@
 
 [project]
 name = "maxgradient"
-version = "0.2.14"
+version = "0.2.15"
 description = "MaxGradient automates the printing gradient colored text to the console."
-authors = [{ name = "Max Ludden", email = "dev@maxludden.com" }]
+authors = [
+    { name = "Max Ludden", email = "dev@maxludden.com" }]
 dependencies = [
-    "ipython>=8.18.1",
     "lorem-text>=2.1",
     "loguru>=0.7.2",
     "numpy>=1.25.2",
@@ -14,35 +14,37 @@ dependencies = [
     "pydantic>=2.5.0",
     "rich>=13.5.3",
     "typer[all]>=0.9.0",
-    "loguru-mypy>=0.0.4",
 ]
+
 requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
+[project.optional-dependencies]
+dev = [
+    "mkdocs>=1.5.2",
+    "mkdocs-material>=9.4.7",
+    "mkdocstrings[python]>=0.18"
+]
+cli = [
+    "typer[all]>=0.9.0"
+]
+
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-[tool.pdm.dev-dependencies]
-dev = [
-    "mkdocs>=1.5.2",
-    "mkdocs-material>=9.4.7",
-    "mkdocstrings[python]>=0.18",
-    "snoop>=0.4.3",
-    "cheap-repr>=0.5.1",
-]
-
-[tool.pdm.dependencies]
-python = ">=3.10"
-typer = { extras = ["all"], version = "^0.1.0" }
 
 [project.scripts]
 gradient = "maxgradient.cli:app" 
+mypy='bash -c mypy -p src.maxgradient --ignore-missing-imports'
 
-[tool.mypy.overrides]
-module = 'maxgradient'
-ignore_missing_imports = true
+[tool.setuptools]
+# ...
+package-dir = {"" = "src"}
+
+# [tool.mypy.overides.'maxgradient']
+# ignore_missing_imports = true
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
