@@ -4,13 +4,12 @@ from io import StringIO
 from sys import stdout
 from typing import List, Optional
 
+from maxgradient import Console
+from maxgradient.gradient import Gradient
 from rich import inspect
 from rich.panel import Panel
 from typer import Argument, BadParameter, Exit, Option, Typer
 from typing_extensions import Annotated
-
-from maxgradient import Console
-from maxgradient.gradient import Gradient
 
 app = Typer(name="gradient", help="Print a gradient.")
 

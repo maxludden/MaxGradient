@@ -1,22 +1,21 @@
 """MaxGradient.gradient.Gradient()"""
 # pylint: disable=E0402, E0401
 from lorem_text import lorem
+from maxgradient.console import Console
+from maxgradient.gradient import Gradient
+from maxgradient.rule import GradientRule
+from maxgradient.theme import GradientTerminalTheme
 from rich.console import Group, NewLine
 from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
-
-from maxgradient.console import GradientConsole
-from maxgradient.gradient import Gradient
-from maxgradient.rule import GradientRule
-from maxgradient.theme import GradientTerminalTheme
 
 TEXT = lorem.paragraphs(2)
 
 
 def gradient_hello() -> None:
     """Gradient Hello, World!"""
-    console = GradientConsole(width=70, record=True)
+    console = Console(width=70, record=True)
     console.line()
     console.gradient(
         "Hello, World!", justify="center"
@@ -31,7 +30,7 @@ def gradient_hello() -> None:
 
 def gradient_with_color_1() -> None:
     """Print a gradient with color."""
-    console = GradientConsole(width=70, record=True)
+    console = Console(width=70, record=True)
     console.line()
     console.gradient(
         "This gradient contains the colors: magenta, violet, and purple.",
@@ -48,7 +47,7 @@ def gradient_with_color_1() -> None:
 
 def gradient_with_color_2() -> None:
     """Print a gradient with color."""
-    console = GradientConsole(width=80, record=True)
+    console = Console(width=80, record=True)
     console.line()
     console.gradient(
         "\tThis gradient contains the colors: violet, purple, blue, lightblue, and cyan.",
@@ -66,7 +65,7 @@ def gradient_with_color_2() -> None:
 
 def gradient_cool() -> None:
     """Print a cool gradient."""
-    console = GradientConsole(width=40, record=True)
+    console = Console(width=40, record=True)
     console.line()
     console.gradient("\tGradients are cool!", justify="center")
     console.line(2)
@@ -75,7 +74,7 @@ def gradient_cool() -> None:
 
 def gradient_string_colors() -> None:
     """Create a gradient from strings of color names."""
-    console = GradientConsole(width=65, record=True)
+    console = Console(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -93,7 +92,7 @@ def gradient_string_colors() -> None:
 
 def gradient_hex_colors() -> None:
     """Create a gradient from hex color codes."""
-    console = GradientConsole(width=65, record=True)
+    console = Console(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -115,7 +114,7 @@ def gradient_hex_colors() -> None:
 
 def gradient_rgb_colors() -> None:
     """Create a gradient from rgb color codes and color tuples."""
-    console = GradientConsole(width=65, record=True)
+    console = Console(width=65, record=True)
     console.line(2)
     console.print(
         Gradient(
@@ -167,7 +166,7 @@ console.print(
             syntax(), NewLine(), GradientRule("Results as"), NewLine(), gradient()
         )
 
-    console = GradientConsole(width=80, record=True)
+    console = Console(width=80, record=True)
     console.line()
     console.print(Panel(group(), title=Gradient("Random Gradient"), padding=(2, 4)))
     console.line(2)
@@ -223,7 +222,7 @@ console.gradient(
             syntax(), NewLine(), GradientRule("Results as"), NewLine(), gradient()
         )
 
-    console = GradientConsole(width=80, record=True)
+    console = Console(width=80, record=True)
     console.line()
     console.print(Panel(group(), title=Gradient("Random Gradient"), padding=(2, 4)))
     console.line(2)
@@ -294,7 +293,7 @@ def rainbow_gradient_example() -> None:
             gradient(),
         )
 
-    console = GradientConsole(width=80, record=True)
+    console = Console(width=80, record=True)
     console.line()
     console.print(
         Panel(group(), title=Gradient("Rainbow Gradient", rainbow=True), padding=(2, 4))
@@ -369,7 +368,7 @@ def red_orange_yellow_gradient() -> None:
             gradient(),
         )
 
-    console = GradientConsole(width=80, record=True)
+    console = Console(width=80, record=True)
     console.line()
     panel = Panel(
         group(),

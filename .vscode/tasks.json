@@ -80,15 +80,9 @@
     {
       "label": "Run Mypy",
       "type": "shell",
-      "command": "bash",
+      "command": "python",
       "args": [
-        "-c",
-        "mypy",
-        "-p",
-        "src.maxgradient",
-        "--ignore-missing-imports",
-        ">",
-        "logs/mypy-output.text"
+        "/Users/maxludden/dev/py/MaxGradient/tasks/mypy.py"
       ],
       "problemMatcher": [],
       "presentation": {

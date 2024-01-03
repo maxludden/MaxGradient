@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.2.16
+
+<span class="highlight">January 4, 2024</span> | Added `themes.py` and fixed gradient
+
+- Added themes.py to mirror rich's themes.py
+- Bug fixes for gradient.py and console.py
+
+## v0.2.15 
+
+<span class="highlight">January 3, 2024</span> | Fixed Gradient and Updated Dependencies
+
+- Fixed gradient so that it works with the latest version of `rich`
+- Updated dependancies to latest versions
+
 ## v0.2.14
 
 <span class="highlight">December 18, 2023</span> | Updated dependancies

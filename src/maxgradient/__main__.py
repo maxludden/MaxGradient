@@ -3,13 +3,14 @@
 from typing import Iterable
 
 from lorem_text import lorem
-from maxgradient.gradient import Gradient
-from maxgradient.rule import GradientRule
 from rich.columns import Columns
 from rich.console import Group, NewLine
 from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
+
+from maxgradient.gradient import Gradient
+from maxgradient.rule import GradientRule
 
 TEXT = "Lorem nulla consequat enim adipisicing excepteur nostrud pariatur est. \
 Cillum do commodo occaecat voluptate laborum sint labore cupidatat. Labore \
@@ -343,9 +344,9 @@ def generate_panels() -> Iterable[Panel]:
 
 def main() -> None:
     """Run the main function."""
-    from maxgradient.console import GradientConsole  # noqa: F811
+    from maxgradient.console import Console  # noqa: F811
 
-    console = GradientConsole(record=True)
+    console = Console(record=True)
     console.line(2)
     console.gradient_rule("[b]Gradient Color Examples[/]")
     console.line(2)

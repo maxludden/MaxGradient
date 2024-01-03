@@ -13,28 +13,21 @@ from os import environ
 from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
-from maxgradient.color import Color
-from maxgradient.color_list import ColorList, TintList
-from maxgradient.console import GradientConsole, MaxConsoleOptions, MaxGroup
-from maxgradient.gradient import Gradient
-from maxgradient.rule import GradientRule
-from maxgradient.theme import GradientTerminalTheme, GradientTheme
-from rich import inspect, print
-from rich.console import (
-    ConsoleOptions,
-    Group,
-    JustifyMethod,
-    OverflowMethod,
-    RenderableType,
-    RenderResult,
-)
+from rich.console import JustifyMethod, OverflowMethod, RenderableType, RenderResult
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
 
-__version__ = "0.2.15"
+from maxgradient.color import Color
+from maxgradient.color_list import ColorList, TintList
+from maxgradient.console import Console, ConsoleOptions, Group
+from maxgradient.gradient import Gradient
+from maxgradient.rule import GradientRule
+from maxgradient.theme import GradientTerminalTheme, GradientTheme
+
+__version__ = "0.2.16"
 
 __all__ = [
     "Color",
@@ -43,7 +36,7 @@ __all__ = [
     "GradientRule",
     "GradientTerminalTheme",
     "GradientTheme",
-    "GradientConsole",
+    "Console",
     "ConsoleOptions",
     "Gradient",
     "GradientRule",
@@ -63,12 +56,12 @@ __all__ = [
     "Task",
     "Text",
     "TextType",
-    "GradientConsole",
+    "Console",
     "TintList",
 ]
 
 if __name__ == "__main__":
-    console = GradientConsole()
+    console = Console()
     console.line(2)
     console.gradient(
         "MaxGradient is a Python library for generating gradients in the terminal.",

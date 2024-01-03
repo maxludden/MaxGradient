@@ -1,7 +1,7 @@
 
 [project]
 name = "maxgradient"
-version = "0.2.15"
+version = "0.2.16"
 description = "MaxGradient automates the printing gradient colored text to the console."
 authors = [
     { name = "Max Ludden", email = "dev@maxludden.com" }]
@@ -13,7 +13,6 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "pydantic>=2.5.0",
     "rich>=13.5.3",
-    "typer[all]>=0.9.0",
 ]
 
 requires-python = ">=3.10"
@@ -34,10 +33,13 @@ cli = [
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-
 [project.scripts]
-gradient = "maxgradient.cli:app" 
-mypy='bash -c mypy -p src.maxgradient --ignore-missing-imports'
+gradient = "src.maxgradient.cli:app" 
+mypy='mypy -p src.maxgradient --ignore-missing-imports'
+
+
+[tool.pdm.scripts]
+start.env_file.override = ".env"
 
 [tool.setuptools]
 # ...

@@ -291,8 +291,8 @@ class GradientRule(JupyterMixin):
         )
         console.line()
         console.print(GradientRule("Thick Gradient Rule", thickness="thick"))
+        console.line(2)
 
 
 if __name__ == "__main__":
-    GradientRule.rule_example()
     GradientRule.rule_example()

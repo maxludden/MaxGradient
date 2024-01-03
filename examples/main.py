@@ -2,17 +2,16 @@
 # ruff: noqa: F401
 from typing import Iterable
 
+import maxgradient as mg
 from lorem_text import lorem
+from maxgradient.console import Console
+from maxgradient.gradient import Gradient
+from maxgradient.theme import GradientTheme
 from rich.columns import Columns
 from rich.layout import Layout
 from rich.panel import Panel
 
-import maxgradient as mg
-from maxgradient.console import GradientConsole
-from maxgradient.gradient import Gradient
-from maxgradient.theme import GradientTheme
-
-console = GradientConsole()
+console = Console()
 console.print(f"Console Width: {console.width}")
 
 
@@ -136,12 +135,12 @@ def example(record: bool = False) -> None:
         record (bool, optional): Whether to record the examples. Defaults to False.
     """
     if record:
-        example_console = GradientConsole(
+        example_console = Console(
             theme=GradientTheme(),
             record=record,
         )
     else:
-        example_console = GradientConsole(
+        example_console = Console(
             theme=GradientTheme(),
         )
     example_console.rule(Gradient("Color Gradient Examples"))

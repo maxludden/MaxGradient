@@ -1,12 +1,9 @@
 """Test the CLI module."""
 from io import StringIO
 
-import typer
-from rich.text import Text
-from typer.testing import CliRunner
-
-from maxgradient import Console, Gradient
+from maxgradient import Console
 from maxgradient.cli import app
+from typer.testing import CliRunner
 
 console = Console(file=StringIO())
 
