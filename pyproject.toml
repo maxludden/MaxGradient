@@ -38,12 +38,18 @@ gradient = "src.maxgradient.cli:app"
 mypy='mypy -p src.maxgradient --ignore-missing-imports'
 
 
-[tool.pdm.scripts]
-start.env_file.override = ".env"
-
 [tool.setuptools]
 # ...
 package-dir = {"" = "src"}
+namespace-packages = ["maxgradient"]
+packages = [
+    "maxgradient",
+    "maxgradient.cli",
+    "maxgradient.gradient",
+    "maxgradient.console",
+    "maxgradient.rule",
+    "maxgradient.rule"
+]
 
 # [tool.mypy.overides.'maxgradient']
 # ignore_missing_imports = true

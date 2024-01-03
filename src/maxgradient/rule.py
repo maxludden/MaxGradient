@@ -9,7 +9,6 @@ from rich.console import Console, ConsoleOptions, RenderResult
 from rich.jupyter import JupyterMixin
 from rich.measure import Measurement
 from rich.text import Text
-from snoop import snoop
 
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList
