@@ -101,27 +101,6 @@
       "command": "clear",
       "args": [],
       "isBackground": false
-    },
-    {
-      "type": "script",
-      "scriptType": "python",
-      "path": "maxgradient/",
-      "fileName": "gradient.py",
-      "scriptFile": true,
-      "script": "py",
-      "target": "py",
-      "uri": {
-        "$mid": 1,
-        "fsPath": "/Users/maxludden/dev/py/MaxGradient/maxgradient/gradient.py",
-        "external": "file:///Users/maxludden/dev/py/MaxGradient/maxgradient/gradient.py",
-        "path": "/Users/maxludden/dev/py/MaxGradient/maxgradient/gradient.py",
-        "scheme": "file"
-      },
-      "takesArgs": false,
-      "problemMatcher": [
-        "$msCompile"
-      ],
-      "label": "python: gradient.py"
     }
   ]
 }
