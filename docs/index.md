@@ -75,11 +75,11 @@ console.gradient(
     <li>as well as any colors from rich's standard library.</li>
 </ul>
 <p>Let's take a look at some examples:</p>
+
 <h3><span class="pdm">Example 1</span>
 
 ```python
 import maxgradient as mg
-
 console = mg.Console() # Initialize a console
 console.gradient(
     "This gradient contains the colors: magenta, violet, and purple.",
@@ -88,10 +88,15 @@ console.gradient(
         "violet",
         "purple"
     ])
+
 ```
 
 <img src="img/gradient_with_color_1.svg" alt="Gradient with Color 1" style="width:100%;">
-<br /><hr><br />
+
+<br >
+    <hr>
+<br />
+
 <h3><span class="pdm">Example 2</span></h3>
 
 You are not just stuck with ROY G BIV colors, you can use any colors you want. Let's make a gradient with the colors: magenta, violet, purple, blue, lightblue, and cyan.
