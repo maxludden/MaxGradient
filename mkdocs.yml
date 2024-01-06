@@ -16,7 +16,6 @@ nav:
         - Gradient Reference: "gradient_ref.md"
         - Color Reference: "color_ref.md"
         - Possible Colors: "possible_colors.md"
-
     - Changelog: "CHANGELOG.md"
 
 plugins:

@@ -27,7 +27,7 @@ from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
 from maxgradient.theme import GradientTerminalTheme, GradientTheme
 
-__version__ = "0.2.16"
+__version__ = "0.2.17"
 
 __all__ = [
     "Color",

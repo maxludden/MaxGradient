@@ -76,6 +76,61 @@ h1, h2, h3, h4, h5, h6 {
   padding: 25px 0px 0px 0px;
 }
 
+h2 {
+  font-size: 3em;
+  color: #eeeeee;
+  text-align: left;
+  padding: 0px 0px 0px 0px;
+  text-decoration: underline;
+  background: linear-gradient(
+    to right,
+    #ff00ff 5%,
+    #5f00ff 15%,
+    #08f 20%,
+    #0ff 25%,
+    #0f0 30%,
+    #ff0 35%,
+    #f80 40%,
+    #f00 45%,
+    #f00 55%,
+    #f80 60%,
+    #ff0 65%,
+    #0f0 70%,
+    #0ff 75%,
+    #08f 80%,
+    #5f00ff 85%,
+    #ff00ff 95%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 40s linear infinite;
+}
+
+h3 {
+  font-size: 2.5em;
+  color: #eeeeee;
+  text-align: left;
+  padding: 0px 0px 0px 0px;
+  text-decoration: underline;
+  background: linear-gradient(
+    30deg,
+    #ff00ffaf 0%,
+    #9f67ffaf 25%,
+    #af00ffaf 50%,
+    #9f67ffaf 75%,
+    #ff00ffaf 100%
+  );
+  background-size: 200% auto;
+  color: #000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 40s linear infinite;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;

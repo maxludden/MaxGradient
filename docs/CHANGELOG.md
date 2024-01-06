@@ -1,8 +1,24 @@
 # Changelog
 
+## v0.2.17
+
+<span class="highlight">January 6, 2024</span> | Changed layout to src
+
+### <u>Version Changes</u>
+- Changed layout to src
+- Ran tests and fixed conflicts
+- Added `__init__.py` to `maxgradient` directory
+
+### <u>Dependancy Updates</u>
+- Updated `rich` to v10.6.0
+- Updated `pydantic` to v1.9.0
+- Updated `pytest` to v6.2.5
+
 ## v0.2.16
 
-<span class="highlight">January 3, 2024</span> | Added `themes.py` and fixed gradient
+<span class="highlight">January 3, 2024</span> | Reverted to v0.2.14
+
+- Reverted to v0.2.14
 
 ### <u>Version Changes</u>
 - Added themes.py to mirror rich's themes.py

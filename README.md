@@ -13,7 +13,7 @@
         <div class="badges">
             <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11 | 3.12 -blue?logo=python" alt="PyPI - MaxGradient"></a>
             <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.16-bbbbbb" alt="Version 0.2.16"></a>
+            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.17-bbbbbb" alt="Version 0.2.17"></a>
             <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/9edad3968817816b87e7fbbefa224a7145c2593e5e4e6fa57f39a707c2fbe389/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574mk"></a>
         </div>
         <!--End of badges-->
@@ -74,3 +74,11 @@ The final main component of <span class="violet-purple-wipe">MaxGradient</span> 
     <p style="text-align:center;">Created by</p>
     <img style="margin:auto;" width="25%" src="docs/img/MaxLogo.svg" alt="Max Ludden's Logo" />
 </figure>
+
+
+<div class="changelog">
+    <a href="https://maxludden.github.io/MaxGradient/CHANGELOG/" title="MaxGradient Changelog">
+        <h3>Changelog</h3>
+        <img style="margin:auto;" width="25%" src="docs/img/MaxLogo.svg" alt="Max Ludden's Logo" />
+    </a>
+</div>
