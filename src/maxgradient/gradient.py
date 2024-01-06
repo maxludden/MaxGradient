@@ -5,9 +5,6 @@ from operator import itemgetter
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
-
-# from snoop import snoop
-from cheap_repr import normal_repr, register_repr
 from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
 from rich.measure import Measurement
@@ -675,15 +672,9 @@ class Gradient(Text):
         )
 
 
-register_repr(Gradient)(normal_repr)
-
-
 def strip_control_codes(text: str) -> str:
     """Remove control codes from a string."""
     return "".join(char for char in text if ord(char) >= 32)
-
-
-# def cell_len(text: str) -> int:Y
 
 
 def pick_bool(value: Optional[bool], default: bool, fallback: bool) -> bool:

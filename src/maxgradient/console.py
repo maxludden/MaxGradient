@@ -3,7 +3,7 @@ import os
 import platform
 import sys
 import threading
-import zlib  # type: ignore
+import zlib
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -34,7 +34,7 @@ from typing import (
 )
 
 from pydantic_core import CoreSchema, core_schema
-from pydantic import GetCoreSchemaHandler, TypeAdapter, BaseModel, ConfigDict, ValidationError
+from pydantic import GetCoreSchemaHandler, ConfigDict
 from rich._null_file import NULL_FILE
 from rich import errors, themes
 from rich._emoji_replace import _emoji_replace
@@ -169,7 +169,7 @@ class ConsoleOptions:
         Returns:
             ConsoleOptions: a copy of self.
         """
-        options: ConsoleOptions = ConsoleOptions.__new__(ConsoleOptions)
+        options: ConsoleOptions = ConsoleOptions.__new__(ConsoleOptions) # type: ignore
         options.__dict__ = self.__dict__.copy()
         return options
 
