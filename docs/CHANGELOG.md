@@ -73,10 +73,7 @@
 
 <span class="highlight">November 25, 2023</span> | Updated Banner
 
-- Updated MaxGradient Logo:
-<img src="img/MaxGradient.svg" width="50%" alt="MaxGradient Logo" />
-- and Favicon:
-<img src="img/MaxGradient_favicon.svg" width="50%" alt="MaxGradient Favicon" />
+- Updated MaxGradient Logo and Favicon
 - Updated banner to include new logo as http rather than referencing the SVG file locally.
 
 ## v0.2.8

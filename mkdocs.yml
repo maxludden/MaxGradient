@@ -47,10 +47,10 @@ theme:
     palette:
         # Note: Using the system theme works with the insiders version
         # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#automatic-light-dark-mode
-        - media: "(prefers-color-scheme)"
+        - media: "(prefers-color-scheme: dark)"
           scheme: astral-dark
           toggle:
-              icon: material/brightness-4
+              icon: material/brightness-auto
               name: Switch to light mode
         - media: "(prefers-color-scheme: light)"
           scheme: astral-light
