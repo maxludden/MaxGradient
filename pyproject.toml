@@ -15,10 +15,14 @@ dependencies = [
     "rich>=13.5.3",
     "typer[all]>=0.9.0",
     "loguru-mypy>=0.0.4",
+    "unitest>=1.4.26",
 ]
 requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
+keywords = ["console", "color", "gradient", "text", "terminal", "cli", "rich"]
+
+
 
 [build-system]
 requires = ["pdm-backend"]
@@ -33,14 +37,11 @@ dev = [
     "cheap-repr>=0.5.1",
 ]
 
-[tool.pdm.dependencies]
-python = ">=3.10"
-typer = { extras = ["all"], version = "^0.1.0" }
 
 [project.scripts]
 gradient = "maxgradient.cli:app" 
 
-[tool.mypy.overrides]
+[[tool.mypy.overrides]]
 module = 'maxgradient'
 ignore_missing_imports = true
 
