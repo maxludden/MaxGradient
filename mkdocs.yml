@@ -29,10 +29,7 @@ plugins:
 
 theme:
     name: material
-    logo: img/MaxGradient_favicon.svg
-    icon:
-        tag: 
-            arrow: material/arrow-right-circle
+    logo: img/MaxGradient.svg
     favicon: img/MaxGradient.svg
     features:
         - navigation.instant
