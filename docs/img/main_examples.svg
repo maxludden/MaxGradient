@@ -26,14 +26,8 @@
         font-variant-east-asian: full-width;
     }
 
-<<<<<<< HEAD
-    .terminal-4194598789-title {
-=======
-    .terminal-3704881340-title {
-        font-size: 18px;
 
-<<<<<<< HEAD
-    .terminal-4194598789-r1 { fill: #c5c8c6 }
+.terminal-4194598789-r1 { fill: #c5c8c6 }
 .terminal-4194598789-r2 { fill: #ff8800 }
 .terminal-4194598789-r3 { fill: #ff8400 }
 .terminal-4194598789-r4 { fill: #ff8100 }
