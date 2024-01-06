@@ -77,55 +77,32 @@
         "close": true
       }
     },
-    {
-      "label": "Run Mypy",
-      "type": "shell",
-      "command": "bash",
-      "args": [
-        "-c",
-        "mypy",
-        "-m",
-        "maxgradient",
-        "--ignore-missing-imports",
-        ">>",
-        "\"logs/mypy_output.txt\""
-      ],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": false,
-        "clear": true
-      }
-    },
+    // {
+    //   "label": "Run Mypy",
+    //   "type": "shell",
+    //   "command": "mypy",
+    //   "args": [
+    //     "-m",
+    //     "maxgradient",
+    //     "--ignore-missing-imports",
+    //     ">>",
+    //     "\"logs/mypy_output.txt\""
+    //   ],
+    //   // "presentation": {
+    //   //   "echo": true,
+    //   //   "reveal": "always",
+    //   //   "focus": false,
+    //   //   "panel": "shared",
+    //   //   "showReuseMessage": false,
+    //   //   "clear": true
+    //   // }
+    // },
     {
       "label": "Clear Console",
       "type": "shell",
       "command": "clear",
       "args": [],
       "isBackground": false
-    },
-    {
-      "type": "script",
-      "scriptType": "python",
-      "path": "maxgradient/",
-      "fileName": "gradient.py",
-      "scriptFile": true,
-      "script": "py",
-      "target": "py",
-      "uri": {
-        "$mid": 1,
-        "fsPath": "/Users/maxludden/dev/py/MaxGradient/maxgradient/gradient.py",
-        "external": "file:///Users/maxludden/dev/py/MaxGradient/maxgradient/gradient.py",
-        "path": "/Users/maxludden/dev/py/MaxGradient/maxgradient/gradient.py",
-        "scheme": "file"
-      },
-      "takesArgs": false,
-      "problemMatcher": [
-        "$msCompile"
-      ],
-      "label": "python: gradient.py"
     }
   ]
 }
