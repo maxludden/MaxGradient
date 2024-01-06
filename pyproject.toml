@@ -13,12 +13,19 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "pydantic>=2.5.0",
     "rich>=13.5.3",
+<<<<<<< HEAD
     "typer>=0.9.0",
+=======
+    "typer[all]>=0.9.0",
+    "loguru-mypy>=0.0.4",
+    "unitest>=1.4.26",
+>>>>>>> revert_to_v0.2.14
 ]
 
 requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
+<<<<<<< HEAD
 [project.optional-dependencies]
 dev = [
     "mkdocs>=1.5.2",
@@ -28,6 +35,10 @@ dev = [
 cli = [
     "typer[all]>=0.9.0"
 ]
+=======
+keywords = ["console", "color", "gradient", "text", "terminal", "cli", "rich"]
+
+>>>>>>> revert_to_v0.2.14
 
 
 [build-system]
@@ -52,8 +63,18 @@ packages = [
     "maxgradient.rule"
 ]
 
+<<<<<<< HEAD
 # [tool.mypy.overides.'maxgradient']
 # ignore_missing_imports = true
+=======
+
+[project.scripts]
+gradient = "maxgradient.cli:app" 
+
+[[tool.mypy.overrides]]
+module = 'maxgradient'
+ignore_missing_imports = true
+>>>>>>> revert_to_v0.2.14
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.

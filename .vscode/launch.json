@@ -2,24 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Mypy",
+            "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "program": "${workspaceFolder}/tasks/mypy.sh",
-            "args": []
-        },
-        {
-            "name": "Debug Typing",
-            "type": "python",
-            "request": "launch",
-            "preLaunchTask": {
-                "type": "cppbuild",
-                "label": "Run Clear Logs",
-                "command": ""
-            },
-            "program": "/Users/maxludden/dev/py/MaxGradient/tasks/mypy.sh",
-            "console": "integratedTerminal"
-        },
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
     ]
 }

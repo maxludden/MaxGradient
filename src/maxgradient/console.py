@@ -4,7 +4,7 @@ import os
 import platform
 import sys
 import threading
-import zlib  # type: ignore
+import zlib
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime

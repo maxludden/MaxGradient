@@ -296,6 +296,16 @@ GRADIENT_STYLES: dict[str, StyleType] = {
     "repr.rgb_green": Style(color="#44ff44", bold=True, italic=True),
     "repr.rgb_blue": Style(color="#44aaff", bold=True, italic=True),
     "repr.rgb_parentheses": Style(color="#ffffff", bold=True, italic=False),
+    "mypy.error_path": Style(color="#5CECFF", italic=True),
+    "mypy.error_line": Style(color="#00ff5f", bold=True),
+    "mypy.error_msg": Style(color="#dfdfdf", bold=True),
+    "mypy.error_border": Style(color="#ff0000", bold=True),
+    "mypy.error": Style(color="#ff0000", bold=True),
+    "mypy.numbers": Style(color="#8BE9FD", bold=True),
+    "mypy.success": Style(color="#00ff00", bold=True),
+    "mypy.colon": Style(color="#ffffff", bold=True),
+    "mypy.quoted": Style(color="#00afff", bold=True),
+    "mypy.message": Style(color="#ffffff", bold=True),
 }
 
 """ A dictionary that contains if a style is new, edited, or\
@@ -561,6 +571,16 @@ EDITED_STYLES: Dict[str, str] = {
     "repr.rgb_green": ":star: [bold #e1b400]New[/] :star:",
     "repr.rgb_blue": ":star: [bold #e1b400]New[/] :star:",
     "repr.rgb_parentheses": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.error_path": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.error_line": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.error_msg": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.error_border": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.error": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.numbers": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.success": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.colon": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.quoted": ":star: [bold #e1b400]New[/] :star:",
+    "mypy.message": ":star: [bold #e1b400]New[/] :star:",
 }
 
 

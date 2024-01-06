@@ -148,10 +148,8 @@ class GradientRule(JupyterMixin):
             rule_text.append(self.title_text)
 
         rule_text.plain = set_cell_size(rule_text.plain, width)
-        # console.out(f"Rule3:\n{rule_text}", end="")
         yield rule_text
 
-    # @spy
     def _rule_line(self, chars_len: int, width: int) -> Text:
         rule_text = Gradient(
             self.characters * ((width // chars_len) + 1),
@@ -206,7 +204,6 @@ class GradientRule(JupyterMixin):
         rule_text.truncate(width)
         return rule_text
 
-    # @spy
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:

@@ -3,7 +3,6 @@
 from typing import Iterable
 
 from lorem_text import lorem
-from rich.columns import Columns
 from rich.console import Group, NewLine
 from rich.panel import Panel
 from rich.syntax import Syntax
@@ -350,9 +349,11 @@ def main() -> None:
     console.line(2)
     console.gradient_rule("[b]Gradient Color Examples[/]")
     console.line(2)
-    console.print(
-        Columns(generate_panels(), padding=(2, 8), equal=True), justify="center"
-    )
+    
+    for panel in generate_panels():
+        console.print(panel, justify="center", width=console.width)
+        console.line(2)
+
     console.line()
     console.save_svg(
         "docs/img/main_examples.svg",

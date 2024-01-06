@@ -65,6 +65,7 @@ if __name__ == "__main__":
     console.line(2)
     console.gradient(
         "MaxGradient is a Python library for generating gradients in the terminal.",
+        rainbow=True,
         justify="center",
         style="bold",
     )

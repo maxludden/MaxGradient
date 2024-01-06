@@ -667,13 +667,9 @@ class Gradient(Text):
         )
 
 
-
 def strip_control_codes(text: str) -> str:
     """Remove control codes from a string."""
     return "".join(char for char in text if ord(char) >= 32)
-
-
-# def cell_len(text: str) -> int:Y
 
 
 def pick_bool(value: Optional[bool], default: bool, fallback: bool) -> bool:
