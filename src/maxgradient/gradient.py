@@ -4,7 +4,7 @@ from operator import itemgetter
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
-from maxgradient.color import Color, ColorParseError
+from maxgradient.color import Color, ColorParseError, ColorType
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GradientTheme
 from rich.cells import cell_len
@@ -65,7 +65,7 @@ class Gradient(Text):
     def __init__(
         self,
         text: Optional[str | Text] = "",
-        colors: Optional[List[Color | Tuple | str] | str] = None,
+        colors: Optional[List[ColorType]] = None,
         rainbow: bool = False,
         hues: Optional[int] = None,
         style: StyleType = Style.null(),
