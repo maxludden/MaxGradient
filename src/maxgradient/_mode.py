@@ -7,14 +7,13 @@ from typing import Any
 
 class Mode(Enum):
     """A color mode. Used to determine how a color was parsed."""
-
     COLOR = "COLOR"
-    GC = "GC"
+    GradientColor = "GradientColor"
     HEX = "HEX"
     INIT = "INIT"
     INVALID = "INVALID"
     RGB = "RGB"
-    RGB_TUPLE = "RGB_TUPLE"
+    ColorTriplet = "ColorTriplet"
     RICH_COLOR = "RICH_COLOR"
     RICH = "RICH"
     X11 = "X11"

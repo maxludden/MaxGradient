@@ -1,216 +1,119 @@
-"""Generates a spectrum of colors for use in gradient generation."""
-# pylint: disable=[E0401, E0611, W0611]
-
+# ruff: noqa: F401
 from itertools import cycle
-from random import randint
-from typing import List
-
+from typing import Any, List, Tuple
+from random import randint, choice
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
+from rich.traceback import install as tr_install
+from rich.columns import Columns
+from maxgradient.color import Color, ColorType
 
-from maxgradient.color import Color
+class ColorList:
+    COLORS: Tuple[Color, ...] = (
+        Color("#ff00ff"),
+        Color("#af00ff"),
+        Color("#5f00ff"),
+        Color("#0000ff"),
+        Color("#005fff"),
+        Color("#00afff"),
+        Color("#00ffff"),
+        Color("#00ffaf"),
+        Color("#00ff5f"),
+        Color("#00ff00"),
+        Color("#5fff00"),
+        Color("#afff00"),
+        Color("#ffff00"),
+        Color("#ffaf00"),
+        Color("#ff5f00"),
+        Color("#ff0000"),
+        Color("#ff005f"),
+        Color("#ff00af")
+    )
+    def __init__(self, hues: int = 3, title: str = "ColorList"):
+        self.start_index: int = randint(0, 17)
+        self.hues: int= hues
+        self.title: str = title
+        _color_list1: List[Color] = list(self.COLORS[self.start_index:])
+        _color_list2: List[Color] = list(self.COLORS[:self.start_index])
+        color_list: List[Color] = _color_list1 + _color_list2
+        if self.hues > len(color_list):
+            color_cycle: cycle[Color] = cycle(color_list)
+            self._list: List[Color] = [next(color_cycle) for _ in range(self.hues)]
+        else:
+            self._list: List[Color] = color_list[:self.hues]
+        
 
-# from maxgradient.log import log
+    def __call__(self) -> List[Color]:
+        return [next(self) for _ in range(self.hues)]
 
-console = Console()
+    def __getitem__(self, index: int) -> Color:
+        return self.COLORS[index]
 
+    def __getattribute__(self, __name: str) -> Any:
+        return super().__getattribute__(__name)
 
-class ColorList(list):
-    """ColorList is a list of colors. It is used to generate a spectrum of\
-        colors for use in gradient generation. It consists of a list of\
-        `Color` objects."""
+    def __iter__(self) -> 'ColorList':
+        return self
 
-    colors: List[str] = [
-        "magenta",
-        "violet",
-        "purple",
-        "blue",
-        "lightblue",
-        "cyan",
-        "green",
-        "yellow",
-        "orange",
-        "red",
-    ]
-
-    def __init__(self, hues: int = 3, invert: bool = False):
-        super().__init__()
-        self.color_list: List[Color] = []
-        start_index = randint(0, 9)
-        random_colors: List[str] = []
-        step = -1 if invert else 1
-        for index in range(10):
-            current = start_index + (index * step)
-            if current > 9:
-                current -= 10
-            if current < 0:
-                current += 10
-            random_colors.append(self.colors[current])
-        color_cycle = cycle(random_colors)
-        for _ in range(hues):
-            color = Color(next(color_cycle))
-            self.color_list.append(color)
-            if color is None:
-                break
-        # return self.color_list
-
-    def __call__(self):
-        # # log.
-        return self.color_list
-
-    # def __getitem__(self, index: int):
-    #     return self.color_list[index]
-
-    def __len__(self):
-        return len(self.color_list)
-
-    def reverse(self):
-        self.color_list.reverse()
-
-    def get_first_color(self) -> Color:
-        """Return the first color in the list."""
-        return self.color_list[0]
-
-    def get_last_color(self) -> Color:
-        """Return the last color in the list."""
-        return self.color_list[-1]
-
-    @classmethod
-    def colored_title(cls) -> Text:
-        """Returns `ColorList` title with colors applied."""
-        title = [
-            Text("C", style="bold.magenta"),
-            Text("o", style="bold.violet"),
-            Text("l", style="bold.purple"),
-            Text("o", style="bold.blue"),
-            Text("r", style="bold.lightblue"),
-            Text("L", style="bold.cyan"),
-            Text("i", style="bold.green"),
-            Text("s", style="bold.yellow"),
-            Text("t", style="bold.orange"),
-        ]
-        return Text.assemble(*title)
+    def __next__(self) -> Color:
+        if not hasattr(self, '_color_cycle'):
+            self._color_cycle = cycle(self._list)
+        return next(self._color_cycle)
+    
+    def __repr__(self) -> str:
+        return f"ColorList(hues={self.hues})"
+    
+    def __str__(self) -> str:
+        return f"ColorList(hues={self.hues})"
+    
+    def __len__(self) -> int:
+        return self.hues
 
     def __rich__(self) -> Table:
         table = Table(
-            title=self.colored_title(),
+            "Hex", "Name",
+            title="[b #ffffff]ColorList[/]",
             show_header=False,
             expand=False,
             padding=(0, 1),
         )
         for color in self.color_list:
             table.add_row(
-                Text(str(color.name).capitalize(), style=f"bold {color.bg_style}")
+                Text(str(color.name).capitalize(), style=f"bold {color.bg_style}"),
+                Text(str(color.hex), style=f"bold {color.style}"),
             )
         return table
 
-
-class TintList(List):
-    """Generate a list of Tints for use in gradient generation."""
-
-    tints: List[str] = [
-        "#ffffff",
-        "#dddddd",
-        "#bbbbbb",
-        "#999999",
-        "#777777",
-        "#999999",
-        "#aaaaaa",
-        "#cccccc",
-        "#eeeeee",
-        "#ffffff",
-    ]
-
-    def __init__(self, hues: int = 3, invert: bool = False):
-        super().__init__()
-        self.tint_list: List[Color] = []
-        start_index = randint(0, 9)
-        random_tints: List[str] = []
-        step = -1 if invert else 1
-        for index in range(10):
-            current = start_index + (index * step)
-            if current > 9:
-                current -= 10
-            if current < 0:
-                current += 10
-            random_tints.append(self.tints[current])
-        tint_cycle = cycle(random_tints)
-        for _ in range(hues):
-            tint = Color(next(tint_cycle))
-            self.tint_list.append(tint)
-            if tint is None:
-                break
-        # return self.color_list
-
-    def __call__(self):
-        return self.tint_list
-
-    # def __getitem__(self, index):
-    #     return self.tint_list[index]
-
-    def __len__(self):
-        return len(self.tint_list)
-
-    def reverse(self):
-        self.tint_list.reverse()
-
-    def get_first_color(self) -> Color:
-        """Return the first color in the list."""
-        return self.tint_list[0]
-
-    def get_last_color(self) -> Color:
-        """Return the last color in the list."""
-        return self.tint_list[-1]
+    @property
+    def color_list(self) -> List[Color]:
+        return self()
 
     @classmethod
-    def tint_title(cls) -> Text:
+    def colored_title(cls) -> Text:
         """Returns `ColorList` title with colors applied."""
-        title = [
-            Text("T", style="bold #ffffff"),
-            Text("i", style="bold #eeeeee"),
-            Text("n", style="bold #dddddd"),
-            Text("t", style="bold #cccccc"),
-            Text("L", style="bold #bbbbbb"),
-            Text("i", style="bold #aaaaaa"),
-            Text("s", style="bold #999999"),
-            Text("t", style="bold #888888"),
-        ]
-        return Text.assemble(*title)
-
-    def __rich__(self) -> Table:
-        table = Table(
-            title=self.tint_title(),
-            show_header=False,
-            expand=False,
-            padding=(0, 1),
+        return Text.assemble(
+            *[
+                Text("C", style="bold.magenta"),
+                Text("o", style="bold.violet"),
+                Text("l", style="bold.purple"),
+                Text("o", style="bold.blue"),
+                Text("r", style="bold.lightblue"),
+                Text("L", style="bold.cyan"),
+                Text("i", style="bold.green"),
+                Text("s", style="bold.yellow"),
+                Text("t", style="bold.orange"),
+            ]
         )
-        for color in self.tint_list:
-            table.add_row(
-                Text(str(color.name).capitalize(), style=f"bold {color.bg_style}")
-            )
-        return table
 
-
-if __name__ == "__main__":
-    color_list = ColorList(invert=True, hues=10)
-    console.line(2)
-    console.print(color_list, justify="center")
-
-    last_color = color_list.get_last_color()
-    last_color_color = f"[{last_color.style}]{str(last_color.name).capitalize()}[/]"
+if __name__=="__main__":
+    console = Console()
+    tr_install(console=console)
     console.print(
-        f"[{last_color.style}]Last Color:[/] {last_color_color}",
-        justify="center",
-    )
-
-    tint_list = TintList(hues=10)
-    console.line(2)
-    console.print(tint_list, justify="center")
-
-    last_tint = tint_list.get_last_color()
-    last_tint_color = f"[{last_tint.style}]{str(last_tint.name).capitalize()}[/]"
-    console.print(
-        f"[{last_tint.style}]Last Tint:[/] {last_tint_color}",
-        justify="center",
+        Columns(
+            [ColorList(18) for _ in range(8)],
+            equal=True,
+            padding=(1,2)
+        ),
+        justify="center"
     )

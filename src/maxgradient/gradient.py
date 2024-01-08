@@ -5,7 +5,7 @@ from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 from maxgradient.color import Color, ColorParseError, ColorType
-from maxgradient.color_list import ColorList
+from maxgradient._color_list import ColorList
 from maxgradient.theme import GradientTheme
 from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
@@ -36,17 +36,18 @@ class Gradient(Text):
         rainbow (bool): Whether to print the gradient text in rainbow colors\
                 across the spectrum. Defaults to False.\n
         hues (int): The number of colors in the gradient. Defaults to `3`.\n
-        style (StyleType) The style of the gradient text. Defaults to None.\n
+        style (StyleType): The style of the gradient text. Defaults to None.\n
+        verbose (bool): Whether to print verbose output. Defaults to False.
         justify (Optional[JustifyMethod]): Justify method: "left", "center",\
-                "full", "right". Defaults to None.\n
+            "full", "right". Defaults to None.\n
         overflow (Optional[OverflowMethod]):  Overflow method: "crop", "fold", \
             "ellipsis". Defaults to None.\n
         end (str, optional): Character to end text with. Defaults to "\\\\n".\n
         no_wrap (bool, optional): Disable text wrapping, or None for default.\
             Defaults to None.\n
         tab_size (int): Number of spaces per tab, or `None` to use\
-                `console.tab_size`. Defaults to 8.\n
-        spans (List[Span], optional). A list of predefined style spans.\
+            `console.tab_size`. Defaults to 8.\n
+        spans (List[Span], optional): A list of predefined style spans.\
             Defaults to None.\n
 
     """
@@ -60,6 +61,7 @@ class Gradient(Text):
         "_style",
         "_spans",
         "_rainbow",
+        "verbose"
     ]
 
     def __init__(
@@ -69,6 +71,7 @@ class Gradient(Text):
         rainbow: bool = False,
         hues: Optional[int] = None,
         style: StyleType = Style.null(),
+        verbose: bool = False,
         *,
         justify: Optional[JustifyMethod] = None,
         overflow: Optional[OverflowMethod] = None,
@@ -86,17 +89,18 @@ class Gradient(Text):
             rainbow (bool): Whether to print the gradient text in rainbow colors\
                   across the spectrum. Defaults to False.\n
             hues (int): The number of colors in the gradient. Defaults to `3`.\n
-            style (StyleType) The style of the gradient text. Defaults to None.\n
+            style (StyleType): The style of the gradient text. Defaults to None.\n
+            verbose (bool): Whether to print verbose output. Defaults to False.
             justify (Optional[JustifyMethod]): Justify method: "left", "center",\
-                  "full", "right". Defaults to None.\n
+                "full", "right". Defaults to None.\n
             overflow (Optional[OverflowMethod]):  Overflow method: "crop", "fold", \
                 "ellipsis". Defaults to None.\n
             end (str, optional): Character to end text with. Defaults to "\\\\n".\n
             no_wrap (bool, optional): Disable text wrapping, or None for default.\
                 Defaults to None.\n
             tab_size (int): Number of spaces per tab, or `None` to use\
-                  `console.tab_size`. Defaults to 4.\n
-            spans (List[Span], optional). A list of predefined style spans.\
+                `console.tab_size`. Defaults to 4.\n
+            spans (List[Span], optional): A list of predefined style spans.\
                 Defaults to None.\n
 
         """
@@ -118,6 +122,7 @@ class Gradient(Text):
             tab_size=tab_size,
             spans=spans,
         )
+        self.verbose: bool = verbose or False
         self.rainbow = rainbow
         self._hues: int = hues or 3
         self.colors = colors or []  # type: ignore
@@ -300,7 +305,7 @@ class Gradient(Text):
                 self._hues = 3
             if self.rainbow:
                 self._hues = 10
-            _colors: List[Color] = ColorList(self._hues, False).color_list
+            _colors: List[Color] = ColorList(self._hues).color_list
             if self.validate_colors(_colors):
                 self._colors: List[Color] = _colors
             else:
@@ -330,8 +335,7 @@ class Gradient(Text):
     def get_colors(
         self,
         input_colors: Optional[str | List[Color | Tuple | str]],
-        rainbow: bool,
-        invert: bool,
+        rainbow: bool = False
     ) -> List[Color]:
         """Get the colors for the gradient.
 
@@ -340,15 +344,14 @@ class Gradient(Text):
                 for the gradient. Defaults to None.\n
             rainbow (bool): Whether to print the gradient text in rainbow colors \
                 across the spectrum. Defaults to False.\n
-            invert (bool): Reverse the color gradient. Defaults to False.\n
-            verbose (bool): Whether to print verbose output. Defaults to True.\n
+            verbose (bool): Whether to print verbose output. Defaults to False.\n
 
         Returns:
             List[Color]: A list of colors for the gradient.
         """
         if rainbow:
             self.hues = 10
-            color_list = ColorList(self.hues, invert).color_list
+            color_list = ColorList(self.hues).color_list
             assert len(color_list) == self.hues, f"Color list length: {len(color_list)}"
             colors = color_list
             if self.validate_colors(colors):
@@ -374,14 +377,14 @@ class Gradient(Text):
             else:
                 raise ValueError("Colors are invalid. Input colors are not None.")
         elif input_colors is []:
-            color_list = ColorList(self.hues or 3, invert).color_list
+            color_list = ColorList(self.hues or 3).color_list
             colors = color_list[: self.hues]
             if self.validate_colors(colors):
                 return colors
             else:
                 raise ValueError("Colors are invalid. Input colors: []")
         else:
-            color_list = ColorList(self.hues, invert).color_list
+            color_list = ColorList(self.hues).color_list
             colors = color_list[: self.hues]
             if self.validate_colors(colors):
                 return colors

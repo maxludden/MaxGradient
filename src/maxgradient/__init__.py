@@ -21,7 +21,7 @@ from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
 
 from maxgradient.color import Color
-from maxgradient.color_list import ColorList, TintList
+from maxgradient._color_list import ColorList, TintList
 from maxgradient.console import Console, ConsoleOptions, Group
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule

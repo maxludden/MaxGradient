@@ -11,7 +11,7 @@ from rich.measure import Measurement
 from rich.text import Text
 
 from maxgradient.color import Color
-from maxgradient.color_list import ColorList
+from maxgradient._color_list import ColorList
 from maxgradient.gradient import Gradient
 
 # # from maxgradient.log import log

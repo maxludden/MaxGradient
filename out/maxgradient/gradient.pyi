@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from maxgradient.color import Color as Color, ColorParseError as ColorParseError
-from maxgradient.color_list import ColorList as ColorList
+from maxgradient._color_list import ColorList as ColorList
 from maxgradient.highlighter import ColorReprHighlighter as ColorReprHighlighter
 from maxgradient.__log import Log as Log
 from maxgradient.theme import GradientTheme as GradientTheme

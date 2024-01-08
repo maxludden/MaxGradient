@@ -19,18 +19,13 @@ nav:
     - Changelog: "CHANGELOG.md"
 
 plugins:
-    - mkdocstrings:
-        enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
-        default_handler: python
-        handlers:
-            python:
-                options:
-                    show_source: false
+- mkdocstrings
+- search
 
 theme:
     name: material
-    logo: img/MaxGradient.svg
-    favicon: img/MaxGradient.svg
+    logo: https://raw.githubusercontent.com/maxludden/MaxGradient/e4f90e6e34bfb8465220f1800e3fbb13b698a6da/docs/img/MaxGradient_favicon.svg
+    favicon: https://raw.githubusercontent.com/maxludden/MaxGradient/e4f90e6e34bfb8465220f1800e3fbb13b698a6da/docs/img/MaxGradient_favicon.svg
     features:
         - navigation.instant
         - navigation.instant.prefetch
@@ -47,7 +42,7 @@ theme:
     palette:
         # Note: Using the system theme works with the insiders version
         # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#automatic-light-dark-mode
-        - media: "(prefers-color-scheme: dark)"
+        - media: "(prefers-color-scheme)"
           scheme: astral-dark
           toggle:
               icon: material/brightness-auto

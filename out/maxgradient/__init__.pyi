@@ -19,8 +19,8 @@ from rich.text import TextType as TextType
 from maxgradient.theme import GradientTerminalTheme as GradientTerminalTheme
 from maxgradient.theme import GradientTheme as GradientTheme
 from maxgradient.color import Color as Color
-from maxgradient.color_list import ColorList as ColorList
-from maxgradient.color_list import TintList as TintList
+from maxgradient._color_list import ColorList as ColorList
+from maxgradient._color_list import TintList as TintList
 from maxgradient.gradient import Console as Console
 from maxgradient.gradient import Gradient as Gradient
 from maxgradient.highlighter import ColorReprHighlighter as ColorReprHighlighter
