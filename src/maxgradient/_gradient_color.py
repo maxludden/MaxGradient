@@ -1,46 +1,47 @@
 """Parse colors from strings."""
-from typing import List, NamedTuple, Tuple
-from re import compile, Pattern, IGNORECASE
+# ruff: noqa: F401
+import colorsys
+from functools import lru_cache, singledispatchmethod
+from re import IGNORECASE, Pattern, compile
+from typing import Any, List, Tuple
 
-from rich.box import SQUARE
-from rich.console import Console
+from rich import inspect
+from rich.box import HEAVY, SQUARE, ROUNDED
+from rich.color import Color as RichColor
+from rich.color import blend_rgb, ColorParseError, ColorType
+from rich.color_triplet import ColorTriplet
+from rich.console import Console, JustifyMethod
+from rich.panel import Panel
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
+from rich.traceback import install as tr_install
 
-from maxgradient.color_triplet import ColorTriplet
+from snoop import snoop
+from cheap_repr import register_repr, normal_repr
 
 console = Console()
+tr_install(console=console, show_locals=True)
 RGB_REGEX: Pattern[str] = compile(
-    r"r?g?b?\((?P<red>\d+),(?P<green>\d+),(?P<blue>\d+)\)"
+    r"r?g?b?\((?P<red>\d+),(?P<green>\d+),(?P<blue>\d+)\)",
+    IGNORECASE
 )
 
-class GradientColor(NamedTuple):
+register_repr(ColorTriplet)(normal_repr)
+register_repr(RichColor)(normal_repr)
+register_repr(Panel)(normal_repr)
+
+class GradientColorParseError(ColorParseError):
+    """Unable to parse a GradientColor from input."""
+    pass
+
+
+class GradientColor:
     name: str
     hex: str
     rgb: str
     triplet: ColorTriplet
 
-    def __rich__(self) -> Table:
-        """Return a rich table representation of the gradient color."""
-        table = Table(box=SQUARE)
-        table.add_column("Sample", justify="center")
-        table.add_column("Name", justify="left")
-        table.add_column("Hex", justify="center")
-        table.add_column("RGB", justify="left")
-        table.add_row(
-            Text(" " * 10, style=Style(bgcolor=self.hex, bold=True)),
-            Text(str(self.name).capitalize(), style=Style(color=self.hex, bold=True)),
-            Text(str(self.hex).upper(), style=Style(color=self.hex, bold=True)),
-            Text(str(self.rgb), style=Style(color=self.hex, bold=True))
-        )
-        return table
-
-
-class GradientColors(List):
-    """A class of colors used in automatically generating random gradients."""
-
-    index: int = 0
     NAMES: Tuple[str, ...] = (
         "magenta",
         "purple",
@@ -122,125 +123,340 @@ class GradientColors(List):
         ColorTriplet(255, 0, 175),
     )
 
-    def __init__(self) -> None:
-        super().__init__(
-            [
-                GradientColor(name, hex, rgb, triplet)
-                for name, hex, rgb, triplet in zip(
-                    self.NAMES, self.HEX, self.RGB, self.TRIPLETS
-                )
-            ]
-        )
+    @singledispatchmethod
+    def __init__(self, value) -> None:
+        """Initialize a GradientColor object.
 
-    def __getitem__(self, index: int) -> GradientColor:
-        return super().__getitem__(index)
+        Args:
+            value (Any): A gradient color.
+        """
+        pass
+    
+    @snoop
+    @__init__.register(RichColor)
+    def _(self, value) -> None:
+        self.name: str = value.name
+        self.type: ColorType = ColorType.TRUECOLOR
+        self.triplet: ColorTriplet = value.triplet
+        super().__init__()
+        self.hex = self.triplet.hex
+        self.rgb = self.triplet.rgb
+        
+    
+    @snoop
+    @__init__.register(ColorTriplet)
+    def _(self, value: ColorTriplet) -> None:
+        if value not in self.TRIPLETS:
+            raise GradientColorParseError(f"Invalid input: {value}")
+        index: int = self.TRIPLETS.index(value)
+        self.name = self.NAMES[index]
+        self.type = ColorType.TRUECOLOR
+        self.triplet = value
+        super().__init__()
+        self.hex = self.triplet.hex
+        self.rgb = self.triplet.rgb
 
-    def __len__(self) -> int:
-        """Return the length of the GradientColors object."""
-        return len(self)
-
+    @snoop
+    @__init__.register(str)
+    def _(self, value: str) -> None:
+        index: int = -1
+        for group in [self.NAMES, self.HEX, self.RGB]:
+            if value in group:
+                index = group.index(value)
+                break
+            else:
+                continue
+        if index < 0 or index > len(self.NAMES):
+            raise GradientColorParseError(f"Invalid input: {value}")
+        self.name = self.NAMES[index]
+        self.type = ColorType.TRUECOLOR
+        self.triplet = self.TRIPLETS[index]
+        super().__init__()
+        self.hex = self.triplet.hex
+        self.rgb = self.triplet.rgb
+    
+    
+    
     def __str__(self) -> str:
-        """String representation of the object#"""
-        return f"GradientColors<{', '.join([color.name for color in self])}"
+        """String representation of the object."""
+        return self.name
 
+    @snoop
     def __repr__(self) -> str:
-        """Object representation for debugging"""
-        return f"GradientColors<{', '.join([color.name for color in self])}"
-
-    def __contains__(self, item: GradientColor) -> bool:
-        """Check if an item is present in the object"""
-        if not isinstance(item, GradientColor):
-            return False
-        else:
-            return item in self
-
-    def __rich__(self) -> Table:
-        """Return a rich table representation of the gradient colors."""
-        from rich.console import Console
-        from rich.traceback import install as tr_install
-        
-        console = Console()
-        tr_install(console=console)
-        width = console.width-4
-        
-        console.print(f"Width: {width}")
-        grid = Table(
-            expand=True,
-            width=width,
-            padding=(0, 2)
-        )
-        grid.add_column("Sample", justify="center", width=15)
-        grid.add_column("Name", justify="left", width=15)
-        grid.add_column("Hex", justify="center", width=11)
-        grid.add_column("RGB", justify="left", width=17)
-        grid.add_column("ColorTriplet", justify="left", width=27)
-        for name, hex, rgb, triplet in zip(
-            self.NAMES, self.HEX, self.RGB, self.TRIPLETS
-        ):
-            grid.add_row(
-                Text(" " * 10, style=Style(bgcolor=hex, bold=True)),
-                Text(str(name).capitalize(), style=Style(color=hex, bold=True)),
-                Text(str(hex).upper(), style=Style(color=hex, bold=True)),
-                Text(str(rgb), style=Style(color=hex, bold=True)),
-                triplet.as_text(),
-            )
-        return grid
-
+        return f"GradientColor<{self.name}>"
 
     @classmethod
+    @lru_cache
     def get_names(cls) -> Tuple[str, ...]:
-        """Retrieve gradient colors."""
+        """Retrieve the name of each GradientColor."""
         return cls.NAMES
 
     @classmethod
+    @lru_cache
     def get_hex(cls) -> Tuple[str, ...]:
-        """Retrieve gradient hex colors."""
+        """Retrieve the hex value of each GradientColor."""
         return cls.HEX
 
     @classmethod
+    @lru_cache
     def get_rgb(cls) -> Tuple[str, ...]:
-        """Retrieve gradient RGB colors."""
+        """Retrieve the RGB value of each GradientColor."""
         return cls.RGB
 
     @classmethod
-    def get_triplets(cls) -> Tuple[Tuple[int, int, int], ...]:
-        """Retrieve gradient RGB tuples."""
+    @lru_cache
+    def get_triplets(cls) -> Tuple[ColorTriplet, ...]:
+        """Retrieve the ColorTriplet of each GradientColor."""
         return cls.TRIPLETS
 
-    @classmethod
-    def get_color(cls, color: str) -> Tuple[int, int, int]:
-        """Retrieve gradient RGB tuples.
+    @property
+    def contrast(self) -> ColorTriplet:
+        """Generate a foreground color for the color style.
 
-        Args:
-            color (str): A gradient color.
+        Generate a foreground color for the color style based on the color's
+        contrast ratio. If the color is dark, the foreground color will be
+        white. If the color is light, the foreground color will be black.
 
         Returns:
-            int: The index of the gradient color.
+            str: The foreground color.
         """
-        for group in [
-            cls.get_names(),
-            cls.get_hex(),
-            cls.get_rgb(),
-            cls.get_triplets(),
-        ]:
-            if color in group:
-                index = group.index(color)
-                return cls.get_triplets()[index]
-            else:
-                raise ValueError(f"Invalid Color: {color} not in any color group.")
+        closest = GradientColor.find_closest_color(
+            self.triplet,
+            color_list=[ColorTriplet(0, 0, 0), ColorTriplet(255, 255, 255)],
+        )
+        if closest == ColorTriplet(0, 0, 0):
+            return ColorTriplet(255, 255, 255)
+        else:
+            return ColorTriplet(0, 0, 0)
 
-        raise ValueError(f"Invalid color: {color}")
+    @property
+    def row_styles(self) -> List[str]:
+        """Generate a list of row styles for a rich table."""
+        shade = RichColor.from_triplet(self.darken(0.9))
+        shade_style = Style(
+            color="#ffffff",
+            bgcolor=shade,
+            bold=True
+        )
+        return [
+            f"bold #ffffff on {self.hex}",
+            str(shade_style)
+        ]
 
     @staticmethod
-    def rgb_to_tuple(rgb: str) -> Tuple[int, int, int]:
-        """Convert a rgb string to a tuple of ints"""
-        rgb_match = RGB_REGEX.search(rgb, IGNORECASE)
-        if rgb_match:
-            red: int = int(rgb_match.group("red"))
-            green: int = int(rgb_match.group("green"))
-            blue: int = int(rgb_match.group("blue"))
-            return (red, green, blue)
-        raise ValueError(f"Invalid rgb string: {rgb}")
+    def triplet_to_hsv(triplet: ColorTriplet) -> Tuple[float, float, float]:
+        """Convert an RGB color to HSV."""
+        h, s, v = colorsys.rgb_to_hsv(
+            triplet.red / 255, triplet.green / 255, triplet.blue / 255
+        )
+        return h, s, v
+
+    @staticmethod
+    def color_distance(triplet1: ColorTriplet, triplet2: ColorTriplet):
+        """Calculate the distance between two colors."""
+        h1, s1, v1 = GradientColor.triplet_to_hsv(triplet1)
+        h2, s2, v2 = GradientColor.triplet_to_hsv(triplet2)
+        dh: float = min(abs(h1 - h2), 1 - abs(h1 - h2))
+        ds: float = abs(s1 - s2)
+        dv: float = abs(v1 - v2)
+        color_distance: float = dh + ds + dv
+        return color_distance
+
+    @staticmethod
+    def find_closest_color(triplet: ColorTriplet, color_list: List[ColorTriplet]):
+        """Calculate the closest color in a list."""
+        closest_color = None
+        min_distance = float("inf")
+        for color in color_list:
+            distance = GradientColor.color_distance(triplet, color)
+            if distance < min_distance:
+                min_distance = distance
+                closest_color = color
+        return closest_color
+
+        
+
+    def darken(self, amount: float = 0.5) -> ColorTriplet:
+        """Darken a color by a given amount.
+
+        Args:
+            amount (float, optional): The amount to darken the color. Defaults to 0.5.
+
+        Returns:
+            GradientColor: A new GradientColor object.
+        """
+        black = ColorTriplet(0, 0, 0)
+        shade = blend_rgb(self.triplet, black, amount)
+        return shade
+
+    def lighten(self, amount: float = 0.5) -> ColorTriplet:
+        """Darken a color by a given amount.
+
+        Args:
+            amount (float, optional): The amount to darken the color. Defaults to 0.5.
+
+        Returns:
+            GradientColor: A new GradientColor object.
+        """
+        white = ColorTriplet(255,255,255)
+        tint = blend_rgb(self.triplet, white, amount)
+        return tint
+    
+    @property
+    def rgb_text(self) -> Text:
+        """Return the RGB color string as a rich Text object."""
+        return self.colorize_triplet(True)
+
+    @snoop
+    def __rich__(self) -> Panel:
+        """Return a rich table representation of the gradient color."""
+        _dark_style = Style(
+            color = RichColor.from_triplet(self.darken(0.5))
+        )
+        table = Table(
+            show_header=False,
+            show_footer=False,
+            show_edge=True,
+            show_lines=False,
+            box=HEAVY,
+            border_style=f"bold {self.hex}",
+            expand=False,
+            # row_styles = self.row_styles
+        )
+
+        table.add_column(
+            "attribute", justify="right"
+        )
+        table.add_column(
+            "value", 
+            style=Style(
+                color=f"{self.hex}",
+                bgcolor=self.contrast.hex
+            ),
+            justify="left")
+        
+        # Key Styles
+        key_style_even: Style = Style(
+            color="#FFFFFF",
+            bgcolor=RichColor.from_triplet(self.triplet),
+            bold=True,
+            italic=True
+        )
+        key_style_odd: Style = Style(
+            color=f"{self.hex}",
+            bgcolor=RichColor.from_triplet(blend_rgb(self.triplet,self.contrast, .85)),
+            bold=True,
+            italic=True
+        )
+        
+        # Mode
+        mode_key = Text("Mode", style=key_style_odd, justify="right")
+        mode = f"[b {self.hex}]Mode[/][#cfcfff].[/][i #7FD6E8]GradientColor[/]"
+        table.add_row(mode_key, mode)
+        
+        # Hex
+        hex_str = str(self.hex).upper()
+        hex_key = Text("HEX", style=key_style_even, justify="right")
+        table.add_row(hex_key, Text(hex_str, style=f"bold {self.hex}"))
+        
+        # RGB
+        rgb_key = Text("RGB", style=key_style_odd, justify="right")
+        table.add_row(rgb_key, self.colorize_triplet(rgb=True))
+
+        # ColorTriplet
+        triplet_key = Text("ColorTriplet", style=key_style_even, justify="right")
+        table.add_row(triplet_key, self.colorize_triplet())
+
+        title = self.color_title()
+        _dark_style = Style(
+            color = RichColor.from_triplet(
+                self.darken(0.5)
+            )
+        )
+        sub_panel = Panel(
+            table,
+            title=title,
+            expand=False,
+            box=HEAVY,
+            border_style=_dark_style
+        )
+        _darker_style=Style(
+            color = RichColor.from_triplet(
+                self.darken(0.75)
+            )
+        )
+        panel = Panel(
+            sub_panel,
+            box=SQUARE,
+            border_style=_darker_style,
+            expand=False
+        )
+        return panel
+
+    def colorize_triplet(self, rgb: bool = False, *, justify: JustifyMethod = "right") -> Text:
+        """Format a ColorTriplet as a rich.text.Text object.
+
+        Args:
+            rgb (bool, optional): Whether to return the RGB value. Defaults to False.
+
+        Returns:
+            Text: A colored Text object.
+        """
+        prefix: str = "rgb" if rgb else "ColorTriplet"
+        left_str: str = "("
+        right_str: str = ")"
+        comma_str: str = ","
+        left = Text(left_str, style="bold #ffffff")
+        right = Text(right_str, style="bold #ffffff")
+        comma = Text(comma_str, style="bold #ffffff")
+
+        pad = self.pad_value
+        return Text.assemble(
+            *[
+                Text(prefix, style=f"bold {self.hex}"),
+                left,
+                Text(f"{pad(self.triplet.red)}", style="bold #ff0000"),
+                comma,
+                Text(f"{pad(self.triplet.green)}", style="bold #00ff00"),
+                comma,
+                Text(f"{pad(self.triplet.blue)}", style="bold #00afff"),
+                right,
+            ]
+        )
+
+    def color_title(self) -> Text:
+        """Generate a title bar for the color."""
+
+        name = self.name.capitalize()
+        length = len(name)
+        # Calculate
+        if length % 2 == 1:
+            name = f"{name} "  # makes length even
+            length += 1
+        padding: int = (38 - length) / 2  # type: ignore
+        pad = " " * int(padding)
+        color = RichColor.from_triplet(
+            blend_rgb(self.triplet, ColorTriplet(red=0, green=0, blue=0))
+        )
+        bg_color = RichColor.from_triplet(
+            blend_rgb(self.triplet, ColorTriplet(red=255, green=255, blue=255), 0.5)
+        )
+        return Text(
+            f"{pad}{name}{pad}", style=Style(color=color, bgcolor=bg_color, bold=True)
+        )
+
+    @staticmethod
+    def pad_value(value: str | int) -> str:
+        """Pad the value with spaces."""
+        if isinstance(value, int):
+            str_value = str(value)
+        elif isinstance(value, str):
+            str_value = value
+        else:
+            raise TypeError(f"Expected str or int, got {type(value)}")
+        if len(str_value) < 3:
+            return f'{" " * (3 - len(str_value))}{str_value}'
+        return str_value
 
     @staticmethod
     def get_title() -> Text:
@@ -267,57 +483,104 @@ class GradientColors(List):
     @classmethod
     def color_table(cls) -> Table:
         """Generate a table of gradient colors."""
-        table = Table(title=cls.get_title(), box=SQUARE, expand=True)
+        table = Table(title=cls.get_title(), box=SQUARE, expand=False)
         table.add_column("Sample", justify="center", style="bold")
         table.add_column("Name", justify="left", style="bold")
         table.add_column("Hex", justify="center", style="bold")
-        table.add_column("RGB", justify="left", style="bold")
-        table.add_column("ColorTriplet", justify="left", style="bold", width=56)
-        for x in range(10):
-            hex = cls.get_hex()[x]
-            table.add_row(
-                Text(" " * 10, style=Style(bgcolor=hex, bold=True)),
-                Text(
-                    str(cls.get_names()[x]).capitalize(),
-                    style=Style(color=hex, bold=True),
-                ),
-                Text(str(cls.get_hex()[x]), style=Style(color=hex, bold=True)),
-                Text(str(cls.get_rgb()[x]), style=Style(color=hex, bold=True))
+        table.add_column("RGB", justify="center", style="bold")
+        table.add_column("ColorTriplet", justify="center", style="bold")
+        for name, hex, rgb, triplet in zip(cls.NAMES, cls.HEX, cls.RGB, cls.TRIPLETS):
+            sample = Text(" " * 10, style=Style(bgcolor=hex, bold=True))
+            name_text = Text(
+                str(name).capitalize(), style=f"bold {hex}", justify="left"
             )
+            hex_text = Text(hex.upper(), style=f"bold {hex}")
+            rgb_text = cls.triplet_to_rgb(triplet)
+            triplet_text = cls.format_triplet(triplet)
+            table.add_row(sample, name_text, hex_text, rgb_text, triplet_text)
         return table
 
-    @classmethod
-    def as_title(cls, color: str, console: Console = console) -> Text:
+    @staticmethod
+    def triplet_to_rgb(triplet: ColorTriplet, justify: JustifyMethod = "left") -> Text:
+        """Format an RGB string as a rich Text object."""
+        left_str: str = "("
+        right_str: str = ")"
+        comma_str: str = ","
+        left = Text(left_str, style="bold #ffffff")
+        right = Text(right_str, style="bold #ffffff")
+        comma = Text(comma_str, style="bold #ffffff")
+
+        pad = GradientColor.pad_value
+        return Text.assemble(
+            *[
+                Text("rgb", style=f"bold {triplet.hex}"),
+                left,
+                Text(f"{pad(triplet.red)}", style="bold #ff0000"),
+                comma,
+                Text(f"{pad(triplet.green)}", style="bold #00ff00"),
+                comma,
+                Text(f"{pad(triplet.blue)}", style="bold #00afff"),
+                right,
+            ]
+        )
+
+    def as_title(self, color: str, console: Console = console) -> Text:
         """Capitalize, format, and color a gradient color's name.
 
         Returns:
             text: Colorized gradient_color's capitalized name.
         """
-        color = str(color).lower()
-        parsed_color: str = ""
-        if color in cls.NAMES:
-            return Text(f"[bold {color}]{str(color).capitalize()}[/bold {color}]")
-        else:
-            for group in [cls.HEX, cls.RGB, cls.TRIPLETS]:
-                if color in group:
-                    index = group.index(color)
-                    parsed_color = cls.NAMES[index]
-                    break
-                else:
-                    continue
-            return Text(
-                f"[bold {parsed_color}]{str(parsed_color).capitalize()}[/bold {parsed_color}]"
-            )
+        return Text(self.name.capitalize(), style=f"bold {self.hex}")
+
+    @classmethod
+    def format_triplet(cls, triplet: ColorTriplet) -> Text:
+        """Format a ColorTriplet as a rich Text object."""
+        left_str: str = "("
+        right_str: str = ")"
+        comma_str: str = ","
+        left = Text(left_str, style="bold #ffffff")
+        right = Text(right_str, style="bold #ffffff")
+        comma = Text(comma_str, style=f"bold {triplet.hex}")
+
+        return Text.assemble(
+            *[
+                Text("ColorTriplet", style=f"bold {triplet.hex}"),
+                left,
+                Text(f"{cls.pad_value(triplet.red)}", style="bold #FF0000"),
+                comma,
+                Text(f"{cls.pad_value(triplet.green)}", style="bold #00AF00"),
+                comma,
+                Text(f"{cls.pad_value(triplet.blue)}", style="bold #00AFFF"),
+                right,
+            ],
+            justify="left",
+        )
+
+
+def hex_str(value: ColorTriplet) -> str:
+    """Return the RGB color string."""
+
+    red: str = f"{value.red:02X}"
+    green: str = f"{value.green:02X}"
+    blue: str = f"{value.blue:02X}"
+    hex: str = f"#{red}{green}{blue}"
+    return hex
+
+
+def hex_text(value: ColorTriplet) -> Text:
+    """Return the RGB color string as a rich Text object."""
+    hex = hex_str(value).upper()
+    return Text(hex, style=f"bold {hex}")
 
 
 def print_color_table(save: bool = False) -> None:
     if save:
-        console = Console(record=True, width=80)
+        console = Console(record=True)
     else:
         console = Console()
 
     console.line(2)
-    console.print(GradientColors(), justify="center")
+    console.print(GradientColor.color_table(), justify="center")
     console.line(2)
 
     if save:
@@ -327,5 +590,6 @@ def print_color_table(save: bool = False) -> None:
         )
 
 
-if __name__ == "__main__":
-    print_color_table(True)
+if __name__ == "__main__": # pragma: no cover
+    for color in GradientColor.NAMES:
+        console.print(GradientColor(color))
