@@ -2,12 +2,30 @@
 
 ## v0.2.17
 
-<span class="highlight">January 6, 2024</span> | Changed layout to src
+<span class="highlight">January 6, 2024</span> | SRC Layout and New GradientColors and ColorList
 
 ### <u>Version Changes</u>
+
 - Changed layout to src
 - Ran tests and fixed conflicts
 - Added `__init__.py` to `maxgradient` directory
+
+###  `GradientColor`
+
+- Rewrote `_gradient_color.GradientColor`:
+    - Added 8 more colors bringing the the total to 18:
+        ![Gradient Colors](img/new_gradient_colors.svg)
+
+### `ColorList`
+
+- Rewrote ColorList:
+    - Added the missing colors from GradientColor bringing the total to 18
+    - Updated examples and exported the SVG:
+        ![Color List](img/updated_color_list.svg)
+
+### Color
+
+- Fixed `color.Color` so that it works with the new `GradientColor` and `ColorList` classes
 
 ### <u>Dependancy Updates</u>
 - Updated `rich` to v10.6.0
@@ -23,9 +41,6 @@
 ### <u>Version Changes</u>
 - Added themes.py to mirror rich's themes.py
 - Bug fixes for gradient.py and console.py
-
-### <u>Dependancy Updates</u>
-- Removed snoop from modules
 
 ## v0.2.15 
 

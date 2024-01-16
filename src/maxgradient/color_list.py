@@ -1,13 +1,16 @@
 # ruff: noqa: F401
 from itertools import cycle
-from typing import Any, List, Tuple
-from random import randint, choice
+from pathlib import Path
+from random import choice, randint
+from typing import Any, List
+
+from rich.columns import Columns
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
-from rich.columns import Columns
-from maxgradient._gradient_color import GradientColors as GC
+
+from maxgradient._gradient_color import GradientColor as GC
 from maxgradient.color import Color, ColorType
 
 console = Console()
@@ -92,12 +95,19 @@ class ColorList:
         )
 
 if __name__=="__main__":
-    
+    console=Console(record=True)
+    console.line(2)
     console.print(
         Columns(
-            [ColorList(18) for _ in range(8)],
+            [ColorList(18) for _ in range(4)],
             equal=True,
             padding=(1,2)
         ),
         justify="center"
     )
+    console.line(2)
+    console.save_svg(
+        str(Path.cwd() / "docs" / "img" / "updated_color_list.svg"),
+        title="Updated Color List"   
+    )
+    

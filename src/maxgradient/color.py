@@ -42,7 +42,7 @@ class Color:
         from which to generate a gradient. Colors can be parse from a number \
         of inputs:
         
-1) GradientColors (str, Tuple[int,int,int]): The colors from which random\
+1) GradientColor (str, Tuple[int,int,int]): The colors from which random\
     gradients are generated. Can be parsed from the GradientColor's name, \
     hex color code, RGB color code, or RGB tuple.
         ```         
@@ -139,7 +139,7 @@ You can also visit the rich library's documentation to view all \
         from which to generate a gradient. Colors can be parse from a number \
         of inputs:
         
-1) GradientColors (str, Tuple[int,int,int]): The colors from which random\
+1) GradientColor (str, Tuple[int,int,int]): The colors from which random\
     gradients are generated. Can be parsed from the GradientColor's name, \
     hex color code, RGB color code, or RGB tuple.
         ```         

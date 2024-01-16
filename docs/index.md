@@ -81,7 +81,6 @@ console.gradient(
 ```python
 import maxgradient as mg
 
-# Initialize a console
 console = mg.Console()
 
 console.gradient(
