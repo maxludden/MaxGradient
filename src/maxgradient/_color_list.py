@@ -193,7 +193,7 @@ class TintList(List):
 
 
 if __name__ == "__main__":
-    color_list = ColorList(invert=True, hues=10)
+    color_list = ColorList(hues=10)
     console.line(2)
     console.print(color_list, justify="center")
 

@@ -8,13 +8,11 @@ from typing import Any
 class Mode(Enum):
     """A color mode. Used to determine how a color was parsed."""
     COLOR = "COLOR"
-    GradientColor = "GradientColor"
+    GRADIENT_COLOR = "GradientColor"
     HEX = "HEX"
-    INIT = "INIT"
     INVALID = "INVALID"
     RGB = "RGB"
-    ColorTriplet = "ColorTriplet"
-    RICH_COLOR = "RICH_COLOR"
+    COLOR_TRIPLET = "ColorTriplet"
     RICH = "RICH"
     X11 = "X11"
 

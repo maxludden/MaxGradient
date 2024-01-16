@@ -3,11 +3,13 @@
 import colorsys
 import re
 from re import Match
-from typing import Any, List, Optional, Tuple, Union, TypeAlias
+from typing import Any, List, Optional, Tuple, TypeAlias, Union
 
+# from rich import inspect
 from rich.box import HEAVY
 from rich.color import Color as RichColor
 from rich.color import ColorParseError
+from rich.color_triplet import ColorTriplet
 from rich.columns import Columns
 from rich.console import Console
 from rich.highlighter import ReprHighlighter
@@ -15,8 +17,11 @@ from rich.panel import Panel
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
+from rich.traceback import install as tr_install
 
-from maxgradient._gradient_color import GradientColor as GC
+# from snoop import snoop
+# from cheap_repr import register_repr, normal_repr
+from maxgradient._gradient_color import GradientColor
 from maxgradient._hex_color import Hex
 from maxgradient._mode import Mode
 from maxgradient._rgb_color import RGB
@@ -25,39 +30,11 @@ from maxgradient._x11_color import X11
 from maxgradient.theme import GradientTheme
 
 console = Console()
-# # log.configure(
-#     handlers=[
-#         {
-#             "sink": "logs/debug.log",
-#             "level": "DEBUG",
-#             "format": FORMAT,
-#             "backtrace": True,
-#             "diagnose": True,
-#             "colorize": True,
-#         },
-#         {
-#             "sink": "logs/info.log",
-#             "level": "INFO",
-#             "format": FORMAT,
-#             "backtrace": True,
-#             "diagnose": True,
-#             "colorize": True,
-#         },
-#         dict(
-#             sink=lambda msg: console.print(Text(msg, style="bold #afa")),
-#             level="SUCCESS",
-#             format="{message}",
-#             backtrace=True,
-#             diagnose=True,
-#             colorize=False
-#         ),
-#     ]
-# )
-
-
+tr_install(console=Console(), show_locals=True)
 VERBOSE: bool = False
+ColorType: TypeAlias = Union[Hex, RichColor, str, ColorTriplet, X11]
 
-ColorType: TypeAlias = Union[Hex, RichColor, str, Tuple[int, int, int], X11]
+# register_repr(GradientColor)(normal_repr)
 
 
 class Color:
@@ -280,30 +257,33 @@ You can also visit the rich library's documentation to view all \
             self.mode: Mode = Mode.RGB
             return
 
-        for group in [GC.NAMES, GC.HEX, GC.RGB, GC.RGB_TUPLE]:
+        GC = GradientColor
+        for group in [GC.get_names(), GC.get_hex(), GC.get_rgb(), GC.get_triplets()]:
             if color in group:
+                if VERBOSE:
+                    console.print(f"Found color [b {color}]{color}[/] in {group}")
                 index = group.index(color)
-                rgb_tuple = GC.RGB_TUPLE[index]
-                self.red, self.green, self.blue = rgb_tuple  # type: ignore
-                self.name: str = GC.NAMES[index]  # type: ignore
-                self.mode: Mode = Mode.GC
+                triplet = GradientColor.TRIPLETS[index]
+                self.red, self.green, self.blue = triplet  # type: ignore
+                self.name = GradientColor.NAMES[index]  # type: ignore
+                self.mode: Mode = Mode.GRADIENT_COLOR
                 return
 
-        for group in [Rich.NAMES, Rich.HEX, Rich.RGB, Rich.RGB_TUPLE]:
+        for group in [Rich.NAMES, Rich.HEX, Rich.RGB, Rich.TRIPLETS]:
             if color in group:
                 index = group.index(color)
-                rgb_tuple = Rich.RGB_TUPLE[index]
-                self.red, self.green, self.blue = rgb_tuple  # type: ignore
+                triplet = Rich.TRIPLETS[index]
+                self.red, self.green, self.blue = triplet  # type: ignore
                 self.name: str = Rich.NAMES[index]  # type: ignore
                 self.mode: Mode = Mode.RICH
                 return
 
-        for group in [X11.NAMES, X11.HEX, X11.RGB, X11.RGB_TUPLE]:
+        for group in [X11.NAMES, X11.HEX, X11.RGB, X11.TRIPLETS]:
             color = str(color).lower()
             if color in group:
                 index = group.index(color)
-                rgb_tuple = X11.RGB_TUPLE[index]
-                self.red, self.green, self.blue = rgb_tuple  # type: ignore
+                triplet = X11.TRIPLETS[index]
+                self.red, self.green, self.blue = triplet  # type: ignore
                 self.name: str = X11.NAMES[index]  # type: ignore
                 self.mode: Mode = Mode.X11
                 return
@@ -411,7 +391,7 @@ You can also visit the rich library's documentation to view all \
         return f"rgb({self.red},{self.green},{self.blue})"
 
     @property
-    def rgb_tuple(self) -> Tuple[int, int, int]:
+    def triplet(self) -> Tuple[int, int, int]:
         """Return the rgb color code as a tuple."""
 
         return (self.red, self.green, self.blue)  # type: ignore
@@ -475,8 +455,8 @@ You can also visit the rich library's documentation to view all \
         table.add_row("HEX", hex_str)
         rgb_str = self.rgb
         table.add_row("RGB", rgb_str)
-        rgb_tuple = self.rgb_tuple
-        tuple_str = str(rgb_tuple)
+        triplet = self.triplet
+        tuple_str = str(triplet)
         table.add_row("RGB Tuple", tuple_str)
 
         title = self.color_title()
@@ -520,16 +500,16 @@ You can also visit the rich library's documentation to view all \
         """Retrieve the color's name if it exists in GradientColor,\
             rich.color.Colors's Standard Library or X11 Colors. \
             Otherwise, generate a name from the color's hex value."""
-        if self.rgb_tuple in GC.RGB_TUPLE:
-            index = GC.RGB_TUPLE.index(self.rgb_tuple)
-            return GC.NAMES[index]
+        if self.triplet in GradientColor.TRIPLETS:
+            index = GradientColor.TRIPLETS.index(self.triplet)
+            return GradientColor.NAMES[index]
 
-        elif self.rgb_tuple in Rich.RGB_TUPLE:
-            index = Rich.RGB_TUPLE.index(self.rgb_tuple)
+        elif self.triplet in Rich.TRIPLETS:
+            index = Rich.TRIPLETS.index(self.triplet)
             return Rich.NAMES[index]
 
-        elif self.rgb_tuple in X11.RGB_TUPLE:
-            index = X11.RGB_TUPLE.index(self.rgb_tuple)
+        elif self.triplet in X11.TRIPLETS:
+            index = X11.TRIPLETS.index(self.triplet)
             return X11.NAMES[index]
 
         else:
@@ -598,7 +578,7 @@ You can also visit the rich library's documentation to view all \
                     closest_color = color
             return closest_color
 
-        closest = find_closest_color(self.rgb_tuple, [(0, 0, 0), (255, 255, 255)])
+        closest = find_closest_color(self.triplet, [(0, 0, 0), (255, 255, 255)])
         if closest == (0, 0, 0):
             if VERBOSE:
                 pass
@@ -621,8 +601,8 @@ You can also visit the rich library's documentation to view all \
             str: The tinted color as a hex string.
         """
 
-        rgb_tuple = self.rgb_tuple
-        red, green, blue = rgb_tuple
+        triplet = self.triplet
+        red, green, blue = triplet
 
         red_tint = int(red + (255 - red) * percent)
         red_final = f"{red_tint:02x}"
@@ -648,8 +628,8 @@ You can also visit the rich library's documentation to view all \
             str: The darkened color as a hex string.
         """
 
-        rgb_tuple = self.rgb_tuple
-        red, green, blue = rgb_tuple
+        triplet = self.triplet
+        red, green, blue = triplet
 
         dark_red = int(red + (0 - red) * percent)
         red_final = f"{dark_red:02x}"
@@ -669,7 +649,7 @@ You can also visit the rich library's documentation to view all \
         """Return a table of named colors."""
 
         colors = []
-        for color in GC.NAMES:
+        for color in GradientColor.NAMES:
             colors.append(Color(color))
         return Columns(colors, equal=True)
 
@@ -695,8 +675,8 @@ You can also visit the rich library's documentation to view all \
                 name = Text(color.name, style=f"bold {color.hex}")  # type: ignore
                 hex_color = Text(color.hex, style=f" bold {color.hex}")
                 rgb_color = Text(color.rgb, style=f" bold {color.hex}")
-                rgb_tuple = Text(str(color.rgb_tuple), style=f" bold {color.hex}")
-                table.add_row(block, name, hex_color, rgb_color, rgb_tuple)
+                triplet = Text(str(color.triplet), style=f" bold {color.hex}")
+                table.add_row(block, name, hex_color, rgb_color, triplet)
                 if end_section:
                     table.add_section()
                 return table

@@ -4,9 +4,6 @@ from operator import itemgetter
 from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
-from maxgradient.color import Color, ColorParseError, ColorType
-from maxgradient._color_list import ColorList
-from maxgradient.theme import GradientTheme
 from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
 from rich.measure import Measurement
@@ -14,6 +11,10 @@ from rich.segment import Segment
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
+
+from maxgradient._color_list import ColorList
+from maxgradient.color import Color, ColorParseError, ColorType
+from maxgradient.theme import GradientTheme
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -61,7 +62,7 @@ class Gradient(Text):
         "_style",
         "_spans",
         "_rainbow",
-        "verbose"
+        "verbose",
     ]
 
     def __init__(
@@ -335,7 +336,7 @@ class Gradient(Text):
     def get_colors(
         self,
         input_colors: Optional[str | List[Color | Tuple | str]],
-        rainbow: bool = False
+        rainbow: bool = False,
     ) -> List[Color]:
         """Get the colors for the gradient.
 
@@ -456,9 +457,9 @@ class Gradient(Text):
 
             if index < self.hues - 1:
                 color1 = self.colors[index]
-                r1, g1, b1 = color1.rgb_tuple
+                r1, g1, b1 = color1.triplet
                 color2 = self.colors[index + 1]
-                r2, g2, b2 = color2.rgb_tuple
+                r2, g2, b2 = color2.triplet
                 dr = r2 - r1
                 dg = g2 - g1
                 db = b2 - b1

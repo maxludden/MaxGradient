@@ -80,20 +80,12 @@
     {
       "label": "Run Mypy",
       "type": "shell",
-      "command": "python",
+      "command": "mypy",
       "args": [
-        "/Users/maxludden/dev/py/MaxGradient/tasks/mypy.py"
+        "-p",
+        "src.maxgradient",
+        "--ignore-missing-imports",
       ],
-      "problemMatcher": [],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-      },
-      "runOptions": {
-        "runOn": "folderOpen"
-      }
     },
     // {
     //   "label": "Run Mypy",

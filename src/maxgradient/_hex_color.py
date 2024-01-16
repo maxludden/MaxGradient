@@ -56,7 +56,7 @@ class Hex:
         return Mode.HEX
 
     @property
-    def as_rgb_tuple(self) -> Tuple[int, int, int]:
+    def as_triplet(self) -> Tuple[int, int, int]:
         """Convert the Hex color code into an  RGB tuple."""
         hex = self.value
         if "#" in hex:
@@ -69,8 +69,8 @@ class Hex:
     @property
     def as_rgb(self) -> str:
         """Convert the Hex color code into an RGB string."""
-        rgb_tuple = self.as_rgb_tuple
-        rgb = f"rgb{rgb_tuple}"
+        triplet = self.as_triplet
+        rgb = f"rgb{triplet}"
         return rgb
 
     def __repr__(self) -> str:
@@ -127,4 +127,4 @@ if __name__ == "__main__":
     RANDOM_HEX = Hex(RANDOM_HEX_STRING)
     console.print(RANDOM_HEX)
     console.print(f"[bold {RANDOM_HEX.value}]{RANDOM_HEX.as_rgb}[/]")
-    console.print(f"[bold {RANDOM_HEX.value}]{RANDOM_HEX.as_rgb_tuple}[/]")
+    console.print(f"[bold {RANDOM_HEX.value}]{RANDOM_HEX.as_triplet}[/]")

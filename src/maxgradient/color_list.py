@@ -7,41 +7,26 @@ from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
 from rich.columns import Columns
+from maxgradient._gradient_color import GradientColors as GC
 from maxgradient.color import Color, ColorType
 
+console = Console()
+tr_install(console=console)
 class ColorList:
-    COLORS: Tuple[Color, ...] = (
-        Color("#ff00ff"),
-        Color("#af00ff"),
-        Color("#5f00ff"),
-        Color("#0000ff"),
-        Color("#005fff"),
-        Color("#00afff"),
-        Color("#00ffff"),
-        Color("#00ffaf"),
-        Color("#00ff5f"),
-        Color("#00ff00"),
-        Color("#5fff00"),
-        Color("#afff00"),
-        Color("#ffff00"),
-        Color("#ffaf00"),
-        Color("#ff5f00"),
-        Color("#ff0000"),
-        Color("#ff005f"),
-        Color("#ff00af")
-    )
+    
     def __init__(self, hues: int = 3, title: str = "ColorList"):
         self.start_index: int = randint(0, 17)
         self.hues: int= hues
         self.title: str = title
-        _color_list1: List[Color] = list(self.COLORS[self.start_index:])
-        _color_list2: List[Color] = list(self.COLORS[:self.start_index])
-        color_list: List[Color] = _color_list1 + _color_list2
+        _color_list1: List[str] = list(GC.NAMES[self.start_index:])
+        _color_list2: List[str] = list(GC.NAMES[:self.start_index])
+        color_str_list: List[str] = _color_list1 + _color_list2
+        color_list = [Color(color_str) for color_str in color_str_list]
         if self.hues > len(color_list):
             color_cycle: cycle[Color] = cycle(color_list)
             self._list: List[Color] = [next(color_cycle) for _ in range(self.hues)]
         else:
-            self._list: List[Color] = color_list[:self.hues]
+            self._list = color_list[:self.hues]
         
 
     def __call__(self) -> List[Color]:
@@ -107,8 +92,7 @@ class ColorList:
         )
 
 if __name__=="__main__":
-    console = Console()
-    tr_install(console=console)
+    
     console.print(
         Columns(
             [ColorList(18) for _ in range(8)],

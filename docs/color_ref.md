@@ -26,7 +26,7 @@ to include X11 named colors as well as multiple formats of hex and rgb colors.
 | name | [str](https://docs.python.org/3/library/stdtypes.html#str) | The name of the color. If the color is not a named color, this will default to the hex color code. |
 | hex | [str](https://docs.python.org/3/library/stdtypes.html#str) | The hex color code of the color. |
 | rgb |  [str](https://docs.python.org/3/library/stdtypes.html#str) | The rgb color code of the color. |
-| rgb_tuple | [tuple](https://docs.python.org/3/library/stdtypes.html#tuple) | The rgb color tuple of the color. |
+| triplet | [tuple](https://docs.python.org/3/library/stdtypes.html#tuple) | The rgb color tuple of the color. |
 | style | [rich.style.Style](https://rich.readthedocs.io/en/latest/style.html#style-class) | A style object with the color as the foreground color. |
 | bg_style | [rich.style.Style](https://rich.readthedocs.io/en/latest/style.html#style-class) | A style object with the color as the background color. |
 

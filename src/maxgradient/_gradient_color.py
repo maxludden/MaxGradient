@@ -1,14 +1,16 @@
 """Parse colors from strings."""
 # ruff: noqa: F401
 import colorsys
+import re
 from functools import lru_cache, singledispatchmethod
 from re import IGNORECASE, Pattern, compile
 from typing import Any, List, Tuple
 
+from cheap_repr import normal_repr, register_repr
 from rich import inspect
-from rich.box import HEAVY, SQUARE, ROUNDED
+from rich.box import HEAVY, ROUNDED, SQUARE
 from rich.color import Color as RichColor
-from rich.color import blend_rgb, ColorParseError, ColorType
+from rich.color import ColorParseError, ColorType, blend_rgb
 from rich.color_triplet import ColorTriplet
 from rich.console import Console, JustifyMethod
 from rich.panel import Panel
@@ -16,31 +18,33 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
-
 from snoop import snoop
-from cheap_repr import register_repr, normal_repr
 
 console = Console()
 tr_install(console=console, show_locals=True)
-RGB_REGEX: Pattern[str] = compile(
-    r"r?g?b?\((?P<red>\d+),(?P<green>\d+),(?P<blue>\d+)\)",
-    IGNORECASE
-)
+
 
 register_repr(ColorTriplet)(normal_repr)
 register_repr(RichColor)(normal_repr)
 register_repr(Panel)(normal_repr)
 
+
 class GradientColorParseError(ColorParseError):
     """Unable to parse a GradientColor from input."""
+
     pass
 
 
+RGB_REGEX = re.compile(
+    r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)[ ,]? ?(?P<blue>\d+\.?\d*)\)"
+)
+HEX_REGEX = re.compile(
+    r"(#[0-9a-fA-F]{3}\b)|(#[0-9a-fA-F]{6}\b)|([0-9a-fA-F]{3}\b)|([0-9a-fA-F]{6}\b)"
+)
+
+
 class GradientColor:
-    name: str
-    hex: str
-    rgb: str
-    triplet: ColorTriplet
+    """A gradient color."""
 
     NAMES: Tuple[str, ...] = (
         "magenta",
@@ -131,19 +135,16 @@ class GradientColor:
             value (Any): A gradient color.
         """
         pass
-    
-    @snoop
+
     @__init__.register(RichColor)
     def _(self, value) -> None:
-        self.name: str = value.name
+        self.name = value.name
         self.type: ColorType = ColorType.TRUECOLOR
-        self.triplet: ColorTriplet = value.triplet
+        self.triplet = value.triplet
         super().__init__()
         self.hex = self.triplet.hex
         self.rgb = self.triplet.rgb
-        
-    
-    @snoop
+
     @__init__.register(ColorTriplet)
     def _(self, value: ColorTriplet) -> None:
         if value not in self.TRIPLETS:
@@ -156,7 +157,6 @@ class GradientColor:
         self.hex = self.triplet.hex
         self.rgb = self.triplet.rgb
 
-    @snoop
     @__init__.register(str)
     def _(self, value: str) -> None:
         index: int = -1
@@ -174,14 +174,67 @@ class GradientColor:
         super().__init__()
         self.hex = self.triplet.hex
         self.rgb = self.triplet.rgb
-    
-    
-    
+
+    @property
+    def name(self) -> str:
+        """Return the name of the gradient color."""
+        return self._name
+
+    @name.setter
+    def name(self, value: str) -> None:
+        """Set the name of the gradient color."""
+        if value not in self.NAMES:
+            raise GradientColorParseError(f"Invalid input: {value}")
+        self._name = value
+
+    @property
+    def hex(self) -> str:
+        """Return the hex value of the gradient color."""
+        return self._hex
+
+    @hex.setter
+    def hex(self, value: str) -> None:
+        """Set the hex value of the gradient color."""
+        match = HEX_REGEX.search(value)
+        if match is None:
+            raise GradientColorParseError(
+                f"Invalid input: {value}. Expected hex string."
+            )
+        else:
+            self._hex = value
+
+    @property
+    def rgb(self) -> str:
+        """Return the RGB value of the gradient color."""
+        return self._rgb
+
+    @rgb.setter
+    def rgb(self, value: str) -> None:
+        """Set the RGB value of the gradient color."""
+        match = RGB_REGEX.search(value)
+        if match is None:
+            raise GradientColorParseError(
+                f"Invalid input: {value}. Expected RGB string."
+            )
+        else:
+            self._rgb = value
+
+    @property
+    def triplet(self) -> ColorTriplet:
+        """Return the ColorTriplet of the gradient color."""
+        return self._triplet
+
+    @triplet.setter
+    def triplet(self, value: ColorTriplet) -> None:
+        """Set the ColorTriplet of the gradient color."""
+        if value not in self.TRIPLETS:
+            raise GradientColorParseError(f"Invalid input: {value}")
+        self._triplet = value
+
     def __str__(self) -> str:
         """String representation of the object."""
         return self.name
 
-    @snoop
     def __repr__(self) -> str:
         return f"GradientColor<{self.name}>"
 
@@ -233,15 +286,8 @@ class GradientColor:
     def row_styles(self) -> List[str]:
         """Generate a list of row styles for a rich table."""
         shade = RichColor.from_triplet(self.darken(0.9))
-        shade_style = Style(
-            color="#ffffff",
-            bgcolor=shade,
-            bold=True
-        )
-        return [
-            f"bold #ffffff on {self.hex}",
-            str(shade_style)
-        ]
+        shade_style = Style(color="#ffffff", bgcolor=shade, bold=True)
+        return [f"bold #ffffff on {self.hex}", str(shade_style)]
 
     @staticmethod
     def triplet_to_hsv(triplet: ColorTriplet) -> Tuple[float, float, float]:
@@ -274,8 +320,6 @@ class GradientColor:
                 closest_color = color
         return closest_color
 
-        
-
     def darken(self, amount: float = 0.5) -> ColorTriplet:
         """Darken a color by a given amount.
 
@@ -298,21 +342,18 @@ class GradientColor:
         Returns:
             GradientColor: A new GradientColor object.
         """
-        white = ColorTriplet(255,255,255)
+        white = ColorTriplet(255, 255, 255)
         tint = blend_rgb(self.triplet, white, amount)
         return tint
-    
+
     @property
     def rgb_text(self) -> Text:
         """Return the RGB color string as a rich Text object."""
         return self.colorize_triplet(True)
 
-    @snoop
     def __rich__(self) -> Panel:
         """Return a rich table representation of the gradient color."""
-        _dark_style = Style(
-            color = RichColor.from_triplet(self.darken(0.5))
-        )
+        _dark_style = Style(color=RichColor.from_triplet(self.darken(0.5)))
         table = Table(
             show_header=False,
             show_footer=False,
@@ -324,41 +365,39 @@ class GradientColor:
             # row_styles = self.row_styles
         )
 
+        table.add_column("attribute", justify="right")
         table.add_column(
-            "attribute", justify="right"
+            "value",
+            style=Style(color=f"{self.hex}", bgcolor=self.contrast.hex),
+            justify="left",
         )
-        table.add_column(
-            "value", 
-            style=Style(
-                color=f"{self.hex}",
-                bgcolor=self.contrast.hex
-            ),
-            justify="left")
-        
+
         # Key Styles
         key_style_even: Style = Style(
             color="#FFFFFF",
             bgcolor=RichColor.from_triplet(self.triplet),
             bold=True,
-            italic=True
+            italic=True,
         )
         key_style_odd: Style = Style(
             color=f"{self.hex}",
-            bgcolor=RichColor.from_triplet(blend_rgb(self.triplet,self.contrast, .85)),
+            bgcolor=RichColor.from_triplet(
+                blend_rgb(self.triplet, self.contrast, 0.85)
+            ),
             bold=True,
-            italic=True
+            italic=True,
         )
-        
+
         # Mode
         mode_key = Text("Mode", style=key_style_odd, justify="right")
         mode = f"[b {self.hex}]Mode[/][#cfcfff].[/][i #7FD6E8]GradientColor[/]"
         table.add_row(mode_key, mode)
-        
+
         # Hex
         hex_str = str(self.hex).upper()
         hex_key = Text("HEX", style=key_style_even, justify="right")
         table.add_row(hex_key, Text(hex_str, style=f"bold {self.hex}"))
-        
+
         # RGB
         rgb_key = Text("RGB", style=key_style_odd, justify="right")
         table.add_row(rgb_key, self.colorize_triplet(rgb=True))
@@ -368,32 +407,17 @@ class GradientColor:
         table.add_row(triplet_key, self.colorize_triplet())
 
         title = self.color_title()
-        _dark_style = Style(
-            color = RichColor.from_triplet(
-                self.darken(0.5)
-            )
-        )
+        _dark_style = Style(color=RichColor.from_triplet(self.darken(0.5)))
         sub_panel = Panel(
-            table,
-            title=title,
-            expand=False,
-            box=HEAVY,
-            border_style=_dark_style
+            table, title=title, expand=False, box=HEAVY, border_style=_dark_style
         )
-        _darker_style=Style(
-            color = RichColor.from_triplet(
-                self.darken(0.75)
-            )
-        )
-        panel = Panel(
-            sub_panel,
-            box=SQUARE,
-            border_style=_darker_style,
-            expand=False
-        )
+        _darker_style = Style(color=RichColor.from_triplet(self.darken(0.75)))
+        panel = Panel(sub_panel, box=SQUARE, border_style=_darker_style, expand=False)
         return panel
 
-    def colorize_triplet(self, rgb: bool = False, *, justify: JustifyMethod = "right") -> Text:
+    def colorize_triplet(
+        self, rgb: bool = False, *, justify: JustifyMethod = "right"
+    ) -> Text:
         """Format a ColorTriplet as a rich.text.Text object.
 
         Args:
@@ -590,6 +614,6 @@ def print_color_table(save: bool = False) -> None:
         )
 
 
-if __name__ == "__main__": # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
     for color in GradientColor.NAMES:
         console.print(GradientColor(color))

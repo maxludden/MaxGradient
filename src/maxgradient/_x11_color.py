@@ -468,7 +468,7 @@ class X11:
         "rgb(154,205,50)",
     )
 
-    RGB_TUPLE: Tuple[Tuple[int, int, int], ...] = (
+    TRIPLETS: Tuple[Tuple[int, int, int], ...] = (
         (240, 248, 255),
         (250, 235, 215),
         (0, 255, 255),
@@ -728,13 +728,13 @@ class X11:
             color_name = str(NAMES[index]).capitalize()
             color_hex = str(HEX[index]).upper()
             color_rgb = str(RGB[index]).lower()
-            color_rgb_tuple = str(cls.RGB_TUPLE[index])
+            color_triplet = str(cls.TRIPLETS[index])
             color_table.add_row(
                 Text(color_block, style=color_hex),
                 Text(color_name, style=color_hex),
                 Text(color_hex, style=color_hex),
                 Text(color_rgb, style=color_hex),
-                Text(color_rgb_tuple, style=color_hex),
+                Text(color_triplet, style=color_hex),
             )
 
         return color_table
@@ -753,7 +753,7 @@ class X11:
 
         if save:
             try:
-                console.save_svg( # type: ignore
+                console.save_svg(  # type: ignore
                     "docs/img/x11_color_table.svg",
                     title="X11 Color Table",
                 )

@@ -20,8 +20,9 @@ from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
 
-from maxgradient.color import Color
 from maxgradient._color_list import ColorList, TintList
+from maxgradient._gradient_color import GradientColor
+from maxgradient.color import Color
 from maxgradient.console import Console, ConsoleOptions, Group
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
@@ -36,6 +37,7 @@ __all__ = [
     "GradientRule",
     "GradientTerminalTheme",
     "GradientTheme",
+    "GradientColor",
     "Console",
     "ConsoleOptions",
     "Gradient",
@@ -64,7 +66,7 @@ if __name__ == "__main__":
     console = Console()
     console.line(2)
     console.gradient(
-        "MaxGradient is a Python library for generating gradients in the terminal.",
+        "MaxGradient is a python library for printing gradients in the terminal.",
         rainbow=True,
         justify="center",
         style="bold",

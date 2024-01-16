@@ -88,9 +88,6 @@ class ColorTriplet(NamedTuple):
             value = f"{(' ' * (3 - len(value)))}{value}"
         return value
 
-
-
-
 if __name__ == "__main__":
     from rich.console import Console
     from rich.traceback import install as tr_install
