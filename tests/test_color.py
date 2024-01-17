@@ -4,7 +4,7 @@
 import unittest
 
 from maxgradient._mode import Mode
-from maxgradient.color import Color, ColorParseError
+from maxgradient._color import Color, ColorParseError
 from rich.columns import Columns
 
 """
@@ -112,7 +112,7 @@ class TestColor(unittest.TestCase):
     # Tests that the contrast color for a white color can be obtained
     def test_get_contrast_for_white_color(self):
         color = Color("#FFFFFF")
-        contrast = color.get_contrast()
+        contrast = color.get_contrast().hex
         self.assertEqual(contrast, "#000000")
 
         # Tests that a Color object can be created with a valid RGB tuple
@@ -128,7 +128,7 @@ class TestColor(unittest.TestCase):
 
     # Tests that the lighten method works correctly
     def test_lighten_color(self):
-        color = Color("#FF0000")
+        color = Color("#000000")
         lightened_color = color.lighten(0.5)
         self.assertEqual(Color(lightened_color).red, 255)
         self.assertEqual(Color(lightened_color).green, 127)

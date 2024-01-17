@@ -1,7 +1,7 @@
 import re
 from functools import partial
 from operator import itemgetter
-from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, TypeAlias
 
 import numpy as np
 from rich.cells import cell_len
@@ -11,9 +11,11 @@ from rich.segment import Segment
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Span, Text
+from rich.color_triplet import ColorTriplet
+from rich.color import Color as RichColor
 
 from maxgradient._color_list import ColorList
-from maxgradient.color import Color, ColorParseError, ColorType
+from maxgradient._color import Color, ColorParseError
 from maxgradient.theme import GradientTheme
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
@@ -26,31 +28,65 @@ DEFAULT_JUSTIFY = "left"
 DEFAULT_OVERFLOW = "crop"
 VERBOSE = True
 
+GradientColors: TypeAlias = Union[
+    List[Color],
+    List[ColorTriplet],
+    List[RichColor],
+    List[str],
+    List[Tuple[int,int,int]]
+]
 
 class Gradient(Text):
     """Text with gradient color / style.
 
     Args:
         text (Text): The text to print. Defaults to `""`.\n
-        colors (List[Optional[Color|Tuple|str|int]]): A list of colors to use \
-            for the gradient. Defaults to None.\n
-        rainbow (bool): Whether to print the gradient text in rainbow colors\
-                across the spectrum. Defaults to False.\n
+        colors (Optional[GradientColors]): A list of colors to use \
+            for the gradient. Defaults to None.
+            \tColors may be:\n
+            \t- color name: 'red', 'green', 'blue'
+            \t- hex color code: '#ff0000', '#00FF00', '#00f'
+            \t- rgb color code: 'rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)'
+            \t- rgb color tuple: (255, 0, 0), (0, 255, 0), (0, 0, 255)
+            \t- rich.color-triplet.ColorTriplet:
+            \t\t- ColorTriplet(255, 0, 0),
+            \t\t- ColorTriplet(0, 255, 0),
+            \t\t- ColorTriplet(0, 0, 255)
+            \t- rich.color.Color: Color('red'), Color('green'), Color('blue')
+            \t- maxgradient.color.Color: Color('red'), Color('green'), Color('blue')\n
+        rainbow (bool): Whether to print the gradient text in rainbow colors
+                across the spectrum.
+                Defaults to False.\n
         hues (int): The number of colors in the gradient. Defaults to `3`.\n
         style (StyleType): The style of the gradient text. Defaults to None.\n
-        verbose (bool): Whether to print verbose output. Defaults to False.
-        justify (Optional[JustifyMethod]): Justify method: "left", "center",\
-            "full", "right". Defaults to None.\n
-        overflow (Optional[OverflowMethod]):  Overflow method: "crop", "fold", \
-            "ellipsis". Defaults to None.\n
-        end (str, optional): Character to end text with. Defaults to "\\\\n".\n
-        no_wrap (bool, optional): Disable text wrapping, or None for default.\
-            Defaults to None.\n
-        tab_size (int): Number of spaces per tab, or `None` to use\
-            `console.tab_size`. Defaults to 8.\n
-        spans (List[Span], optional): A list of predefined style spans.\
-            Defaults to None.\n
+        verbose (bool): Whether to print verbose output. Defaults to False.\n
+        justify (Optional[JustifyMethod]): Justify method: 'left', 'center',\
+                'full', 'right'.
+                Defaults to None.\n
+        overflow (Optional[OverflowMethod]):  Overflow method: 'crop', 'fold',
+                'ellipsis'. Defaults to None.\n
+        end (str, optional): Character to end text with. Defaults to '\\\\n'.\n
+        no_wrap (bool, optional): Disable text wrapping, or None for default.
+                Defaults to None.\n
+        tab_size (int): Number of spaces per tab, or `None` to use
+                `console.tab_size`. Defaults to 8.\n
+        spans (List[Span], optional): A list of predefined style spans.
+                Defaults to None.\n
 
+
+    Examples:
+        >>> from maxgradient.gradient import Gradient
+        >>> from maxgradient.color import Color
+        >>> from rich.console import Console
+        >>> console = Console()
+        >>> gradient = Gradient(
+        ...     'Gradients are awesome!',
+        ...     colors=['red', 'orange', 'yellow', 'green', 'cyan'],
+        ...     justify='left',
+        ...     style='bold',
+        ... )
+        >>> console.print(gradient)
+        ![gradient](Gradients are awesome!)
     """
 
     __slots__ = [
@@ -68,7 +104,7 @@ class Gradient(Text):
     def __init__(
         self,
         text: Optional[str | Text] = "",
-        colors: Optional[List[ColorType]] = None,
+        colors: Optional[GradientColors] = None,
         rainbow: bool = False,
         hues: Optional[int] = None,
         style: StyleType = Style.null(),

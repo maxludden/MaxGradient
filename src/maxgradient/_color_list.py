@@ -9,7 +9,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
-from maxgradient.color import Color
+from maxgradient._color import Color
 
 # from maxgradient.log import log
 

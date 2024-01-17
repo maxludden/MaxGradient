@@ -3,12 +3,12 @@
 import colorsys
 import re
 from functools import lru_cache, singledispatchmethod
-from re import IGNORECASE, Pattern, compile
+from re import IGNORECASE
 from typing import Any, List, Tuple
 
-from cheap_repr import normal_repr, register_repr
+
 from rich import inspect
-from rich.box import HEAVY, ROUNDED, SQUARE
+from rich.box import HEAVY, SQUARE
 from rich.color import Color as RichColor
 from rich.color import ColorParseError, ColorType, blend_rgb
 from rich.color_triplet import ColorTriplet
@@ -18,15 +18,9 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
-from snoop import snoop
 
 console = Console()
 tr_install(console=console, show_locals=True)
-
-
-register_repr(ColorTriplet)(normal_repr)
-register_repr(RichColor)(normal_repr)
-register_repr(Panel)(normal_repr)
 
 
 class GradientColorParseError(ColorParseError):
@@ -41,7 +35,6 @@ RGB_REGEX = re.compile(
 HEX_REGEX = re.compile(
     r"(#[0-9a-fA-F]{3}\b)|(#[0-9a-fA-F]{6}\b)|([0-9a-fA-F]{3}\b)|([0-9a-fA-F]{6}\b)"
 )
-
 
 class GradientColor:
     """A gradient color."""
@@ -64,7 +57,7 @@ class GradientColor:
         "orangered",
         "red",
         "deeppink",
-        "hotpink",
+        "hotpink"
     )
     HEX: Tuple[str, ...] = (
         "#ff00ff",
@@ -281,13 +274,6 @@ class GradientColor:
             return ColorTriplet(255, 255, 255)
         else:
             return ColorTriplet(0, 0, 0)
-
-    @property
-    def row_styles(self) -> List[str]:
-        """Generate a list of row styles for a rich table."""
-        shade = RichColor.from_triplet(self.darken(0.9))
-        shade_style = Style(color="#ffffff", bgcolor=shade, bold=True)
-        return [f"bold #ffffff on {self.hex}", str(shade_style)]
 
     @staticmethod
     def triplet_to_hsv(triplet: ColorTriplet) -> Tuple[float, float, float]:

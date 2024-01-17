@@ -11,18 +11,18 @@ from rich.text import Text
 from rich.traceback import install as tr_install
 
 from maxgradient._gradient_color import GradientColor as GC
-from maxgradient.color import Color, ColorType
+from maxgradient._color import Color, ColorType
 
 console = Console()
 tr_install(console=console)
 class ColorList:
     
     def __init__(self, hues: int = 3, title: str = "ColorList"):
-        self.start_index: int = randint(0, 17)
+        self.start_index: int = randint(0, len(GC.HEX))
         self.hues: int= hues
         self.title: str = title
-        _color_list1: List[str] = list(GC.NAMES[self.start_index:])
-        _color_list2: List[str] = list(GC.NAMES[:self.start_index])
+        _color_list1: List[str] = list(GC.HEX[self.start_index:])
+        _color_list2: List[str] = list(GC.HEX[:self.start_index])
         color_str_list: List[str] = _color_list1 + _color_list2
         color_list = [Color(color_str) for color_str in color_str_list]
         if self.hues > len(color_list):

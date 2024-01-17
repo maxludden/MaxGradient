@@ -1,14 +1,15 @@
 """MaxGradient.gradient.Gradient()"""
 # pylint: disable=E0402, E0401
 from lorem_text import lorem
-from maxgradient.console import Console
-from maxgradient.gradient import Gradient
-from maxgradient.rule import GradientRule
-from maxgradient.theme import GradientTerminalTheme
 from rich.console import Group, NewLine
 from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
+
+from maxgradient.console import Console
+from maxgradient.gradient import Gradient
+from maxgradient.rule import GradientRule
+from maxgradient.theme import GRADIENT_TERMINAL_THEME
 
 TEXT = lorem.paragraphs(2)
 
@@ -24,7 +25,7 @@ def gradient_hello() -> None:
     console.save_svg(
         "docs/img/hello_world.svg",
         title="Quick Start Example Result",
-        theme=GradientTerminalTheme(),
+        theme=GRADIENT_TERMINAL_THEME(),
     )
 
 
@@ -41,7 +42,7 @@ def gradient_with_color_1() -> None:
     console.save_svg(
         "docs/img/gradient_with_color_1.svg",
         title="Example 1 Result",
-        theme=GradientTerminalTheme(),
+        theme=GRADIENT_TERMINAL_THEME(),
     )
 
 
@@ -59,7 +60,7 @@ def gradient_with_color_2() -> None:
     console.save_svg(
         "docs/img/gradient_with_color_2.svg",
         title="Example 2 Result",
-        theme=GradientTerminalTheme(),
+        theme=GRADIENT_TERMINAL_THEME(),
     )
 
 
@@ -173,7 +174,7 @@ console.print(
     console.save_svg(
         "docs/img/random_gradient.svg",
         title="Random Gradient Result",
-        theme=GradientTerminalTheme(),
+        theme=GRADIENT_TERMINAL_THEME(),
     )
 
 
@@ -227,7 +228,7 @@ console.gradient(
     console.print(Panel(group(), title=Gradient("Random Gradient"), padding=(2, 4)))
     console.line(2)
     console.save_svg(
-        "docs/img/random_gradient.svg", title="", theme=GradientTerminalTheme()
+        "docs/img/random_gradient.svg", title="", theme=GRADIENT_TERMINAL_THEME()
     )
 
 
@@ -300,7 +301,7 @@ def rainbow_gradient_example() -> None:
     )
     console.line(2)
     console.save_svg(
-        "docs/img/rainbow_gradient.svg", title="", theme=GradientTerminalTheme()
+        "docs/img/rainbow_gradient.svg", title="", theme=GRADIENT_TERMINAL_THEME()
     )
 
 
@@ -380,7 +381,7 @@ def red_orange_yellow_gradient() -> None:
     console.save_svg(
         "docs/img/red_orange_yellow_gradient.svg",
         title="",
-        theme=GradientTerminalTheme(),
+        theme=GRADIENT_TERMINAL_THEME(),
     )
 
 

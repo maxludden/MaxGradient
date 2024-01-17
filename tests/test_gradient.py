@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 
-from maxgradient.color import Color
+from maxgradient._color import Color
 from maxgradient.gradient import Gradient
 from rich.style import Style
 

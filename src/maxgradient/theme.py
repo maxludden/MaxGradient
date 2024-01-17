@@ -50,35 +50,30 @@ class GradientTheme(Theme):
         return styles_table()
 
 
-class GradientTerminalTheme(TerminalTheme):
-    """A custom terminal theme for MaxGradient."""
-
-    def __init__(self) -> None:
-        super().__init__(
-            background=(35, 35, 35),
-            foreground=(250, 250, 250),
-            normal=[
-                (35, 35, 35),
-                (192, 0, 0),
-                (0, 192, 0),
-                (192, 192, 0),
-                (0, 55, 255),
-                (240, 0, 240),
-                (0, 240, 240),
-                (240, 240, 240),
-            ],
-            bright=[
-                (0, 0, 0),
-                (255, 0, 0),
-                (0, 255, 0),
-                (255, 255, 0),
-                (0, 0, 255),
-                (255, 0, 255),
-                (0, 255, 255),
-                (255, 255, 255),
-            ],
-        )
-
+GRADIENT_TERMINAL_THEME = TerminalTheme(
+    background=(0, 0, 0),
+    foreground=(255, 255, 255),
+    normal=[
+        (33, 34, 44),
+        (255, 85, 85),
+        (20, 200, 20),
+        (241, 250, 140),
+        (189, 147, 249),
+        (255, 121, 198),
+        (139, 233, 253),
+        (248, 248, 242),
+    ],
+    bright=[
+        (0, 0, 0),
+        (255, 0, 0),
+        (0, 255, 0),
+        (255, 255, 0),
+        (214, 172, 255),
+        (255, 146, 223),
+        (164, 255, 255),
+        (255, 255, 255),
+    ],
+)
 
 if __name__ == "__main__":  # pragma: no cover
     theme = GradientTheme()

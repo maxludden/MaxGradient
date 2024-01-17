@@ -34,7 +34,7 @@ from typing import (
     cast,
 )
 
-from maxgradient.color import Color
+from maxgradient._color import Color
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule, Thickness
 from maxgradient.theme import GradientTheme as Theme

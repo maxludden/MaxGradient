@@ -1,5 +1,67 @@
 # Changelog
 
+## v0.2.18
+
+<span class="highlight">January 16, 2024</span> | Created TypeAlias `GradientColors`
+
+### <u>Version Changes</u>
+
+- Added `GradientColors`, a  TypeAlias for use in `maxgradient.gradient.Gradient`:
+  ```python
+  GradientColors: TypeAlias = Union[
+      List[Color],
+      List[ColorTriplet],
+      List[RichColor],
+      List[str],
+      List[Tuple[int,int,int]]
+  ]
+  ```
+  Which changes the `Gradient` class.:
+  ```python
+  def __init__(
+        self,
+        text: Optional[str | Text] = "",
+        colors: Optional[GradientColors] = None, # <--- Here
+        rainbow: bool = False,
+        hues: Optional[int] = None,
+        style: StyleType = Style.null(),
+        verbose: bool = False,
+        *,
+        justify: Optional[JustifyMethod] = None,
+        overflow: Optional[OverflowMethod] = None,
+        no_wrap: Optional[bool] = None,
+        end: str = "\n",
+        tab_size: Optional[int] = 4,
+        spans: Optional[List[Span]] = None,
+    ) -> None:
+  ```
+  
+  So now you can specify colors outside of constructor:
+  ```python
+  console = Console(record=True, width=80)
+
+  colors=["red", "orange", "yellow", "green", "cyan"]
+
+  gradient = Gradient(
+      "Gradients are awesome!",
+      colors=color,
+      justify="center",
+      style="bold",
+  )
+  console.print(
+      Panel(
+          gradient,
+          title="Example",
+          expand=False,
+          border_style="bold #ffffff",
+          padding=(1,4),
+          width=35
+      ),
+      justify='center'
+  )
+  ```
+  ![Example](img/gradients_are_awesome.svg)
+
 ## v0.2.17
 
 <span class="highlight">January 6, 2024</span> | SRC Layout and New GradientColors and ColorList
@@ -21,7 +83,8 @@
 - Rewrote ColorList:
     - Added the missing colors from GradientColor bringing the total to 18
     - Updated examples and exported the SVG:
-        ![Color List](img/updated_color_list.svg)
+
+![Color List](img/updated_color_list.svg)
 
 ### Color
 

@@ -39,6 +39,14 @@ class ColorTriplet(NamedTuple):
         red, green, blue = self
         return red / 255.0, green / 255.0, blue / 255.0
 
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, ColorTriplet):
+            return self.red == value.red and self.green == value.green and self.blue == value.blue
+        elif isinstance(value, tuple):
+            return self.red == value[0] and self.green == value[1] and self.blue == value[2]
+        else:
+            return False
+        
     @property
     def text(self) -> Text:
         """Return a rich.text.Text representation of the color triplet."""

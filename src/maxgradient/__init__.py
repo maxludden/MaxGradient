@@ -22,11 +22,11 @@ from rich.text import Span, Text, TextType
 
 from maxgradient._color_list import ColorList, TintList
 from maxgradient._gradient_color import GradientColor
-from maxgradient.color import Color
+from maxgradient._color import Color
 from maxgradient.console import Console, ConsoleOptions, Group
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
-from maxgradient.theme import GradientTerminalTheme, GradientTheme
+from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
 
 __version__ = "0.2.17"
 
@@ -35,7 +35,7 @@ __all__ = [
     "ColorList",
     "Gradient",
     "GradientRule",
-    "GradientTerminalTheme",
+    "GRADIENT_TERMINAL_THEME",
     "GradientTheme",
     "GradientColor",
     "Console",
@@ -43,7 +43,6 @@ __all__ = [
     "Gradient",
     "GradientRule",
     "GradientTheme",
-    "GradientTerminalTheme",
     "Group",
     "JustifyMethod",
     "Layout",

@@ -18,7 +18,7 @@ You can also use the hex code of the color:
 - <span class="red">#ff0000</span> (six digit hex code)
 - <span class="magenta">#F0F</span> (three digit hex code)
 
-Or the rgb values of the color:
+Or the RGB Color Code/ColorTriplet of the color:
 
 - <span class="light-green">rgb(170,255,170)</span> (with `rgb` prefix)
 - <span style="color:#0f0;">(0, 255, 0)</span> (`rgb` tuple without prefix)

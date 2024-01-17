@@ -10,7 +10,7 @@ from rich.jupyter import JupyterMixin
 from rich.measure import Measurement
 from rich.text import Text
 
-from maxgradient.color import Color
+from maxgradient._color import Color
 from maxgradient._color_list import ColorList
 from maxgradient.gradient import Gradient
 
