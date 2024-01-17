@@ -5,6 +5,7 @@ from abc import (
     abstractmethod,
     abstractproperty,
     abstractstaticmethod,
+    
 )
 from colorsys import rgb_to_hsv
 from enum import Enum
