@@ -5,7 +5,7 @@ import re
 from functools import lru_cache, singledispatchmethod
 from typing import Any, List, Tuple
 
-
+from cheap_repr import normal_repr, register_repr
 from rich.box import HEAVY, SQUARE
 from rich.color import Color as RichColor
 from rich.color import ColorParseError, ColorType, blend_rgb
@@ -16,8 +16,11 @@ from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
+from snoop import snoop
 
-from maxgradient._base_color import BaseColor
+from abc_color._base_color import BaseColor
+from maxgradient._mode import Mode
+from maxgradient._rich_color import Rich
 
 console = Console()
 tr_install(console=console, show_locals=True)
@@ -35,6 +38,7 @@ RGB_REGEX = re.compile(
 HEX_REGEX = re.compile(
     r"(#[0-9a-fA-F]{3}\b)|(#[0-9a-fA-F]{6}\b)|([0-9a-fA-F]{3}\b)|([0-9a-fA-F]{6}\b)"
 )
+
 
 class GradientColor(BaseColor):
     """A gradient color."""
@@ -57,7 +61,7 @@ class GradientColor(BaseColor):
         "orangered",
         "red",
         "deeppink",
-        "hotpink"
+        "hotpink",
     )
     HEX: Tuple[str, ...] = (
         "#ff00ff",
@@ -120,59 +124,62 @@ class GradientColor(BaseColor):
         ColorTriplet(255, 0, 175),
     )
 
-    @singledispatchmethod
-    def __init__(self, value) -> None:
+    @snoop
+    def __init__(self, value: Any, type: ColorType = ColorType.TRUECOLOR) -> None:
         """Initialize a GradientColor object.
 
         Args:
             value (Any): A gradient color.
         """
-        pass
+        if isinstance(value, RichColor):
+            index = self.find_index(value)
+            self.type = value.type
+            self.name = value.name
+            self.triplet = Rich.TRIPLETS[index]
+            self.red = self.triplet.red
+            self.green = self.triplet.green
+            self.blue = self.triplet.blue
 
-    @__init__.register(RichColor)
-    def _(self, value) -> None:
-        self.name = value.name
-        self.type: ColorType = ColorType.TRUECOLOR
-        self.triplet = value.triplet
-        super().__init__()
-        self.hex = self.triplet.hex
-        self.rgb = self.triplet.rgb
+            super().__init__(name=self.name, type=self.type, triplet=self.triplet)
+            self.hex = self.triplet.hex
+            self.rgb = self.triplet.rgb
 
-    @__init__.register(ColorTriplet)
-    def _(self, value: ColorTriplet) -> None:
-        if value not in self.TRIPLETS:
-            raise GradientColorParseError(f"Invalid input: {value}")
-        index: int = self.TRIPLETS.index(value)
-        self.name = self.NAMES[index]
-        self.type = ColorType.TRUECOLOR
-        self.triplet = value
-        super().__init__()
-        self.hex = self.triplet.hex
-        self.rgb = self.triplet.rgb
+        elif isinstance(value, ColorTriplet):
+            self.type = ColorType.TRUECOLOR
+            if value not in self.TRIPLETS:
+                raise GradientColorParseError(f"Invalid input: {value}")
+            index: int = self.TRIPLETS.index(value)
+            self.name = self.NAMES[index]
+            self.type = ColorType.TRUECOLOR
+            self.triplet = value
+            super().__init__(
+                name=self.name, type=ColorType.TRUECOLOR, triplet=self.triplet
+            )
+            self.hex = self.triplet.hex
+            self.rgb = self.triplet.rgb
 
-    @__init__.register(str)
-    def _(self, value: str) -> None:
-        index: int = -1
-        for group in [self.NAMES, self.HEX, self.RGB]:
-            if value in group:
-                index = group.index(value)
-                break
-        if index < 0 or index > len(self.NAMES):
-            raise GradientColorParseError(f"Invalid input: {value}")
-        self.name = self.NAMES[index]
-        self.type = ColorType.TRUECOLOR
-        self.triplet = self.TRIPLETS[index]
-        super().__init__()
-        self.hex = self.triplet.hex
-        self.rgb = self.triplet.rgb
+        elif isinstance(value, str):
+            self.type = ColorType.TRUECOLOR
+            index: int = -1
+            for group in [self.NAMES, self.HEX, self.RGB]:
+                if value in group:
+                    index = group.index(value)
+                    break
+            if index < 0 or index > len(self.NAMES):
+                raise GradientColorParseError(f"Invalid input: {value}")
+            self.name = self.NAMES[index]
+            self.triplet = self.TRIPLETS[index]
+            super().__init__(
+                name=self.name, type=ColorType.TRUECOLOR, triplet=self.triplet
+            )
+            self.hex = self.triplet.hex
+            self.rgb = self.triplet.rgb
 
     def find_index(self, value) -> int:
         """Find the index of the color in its group."""
         for group in [self.NAMES, self.HEX, self.RGB, self.TRIPLETS]:
             if value in group:
                 return group.index(value)
-            else:
-                continue
         raise ValueError(f"Color not found: {value}")
 
     @property
@@ -186,6 +193,11 @@ class GradientColor(BaseColor):
         if value not in self.NAMES:
             raise GradientColorParseError(f"Invalid input: {value}")
         self._name = value
+
+    @property
+    def mode(self) -> Mode:
+        """Return the mode of the gradient color."""
+        return Mode.GRADIENT_COLOR
 
     @property
     def hex(self) -> str:
@@ -343,6 +355,14 @@ class GradientColor(BaseColor):
     def rgb_text(self) -> Text:
         """Return the RGB color string as a rich Text object."""
         return self.colorize_triplet(True)
+
+    def __set__(self, instance, value):
+        # Perform any necessary validation or transformation on the value
+        # before setting it to the instance variable.
+        # For example, you can check if the value is a valid color triplet.
+
+        # Set the value to the instance variable.
+        instance.triplet = value
 
     def __rich__(self) -> Panel:
         """Return a rich table representation of the gradient color."""
@@ -572,6 +592,9 @@ class GradientColor(BaseColor):
             ],
             justify="left",
         )
+
+
+register_repr(GradientColor)(normal_repr)
 
 
 def hex_str(value: ColorTriplet) -> str:

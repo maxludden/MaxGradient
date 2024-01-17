@@ -5,7 +5,6 @@ from abc import (
     abstractmethod,
     abstractproperty,
     abstractstaticmethod,
-    
 )
 from colorsys import rgb_to_hsv
 from enum import Enum
@@ -26,7 +25,7 @@ from typing import (
 
 from rich.box import HEAVY, SQUARE
 from rich.color import Color as RichColor
-from rich.color import blend_rgb
+from rich.color import blend_rgb, ColorType
 from rich.color_triplet import ColorTriplet
 from rich.console import Console, JustifyMethod
 from rich.panel import Panel
@@ -42,7 +41,7 @@ from maxgradient._rgb_color import RGB as _RGB
 console = Console()
 tr_install(console=Console(), show_locals=True)
 
-ColorType: TypeAlias = Union[_HEX, _RGB, RichColor, str, ColorTriplet]
+ColorInput: TypeAlias = Union[_HEX, _RGB, RichColor, str, ColorTriplet]
 
 
 class OutputFormat(Enum):
@@ -73,7 +72,7 @@ class OutputFormat(Enum):
         return rich_repr
 
 
-class BaseColor(ABC):
+class BaseColor(ABC, RichColor):
     """A superclass for all colors."""
 
     @abstractproperty
@@ -100,6 +99,7 @@ class BaseColor(ABC):
     @abstractmethod
     def __init__(self, value):
         """Initialize the color."""
+        self.type: ColorType = ColorType.TRUECOLOR
 
     @abstractclassmethod
     @__init__.register
@@ -117,7 +117,7 @@ class BaseColor(ABC):
                 continue
         raise ValueError(f"Color not found: {value}")
 
-    @abstractproperty
+    @property
     def name(self) -> str:
         """Return the name of the color."""
         return self._name
@@ -127,7 +127,7 @@ class BaseColor(ABC):
         """Set the name of the color."""
         self._name = value
 
-    @abstractproperty
+    @property
     def red(self) -> int:
         """Return the red value of the color."""
         return self._red
@@ -140,7 +140,7 @@ class BaseColor(ABC):
         ), f"Expected value between 0 and 255, got {value}"
         self._red = value
 
-    @abstractproperty
+    @property
     def green(self) -> int:
         """Return the green value of the color."""
         return self._green
@@ -153,7 +153,7 @@ class BaseColor(ABC):
         ), f"Expected value between 0 and 255, got {value}"
         self._green = value
 
-    @abstractproperty
+    @property
     def blue(self) -> int:
         """Return the blue value of the color."""
         return self._blue
@@ -169,7 +169,7 @@ class BaseColor(ABC):
     @abstractproperty
     def mode(self) -> Mode:
         """Return the mode of the color."""
-        return self._mode
+        return Mode()
 
     @mode.setter
     def mode(self, value: Mode) -> None:
@@ -231,7 +231,6 @@ class BaseColor(ABC):
     def tint(self) -> ColorTriplet:
         return self.lighten()
 
-    @abstractmethod
     def __rich__(self) -> Panel:
         """Return a rich renderable for the color."""
         table = Table(
@@ -245,13 +244,14 @@ class BaseColor(ABC):
                 style=Style(
                     color=RichColor.from_triplet(self.get_contrast()),
                     bgcolor=RichColor.from_triplet(self.darken()),
-                    italic=True
-                )
+                    italic=True,
+                ),
             ),
             "[i #dddddd]Mode[/][b #ff00ff].[/][#7fafff]GRADIENT_COLOR[/]",
         )
         table.add_row(
-            f"[bold {self.hex} on {self.shade}]Style[/]", f"[self.style]{str(self.style)}[/]"
+            f"[bold {self.hex} on {self.shade}]Style[/]",
+            f"[self.style]{str(self.style)}[/]",
         )
         table.add_row(
             Text(
@@ -259,8 +259,8 @@ class BaseColor(ABC):
                 style=Style(
                     color=RichColor.from_triplet(self.get_contrast()),
                     bgcolor=RichColor.from_triplet(self.darken()),
-                    italic=True
-                )
+                    italic=True,
+                ),
             ),
             f"[bold {self.hex}]{self.hex}[/]",
         )

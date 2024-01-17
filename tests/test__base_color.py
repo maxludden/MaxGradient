@@ -1,6 +1,6 @@
 import unittest
 
-from maxgradient._base_color import BaseColor, ColorTriplet, Mode, OutputFormat
+from abc_color._base_color import BaseColor, ColorTriplet, Mode, OutputFormat
 
 
 class TestBaseColor(unittest.TestCase):
