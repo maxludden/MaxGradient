@@ -17,11 +17,11 @@ from rich.text import Span as Span
 from rich.text import Text as Text
 from rich.text import TextType as TextType
 
-from maxgradient.color import Color as Color
+from maxgradient.__color import Color as Color
 from maxgradient.color_list import ColorList as ColorList
 from maxgradient.color_list import TintList as TintList
-from maxgradient.gradient import Console as Console
-from maxgradient.gradient import Gradient as Gradient
+from maxgradient._gradient import Console as Console
+from maxgradient._gradient import Gradient as Gradient
 from maxgradient.rule import GradientRule as GradientRule
-from maxgradient.theme import GRADIENT_TERMINAL_THEME as GRADIENT_TERMINAL_THEME
-from maxgradient.theme import GradientTheme as GradientTheme
+from maxgradient._theme import GRADIENT_TERMINAL_THEME as GRADIENT_TERMINAL_THEME
+from maxgradient._theme import GradientTheme as GradientTheme

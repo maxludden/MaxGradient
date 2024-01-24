@@ -1,8 +1,8 @@
 """A container for style information, used by `gradient.Gradient'."""
-from typing import Dict, Tuple
+from typing import Dict, Mapping, Optional, Tuple
 
 from rich.console import Console
-from rich.style import Style
+from rich.style import Style, StyleType
 from rich.table import Table
 from rich.terminal_theme import TerminalTheme
 from rich.theme import Theme
@@ -11,8 +11,7 @@ from maxgradient.default_styles import DEFAULT_STYLES, styles_table
 
 _ColorTuple = Tuple[int, int, int]
 
-
-class GradientTheme:
+class GradientTheme(Theme):
     """A container for style information used by 'MaxGradient.gradient.GradientConsole'.
     Args:
         styles (Dict[str, Style], optional): A mapping of style names on to \
@@ -20,21 +19,20 @@ class GradientTheme:
         inherit (bool, optional): Inherit default styles. Defaults to True.
     """
 
-    styles: Dict[str, Style] = {}
+    styles: Dict[str, StyleType]
 
-    def __init__(self) -> None:
-        self.theme = Theme(DEFAULT_STYLES)
-
-    @property
-    def theme(self) -> Theme:
-        return self._theme
-    
-    @theme.setter
-    def theme(self, value: Theme) -> None:
-        self._theme = value
-
-    def __call__(self) -> Theme:
-        return self.theme
+    def __init__(
+        self, styles: Optional[Mapping[str, StyleType]] = None, inherit: bool = True
+    ) -> None:
+        super().__init__(styles=styles, inherit=True)
+        self.styles = DEFAULT_STYLES.copy() if inherit else {}
+        if styles is not None:
+            self.styles.update(
+                {
+                    name: style if isinstance(style, Style) else Style.parse(style)
+                    for name, style in styles.items()
+                }
+            )
 
     def __repr__(self) -> str:
         return f"GradientTheme({self.styles!r})"
@@ -78,6 +76,6 @@ GRADIENT_TERMINAL_THEME = TerminalTheme(
 
 if __name__ == "__main__":  # pragma: no cover
     theme = GradientTheme()
-    console = Console(theme=GradientTheme().theme)
+    console = Console(theme=theme)
 
     console.print(theme.get_theme_table(), justify="center")

@@ -7,9 +7,9 @@ from rich.syntax import Syntax
 from rich.text import Text
 
 from maxgradient.console import Console
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 from maxgradient.rule import GradientRule
-from maxgradient.theme import GRADIENT_TERMINAL_THEME
+from maxgradient._theme import GRADIENT_TERMINAL_THEME
 
 TEXT = lorem.paragraphs(2)
 

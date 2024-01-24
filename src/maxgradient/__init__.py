@@ -24,9 +24,9 @@ from maxgradient._color_list import ColorList, TintList
 from maxgradient._gradient_color import GradientColor
 from maxgradient._color import Color
 from maxgradient.console import Console, ConsoleOptions, Group
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 from maxgradient.rule import GradientRule
-from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
+from maxgradient._theme import GRADIENT_TERMINAL_THEME, GradientTheme
 
 __version__ = "0.2.17"
 

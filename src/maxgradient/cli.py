@@ -5,7 +5,7 @@ from sys import stdout
 from typing import List, Optional
 
 from maxgradient import Console
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 from rich import inspect
 from rich.panel import Panel
 from typer import Argument, BadParameter, Exit, Option, Typer

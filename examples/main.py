@@ -5,8 +5,8 @@ from typing import Iterable
 import maxgradient as mg
 from lorem_text import lorem
 from maxgradient.console import Console
-from maxgradient.gradient import Gradient
-from maxgradient.theme import GradientTheme
+from maxgradient._gradient import Gradient
+from maxgradient._theme import GradientTheme
 from rich.columns import Columns
 from rich.layout import Layout
 from rich.panel import Panel

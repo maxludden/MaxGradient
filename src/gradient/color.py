@@ -30,14 +30,12 @@ from pydantic._internal import _repr
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, PydanticCustomError, core_schema
 from rich.color import Color as RichColor
-from rich.color import blend_rgb
+from rich.color import blend_rgb, ColorParseError
 from rich.color_triplet import ColorTriplet
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-# from snoop import snoop
-# from cheap_repr import register_repr, normal_repr
 
 ColorTuple = Union[Tuple[int, int, int], Tuple[int, int, int, float]]
 ColorType = Union[ColorTuple, str, "Color"]
@@ -209,12 +207,16 @@ class Color(_repr.Representation):
         """
         Returns a `rich.color.Color` object representing the color.
         """
-        RGBA = self._rgba
-        red = self.float_to_255(RGBA.red)
-        green = self.float_to_255(RGBA.green)
-        blue = self.float_to_255(RGBA.blue)
-        triplet = ColorTriplet(red=red, green=green, blue=blue)
-        return RichColor.from_triplet(triplet)
+        try:
+            RGBA = self._rgba
+            red = self.float_to_255(RGBA.red)
+            green = self.float_to_255(RGBA.green)
+            blue = self.float_to_255(RGBA.blue)
+            triplet = ColorTriplet(red=red, green=green, blue=blue)
+        except ColorParseError as cpe:
+            raise ColorParseError(f"Could not parse color: {self}") from cpe
+        else:
+            return RichColor.from_triplet(triplet)
 
     @property
     def style(self) -> Style:

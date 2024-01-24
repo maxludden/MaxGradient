@@ -7,7 +7,7 @@ from rich.console import Console
 
 from maxgradient._gradient_color import GradientColor
 from maxgradient.rule import GradientRule
-from maxgradient.theme import GRADIENT_TERMINAL_THEME
+from maxgradient._theme import GRADIENT_TERMINAL_THEME
 
 
 class GradientColorFormat(Enum):

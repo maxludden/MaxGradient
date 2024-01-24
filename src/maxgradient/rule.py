@@ -12,7 +12,7 @@ from rich.text import Text
 
 from maxgradient._color import Color
 from maxgradient._color_list import ColorList
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 
 # # from maxgradient.log import log
 Thickness = Literal["thin", "medium", "thick"]

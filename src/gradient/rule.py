@@ -12,7 +12,7 @@ from rich.text import Text
 
 from gradient.color import Color
 from gradient.color_list import ColorList
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 
 # # from maxgradient.log import log
 Thickness = Literal["thin", "medium", "thick"]
@@ -62,7 +62,7 @@ class GradientRule(JupyterMixin):
         self.end = end
         self.align = align
 
-        rule_color_list = ColorList(5).color_list
+        rule_color_list = ColorList(5)
         self.left_colors: List[Color] = [
             rule_color_list[0],
             rule_color_list[1],
@@ -95,7 +95,7 @@ class GradientRule(JupyterMixin):
             yield Gradient(
                 self._rule_line(chars_len, width),
                 colors=[
-                    color_list[0],
+                    color_list[0].as_rich(),
                     color_list[1],
                     color_list[2],
                     color_list[3],

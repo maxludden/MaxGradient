@@ -35,9 +35,9 @@ from typing import (
 )
 
 from maxgradient._color import Color
-from maxgradient.gradient import Gradient
+from maxgradient._gradient import Gradient
 from maxgradient.rule import GradientRule, Thickness
-from maxgradient.theme import GradientTheme as Theme
+from maxgradient._theme import GradientTheme as Theme
 from pydantic import (
     BaseModel,
     ConfigDict,

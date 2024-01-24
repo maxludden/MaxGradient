@@ -16,7 +16,7 @@ from rich.color import Color as RichColor
 
 from maxgradient._color_list import ColorList
 from maxgradient._color import Color, ColorParseError
-from maxgradient.theme import GradientTheme
+from maxgradient._theme import GradientTheme
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -228,7 +228,7 @@ class Gradient(Text):
     def text(self) -> str:
         """The text of the gradient."""
 
-        return self._text
+        return "".join(self._text)
 
     @text.setter
     def text(self, text: Optional[str | Text]) -> None:
@@ -278,7 +278,8 @@ class Gradient(Text):
 
     @style.setter
     def style(self, style: Style) -> None:
-        """Set the style of the gradient.
+        """
+        Set the style of the gradient.
 
         Args:
             style(`StyleType`): The style to set the gradient to.

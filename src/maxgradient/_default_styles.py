@@ -1,15 +1,24 @@
 """A container for the default styles used by GradientConsole."""
 
-from typing import Dict, Optional
+from typing import TYPE_CHECKING, Dict, Optional
 
-from rich.console import Console
-from rich.live import Live
-from rich.style import Style, StyleType
-from rich.table import Table
-from rich.text import Text
-from rich.theme import Theme
+if TYPE_CHECKING:
+    from rich.console import Console
+    from rich.live import Live
+    from rich.style import Style, StyleType
+    from rich.table import Table
+    from rich.text import Text
+    from rich.theme import Theme
+else:
+    from rich.console import Console
+    from rich.live import Live
+    from rich.style import Style, StyleType
+    from rich.table import Table
+    from rich.text import Text
+    from rich.theme import Theme
 
-DEFAULT_STYLES: dict[str, StyleType] = {
+
+GRADIENT_STYLES: dict[str, StyleType] = {
     "none": Style.null(),
     "reset": Style(
         color="default",
@@ -269,7 +278,7 @@ DEFAULT_STYLES: dict[str, StyleType] = {
     "json.str": Style(color="#00ff00", italic=False, bold=False),
     "json.key": Style(color="#0000ff", bold=True),
     "prompt": Style.null(),
-    "prompt.choices": Style(color="#cf8fff", bold=True),
+    "prompt.choices": Style(color="#ff00ff", bold=True),
     "prompt.default": Style(color="#8BE8FC", bold=True),
     "prompt.invalid": Style(color="#ff0000"),
     "prompt.invalid.choice": Style(color="#ff0000"),
@@ -294,7 +303,7 @@ DEFAULT_STYLES: dict[str, StyleType] = {
     "bar.back": Style(color="grey23"),
     "bar.complete": Style(color="#646464"),
     "bar.finished": Style(color="#006a20"),
-    "bar.pulse": Style(color="#00ffff"),
+    "bar.pulse": Style(color="#f92672"),
     "progress.description": Style.null(),
     "progress.filesize": Style(color="#00ff00"),
     "progress.filesize.total": Style(color="#00ff00"),
@@ -685,7 +694,7 @@ EDITED_STYLES: Dict[str, str] = {
 
 def get_default_styles() -> Dict[str, StyleType]:
     """Retrieve the defaults styles from GRADIENT_STYLES."""
-    return DEFAULT_STYLES
+    return GRADIENT_STYLES
 
 
 def formatted_title() -> Text:
@@ -727,8 +736,8 @@ GradientTheme",
     )
     table.add_column("[bold.cyan]Updated[/]", justify="center", vertical="middle")
 
-    for style_name in DEFAULT_STYLES.keys():
-        temp_style: Optional[StyleType] = DEFAULT_STYLES.get(style_name)
+    for style_name in GRADIENT_STYLES.keys():
+        temp_style: Optional[StyleType] = GRADIENT_STYLES.get(style_name)
         assert temp_style is not None, "Style should not be None"
         style: Style = Style.parse(str(temp_style))
         style_string = str(style)
@@ -748,8 +757,8 @@ GradientTheme",
 
 def example() -> None:
     """Print the styles table to the console."""
-    with Live(refresh_per_second=30):
-        theme = Theme(DEFAULT_STYLES)
+    with Live(refresh_per_second=10):
+        theme = Theme(GRADIENT_STYLES)
         console = Console(theme=theme)
         console.line(3)
         console.print(styles_table(), justify="center")
