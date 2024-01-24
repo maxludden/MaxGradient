@@ -18,7 +18,7 @@ else:
     from rich.theme import Theme
 
 
-GRADIENT_STYLES: dict[str, StyleType] = {
+DEFAULT_STYLES: dict[str, StyleType] = {
     "none": Style.null(),
     "reset": Style(
         color="default",
@@ -694,7 +694,7 @@ EDITED_STYLES: Dict[str, str] = {
 
 def get_default_styles() -> Dict[str, StyleType]:
     """Retrieve the defaults styles from GRADIENT_STYLES."""
-    return GRADIENT_STYLES
+    return DEFAULT_STYLES
 
 
 def formatted_title() -> Text:
@@ -736,8 +736,8 @@ GradientTheme",
     )
     table.add_column("[bold.cyan]Updated[/]", justify="center", vertical="middle")
 
-    for style_name in GRADIENT_STYLES.keys():
-        temp_style: Optional[StyleType] = GRADIENT_STYLES.get(style_name)
+    for style_name in DEFAULT_STYLES.keys():
+        temp_style: Optional[StyleType] = DEFAULT_STYLES.get(style_name)
         assert temp_style is not None, "Style should not be None"
         style: Style = Style.parse(str(temp_style))
         style_string = str(style)
@@ -758,7 +758,7 @@ GradientTheme",
 def example() -> None:
     """Print the styles table to the console."""
     with Live(refresh_per_second=10):
-        theme = Theme(GRADIENT_STYLES)
+        theme = Theme(DEFAULT_STYLES)
         console = Console(theme=theme)
         console.line(3)
         console.print(styles_table(), justify="center")

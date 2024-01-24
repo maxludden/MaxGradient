@@ -13,12 +13,15 @@ dependencies = [
     "rich>=13.5.3",
     "typer>=0.9.0",
     "pandas>=2.1.4",
+    "pydantic-extra-types>=2.4.1",
+    "toml>=0.10.2",
+    "pydantic-settings>=2.1.0",
 ]
 
 requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
-[project.optional-dependencies]
+[proect.optional-dependencies]
 dev = ["mkdocs>=1.5.2", "mkdocs-material>=9.4.7", "mkdocstrings[python]>=0.18"]
 cli = ["typer[all]>=0.9.0"]
 

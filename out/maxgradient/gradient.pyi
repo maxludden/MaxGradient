@@ -1,15 +1,23 @@
+from typing import Any, Iterable, List, Optional, Tuple, Union
+
 from _typeshed import Incomplete
-from maxgradient._color import Color as Color, ColorParseError as ColorParseError
-from maxgradient._color_list import ColorList as ColorList
-from maxgradient.highlighter import ColorReprHighlighter as ColorReprHighlighter
-from maxgradient.__log import Log as Log
-from maxgradient.theme import GradientTheme as GradientTheme
-from rich.console import Console, ConsoleOptions as ConsoleOptions, JustifyMethod as JustifyMethod, OverflowMethod as OverflowMethod
+from rich.console import Console
+from rich.console import ConsoleOptions as ConsoleOptions
+from rich.console import JustifyMethod as JustifyMethod
+from rich.console import OverflowMethod as OverflowMethod
 from rich.measure import Measurement
 from rich.segment import Segment
-from rich.style import Style, StyleType as StyleType
+from rich.style import Style
+from rich.style import StyleType as StyleType
 from rich.text import Span, Text
-from typing import Any, Iterable, List, Optional, Tuple, Union
+
+from maxgradient.__log import Log as Log
+from maxgradient.color import Color as Color
+from maxgradient.color import ColorParseError as ColorParseError
+from maxgradient.color_list import ColorList as ColorList
+from maxgradient.highlighter import \
+    ColorReprHighlighter as ColorReprHighlighter
+from maxgradient.theme import GradientTheme as GradientTheme
 
 GradientMethod: Incomplete
 DEFAULT_JUSTIFY: JustifyMethod
@@ -46,6 +54,12 @@ class Gradient(Text):
     def generate_substrings(self, indexes: List[List[int]], text: str) -> List[str]: ...
     def generate_substring(self, index: List[int], text: str) -> str: ...
     def __rich_console__(self, console: Console, options: ConsoleOptions) -> Iterable[Segment]: ...
+    def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement: ...
+    def render(self, console: Console, end: str = ...) -> Iterable['Segment']: ...
+    def as_text(self) -> Text: ...
+
+def strip_control_codes(text: str) -> str: ...
+def pick_bool(value: Optional[bool], default: bool, fallback: bool) -> bool: ...
     def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement: ...
     def render(self, console: Console, end: str = ...) -> Iterable['Segment']: ...
     def as_text(self) -> Text: ...

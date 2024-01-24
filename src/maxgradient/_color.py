@@ -591,6 +591,21 @@ class Color:
             return f'{" " * (3 - len(str_value))}{str_value}'
         return str_value
 
+    @staticmethod
+    def blend(color1: ColorTriplet, color2: ColorTriplet, amount: float) -> ColorTriplet:# type: ignore
+        """Blend two colors together."""
+        # validate inputs
+        assert 0 <= amount <= 1, f"Amount must be between 0 and 1, not {amount}"
+        for color in (color1, color2):
+            assert isinstance(color, ColorTriplet), f"Expected ColorTriplet, got {type(color)}"
+        if color1.red == color2.red and color1.green == color2.green and color1.blue == color2.blue:
+            return color1
+        if amount == 0 or amount == 1:
+            return color1 if amount == 1 else color2
+        # blend colors
+        return blend_rgb(color1, color2, amount)
+            
+
     def rgb_text(self) -> Text:
         """Return the rgb color code as a rich.text.Text object."""
         red_blend = Color(

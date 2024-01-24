@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:2a3764d64fa9f0d4db4234b915624bc68df11a18cbcc6eeb8666d8ff69aad46e"
+content_hash = "sha256:cf073a0c692d419a3e3f66d0ab63217f441418ca3a995298d71bb46059668bf9"
 
 [[package]]
 name = "annotated-types"
@@ -129,15 +129,15 @@ files = [
 
 [[package]]
 name = "griffe"
-version = "0.38.1"
+version = "0.39.1"
 requires_python = ">=3.8"
 summary = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
 dependencies = [
     "colorama>=0.4",
 ]
 files = [
-    {file = "griffe-0.38.1-py3-none-any.whl", hash = "sha256:334c79d3b5964ade65c05dfcaf53518c576dedd387aaba5c9fd71212f34f1483"},
-    {file = "griffe-0.38.1.tar.gz", hash = "sha256:bd68d7da7f3d87bc57eb9962b250db123efd9bbcc06c11c1a91b6e583b2a9361"},
+    {file = "griffe-0.39.1-py3-none-any.whl", hash = "sha256:6ce4ecffcf0d2f96362c5974b3f7df812da8f8d4cfcc5ebc8202ef72656fc087"},
+    {file = "griffe-0.39.1.tar.gz", hash = "sha256:ead8dfede6e6531cce6bf69090a4f3c6d36fdf923c43f8e85aa530552cef0c09"},
 ]
 
 [[package]]
@@ -667,6 +667,33 @@ files = [
 ]
 
 [[package]]
+name = "pydantic-extra-types"
+version = "2.4.1"
+requires_python = ">=3.8"
+summary = "Extra Pydantic types."
+dependencies = [
+    "pydantic>=2.5.2",
+]
+files = [
+    {file = "pydantic_extra_types-2.4.1-py3-none-any.whl", hash = "sha256:b3cec735e471b1234a1cc05a680dc080836bab6970cab40d60dcade97fe68f5d"},
+    {file = "pydantic_extra_types-2.4.1.tar.gz", hash = "sha256:63314096ca57bc1575d988d1a770d73af76aaebe684140f24333b60af4134a2c"},
+]
+
+[[package]]
+name = "pydantic-settings"
+version = "2.1.0"
+requires_python = ">=3.8"
+summary = "Settings management using Pydantic"
+dependencies = [
+    "pydantic>=2.3.0",
+    "python-dotenv>=0.21.0",
+]
+files = [
+    {file = "pydantic_settings-2.1.0-py3-none-any.whl", hash = "sha256:7621c0cb5d90d1140d2f0ef557bdf03573aac7035948109adf2574770b77605a"},
+    {file = "pydantic_settings-2.1.0.tar.gz", hash = "sha256:26b1492e0a24755626ac5e6d715e9077ab7ad4fb5f19a8b7ed7011d52f36141c"},
+]
+
+[[package]]
 name = "pygments"
 version = "2.17.2"
 requires_python = ">=3.7"
@@ -746,6 +773,7 @@ files = [
     {file = "PyYAML-6.0.1-cp311-cp311-win_amd64.whl", hash = "sha256:bf07ee2fef7014951eeb99f56f39c9bb4af143d8aa3c21b1677805985307da34"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:855fb52b0dc35af121542a76b9a84f8d1cd886ea97c84703eaa6d88e37a2ad28"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:40df9b996c2b73138957fe23a16a4f0ba614f4c0efce1e9406a184b6d07fa3a9"},
+    {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a08c6f0fe150303c1c6b71ebcd7213c2858041a7e01975da3a99aed1e7a378ef"},
     {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6c22bec3fbe2524cde73d7ada88f6566758a8f7227bfbf93a408a9d86bcc12a0"},
     {file = "PyYAML-6.0.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8d4e9c88387b0f5c7d5f281e55304de64cf7f9c0021a3525bd3b1c542da3b0e4"},
     {file = "PyYAML-6.0.1-cp312-cp312-win32.whl", hash = "sha256:d483d2cdf104e7c9fa60c544d92981f12ad66a457afae824d146093b8c294c54"},
@@ -905,6 +933,16 @@ files = [
     {file = "time_machine-2.13.0-cp312-cp312-win_amd64.whl", hash = "sha256:02b33a8c19768c94f7ffd6aa6f9f64818e88afce23250016b28583929d20fb12"},
     {file = "time_machine-2.13.0-cp312-cp312-win_arm64.whl", hash = "sha256:0cc116056a8a2a917a4eec85661dfadd411e0d8faae604ef6a0e19fe5cd57ef1"},
     {file = "time_machine-2.13.0.tar.gz", hash = "sha256:c23b2408e3adcedec84ea1131e238f0124a5bc0e491f60d1137ad7239b37c01a"},
+]
+
+[[package]]
+name = "toml"
+version = "0.10.2"
+requires_python = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+summary = "Python Library for Tom's Obvious, Minimal Language"
+files = [
+    {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
+    {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 
 [[package]]

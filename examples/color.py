@@ -1,5 +1,5 @@
+from maxgradient.color import Color
 from maxgradient.console import Console
-from maxgradient._color import Color
 from maxgradient.theme import GRADIENT_TERMINAL_THEME
 
 

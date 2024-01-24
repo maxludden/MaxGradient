@@ -99,35 +99,11 @@ class GradientColor:
         "rgb(255, 0, 95)",
         "rgb(255, 0, 175)",
     )
-    TRIPLETS: Tuple[ColorTriplet, ...] = (
-        ColorTriplet(255, 0, 255),
-        ColorTriplet(175, 0, 255),
-        ColorTriplet(95, 0, 255),
-        ColorTriplet(0, 0, 255),
-        ColorTriplet(0, 95, 255),
-        ColorTriplet(0, 175, 255),
-        ColorTriplet(0, 255, 255),
-        ColorTriplet(0, 255, 175),
-        ColorTriplet(0, 255, 95),
-        ColorTriplet(0, 255, 0),
-        ColorTriplet(95, 255, 0),
-        ColorTriplet(175, 255, 0),
-        ColorTriplet(255, 255, 0),
-        ColorTriplet(255, 175, 0),
-        ColorTriplet(255, 95, 0),
-        ColorTriplet(255, 0, 0),
-        ColorTriplet(255, 0, 95),
-        ColorTriplet(255, 0, 175),
-    )
 
     @singledispatchmethod
-    def __init__(self, value) -> None:
-        """Initialize a GradientColor object.
-
-        Args:
-            value (Any): A gradient color.
-        """
+    def __init__(self, value: Any) -> None:
         pass
+
 
     @__init__.register(RichColor)
     def _(self, value) -> None:
@@ -167,66 +143,6 @@ class GradientColor:
         super().__init__()
         self.hex = self.triplet.hex
         self.rgb = self.triplet.rgb
-
-    @property
-    def name(self) -> str:
-        """Return the name of the gradient color."""
-        return self._name
-
-    @name.setter
-    def name(self, value: str) -> None:
-        """Set the name of the gradient color."""
-        if value not in self.NAMES:
-            raise GradientColorParseError(f"Invalid input: {value}")
-        self._name = value
-
-    @property
-    def hex(self) -> str:
-        """Return the hex value of the gradient color."""
-        return self._hex
-
-    @hex.setter
-    def hex(self, value: str) -> None:
-        """Set the hex value of the gradient color."""
-        match = HEX_REGEX.search(value)
-        if match is None:
-            raise GradientColorParseError(
-                f"Invalid input: {value}. Expected hex string."
-            )
-        else:
-            self._hex = value
-
-    @property
-    def rgb(self) -> str:
-        """Return the RGB value of the gradient color."""
-        return self._rgb
-
-    @rgb.setter
-    def rgb(self, value: str) -> None:
-        """Set the RGB value of the gradient color."""
-        match = RGB_REGEX.search(value)
-        if match is None:
-            raise GradientColorParseError(
-                f"Invalid input: {value}. Expected RGB string."
-            )
-        else:
-            self._rgb = value
-
-    @property
-    def triplet(self) -> ColorTriplet:
-        """Return the ColorTriplet of the gradient color."""
-        return self._triplet
-
-    @triplet.setter
-    def triplet(self, value: ColorTriplet) -> None:
-        """Set the ColorTriplet of the gradient color."""
-        if value not in self.TRIPLETS:
-            raise GradientColorParseError(f"Invalid input: {value}")
-        self._triplet = value
-
-    def __str__(self) -> str:
-        """String representation of the object."""
-        return self.name
 
     def __repr__(self) -> str:
         return f"GradientColor<{self.name}>"

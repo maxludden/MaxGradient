@@ -1,11 +1,9 @@
 # ruff: noqa: F401
 from abc import (
     ABC,
-    abstractclassmethod,
-    abstractmethod,
-    abstractproperty,
-    abstractstaticmethod,
+    abstractmethod
 )
+import re
 from colorsys import rgb_to_hsv
 from enum import Enum
 from functools import singledispatchmethod
@@ -22,10 +20,11 @@ from typing import (
     Union,
     cast,
 )
+from functools import lru_cache, _lru_cache_wrapper
 
 from rich.box import HEAVY, SQUARE
 from rich.color import Color as RichColor
-from rich.color import blend_rgb, ColorType
+from rich.color import blend_rgb, ColorType as RichColorType
 from rich.color_triplet import ColorTriplet
 from rich.console import Console, JustifyMethod
 from rich.panel import Panel
@@ -38,16 +37,12 @@ from maxgradient._hex_color import Hex as _HEX
 from maxgradient._mode import Mode
 from maxgradient._rgb_color import RGB as _RGB
 
-console = Console()
-tr_install(console=Console(), show_locals=True)
-
 ColorInput: TypeAlias = Union[_HEX, _RGB, RichColor, str, ColorTriplet]
 
 
 class OutputFormat(Enum):
     """An enum for the output format of a color."""
-
-    COLOR_TRIPLET = ColorTriplet
+    TRIPLET = ColorTriplet
     COLOR = RichColor
     STYLE = Style
 
@@ -74,47 +69,59 @@ class OutputFormat(Enum):
 
 class BaseColor(ABC, RichColor):
     """A superclass for all colors."""
-
-    @abstractproperty
+    RGB_REGEX = re.compile(
+        r"r?g?b? ?\((?P<red>\d+\.?\d*)[ ,]? ?(?P<green>\d+\.?\d*)[ ,]? ?(?P<blue>\d+\.?\d*)\)"
+    )
+    HEX_REGEX = re.compile(
+        r"(#[0-9a-fA-F]{3}\b)|(#[0-9a-fA-F]{6}\b)|([0-9a-fA-F]{3}\b)|([0-9a-fA-F]{6}\b)"
+    )
+    @abstractmethod
+    @classmethod
+    @lru_cache
     def NAMES(self) -> Tuple:  # noqa: E741 # type: ignore
         """Return a tuple of all color names."""
         pass
 
-    @abstractproperty
+    @abstractmethod
+    @classmethod
+    @lru_cache
     def HEX(self) -> str:  # noqa: E741 # type: ignore
         """Return the hex color code."""
         pass
 
-    @abstractproperty
+    @abstractmethod
+    @classmethod
+    @lru_cache
     def RGB(self) -> Tuple:  # noqa: E741 # type: ignore
         """Return the RGB color code."""
         pass
 
-    @abstractproperty
-    def TRIPLETS(self) -> Tuple:  # noqa: E741 # type: ignore
+    @lru_cache
+    @abstractmethod
+    @classmethod
+    
+    def TRIPLETS(self) -> _lru_cache_wrapper[tuple[ColorTriplet]]:  # noqa: E741 # type: ignore
         """Return the ColorTriplet."""
-        pass
+        return self.TRIPLETS
 
-    @singledispatchmethod
     @abstractmethod
     def __init__(self, value):
         """Initialize the color."""
-        self.type: ColorType = ColorType.TRUECOLOR
-
-    @abstractclassmethod
-    @__init__.register
-    def _ColorTriplet(cls, value: ColorTriplet):
-        """Initialize the color from a ColorTriplet."""
         pass
 
-    @abstractmethod
-    def find_index(self, value) -> int:
+    # @abstractclassmethod
+    # @__init__.register
+    # def _ColorTriplet(cls, value: ColorTriplet):
+    #     """Initialize the color from a ColorTriplet."""
+    #     pass
+
+    @classmethod
+    def find_index(cls, value: str|ColorTriplet) -> int:
         """Find the index of the color in its group."""
-        for group in [self.NAMES, self.HEX, self.RGB, self.TRIPLETS]:
-            if value in group:
-                return group.index(value)
-            else:
-                continue
+        color_groups: List[Tuple[str|ColorTriplet]] = [cls.NAMES, cls.TRIPLETS, cls.HEX, cls.RGB]
+        for group in color_groups:
+                index = group.index(value)
+                return index
         raise ValueError(f"Color not found: {value}")
 
     @property
@@ -130,6 +137,7 @@ class BaseColor(ABC, RichColor):
     @property
     def red(self) -> int:
         """Return the red value of the color."""
+        
         return self._red
 
     @red.setter
@@ -166,7 +174,7 @@ class BaseColor(ABC, RichColor):
         ), f"Expected value between 0 and 255, got {value}"
         self._blue = value
 
-    @abstractproperty
+    @property
     def mode(self) -> Mode:
         """Return the mode of the color."""
         return Mode()
@@ -183,7 +191,16 @@ class BaseColor(ABC, RichColor):
         green_str = f"{self.green:02X}"
         blue_str = f"{self.blue:02X}"
         return f"#{red_str}{green_str}{blue_str}"
+    
+    @hex.setter
+    def hex(self, value: str) -> None:
+        """Set the hex color code."""
+        self._hex = value
 
+    @classmethod
+    def from_hex(cls, value: str) -> "BaseColor":
+        """Parse a color from a hex code."""
+        return cls(cls.HEX[cls.find_index(value)])
     @property
     def rgb(self) -> str:
         """Return the RGB color code."""

@@ -122,7 +122,10 @@ of the colors at the following link: [rich standard colors](https://rich.readthe
 
 May be entered by their name, hex color code, or ColorTriplet.
 
+---
+
 ## Examples:
+
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                       X11 Colors Examples                         ┃
@@ -193,4 +196,20 @@ of the colors at the following link: [X11 Colors](https://pdos.csail.mit.edu/~ji
 
     @__init__.register
     def _str(self, color: str) -> None:
-        
+        color_pallets = [GradientColor, Rich, X11]
+        color_formats = [
+            color.pallet.NAMES,
+            color.pallet.HEX,
+            color.pallet.RGB,
+            color.pallet.TRIPLETS]:
+                if color == format:
+                    index: int = pallet.format.index(color)
+                    triplet: ColorTriplet = pallet.TRIPLETS[index]
+                    self.name: str = pallet.NAMES[index]
+                    self.red = triplet.red
+                    self.green = triplet.green
+                    self.blue = triplet.green
+                    self.mode = Mode.RICH
+                    break
+                else:
+                    continue
