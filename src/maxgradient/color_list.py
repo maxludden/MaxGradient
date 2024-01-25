@@ -4,10 +4,11 @@ from pathlib import Path
 from random import choice, randint
 from typing import Any, List, Tuple
 
-from maxgradient._color import Color, ColorType
-from maxgradient._gradient_color import GradientColor as GC
+from maxgradient.color import Color
+from maxgradient.spectrum import Spectrum
 from rich.columns import Columns
 from rich.console import Console
+from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
@@ -49,7 +50,7 @@ class ColorList(List[Color]):
     )
 
     def __init__(self, hues: int = 4, title: str = "ColorList"):
-        self.start_index: int = randint(0, len(GC.HEX))
+        self.start_index: int = randint(0, len(Spectrum.HEX))
         self.hues: int = hues
         self.title: str = title
         _color_list1: List[str] = list(self.COLORS[self.start_index :])
@@ -91,21 +92,23 @@ class ColorList(List[Color]):
 
     def __rich__(self) -> Table:
         table = Table(
-            "Hex",
-            "Name",
-            "RGB",
-            title=self.colored_title(),
-            show_header=False,
-            expand=False,
-            padding=(0, 1),
+            "[b i #ffffff]Sample[/]",
+            "[b i #ffffff]Name[/]",
+            "[b i #ffffff]Hex[/]",
+            "[b i #ffffff]RGB[/]",
+            title="Gradient Colors",
+            show_footer=False,
+            show_header=True,
         )
-        for color in self.color_list:
-            color = Color(color)
-            name_str = Color(color).as_named().capitalize()
+        for color in self:
+            name = color.name.capitalize()
             table.add_row(
-                Text(str(Color(color).as_named()).capitalize(), style=f"bold {color.bg_style}"),
-                Text(str(color.hex), style=f"bold {color.style}"),
-                Text(color.as_rgb(), style=f"bold {color.bg_style}"),
+                Text(" " * 10, style=color.bg_style),
+                Text(
+                    name, style=color.style
+                ),
+                Text(color.hex.upper(), style=color.style),
+                Text(color.rgb, style=color.style),
             )
         return table
 

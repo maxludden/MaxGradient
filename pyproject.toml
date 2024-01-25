@@ -16,6 +16,8 @@ dependencies = [
     "pydantic-extra-types>=2.4.1",
     "toml>=0.10.2",
     "pydantic-settings>=2.1.0",
+    "birdseye>=0.9.5",
+    "snoop>=0.4.3",
 ]
 
 requires-python = ">=3.10"

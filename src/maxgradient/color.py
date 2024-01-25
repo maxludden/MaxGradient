@@ -29,7 +29,7 @@ from pydantic import GetJsonSchemaHandler
 from pydantic._internal import _repr
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, PydanticCustomError, core_schema
-from pydantic_extra_types.color import RGBA as PyRGBA
+# from pydantic_extra_types.color import RGBA as PyRGBA
 from pydantic_extra_types.color import Color as PyColor
 from pydantic_extra_types.color import ColorTuple
 from pydantic_extra_types.color import ColorType as PyColorType
@@ -39,6 +39,8 @@ from rich.color_triplet import ColorTriplet
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
+# from snoop import snoop
+# from cheap_repr import register_repr, normal_repr
 
 HslColorTuple = Union[Tuple[float, float, float], Tuple[float, float, float, float]]
 
@@ -176,10 +178,10 @@ class Color(PyColor):
         elif isinstance(value, str):
             self._rgba = self.parse_str(value)  # type: ignore
         elif isinstance(value, PyColor):
-            rgba = value._rgba
-            r, g, b, a = PyRGBA(rgba.r, rgba.g, rgba.b, rgba.alpha)
-            self._rgba = RGBA(red=r, green=g, blue=b, alpha=a)
-            self._orginial = value.as_hex()
+            r,g,b,a = value._rgba._tuple
+            self._rgba = RGBA(r,g,b,a)
+            self._original = value._original
+            
         elif isinstance(value, Color):
             self._rgba = value._rgba
             self._rgba = RGBA(
@@ -735,7 +737,9 @@ class Color(PyColor):
                 "value is not a valid color: tuples must have length 3 or 4",
             )
 
+
     @classmethod
+    # @snoop
     def parse_str(cls, value: str) -> RGBA:
         """
         Parse a string representing a color to an RGBA tuple.
@@ -800,10 +804,9 @@ class Color(PyColor):
 
         if value_lower == "transparent":
             return RGBA(0, 0, 0, 0)
-
         raise PydanticCustomError(
             "color_error",
-            "value is not a valid color: string not recognised as a valid color",
+            "value is not a valid color: string not recognised as a valid color"
         )
 
     @classmethod
@@ -970,7 +973,13 @@ class Color(PyColor):
 
     @classmethod
     def color_table(
-        cls, title: str, start: int, end: int, *, show_index: bool = False
+        cls,
+        title: str,
+        start: int,
+        end: int,
+        caption: Optional[Text] = None,
+        *,
+        show_index: bool = False
     ) -> Table:
         table = cls.generate_table(title, show_index)
         for index, (key, _) in enumerate(COLORS_BY_NAME.items()):
@@ -1023,9 +1032,9 @@ class Color(PyColor):
             for table in tables:
                 yield table
 
-        for title, start, end in table_generator():
+        for title, start, end, caption in table_generator():
             console.line(2)
-            table = cls.color_table(title, start, end)
+            table = cls.color_table(title, start, end, caption=caption)
             console.print(table, justify="center")
             console.line(2)
 
@@ -1037,28 +1046,26 @@ class Color(PyColor):
 
 
 COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
-    # Gradient Colors
-    "magenta ": (255, 0, 255),  # #FF00FF
-    "purple": (175, 0, 255),  # #AF00FF
-    "blueviolet": (95, 0, 255),  # #5F00FF
-    "blue": (0, 0, 255),  # #0000FF
-    "babyblue": (0, 85, 255),  # #0055FF
-    "lightblue": (0, 135, 255),  # #0087FF
-    "skyblue ": (0, 195, 255),  # #00C3FF
-    "cyan": (0, 255, 255),  # #00FFFF
-    "springgreen ": (0, 255, 175),  # #00FFAF
-    "green": (0, 255, 125),  # #00FF7D
-    "lime": (0, 255, 0),  # #00FF00
-    "chartreuse": (135, 255, 0),  # #87FF00
-    "greenyellow": (175, 255, 0),  # #AFFF00
-    "yellow": (255, 255, 0),  # #FFFF00
-    "orange": (255, 175, 0),  # #FFAF00
-    "darkorange ": (255, 135, 0),  # #FF8700
-    "tomato": (255, 75, 0),  # #FF4B00
-    "red ": (255, 0, 0),  # #FF0000
-    "deeppink ": (255, 0, 95),  # #FF005F
-    "hotpink ": (255, 0, 175),  # #FF00AF
-    # CSS3 Colors
+    "magenta": (255, 0, 255),
+    "purple": (175, 0, 255),
+    "blueviolet": (95, 0, 255),
+    "blue": (0, 0, 255),
+    "babyblue": (0, 85, 255),
+    "lightblue": (0, 135, 255),
+    "skyblue": (0, 195, 255),
+    "cyan": (0, 255, 255),
+    "springgreen": (0, 255, 175),
+    "green": (0, 255, 125),
+    "lime": (0, 255, 0),
+    "chartreuse": (135, 255, 0),
+    "greenyellow": (175, 255, 0),
+    "yellow": (255, 255, 0),
+    "orange": (255, 175, 0),
+    "darkorange": (255, 135, 0),
+    "tomato": (255, 75, 0),
+    "red": (255, 0, 0),
+    "deeppink": (255, 0, 95),
+    "hotpink": (255, 0, 175),
     "aliceblue": (240, 248, 255),
     "antiquewhite": (250, 235, 215),
     "aquamarine": (127, 255, 212),
@@ -1085,7 +1092,7 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "darkkhaki": (189, 183, 107),
     "darkmagenta": (139, 0, 139),
     "darkolivegreen": (85, 107, 47),
-    "darkorange": (255, 140, 0),
+    "cssdarkorange": (255, 140, 0),
     "darkorchid": (153, 50, 204),
     "darkred": (139, 0, 0),
     "darksalmon": (233, 150, 122),
@@ -1367,7 +1374,7 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
 }
 
 COLORS_BY_VALUE = {v: k for k, v in COLORS_BY_NAME.items()}
-
+# register_repr(Color)(normal_repr)
 
 if __name__ == "__main__":  # pragma: no cover
     Color.example(record=True)

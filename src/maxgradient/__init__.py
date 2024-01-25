@@ -19,14 +19,15 @@ from rich.panel import Panel
 from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
+from rich.console import Console
+from rich.traceback import install as tr_install
 
-from maxgradient._color_list import ColorList, TintList
-from maxgradient._gradient_color import GradientColor
-from maxgradient._color import Color
-from maxgradient.console import Console, ConsoleOptions, Group
-from maxgradient._gradient import Gradient
+from maxgradient.spectrum import Spectrum
+from maxgradient.color import Color
+from maxgradient.color_list import ColorList
+from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
-from maxgradient._theme import GRADIENT_TERMINAL_THEME, GradientTheme
+from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
 
 __version__ = "0.2.17"
 
@@ -37,13 +38,9 @@ __all__ = [
     "GradientRule",
     "GRADIENT_TERMINAL_THEME",
     "GradientTheme",
-    "GradientColor",
-    "Console",
-    "ConsoleOptions",
     "Gradient",
     "GradientRule",
     "GradientTheme",
-    "Group",
     "JustifyMethod",
     "Layout",
     "OverflowMethod",
@@ -52,22 +49,23 @@ __all__ = [
     "RenderableType",
     "RenderResult",
     "Span",
+    "Spectrum",
     "Style",
     "StyleType",
     "Task",
     "Text",
     "TextType",
-    "Console",
-    "TintList",
 ]
 
 if __name__ == "__main__":
     console = Console()
     console.line(2)
-    console.gradient(
-        "MaxGradient is a python library for printing gradients in the terminal.",
-        rainbow=True,
-        justify="center",
-        style="bold",
+    console.print(
+        Gradient(
+            text="MaxGradient is a python library for printing gradients in the terminal.",
+            rainbow=True,
+            justify="center",
+            style="bold"
+        )
     )
     console.line(2)

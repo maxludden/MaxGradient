@@ -1,69 +1,70 @@
 from __future__ import annotations
 
-# ruff: noqa: F401
-import math
-import re
-from colorsys import hls_to_rgb, rgb_to_hls
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Generator,
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    Union,
-    cast,
-)
+from typing import List, Tuple
 
-from pydantic import GetJsonSchemaHandler
-from pydantic._internal import _repr
-from pydantic.json_schema import JsonSchemaValue
-from pydantic_core import CoreSchema, PydanticCustomError, core_schema
-from pydantic_extra_types.color import ColorTuple, ColorType
-from rich.color import Color as RichColor
-from rich.color import ColorParseError, blend_rgb
-from rich.color_triplet import ColorTriplet
+from rich.color import Color
 from rich.console import Console
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
 
-from maxgradient.color import RGBA, Color
-
 console = Console()
 tr_install(console=console, show_locals=True)
 
 
 class Spectrum(List[Color]):
+    """The colors from which to create random gradients."""
+
+    NAMES: Tuple[str, ...] = (
+        "magenta",
+        "purple",
+        "blueviolet",
+        "blue",
+        "babyblue",
+        "lightblue",
+        "skyblue",
+        "cyan",
+        "springgreen",
+        "green",
+        "lime",
+        "chartreuse",
+        "greenyellow",
+        "yellow",
+        "orange",
+        "darkorange",
+        "tomato",
+        "red",
+        "deeppink",
+        "hotpink",
+    )
+
+    HEX = (
+        "#FF00FF",
+        "#AF00FF",
+        "#5F00FF",
+        "#0000FF",
+        "#0055FF",
+        "#0087FF",
+        "#00C3FF",
+        "#00FFFF",
+        "#00FFAF",
+        "#00FF7D",
+        "#00FF00",
+        "#87FF00",
+        "#AFFF00",
+        "#FFFF00",
+        "#FFAF00",
+        "#FF8700",
+        "#FF4B00",
+        "#FF0000",
+        "#FF005F",
+    )
+
     def __init__(self) -> None:
-        HEX = (
-            "#FF00FF",
-            "#AF00FF",
-            "#5F00FF",
-            "#0000FF",
-            "#0055FF",
-            "#0087FF",
-            "#00C3FF",
-            "#00FFFF",
-            "#00FFAF",
-            "#00FF7D",
-            "#00FF00",
-            "#87FF00",
-            "#AFFF00",
-            "#FFFF00",
-            "#FFAF00",
-            "#FF8700",
-            "#FF4B00",
-            "#FF0000",
-            "#FF005F",
-        )
         global COLORS
-        COLORS = [Color(hex) for hex in HEX]
-        super().__init__()
-        self.append(COLORS)
+        COLORS = [Color.parse(hex) for hex in self.HEX]
+        super().__init__(COLORS)
 
     def __rich__(self) -> Table:
         table = Table(
@@ -76,17 +77,32 @@ class Spectrum(List[Color]):
             show_header=True,
         )
         for color in COLORS:
+            assert color.triplet, "ColorTriplet must not be None"
+            triplet = color.triplet
+            hex_str = triplet.hex.upper()
+            if hex_str in [
+                "#AF00FF",
+                "#5F00FF",
+                "#0000FF",
+                "#0055FF",
+            ]:
+                foreground = "#ffffff"
+            else:
+                foreground = "#000000"
+            bgstyle = Style(color=foreground, bgcolor=hex_str, bold=True)
+            style = Style(color=hex_str, bold=True)
+            index = self.HEX.index(hex_str)
+            name = self.NAMES[index].capitalize()
             table.add_row(
-                Text(" " * 10, style=color.as_bg_style(bold=True)),
-                Text(
-                    str(color.as_named(fallback=True)), style=color.as_style(bold=True)
-                ),
-                Text(str(color.hex).upper(), style=color.as_style(bold=True)),
-                Text(str(color.as_rgb()), style=color.as_bg_style(bold=True)),
+                Text(" " * 10, style=bgstyle),
+                Text(name, style=style),
+                Text(hex_str, style=style),
+                Text(triplet.rgb, style=style),
             )
         return table
 
 
 if __name__ == "__main__":
     console = Console()
-    console.print(Spectrum())
+    console.print(Spectrum(), justify="center")
+    console.print(Spectrum(), justify="center")

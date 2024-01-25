@@ -17,6 +17,8 @@ from rich.segment import Segment
 from rich.style import Style, StyleType
 from rich.text import Span, Text
 from rich.traceback import install as tr_install
+from snoop import spy
+from cheap_repr import register_repr, normal_repr
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -54,6 +56,7 @@ class SimpleGradient(Text):
         "cc",
     )
 
+    @spy
     def __init__(
         self,
         text: str | Text = "",
@@ -65,12 +68,10 @@ class SimpleGradient(Text):
         no_wrap: bool = False,
         style: StyleType = Style.null(),
         end: str = "",
-        spans: Optional[List[Span]] = None,
-        cc: bool = False,
+        spans: Optional[List[Span]] = None
     ) -> None:
         self.text = text
         _style = Style.parse(style) if isinstance(style, str) else style
-        self.cc: bool = cc
 
         super().__init__(
             text=self.text,
@@ -129,14 +130,17 @@ class SimpleGradient(Text):
         Returns:
             None
         """
+        if isinstance(value, list):
+            value = "".join(value)
         if isinstance(value, Text):
             sanitized_text = strip_control_codes(value.plain)
             self._length = len(sanitized_text)
             self._text = sanitized_text
             self._spans = value.spans
         elif isinstance(value, str):
-            if value == "":
-                raise ValueError("Text cannot be empty.")
+            # if value == "":
+            #     te
+            #     raise ValueError("Text cannot be empty.")
             sanitized_text = strip_control_codes(value)
             self._length = len(sanitized_text)
             self._text = sanitized_text
@@ -165,6 +169,7 @@ class SimpleGradient(Text):
         else:
             self._style = Style.parse(style)
 
+    # @spy
     def generate_spans(self) -> Generator[Span, None, None]:
         """
         Generate the gradient's spans.
@@ -285,11 +290,15 @@ class SimpleGradient(Text):
         if end:
             yield _Segment(end)
 
+    def as_text(self, style: StyleType, end: str = "") -> Text:
+        return Text(self.plain, spans=self._spans, style=style, end=end)
+
+register_repr(SimpleGradient)(normal_repr)
 
 if __name__ == "__main__":  # pragma: no cover
     console = Console()
     console.line(2)
     sample_text = "SimpleGradient is a class that prints a `string` \nor `rich.text.Text` object as a gradient from \ncolor1 to color2 with an optional style."
-    gradient = SimpleGradient(sample_text, color1="green", color2="cyan", style="bold")
+    gradient = SimpleGradient(sample_text, color1="green", color2="cyan", style="bold") # type: ignore
     gradient.highlight_regex(r"(`.+`)", "#af00ff")
     console.print(gradient, justify="center")
