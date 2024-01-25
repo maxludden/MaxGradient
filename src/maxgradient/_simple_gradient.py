@@ -6,6 +6,8 @@ from operator import itemgetter
 from typing import Any, Dict, Generator, Iterable, List, Literal, Optional, Tuple
 
 import rich.style
+from maxgradient.color import Color, PyColorType
+from maxgradient.theme import GradientTheme
 from rich._pick import pick_bool
 from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
@@ -16,9 +18,6 @@ from rich.style import Style, StyleType
 from rich.text import Span, Text
 from rich.traceback import install as tr_install
 
-from maxgradient.color import Color, ColorType
-from maxgradient.theme import GradientTheme
-
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
 DEFAULT_OVERFLOW: OverflowMethod = "fold"
@@ -27,6 +26,7 @@ WHITESPACE_REGEX = re.compile(r"^\s+$")
 console = Console(theme=GradientTheme().theme)
 tr_install(console=console, show_locals=True)
 VERBOSE: bool = False
+
 
 class SimpleGradient(Text):
     """
@@ -51,22 +51,23 @@ class SimpleGradient(Text):
         "_style",
         "_spans",
         "end",
-        "cc"
+        "cc",
     )
 
     def __init__(
         self,
         text: str | Text = "",
         *,
-        color1: ColorType,
-        color2: ColorType,
+        color1: PyColorType,
+        color2: PyColorType,
         justify: JustifyMethod = "default",
         overflow: OverflowMethod = "fold",
         no_wrap: bool = False,
         style: StyleType = Style.null(),
         end: str = "",
         spans: Optional[List[Span]] = None,
-        cc: bool = False) -> None:
+        cc: bool = False,
+    ) -> None:
         self.text = text
         _style = Style.parse(style) if isinstance(style, str) else style
         self.cc: bool = cc
@@ -90,9 +91,8 @@ class SimpleGradient(Text):
         self.color2 = Color(color2)
         self._spans = list(self.generate_spans())
 
-        
     def __repr__(self) -> str:
-        return f"Gradient({self.text!r}, \
+        return f"SimpleGradient({self.text!r}, \
             {self.color1.as_named()!r}, \
                 {self.color2.as_named()!r}"
 
@@ -165,7 +165,6 @@ class SimpleGradient(Text):
         else:
             self._style = Style.parse(style)
 
-
     def generate_spans(self) -> Generator[Span, None, None]:
         """
         Generate the gradient's spans.
@@ -195,8 +194,6 @@ class SimpleGradient(Text):
             color = Color(hex_str)
             style = color.style + self._style
             yield Span(index, index + 1, style=style)
-
-    
 
     def __rich_console__(
         self, console: "Console", options: "ConsoleOptions"
@@ -228,7 +225,6 @@ class SimpleGradient(Text):
             max(cell_len(word) for word in words) if words else max_text_width
         )
         return Measurement(min_text_width, max_text_width)
-
 
     def render(self, console: "Console", end: str = "") -> Iterable["Segment"]:
         """Render the text as Segments.
@@ -289,15 +285,11 @@ class SimpleGradient(Text):
         if end:
             yield _Segment(end)
 
-if __name__ == "__main__": # pragma: no cover
-    from lorem_text import lorem
-    sample_text = lorem.paragraph()
+
+if __name__ == "__main__":  # pragma: no cover
     console = Console()
     console.line(2)
-    console.print(
-        SimpleGradient("Hello World!", color1="red", color2="orange"), justify="center"
-        )
-    console.line(2)
-    console.print(
-        SimpleGradient(sample_text, color1="green", color2="cyan", style="italic bold"),
-    )
+    sample_text = "SimpleGradient is a class that prints a `string` \nor `rich.text.Text` object as a gradient from \ncolor1 to color2 with an optional style."
+    gradient = SimpleGradient(sample_text, color1="green", color2="cyan", style="bold")
+    gradient.highlight_regex(r"(`.+`)", "#af00ff")
+    console.print(gradient, justify="center")

@@ -29,16 +29,17 @@ from pydantic import GetJsonSchemaHandler
 from pydantic._internal import _repr
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, PydanticCustomError, core_schema
+from pydantic_extra_types.color import RGBA as PyRGBA
+from pydantic_extra_types.color import Color as PyColor
+from pydantic_extra_types.color import ColorTuple
+from pydantic_extra_types.color import ColorType as PyColorType
 from rich.color import Color as RichColor
-from rich.color import blend_rgb, ColorParseError
+from rich.color import ColorParseError, blend_rgb
 from rich.color_triplet import ColorTriplet
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 
-
-ColorTuple = Union[Tuple[int, int, int], Tuple[int, int, int, float]]
-ColorType = Union[ColorTuple, str, "Color"]
 HslColorTuple = Union[Tuple[float, float, float], Tuple[float, float, float, float]]
 
 
@@ -115,7 +116,7 @@ class RGBA:
         return round(c * 255)
 
     def __repr__(self) -> str:
-        return f"RGBA({self.red}, {self.green}, {self.blue}, {self.alpha})"
+        return f"RGBA({self.triplet.hex})"
 
     def __rich_repr__(self) -> Text:
         return Text.assemble(
@@ -160,26 +161,38 @@ repeat_colors = {int(c * 2, 16) for c in "0123456789abcdef"}
 rads = 2 * math.pi
 
 
-class Color(_repr.Representation):
+class Color(PyColor):
     """
     Represents a color.
     """
 
     __slots__ = "_original", "_rgba"
 
-    def __init__(self, value: ColorType) -> None:
+    def __init__(self, value: PyColorType) -> None:
         self._rgba: RGBA
-        self._original: ColorType
+        self._original: PyColorType
         if isinstance(value, (tuple, list)):
             self._rgba = self.parse_tuple(value)
         elif isinstance(value, str):
             self._rgba = self.parse_str(value)  # type: ignore
+        elif isinstance(value, PyColor):
+            rgba = value._rgba
+            r, g, b, a = PyRGBA(rgba.r, rgba.g, rgba.b, rgba.alpha)
+            self._rgba = RGBA(red=r, green=g, blue=b, alpha=a)
+            self._orginial = value.as_hex()
         elif isinstance(value, Color):
             self._rgba = value._rgba
-            value = value._original
+            self._rgba = RGBA(
+                red=self._rgba.red,
+                green=self._rgba.green,
+                blue=self._rgba.blue,
+                alpha=self._rgba.alpha,
+            )
+            self._orginial = value.as_hex()
         elif isinstance(value, RichColor):
             self._rgba = self.parse_rich_color(value)
-            value = value.triplet
+            assert value.triplet, "RichColor must have a triplet"
+            self._original = value.triplet.hex
         else:
             raise PydanticCustomError(
                 "color_error",
@@ -217,6 +230,20 @@ class Color(_repr.Representation):
             raise ColorParseError(f"Could not parse color: {self}") from cpe
         else:
             return RichColor.from_triplet(triplet)
+
+    @classmethod
+    def from_rich(cls, rich_color: RichColor) -> Color:
+        try:
+            triplet = rich_color.triplet
+        except ColorParseError as cpe:
+            raise ColorParseError(f"Could not parse color: {rich_color}") from cpe
+        else:
+            assert triplet, "ColorTriplet must not be None"
+            red, green, blue = triplet.red, triplet.green, triplet.blue
+            rgba = RGBA(
+                red=red / 255.0, green=green / 255.0, blue=blue / 255.0, alpha=None
+            )
+            return cls(rgba.triplet.hex)
 
     @property
     def style(self) -> Style:
@@ -445,11 +472,21 @@ class Color(_repr.Representation):
         field_schema.update(type="string", format="color")
         return field_schema
 
-    def original(self) -> ColorType:
+    def original(self) -> PyColorType:
         """
         Original value passed to `Color`.
         """
         return self._original
+
+    @property
+    def name(self) -> str:
+        """
+        The name of the color.add()
+
+        Returns:
+            str: The color name.
+        """
+        return self.as_named()
 
     def as_named(self, *, fallback: bool = False) -> str:
         """
@@ -641,6 +678,9 @@ class Color(_repr.Representation):
         return cls(__input_value)
 
     def __str__(self) -> str:
+        return self.as_named(fallback=True)
+
+    def __repr__(self) -> str:
         return self.as_named(fallback=True)
 
     def __repr_args__(self) -> _repr.ReprArgs:
@@ -908,7 +948,7 @@ class Color(_repr.Representation):
         return round(c * 255)
 
     @classmethod
-    def generate_table(cls, title: str, show_index: bool = True) -> Table:
+    def generate_table(cls, title: str, show_index: bool = True, caption: Optional[Text] = None) -> Table:
         """
         Generate a table to display colors.
 
@@ -919,7 +959,7 @@ class Color(_repr.Representation):
         Returns:
             A `rich.table.Table` instance.
         """
-        table = Table(title=f"[b #ffffff]{title.capitalize()}[/]", expand=False)
+        table = Table(title=f"[b #ffffff]{title.capitalize()}[/]", expand=False, caption=caption)
         if show_index:
             table.add_column("Index", style="bold", justify="right")
         table.add_column("Sample", style="bold", justify="center")
@@ -975,10 +1015,10 @@ class Color(_repr.Representation):
         console = Console(record=True) if record else Console()
 
         def table_generator() -> Generator:
-            tables: List[Tuple[str, int, int]] = [
-                ("Gradient Colors", 0, 17),
-                ("CSS3 Colors", 18, 151),
-                ("Rich Colors", 152, 342),
+            tables: List[Tuple[str, int, int,Optional[Text]]] = [
+                ("Gradient Colors", 0, 19, Text("These colors have been adapted to make naming easier.", style='dim')),
+                ("CSS3 Colors", 20, 151, None),
+                ("Rich Colors", 152, 342, None),
             ]
             for table in tables:
                 yield table
@@ -996,26 +1036,28 @@ class Color(_repr.Representation):
                 pass
 
 
-COLORS_BY_NAME = {
+COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     # Gradient Colors
-    "magenta": (255, 0, 255), # fuscia wil return as magenta # FF00FF
-    "purple": (175, 0, 255),  # AF00FF
-    "blueviolet": (95, 0, 255),  # 5F00FF
-    "blue": (0, 0, 255),  # 0000FF
-    "lightblue": (0, 95, 255),  # 005FFF
-    "skyblue": (0, 175, 255),  # 00AFFF
-    "cyan": (0, 255, 255),  # 00FFFF
-    "springgreen": (0, 255, 175),  # 00FFAF
-    "green": (0, 255, 95),  # 00FF5F
-    "lime": (0, 255, 0),  # 00FF00
-    "lawngreen": (95, 255, 0),  # 5FFF00
-    "greenyellow": (175, 255, 0),  # AFFF00
-    "yellow": (255, 255, 0),  # FFFF00
-    "orange": (255, 175, 0),  # FFAF00
-    "orangered": (255, 95, 0),  # FF5F00
-    "red": (255, 0, 0),  # FF0000
-    "deeppink": (255, 0, 95),  # FF005F
-    "hotpink": (255, 0, 175),  # FF00AF
+    "magenta ": (255, 0, 255),  # #FF00FF
+    "purple": (175, 0, 255),  # #AF00FF
+    "blueviolet": (95, 0, 255),  # #5F00FF
+    "blue": (0, 0, 255),  # #0000FF
+    "babyblue": (0, 85, 255),  # #0055FF
+    "lightblue": (0, 135, 255),  # #0087FF
+    "skyblue ": (0, 195, 255),  # #00C3FF
+    "cyan": (0, 255, 255),  # #00FFFF
+    "springgreen ": (0, 255, 175),  # #00FFAF
+    "green": (0, 255, 125),  # #00FF7D
+    "lime": (0, 255, 0),  # #00FF00
+    "chartreuse": (135, 255, 0),  # #87FF00
+    "greenyellow": (175, 255, 0),  # #AFFF00
+    "yellow": (255, 255, 0),  # #FFFF00
+    "orange": (255, 175, 0),  # #FFAF00
+    "darkorange ": (255, 135, 0),  # #FF8700
+    "tomato": (255, 75, 0),  # #FF4B00
+    "red ": (255, 0, 0),  # #FF0000
+    "deeppink ": (255, 0, 95),  # #FF005F
+    "hotpink ": (255, 0, 175),  # #FF00AF
     # CSS3 Colors
     "aliceblue": (240, 248, 255),
     "antiquewhite": (250, 235, 215),
@@ -1142,7 +1184,7 @@ COLORS_BY_NAME = {
     "tan": (210, 180, 140),
     "teal": (0, 128, 128),
     "thistle": (216, 191, 216),
-    "tomato": (255, 99, 71),
+    "csstomato": (255, 99, 71),
     "turquoise": (64, 224, 208),
     "violet": (238, 130, 238),
     "wheat": (245, 222, 179),
@@ -1168,7 +1210,6 @@ COLORS_BY_NAME = {
     "spring_green4": (0, 135, 95),
     "turquoise4": (0, 135, 135),
     "deep_sky_blue3": (0, 135, 215),
-    "dodger_blue1": (0, 135, 255),
     "dark_cyan": (0, 175, 135),
     "light_sea_green": (0, 175, 175),
     "deep_sky_blue2": (0, 175, 215),
@@ -1221,7 +1262,6 @@ COLORS_BY_NAME = {
     "pale_green3": (135, 215, 135),
     "dark_slate_gray3": (135, 215, 215),
     "sky_blue1": (135, 215, 255),
-    "chartreuse1": (135, 255, 0),
     "light_green": (135, 255, 135),
     "aquamarine1": (135, 255, 215),
     "dark_slate_gray1": (135, 255, 255),

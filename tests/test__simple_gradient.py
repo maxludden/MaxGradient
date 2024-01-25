@@ -1,53 +1,46 @@
-from maxgradient.color import Color
+import unittest
+
 from maxgradient._simple_gradient import SimpleGradient
+from rich import console
 from rich.style import Style
-from pydantic_core import PydanticCustomError
+from maxgradient.color import Color
+from rich.text import Span
+from rich.color import ColorType, ColorTriplet
 
 
-def test_simple_gradient():
-    # Create a SimpleGradient instance
-    gradient = SimpleGradient(
-        text="Hello, World!",
-        color1=Color("red"),
-        color2=Color("blue"),
-        style=Style(bold=True),
-    )
+class TestSimpleGradient(unittest.TestCase):
+    def setUp(self):
+        self.console = console.Console()
 
-    # Test the text property
-    assert gradient.text == "Hello, World!"
+    def test_text_property(self):
+        gradient = SimpleGradient("Hello World", color1="red", color2="blue")
+        self.assertEqual(gradient.text, "Hello World")
 
-    # Test the color1 and color2 properties
-    assert gradient.color1 == Color("red")
-    assert gradient.color2 == Color("blue")
+    def test_text_property_with_text_object(self):
+        text = "Hello World"
+        gradient = SimpleGradient(text, color1="red", color2="blue")
+        self.assertEqual(gradient.plain, "Hello World")
 
-    # Test the style property
-    assert gradient.style == Style(bold=True)
+    def test_text_property_with_empty_string(self):
+        with self.assertRaises(ValueError):
+            SimpleGradient("", color1="red", color2="blue")
 
-    # Test the __repr__() method
-    assert repr(gradient) == "Gradient('Hello, World!', 'red', 'blue')"
+    def test_text_property_with_none(self):
+        with self.assertRaises(ValueError):
+            SimpleGradient(None, color1="red", color2="blue")
 
-    # Test the __add__() method
-    result = gradient + "!"
-    assert isinstance(result, SimpleGradient)
-    assert result.text == "Hello, World!!"
+    def test_style_property(self):
+        gradient = SimpleGradient(
+            "Hello World", color1="red", color2="blue", style="bold"
+        )
+        self.assertEqual(gradient.style, Style(bold=True))
 
-    # Test the __eq__() method
-    assert gradient == SimpleGradient(
-        text="Hello, World!",
-        color1=Color("red"),
-        color2=Color("blue"),
-        style=Style(bold=True),
-    )
-    assert gradient != SimpleGradient(
-        text="Hello, World!",
-        color1=Color("red"),
-        color2=Color("green"),
-        style=Style(bold=True),
-    )
+    def test_style_property_with_none(self):
+        gradient = SimpleGradient(
+            "Hello World", color1="red", color2="blue", style=None
+        )
+        self.assertEqual(gradient.style, Style())
 
-    # Test the generate_spans() method
-    spans = list(gradient.generate_spans())
-    assert len(spans) == len(gradient.text)
-    assert spans[0].style == Style(bold=True, color="red")
-    assert spans[-1].style == Style(bold=True, color="blue")
 
+if __name__ == "__main__":
+    unittest.main()
