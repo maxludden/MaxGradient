@@ -4,27 +4,35 @@ from io import StringIO
 from sys import stdout
 from typing import List, Optional
 
-from maxgradient import Console
-from maxgradient._gradient import Gradient
 from rich import inspect
+from rich.console import Console
 from rich.panel import Panel
 from typer import Argument, BadParameter, Exit, Option, Typer
 from typing_extensions import Annotated
+
+from maxgradient.gradient import Gradient
 
 app = Typer(name="gradient", help="Print a gradient.")
 
 valid_colors = [
     "magenta",
-    "violet",
     "purple",
+    "violet",
     "blue",
-    "lightblue",
+    "dodgerblue",
+    "deepskyblue",
+    "lightskyblue",
     "cyan",
-    "green",
-    "green",
+    "springgreen",
+    "lime",
+    "greenyellow",
     "yellow",
     "orange",
+    "darkorange",
+    "tomato",
     "red",
+    "deeppink",
+    "hotpink",
 ]
 
 
@@ -84,7 +92,7 @@ def main(
         Option(
             "--justify",
             "-j",
-            case_sensitive=False,
+            case_sensitive=True,
             callback=justify_callback,
             help="Justify method to use. Valid methods include: \
 default, left, center, right",
@@ -98,7 +106,7 @@ default, left, center, right",
             case_sensitive=False,
             autocompletion=complete_color,
             help="Colors to use in the gradient. Valid colors include: \
-magenta, violet, purple, blue, lightblue, cyan, green/green, yellow, orange, \
+magenta, violet, purple, blue, dodgerblue, deepskyblue, lightskyblue, cyan, lime, yellow, orange, \
 and red.",
         ),
     ] = None,
@@ -163,8 +171,9 @@ and red.",
 
     if panel:
         console.print(
-            Panel(gradient, border_style="dim"), justify=justify  # type: ignore
-        )  # type: ignore
+            Panel(gradient, border_style="dim"),
+            justify=justify  # type: ignore
+        )
     else:
         console.print(gradient, justify=justify)  # type: ignore
     console.line()

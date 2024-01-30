@@ -19,16 +19,14 @@ class Spectrum(List[Color]):
     NAMES: Tuple[str, ...] = (
         "magenta",
         "purple",
-        "blueviolet",
+        "violet",
         "blue",
-        "babyblue",
-        "lightblue",
-        "skyblue",
+        "dodgerblue",
+        "deepskyblue",
+        "lightskyblue",
         "cyan",
         "springgreen",
-        "green",
         "lime",
-        "chartreuse",
         "greenyellow",
         "yellow",
         "orange",
@@ -49,9 +47,7 @@ class Spectrum(List[Color]):
         "#00C3FF",
         "#00FFFF",
         "#00FFAF",
-        "#00FF7D",
         "#00FF00",
-        "#87FF00",
         "#AFFF00",
         "#FFFF00",
         "#FFAF00",
@@ -59,6 +55,28 @@ class Spectrum(List[Color]):
         "#FF4B00",
         "#FF0000",
         "#FF005F",
+        "#FF00AF"
+    )
+
+    RGB = (
+        "rgb(255, 0, 255)",
+        "rgb(175, 0, 255)",
+        "rgb(95, 0, 255)",
+        "rgb(0, 0, 255)",
+        "rgb(0, 85, 255)",
+        "rgb(0, 135, 255)",
+        "rgb(0, 195, 255)",
+        "rgb(0, 255, 255)",
+        "rgb(0, 255, 175)",
+        "rgb(0, 255, 0)",
+        "rgb(175, 255, 0)",
+        "rgb(255, 255, 0)",
+        "rgb(255, 175, 0)",
+        "rgb(255, 135, 0)",
+        "rgb(255, 75, 0)",
+        "rgb(255, 0, 0)",
+        "rgb(255, 0, 95)",
+        "rgb(255, 0, 175)"
     )
 
     def __init__(self) -> None:
@@ -89,12 +107,12 @@ class Spectrum(List[Color]):
                 foreground = "#ffffff"
             else:
                 foreground = "#000000"
-            bgstyle = Style(color=foreground, bgcolor=hex_str, bold=True)
+            bg_style = Style(color=foreground, bgcolor=hex_str, bold=True)
             style = Style(color=hex_str, bold=True)
             index = self.HEX.index(hex_str)
             name = self.NAMES[index].capitalize()
             table.add_row(
-                Text(" " * 10, style=bgstyle),
+                Text(" " * 10, style=bg_style),
                 Text(name, style=style),
                 Text(hex_str, style=style),
                 Text(triplet.rgb, style=style),
@@ -104,5 +122,4 @@ class Spectrum(List[Color]):
 
 if __name__ == "__main__":
     console = Console()
-    console.print(Spectrum(), justify="center")
     console.print(Spectrum(), justify="center")

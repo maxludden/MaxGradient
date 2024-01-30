@@ -8,11 +8,9 @@ site_author: Max Ludden
 nav:
     - Getting Started: "index.md"
     - User Guide:
-        - Console: "console.md"
         - Gradient: "gradient.md"
         - Color: "color.md"
     - References:
-        - Console Reference: "console_ref.md"
         - Gradient Reference: "gradient_ref.md"
         - Color Reference: "color_ref.md"
         - Possible Colors: "possible_colors.md"

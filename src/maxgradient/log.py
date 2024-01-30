@@ -125,81 +125,81 @@ def rich_filter(record) -> bool:
 
 
 logger.remove()
-# loggers = logger.configure(
-#     handlers=[
-#         dict(  # 1 - debug.log
-#             sink=LOG_DIR / "debug.log",
-#             level="DEBUG",
-#             format=FORMAT,
-#             backtrace=True,
-#             diagnose=True,
-#             colorize=True,
-#         ),
-#         dict(  # 2 - info.log
-#             sink=LOG_DIR / "info.log",
-#             level="INFO",
-#             format=FORMAT,
-#             backtrace=True,
-#             diagnose=True,
-#             colorize=True,
-#         ),
-#         dict(  # 3 - warning.log
-#             sink=LOG_DIR / "warning.log",
-#             level="WARNING",
-#             format=FORMAT,
-#             backtrace=True,
-#             diagnose=True,
-#             colorize=True,
-#         ),
-#         dict(  # 4 - error.log
-#             sink=LOG_DIR / "error.log",
-#             level="ERROR",
-#             format=FORMAT,
-#             backtrace=True,
-#             diagnose=True,
-#             colorize=True,
-#         ),
-#         dict(  # 5 - critical.log
-#             sink=LOG_DIR / "critical.log",
-#             level="CRITICAL",
-#             format=FORMAT,
-#             backtrace=True,
-#             diagnose=True,
-#             colorize=True,
-#         ),
-#         dict(  # 6 - console
-#             sink=lambda msg: console.print(
-#                 Text(
-#                     f"{logging_prompt(msg)}: {msg}",
-#                     justify="left",
-#                     overflow="fold",
-#                     style=level_color(msg),
-#                 ),
-#                 highlight=True,
-#             ),
-#             format="{message}",
-#             backtrace=True,
-#             diagnose=True,
-#             colorize=True,
-#             level="SUCCESS",
-#         ),
-#     ]
-# )
-# log = logger.bind(name="maxgraient")
-# # log.disable("maxgradient/")
+loggers = logger.configure(
+    handlers=[
+        dict(  # 1 - debug.log
+            sink=LOG_DIR / "debug.log",
+            level="DEBUG",
+            format=FORMAT,
+            backtrace=True,
+            diagnose=True,
+            colorize=True,
+        ),
+        dict(  # 2 - info.log
+            sink=LOG_DIR / "info.log",
+            level="INFO",
+            format=FORMAT,
+            backtrace=True,
+            diagnose=True,
+            colorize=True,
+        ),
+        dict(  # 3 - warning.log
+            sink=LOG_DIR / "warning.log",
+            level="WARNING",
+            format=FORMAT,
+            backtrace=True,
+            diagnose=True,
+            colorize=True,
+        ),
+        dict(  # 4 - error.log
+            sink=LOG_DIR / "error.log",
+            level="ERROR",
+            format=FORMAT,
+            backtrace=True,
+            diagnose=True,
+            colorize=True,
+        ),
+        dict(  # 5 - critical.log
+            sink=LOG_DIR / "critical.log",
+            level="CRITICAL",
+            format=FORMAT,
+            backtrace=True,
+            diagnose=True,
+            colorize=True,
+        ),
+        dict(  # 6 - console
+            sink=lambda msg: console.print(
+                Text(
+                    f"{logging_prompt(msg)}: {msg}",
+                    justify="left",
+                    overflow="fold",
+                    style=level_color(msg),
+                ),
+                highlight=True,
+            ),
+            format="{message}",
+            backtrace=True,
+            diagnose=True,
+            colorize=True,
+            level="SUCCESS",
+        ),
+    ]
+)
+log = logger.bind(name="maxgraient")
+# log.disable("maxgradient/")
 
-# if __name__ == "__main__":
-#     # log.debug("Debug message.")
-#     # log.info("Info message.")
-#     # log.warning("Warning message.")
-#     # log.error("Error message.")
-#     # log.critical("Critical message.")
-#     # log.success("Success message.")
-#     # log.trace("Trace message.")
-#     # log.opt(lazy=True).debug("Lazy message.")
-#     # log.opt(lazy=True).info("Lazy message.")
-#     # log.opt(lazy=True).warning("Lazy message.")
-#     # log.opt(lazy=True).error("Lazy message.")
-#     # log.opt(lazy=True).critical("Lazy message.")
-#     # log.opt(lazy=True).success("Lazy message.")
-#     # log.opt(lazy=True).trace("Lazy message.")
+if __name__ == "__main__":
+    log.debug("Debug message.")
+    log.info("Info message.")
+    log.warning("Warning message.")
+    log.error("Error message.")
+    log.critical("Critical message.")
+    log.success("Success message.")
+    log.trace("Trace message.")
+    log.opt(lazy=True).debug("Lazy message.")
+    log.opt(lazy=True).info("Lazy message.")
+    log.opt(lazy=True).warning("Lazy message.")
+    log.opt(lazy=True).error("Lazy message.")
+    log.opt(lazy=True).critical("Lazy message.")
+    log.opt(lazy=True).success("Lazy message.")
+    log.opt(lazy=True).trace("Lazy message.")

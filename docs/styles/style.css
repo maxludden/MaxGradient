@@ -24,6 +24,7 @@
   --asteroid: #e3cee3;
   --crater: #f0dfdf;
 
+
   --md-admonition-icon--note: url('data:image/svg+xml;charset=utf-8,<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1 {stroke-width: 0px;}</style></defs><path id="gradient_icon" class="cls-1" d="m21.16.94H2.84c-1.05,0-1.9.85-1.9,1.9v18.32c0,1.05.85,1.9,1.9,1.9h18.32c1.05,0,1.9-.85,1.9-1.9V2.84c0-1.05-.85-1.9-1.9-1.9Zm1.4,18.1H1.44v-.19h21.13v.19Zm0-3.09H1.44v-.3h21.13v.3Zm0-3.1H1.44v-.5h21.13v.5Zm0-3H1.44v-.9h21.13v.9Zm0-2.9H1.44v-1.4h21.13v1.4Zm0-2.9H1.44v-1.21c0-.25.06-.48.18-.69h20.76c.12.21.18.44.18.69v1.21Z" /></svg>');
 }
 [data-md-color-scheme="purple"] {
@@ -182,6 +183,122 @@ table.params th:nth-child(even) {
 tr:nth-child(even) {
   background: #321744;
 }
+.md-ellipsis,
+.md-source__repository,
+.md-icon,
+.md-source__icon,
+.md-header__source,
+a {
+  font-weight: 400;
+  font-family: "Urbanist", sans-serif;
+  text-decoration: underline;
+  background: linear-gradient(
+    45deg,
+    #ff0 10%,
+    #ffaf00 20%,
+    #ff5f00 30%,
+    #ff0000 40%, 
+    #ff00af 45%,
+    #ff00ff 50%,
+    #ff00af 55%,
+    #ff0000 70%,
+    #ff5f00 80%,
+    #ffaf00 90%,
+    #ffff00 100%
+  );
+  background-size: 1000% auto;
+  color: #fff;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 400s linear infinite;
+  @keyframes shine {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 1000% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
+}
+a:hover {
+  text-decoration: underline;
+  background: linear-gradient(
+    40deg,
+    #0f0 10%,
+    #ff0 20%,
+    #f80 30%,
+    #f00 40%, 
+    #f0f 45%,
+    #f0f 55%,
+    #f00 70%,
+    #f80 80%,
+    #ff0 90%,
+    #0f0 100%
+  );
+  background-size: 1000% auto;
+  color: #afafaf;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 400s linear infinite;
+  @keyframes shine {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 1000% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
+}
+a:visited {
+  text-decoration: underline;
+  background: linear-gradient(
+    40deg,
+    #0f0 10%,
+    #ff0 15%,
+    #f80 20%,
+    #f00 25%, 
+    #f0f 30%,
+    #af00ff 35%,
+    #5f00ff 40%,
+    #00f 45%,
+    #00f 50%,
+    #5f00ff 55%,
+    #af00ff 60%,
+    #f0f 70%,
+    #f00 75%,
+    #f80 80%,
+    #ff0 85%,
+    #0f0 90%
+  );
+  background-size: 1000% auto;
+  color: #cfcfcf;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 400s linear infinite;
+  @keyframes shine {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 1000% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
+}
+a:active {
+  color: var(--link-active-color);
+}
 .version{
   color: #aaff00;
 }
@@ -312,6 +429,57 @@ tr:nth-child(even) {
 
 pre {
   padding-bottom: 30px;
+}
+.magenta {
+  color: rgb(255, 0, 255);
+}
+.violet {
+  color: rgb(175, 0, 255);
+}
+.purple {
+  color: rgb(93, 0, 255);
+}
+.blue {
+  color: rgb(0, 0, 255);
+}
+.dogerblue {
+  color: rgb(0, 85, 255);
+}
+.deepskyblue {
+  color: rgb(0, 135, 255);
+}
+.lightskyblue {
+  color: rgb(0, 195, 255);
+}
+.cyan {
+  color: rgb(0, 255, 255);
+}
+.lime {
+  color: rgb(0, 255, 0);
+}
+.greenyellow{
+  color: rgb(175, 255, 0);
+}
+.yellow {
+  color: rgb(255, 255, 0);
+}
+.orange {
+  color: rgb(255,175,0)
+}
+.darkorange {
+  color: rgb(255,135,0)
+}
+.tomato {
+  color: rgb(255,75, 0)
+}
+.red {
+  color: rgb(255, 0, 0);
+}
+.deeppink {
+  color: rgb(255, 0, 95);
+}
+.hotpink{
+  color: rgb(255,0,175)
 }
 
 
@@ -542,7 +710,7 @@ pre {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 40s linear infinite;
+  animation: shine 400s linear infinite;
   @keyframes shine {
     0% {
       background-position: 0 50%;
@@ -583,7 +751,7 @@ pre {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 40s linear infinite;
+  animation: shine 400s linear infinite;
   @keyframes shine {
     0% {
       background-position: 0 50%;

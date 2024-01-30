@@ -13,23 +13,23 @@ from os import environ
 from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
-from rich.console import JustifyMethod, OverflowMethod, RenderableType, RenderResult
+from rich.console import (Console, JustifyMethod, OverflowMethod,
+                          RenderableType, RenderResult)
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
-from rich.console import Console
 from rich.traceback import install as tr_install
 
-from maxgradient.spectrum import Spectrum
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList
 from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
+from maxgradient.spectrum import Spectrum
 from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
 
-__version__ = "0.2.17"
+__version__ = "0.2.18"
 
 __all__ = [
     "Color",
@@ -65,6 +65,10 @@ if __name__ == "__main__":
             text="MaxGradient is a python library for printing gradients in the terminal.",
             rainbow=True,
             justify="center",
+            style="bold"
+        )
+    )
+    console.line(2)
             style="bold"
         )
     )

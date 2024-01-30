@@ -62,6 +62,20 @@
   ```
   ![Example](img/gradients_are_awesome.svg)
 
+### <u>Files Removed</u>
+
+- `maxgradient.gradient._gradient_color.py`
+- `maxgradient.gradient._gradient.py`
+- `maxgradient.console.py`
+- `maxgradient._rich_colors.py`
+- `maxgradient._X11_colors.py`
+- `maxgradient._hex_colors.py`
+- `maxgradient._rgb_colors.py`
+- `maxgradient._color_triplet.py`
+- `maxgradient._color.py`
+
+As all of there functionality has been moved to `maxgradient.color.py`
+
 ## v0.2.17
 
 <span class="highlight">January 6, 2024</span> | SRC Layout and New GradientColors and ColorList

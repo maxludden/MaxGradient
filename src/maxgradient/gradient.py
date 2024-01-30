@@ -1,32 +1,25 @@
 # ruff: noqa: F401
 import re
-from functools import partial
-from operator import itemgetter
-from timeit import timeit
-from typing import Any, Dict, Generator, Iterable, List, Literal, Optional, Tuple
+from pathlib import Path
+from typing import List, Literal, Optional, Tuple
 
 import numpy as np
 import rich.style
-from cheap_repr import normal_repr, register_repr
 from pydantic_core import PydanticCustomError
 from pydantic_extra_types.color import ColorType
-from rich import inspect
-from rich._pick import pick_bool
-from rich.cells import cell_len
-from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
+from rich import get_console
+from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
-from rich.measure import Measurement
-from rich.segment import Segment
 from rich.style import Style, StyleType
-from rich.table import Table
+from rich.panel import Panel
 from rich.text import Span, Text
 from rich.traceback import install as tr_install
-from snoop import pp, snoop
 
 from maxgradient._simple_gradient import SimpleGradient
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList
-from maxgradient.theme import GradientTheme
+from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
+
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -35,7 +28,7 @@ WHITESPACE_REGEX = re.compile(r"^\s+$")
 
 console = Console(theme=GradientTheme().theme)
 tr_install(console=console, show_locals=True)
-VERBOSE: bool = True
+VERBOSE: bool = False
 
 
 class Gradient(Text):
@@ -92,6 +85,7 @@ class Gradient(Text):
         no_wrap: Optional[bool] = None,
         end: Optional[str] = "\n",
         tab_size: Optional[int] = 4,
+        verbose: bool = False,
         spans: Optional[List[Span]] = None,
     ) -> None:
         """
@@ -103,7 +97,7 @@ class Gradient(Text):
                 for the gradient. Defaults to None.\n
             rainbow (bool): Whether to print the gradient text in rainbow colors\
                   across the spectrum. Defaults to False.\n
-            hues (int): The number of colors in the gradient. Defaults to `3`.\n
+            hues (int): The number of colors in the gradient. Defaults to `4`.\n
             style (StyleType): The style of the gradient text. Defaults to None.\n
             verbose (bool): Whether to print verbose output. Defaults to False.
             justify (Optional[JustifyMethod]): Justify method: "left", "center",\
@@ -119,28 +113,34 @@ class Gradient(Text):
                 Defaults to None.\n
 
         """
-        self.text = text
 
+        self.verbose = verbose or False
+        self.text = text
         self.hues = hues
         self.justify = justify or DEFAULT_JUSTIFY
         self.overflow = overflow or DEFAULT_OVERFLOW
-
         self.style = Style.parse(style) if isinstance(style, str) else style
         self.colors = self.validate_colors(colors, rainbow=rainbow)
-        
+        if len(self.colors) > 2:
+            self.hues = len(self.colors)
+        else:
+            self.hues = hues
+        self.verbose: bool = verbose
+
         super().__init__(
             text=self.text,
             style=style,
             justify=justify,
             overflow=overflow,
             no_wrap=no_wrap,
-            end=self.end or "\n",
-            tab_size=tab_size,
+            end=end or "\n",
+            tab_size=tab_size or 4,
             spans=spans,
         )
-        subgradients = self.generate_subgradients()
+        indexes = self.generate_indexes()
+        substrings = self.generate_substrings(indexes)
+        subgradients = self.generate_subgradients(substrings)
         self._spans = self.join_subgradients(subgradients).spans
-
 
     @property
     def text(self) -> str:
@@ -150,7 +150,7 @@ class Gradient(Text):
         Returns:
             str: The concatenated string representation of the `_text` attribute.
         """
-        return "".join(self._text)
+        return "".join(self._text) if isinstance(self._text, list) else self._text
 
     @text.setter
     def text(self, value: Optional[str] | Optional[Text]) -> None:
@@ -296,7 +296,8 @@ class Gradient(Text):
             colors (List[Color]): The colors in the gradient.
         """
         _colors = self.validate_colors(colors)
-        console.log(f"Gradient with {self.hues} colors:", _colors)
+        if self.verbose:
+            console.log(f"Gradient with {self.hues} colors:", _colors)
         self._colors: List[Color] = _colors
 
     def validate_colors(
@@ -320,15 +321,43 @@ class Gradient(Text):
         """
         _colors: List[Color] = []
         if colors is None:
-            color_list = ColorList(hues=self.hues)
-            for color in color_list:
-                _colors.append(color)
-            console.log(f"[green]Generated {self.hues} colors:[/]", _colors)
-            return _colors
-        elif rainbow:
-            _colors = ColorList(hues=20)
-            console.log(f"Rainbow gradient with {self.hues} colors:", _colors)
-            return _colors
+            if not rainbow:
+                color_list = ColorList(self.hues)
+                for index, color in enumerate(color_list):
+                    if self.verbose:
+                        console.rule(
+                            f"[b i #ffffff]Generated color[/] [b #ff00ff]{index + 1}[/]"
+                        )
+                        console.print(
+                            Text(color.as_named(), style=color.as_named()),
+                            justify="center",
+                        )
+                    _colors.append(color)
+                    if index == self.hues - 1:
+                        break
+                if self.verbose:
+                    console.log(f"[green]Generated {self.hues} colors:[/]", _colors)
+                return _colors
+            else:
+                self.hues = 20
+                if self._length < 20:
+                    self.hues = self._length
+                color_list = ColorList(self.hues)
+                for index, color in enumerate(color_list):
+                    if self.verbose:
+                        console.rule(
+                            f"[b i #ffffff]Generated color[/] [b #ff00ff]{index + 1}[/]"
+                        )
+                        console.print(
+                            Text(color.as_named(fallback=True), style=color.as_named()),
+                            justify="center",
+                        )
+                    _colors.append(color)
+                    if index == self.hues - 1:
+                        break
+                if self.verbose:
+                    console.log(f"[green]Generated {self.hues} colors:[/]", _colors)
+                return _colors
         elif isinstance(colors, (List, Tuple)):
             for color in colors:
                 try:
@@ -337,10 +366,11 @@ class Gradient(Text):
                     raise pce
                 else:
                     _colors.append(color)
-            console.log(
-                f"[green]Validated [/][b i #00ff00]{len(colors)}[/][greeen] colors:[/]",
-                _colors,
-            )
+            if self.verbose:
+                console.log(
+                    f"[green]Validated [/][b i #00ff00]{len(colors)}[/][green] colors:[/]",
+                    _colors,
+                )
             assert len(_colors) >= 2, "Gradient must have at least two colors."
             return _colors
         raise TypeError(f"Colors must be a list or tuple, not {type(colors)}.")
@@ -364,43 +394,61 @@ class Gradient(Text):
         """
         self._spans = spans
 
-    def get_substrings(self) -> List[str]:
+    def generate_indexes(self) -> List[List[int]]:
         """Chunk the text into a list of strings.
 
         Returns:
             List[str]: The list of strings.
         """
-        result = np.array_split(np.arange(self._length), self.hues - 2)  # noqa: F722
+        if self.verbose:
+            console.log(f"Text: {self.text}")
+            console.log(f"Length: {self._length}")
+            console.log(f"Hues: {self.hues}")
+        result = np.array_split(np.arange(self._length), self.hues - 1)  # noqa: F722
+
         indexes: List[List[int]] = [sublist.tolist() for sublist in result]
+        if self.verbose:
+            index_text = Text(" ".join([f"{index}" for index in indexes]))
+            console.print(index_text)
+        return indexes
+
+    def generate_substrings(self, indexes: List[List[int]]) -> List[str]:
         substrings: List[str] = []
+        slices: List[Tuple[int, int]] = []
         for index in indexes:
             start = index[0]
-            end = index[-1]
-            substring: str = self._text[start : end + 1]
+            end = index[-1] + 1
+            slices.append((start, end))
+            if self.verbose:
+                console.log(f"Start: {start}", f"End: {end}")
+
+        if isinstance(self.text, list):
+            text = " ".join(self.text)
+        elif isinstance(self.text, str):
+            text = self.text
+        else:
+            raise TypeError(f"Text must be a string or list, not {type(self.text)}")
+        for index, (start, end) in enumerate(slices, 1):
+            substring = text[start:end]
             substrings.append(substring)
+            if self.verbose:
+                console.rule(f"Substring {index}")
+                console.print(substring)
         return substrings
 
-    def generate_subgradients(self) -> List[SimpleGradient]:
+    def generate_subgradients(self, substrings: List[str]) -> List[SimpleGradient]:
         """Generate simple gradients.
 
         Returns:
             List[SimpleGradient]: The list of simple gradients.
         """
-        substrings: List[str] = self.get_substrings()
-        colors = self.colors
-        if VERBOSE:
-            for index, substring in enumerate(substrings):
-                console.log(f"Substring {index}: {substring}")
-            console.log(f"Colors: {colors}")
-        assert len(substrings) + 1 == len(
-            colors
-        ), "Number of indexes and colors must match."
         subgradients: List[SimpleGradient] = []
+
         for index, substring in enumerate(substrings):
-            color1 = colors[index]
-            color2 = colors[index + 1]
+            color1 = self.colors[index]
+            color2 = self.colors[index + 1]
             gradient = SimpleGradient(
-                substring, # type: ignore
+                substring,  # type: ignore
                 color1=color1,
                 color2=color2,
                 justify=self.justify,  # type: ignore
@@ -410,16 +458,13 @@ class Gradient(Text):
                 end=self.end or "\n",
                 spans=self.spans,
             )
-            console.print(
-                Text.assemble(
-                    *[Text.from_markup(f"[dim italic]{index}: [/]", end=""), gradient]
-                )
-            )
+            if self.verbose:
+                console.print(f"[b i dim]Index {index}[/]")
+                console.print(gradient)
             subgradients.append(gradient)
         return subgradients
 
-    @classmethod
-    def join_subgradients(cls, subgradients: List[SimpleGradient]) -> Text:
+    def join_subgradients(self, subgradients: List[SimpleGradient]) -> Text:
         """Join the subgradients into a single gradient.
 
         Args:
@@ -428,8 +473,13 @@ class Gradient(Text):
         Returns:
             Text: The joined gradient.
         """
-        gradient = cls.assemble(*[gradient for gradient in subgradients])
-        return gradient
+        result = Text()
+        for gradient in subgradients:
+            if self.verbose:
+                console.print(gradient)
+            result.append(gradient)
+
+        return result
 
     def as_text(self) -> Text:
         """Convert the gradient to a `Text`.
@@ -454,13 +504,135 @@ class Gradient(Text):
             spans=self._spans,
         )
 
+    @classmethod
+    def named_gradient_example(
+        cls,
+        save: bool = False,
+        path: str = str(Path.cwd() / "docs" / "img" / "named_gradient_example.svg"),
+    ) -> None:
+        """
+        Generate an example of a gradient with defined colors.
+    
+        Args:
+            save (bool, optional): Whether to save the gradient to a file. Defaults to False.
+            filename (Optional[Path], optional): The filename to save the gradient to. Defaults \
+        to Path("/Users/maxludden/dev/py/MaxGradient/docs/img/named_gradient_example.svg").
+                console (Console, optional): The console to print the gradient to. Defaults to console.
+        """
+        if save:
+            console = Console(width=60, record=True)
+        else:
+            console = Console(width=60)
+        gradient = Gradient(
+            "The quick brown fox jumps over the lazy dog.",
+            colors=["magenta", "purple", "blueviolet"],
+        )
+        panel_content = Text.assemble(
+            gradient,
+            Text("\n\nThis gradient starts with "),
+            Text("magenta", style = "b #ff00ff"),
+            Text(". It fades to "),
+            Text("purple", style = "b #af00ff"),
+            Text(", and ends in "), 
+            Text("blueviolet", style = "b #5f00ff"),
+            Text("."),
+            justify="center"
+        )
+        console.line(2)
+        console.print(
+            Panel(
+                panel_content,
+                title="[b #ffffff]Named Gradient[/]",
+                padding=(1,4),
+            ),
+            justify="center",
+        )
+        if save:
+            console.save_svg(path, title="MaxGradient", theme=GRADIENT_TERMINAL_THEME)
 
-if __name__ == "__main__":
-    from lorem_text import lorem
+    @classmethod
+    def random_gradient_example(
+        cls,
+        save: bool = False,
+        path: str = str(Path.cwd() / "docs" / "img" / "random_gradient_example.svg"),
+    ) -> None:
+        """
+        Generate an example of a gradient with random adjacent colors.
+    
+        Args:
+            save (bool, optional): Whether to save the gradient to a file. Defaults to False.
+            filename (Optional[Path], optional): The filename to save the gradient to. Defaults \
+        to Path("/Users/maxludden/dev/py/MaxGradient/docs/img/named_gradient_example.svg").
+                console (Console, optional): The console to print the gradient to. Defaults to console.
+        """
+        if save:
+            console = Console(width=60, record=True)
+        else:
+            console = Console(width=60)
+        console.line(2)
+        console.print(
+            Panel(
+                Gradient(
+                    text="The quick brown fox jumps over the lazy dog.",
+                    justify="center",
+                ),
+                title="[b #ffffff]Random Gradient[/b #ffffff]",
+                padding=(1,4)
+            ),
+            justify="center",
+        )
+        console.line(2)
+        if save:
+            console.save_svg(path, title="MaxGradient", theme=GRADIENT_TERMINAL_THEME)
+
+    @classmethod
+    def rainbow_gradient_example(
+        cls,
+        save: bool = False,
+        path: str = str(Path.cwd() / "docs" / "img" / "rainbow_gradient_example.svg"),
+    ) -> None:
+        """
+        Generate an example of a gradient with the whole spectrum of colors.
+    
+        Args:
+            save (bool, optional): Whether to save the gradient to a file. Defaults to False.
+            filename (Optional[Path], optional): The filename to save the gradient to. Defaults \
+        to Path("/Users/maxludden/dev/py/MaxGradient/docs/img/named_gradient_example.svg").
+                console (Console, optional): The console to print the gradient to. Defaults to console.
+        """
+        if save:
+            console = Console(width=60, record=True)
+        else:
+            console = Console(width=60)
+
+        console.line(2)
+        console.print(
+            Panel(
+                Gradient(
+                    text="The quick brown fox jumps over the lazy dog.",
+                    rainbow=True,
+                    justify="center",
+                ),
+                title=Gradient("Rainbow Gradient", rainbow=True),
+                padding=(1,4)
+            ),
+            justify="center",
+        )
+        console.line(2)
+        if save:
+            console.save_svg(path, title="MaxGradient", theme=GRADIENT_TERMINAL_THEME)
+
+    @classmethod
+    def example(cls) -> None:
+        Gradient.named_gradient_example()
+        Gradient.random_gradient_example()
+        Gradient.rainbow_gradient_example()
+
+
+if __name__ == "__main__":  # pragma: no cover
     from rich.console import Console
     from rich.traceback import install as tr_install
 
-    tr_install(console=Console())
-    console.line(2)
-    text = str(lorem.paragraphs(2))
-    console.print(Gradient(text, colors=["red", "orange", "yellow"]))
+    from lorem_text import lorem
+
+    Gradient.example()

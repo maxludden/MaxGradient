@@ -1,6 +1,7 @@
 """Rule class for maxgradient package."""
 # ruff: noqa: F401
 from typing import List, Literal, Optional, Union
+from pathlib import Path
 
 from loguru import logger as log
 from rich.align import AlignMethod
@@ -13,6 +14,7 @@ from rich.text import Text
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList
 from maxgradient.gradient import Gradient
+from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
 
 # # from maxgradient.log import log
 Thickness = Literal["thin", "medium", "thick"]
@@ -62,16 +64,20 @@ class GradientRule(JupyterMixin):
         self.end = end
         self.align = align
 
-        rule_color_list = ColorList(5).color_list
+        rule_color_list = ColorList(10).color_list
         self.left_colors: List[Color] = [
             rule_color_list[0],
             rule_color_list[1],
             rule_color_list[2],
-        ]
-        self.right_colors: List[Color] = [
-            rule_color_list[2],
             rule_color_list[3],
             rule_color_list[4],
+        ]
+        self.right_colors: List[Color] = [
+            rule_color_list[4],
+            rule_color_list[5],
+            rule_color_list[6],
+            rule_color_list[7],
+            rule_color_list[8],
         ]
 
     def __repr__(self) -> str:
@@ -243,7 +249,7 @@ class GradientRule(JupyterMixin):
                 self.characters = "█"
 
     @classmethod
-    def rule_example(cls) -> None:
+    def rule_example(cls, save: bool = False) -> None:
         """Create a console with examples of Rule."""
         import sys
 
@@ -253,7 +259,12 @@ class GradientRule(JupyterMixin):
             title: str = sys.argv[1]
         except IndexError:
             title = "Rule Example"
-        console = Console()
+
+        console = Console(
+            width=60,
+            record=True
+        )
+
         console.line(2)
         console.print("[u b #ffffff]Rule Examples[/]", justify="center")
         console.line()
@@ -288,7 +299,17 @@ class GradientRule(JupyterMixin):
         console.line()
         console.print(GradientRule("Thick Gradient Rule", thickness="thick"))
         console.line(2)
+        path = str(Path.cwd() / "docs" / "img" / "rule_example.svg")
+        svg = console.export_svg(
+            title="MaxGradient",
+            # theme=GRADIENT_TERMINAL_THEME,
+            unique_id="Gradient Rule"
+            )
+
+        if save:
+            with open(path, "wt") as file:
+                file.write(svg)
 
 
 if __name__ == "__main__":
-    GradientRule.rule_example()
+    GradientRule.rule_example(True)

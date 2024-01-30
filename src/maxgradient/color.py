@@ -24,6 +24,8 @@ from typing import (
     Union,
     cast,
 )
+from itertools import cycle
+from random import randint
 
 from pydantic import GetJsonSchemaHandler
 from pydantic._internal import _repr
@@ -31,18 +33,29 @@ from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, PydanticCustomError, core_schema
 # from pydantic_extra_types.color import RGBA as PyRGBA
 from pydantic_extra_types.color import Color as PyColor
-from pydantic_extra_types.color import ColorTuple
 from pydantic_extra_types.color import ColorType as PyColorType
 from rich.color import Color as RichColor
 from rich.color import ColorParseError, blend_rgb
+from rich.console import Console
+from rich.traceback import install as tr_install
 from rich.color_triplet import ColorTriplet
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 # from snoop import snoop
 # from cheap_repr import register_repr, normal_repr
+from maxgradient.log import log
 
+ColorTuple=Union[Tuple[int, int, int], Tuple[int, int, int, float]]
+ColorType=Union[ColorTuple, str, 'Color', PyColorType, RichColor]
 HslColorTuple = Union[Tuple[float, float, float], Tuple[float, float, float, float]]
+VERBOSE: bool = True
+
+def get_console() -> Console:
+    console = Console()
+    tr_install(console=console, show_locals=True)
+    return console
+
 
 
 class RGBA:
@@ -67,6 +80,9 @@ class RGBA:
 
     def __getitem__(self, item: Any) -> Any:
         return self._tuple[item]
+
+    def __eq__(self, other: Any) -> bool:
+        return isinstance(other, RGBA) and self._tuple == other._tuple
 
     @property
     def triplet(self) -> ColorTriplet:
@@ -170,13 +186,16 @@ class Color(PyColor):
 
     __slots__ = "_original", "_rgba"
 
-    def __init__(self, value: PyColorType) -> None:
+    def __init__(self, value: ColorType) -> None:
         self._rgba: RGBA
-        self._original: PyColorType
+        self._original: ColorType
+
         if isinstance(value, (tuple, list)):
             self._rgba = self.parse_tuple(value)
+
         elif isinstance(value, str):
-            self._rgba = self.parse_str(value)  # type: ignore
+            self._rgba = self.parse_str(value)
+
         elif isinstance(value, PyColor):
             r,g,b,a = value._rgba._tuple
             self._rgba = RGBA(r,g,b,a)
@@ -184,13 +203,8 @@ class Color(PyColor):
             
         elif isinstance(value, Color):
             self._rgba = value._rgba
-            self._rgba = RGBA(
-                red=self._rgba.red,
-                green=self._rgba.green,
-                blue=self._rgba.blue,
-                alpha=self._rgba.alpha,
-            )
-            self._orginial = value.as_hex()
+            self._orginial = value._original
+
         elif isinstance(value, RichColor):
             self._rgba = self.parse_rich_color(value)
             assert value.triplet, "RichColor must have a triplet"
@@ -458,13 +472,14 @@ class Color(PyColor):
         triplet: ColorTriplet = self.as_triplet()
         bg_triplet: ColorTriplet = bg_color.as_triplet()
         alpha = self._rgba.alpha
-        assert alpha, "Alpha value cannot be None."
-        if alpha == 1:
+        if alpha is None:
+            return triplet
+        elif alpha == 1:
             return triplet
         elif alpha == 0:
             return bg_triplet
         else:
-            return ColorTriplet(*blend_rgb(triplet, bg_triplet, alpha))
+            return blend_rgb(triplet, bg_triplet, alpha)
 
     @classmethod
     def __get_pydantic_json_schema__(
@@ -474,7 +489,7 @@ class Color(PyColor):
         field_schema.update(type="string", format="color")
         return field_schema
 
-    def original(self) -> PyColorType:
+    def original(self) -> ColorType:
         """
         Original value passed to `Color`.
         """
@@ -488,9 +503,9 @@ class Color(PyColor):
         Returns:
             str: The color name.
         """
-        return self.as_named()
+        return self.as_named(fallback=True)
 
-    def as_named(self, *, fallback: bool = False) -> str:
+    def as_named(self, *, fallback: bool = True) -> str:
         """
         Returns the name of the color if it can be found in `COLORS_BY_VALUE` dictionary,
         otherwise returns the hexadecimal representation of the color or raises `ValueError`.
@@ -507,6 +522,10 @@ class Color(PyColor):
         """
         if self._rgba.alpha is None:
             rgb = cast(Tuple[int, int, int], self.as_rgb_tuple())
+            if VERBOSE:
+                console=Console(color_system="truecolor")
+                tr_install(console=console)
+                console.log("Entered Color.as_named()", log_locals=True)
             try:
                 return COLORS_BY_VALUE[rgb]
             except KeyError as e:
@@ -739,7 +758,6 @@ class Color(PyColor):
 
 
     @classmethod
-    # @snoop
     def parse_str(cls, value: str) -> RGBA:
         """
         Parse a string representing a color to an RGBA tuple.
@@ -762,10 +780,15 @@ class Color(PyColor):
         Raises:
             ValueError: If the input string cannot be parsed to an RGBA tuple.
         """
+        log.debug(f"Entered Color.parse_str({value})")
+            
         value_lower = value.lower()
+        log.debug(f"value_lower: {value_lower}")
         try:
             red, green, blue = COLORS_BY_NAME[value_lower]
+            log.debug(f"red: {red}, green: {green}, blue:{blue}")
         except KeyError:
+            log.debug(f"KeyError: {value_lower}")
             pass
         else:
             return cls.ints_to_rgba(red, green, blue, None)
@@ -962,14 +985,58 @@ class Color(PyColor):
         Returns:
             A `rich.table.Table` instance.
         """
-        table = Table(title=f"[b #ffffff]{title.capitalize()}[/]", expand=False, caption=caption)
+        color_title = cls.colortitle(title)
+        table = Table(
+            title=color_title,
+            expand=False,
+            caption=caption,
+            caption_justify='right'
+        )
         if show_index:
-            table.add_column("Index", style="bold", justify="right")
-        table.add_column("Sample", style="bold", justify="center")
-        table.add_column("Name", style="bold", justify="left")
-        table.add_column("Hex", style="bold", justify="left")
-        table.add_column("RGB", style="bold", justify="left")
+            table.add_column(cls.colortitle("Index"), style="bold", justify="right")
+        table.add_column(cls.colortitle("Sample"), style="bold", justify="center")
+        table.add_column(cls.colortitle("Name"), style="bold", justify="left")
+        table.add_column(cls.colortitle("Hex"), style="bold", justify="left")
+        table.add_column(cls.colortitle("RGB"), style="bold", justify="left")
         return table
+
+
+    @classmethod
+    def colortitle(cls, title: str) -> Text:
+        """Return the colored title."""
+        title_list: List[str] = list(title)
+        length = len(title)
+        COLORS = cycle(
+            [
+                "#FF00FF",
+                "#AF00FF",
+                "#5F00FF",
+                "#0000FF",
+                "#0055FF",
+                "#0080FF",
+                "#00C0FF",
+                "#00FFFF",
+                "#00FFAF",
+                "#00FF00",
+                "#AFFF00",
+                "#FFFF00",
+                "#FFAF00",
+                "#FF8700",
+                "#FF4B00",
+                "#FF0000",
+                "#FF005F"
+            ]
+        )
+        color_title = Text()
+        #randomize
+        for _ in range(randint(0,16)):
+            next(COLORS)
+        for index in range(length):
+            char: str = title_list[index]
+            color: str = next(COLORS)
+            color_title.append(Text(char, style=f"bold {color}"))
+        return color_title
+
 
     @classmethod
     def color_table(
@@ -981,7 +1048,7 @@ class Color(PyColor):
         *,
         show_index: bool = False
     ) -> Table:
-        table = cls.generate_table(title, show_index)
+        table = cls.generate_table(title, show_index, caption)
         for index, (key, _) in enumerate(COLORS_BY_NAME.items()):
             if index < start:
                 continue
@@ -1025,9 +1092,9 @@ class Color(PyColor):
 
         def table_generator() -> Generator:
             tables: List[Tuple[str, int, int,Optional[Text]]] = [
-                ("Gradient Colors", 0, 19, Text("These colors have been adapted to make naming easier.", style='dim')),
-                ("CSS3 Colors", 20, 151, None),
-                ("Rich Colors", 152, 342, None),
+                ("Gradient Colors", 0, 17, Text("These colors have been adapted to make naming easier.", style='i d #ffffff')),
+                ("CSS3 Colors", 18, 147, None),
+                ("Rich Colors", 148, 342, None),
             ]
             for table in tables:
                 yield table
@@ -1048,16 +1115,14 @@ class Color(PyColor):
 COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "magenta": (255, 0, 255),
     "purple": (175, 0, 255),
-    "blueviolet": (95, 0, 255),
+    "violet": (95, 0, 255),
     "blue": (0, 0, 255),
-    "babyblue": (0, 85, 255),
-    "lightblue": (0, 135, 255),
-    "skyblue": (0, 195, 255),
+    "dodgerblue": (0, 85, 255),
+    "deepskyblue": (0, 135, 255),
+    "lightskyblue": (0, 195, 255),
     "cyan": (0, 255, 255),
     "springgreen": (0, 255, 175),
-    "green": (0, 255, 125),
     "lime": (0, 255, 0),
-    "chartreuse": (135, 255, 0),
     "greenyellow": (175, 255, 0),
     "yellow": (255, 255, 0),
     "orange": (255, 175, 0),
@@ -1077,7 +1142,7 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "brown": (165, 42, 42),
     "burlywood": (222, 184, 135),
     "cadetblue": (95, 158, 160),
-    "csschartreuse": (127, 255, 0),
+    "chartreuse": (127, 255, 0),
     "chocolate": (210, 105, 30),
     "coral": (255, 127, 80),
     "cornflowerblue": (100, 149, 237),
@@ -1102,10 +1167,10 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "darkslategrey": (47, 79, 79),
     "darkturquoise": (0, 206, 209),
     "darkviolet": (148, 0, 211),
-    "deepskyblue": (0, 191, 255),
+    "deepskyblue_css": (0, 191, 255),
     "dimgray": (105, 105, 105),
     "dimgrey": (105, 105, 105),
-    "dodgerblue": (30, 144, 255),
+    "dodgerblue_css": (30, 144, 255),
     "firebrick": (178, 34, 34),
     "floralwhite": (255, 250, 240),
     "forestgreen": (34, 139, 34),
@@ -1114,20 +1179,20 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "gold": (255, 215, 0),
     "goldenrod": (218, 165, 32),
     "gray": (128, 128, 128),
-    "cssgreen": (0, 128, 0),
-    "cssgreenyellow": (173, 255, 47),
+    "green": (0, 128, 0),
+    "greenyellow_css": (173, 255, 47),
     "grey": (128, 128, 128),
     "honeydew": (240, 255, 240),
-    "csshotpink": (255, 105, 180),
+    "hotpink_css": (255, 105, 180),
     "indianred": (205, 92, 92),
     "indigo": (75, 0, 130),
     "ivory": (255, 255, 240),
     "khaki": (240, 230, 140),
     "lavender": (230, 230, 250),
     "lavenderblush": (255, 240, 245),
-    "csslawngreen": (124, 252, 0),
+    "lawngreen": (124, 252, 0),
     "lemonchiffon": (255, 250, 205),
-    "csslightblue": (173, 216, 230),
+    "lightblue": (173, 216, 230),
     "lightcoral": (240, 128, 128),
     "lightcyan": (224, 255, 255),
     "lightgoldenrodyellow": (250, 250, 210),
@@ -1137,7 +1202,7 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "lightpink": (255, 182, 193),
     "lightsalmon": (255, 160, 122),
     "lightseagreen": (32, 178, 170),
-    "lightskyblue": (135, 206, 250),
+    "lightskyblue_css": (135, 206, 250),
     "lightslategray": (119, 136, 153),
     "lightslategrey": (119, 136, 153),
     "lightsteelblue": (176, 196, 222),
@@ -1193,7 +1258,7 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "thistle": (216, 191, 216),
     "csstomato": (255, 99, 71),
     "turquoise": (64, 224, 208),
-    "violet": (238, 130, 238),
+    "violet_css": (238, 130, 238),
     "wheat": (245, 222, 179),
     "white": (255, 255, 255),
     "whitesmoke": (245, 245, 245),
