@@ -1,5 +1,24 @@
 # Changelog
 
+
+## v0.2.19
+
+<span class="highlight">February 5, 2024</span> | Bugfix & Fixed Docs
+
+
+### <u>Version Changes</u>
+
+- Updated Docs
+    - Changed exampes with `maxgradient.console.Console` to use `rich.console.Console`
+    - Changed `import maxgradient as mg` statement to:
+    `from maxgradient import {object}`
+
+### <u>Bug Fixes</u>
+
+- Fixed bug where MaxGradient would fail due to a typo.
+
+
+
 ## v0.2.18
 
 <span class="highlight">January 16, 2024</span> | Created TypeAlias `GradientColors`

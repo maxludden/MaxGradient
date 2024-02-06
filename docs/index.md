@@ -13,7 +13,7 @@
         <div class="badges">
             <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11 | 3.12 -blue?logo=python" alt="PyPI - MaxGradient"></a>
             <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.18-bbbbbb" alt="Version 0.2.18"></a>
+            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.19-bbbbbb" alt="Version 0.2.19"></a>
             <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/9edad3968817816b87e7fbbefa224a7145c2593e5e4e6fa57f39a707c2fbe389/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
         </div>
         <div id="spacer"></div>
@@ -136,6 +136,8 @@ console.print(
 <p>MaxGradient also includes a GradientRule. The GradientRule is a Rich Renderable that prints a horizontal rule to the console in gradient color. It can be used to separate sections of text in a gradient colored console output.</p>
 <p>The GradientRule is currently initialized with random colors and does not at the momement allow for custimization of these colors.</p>
 <p>It does however allow the user to specify the thickness of the rule. The thickness is specified by the <span class="g2">thickness</span> keyword argument. The thickeness can be specified as the <span class="g2"><code>'thin'</code></span>, <span class="g2"><code>'medium'</code></span>, or <span class="g2"><code>'thick'</code></span></pre>. The default thickness is 'medium'.</p>
+
+
 ```python
 from rich.console import Console
 from maxgradient import GradientRule
@@ -143,7 +145,6 @@ from maxgradient import GradientRule
 console = Console()
 console.print("[u b #ffffff]Rule Examples[/]", justify="center")
 console.line()
-# console.print("[dim]Gradient Rule without a title ⬇︎[/]", justify="center")
 console.print(GradientRule(title=f"{title}", thickness="thin", align="left"))
 console.line()
 console.print(

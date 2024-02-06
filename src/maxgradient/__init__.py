@@ -34,7 +34,7 @@ from maxgradient.rule import GradientRule
 from maxgradient.spectrum import Spectrum
 from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
 
-__version__ = "0.2.18"
+__version__ = "0.2.19"
 
 __all__ = [
     "Color",

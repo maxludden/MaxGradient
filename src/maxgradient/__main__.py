@@ -1,4 +1,5 @@
 """MaxGradient.main"""
+
 # ruff: noqa: F841
 from typing import Iterable
 
@@ -8,7 +9,7 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.text import Text
 
-from maxgradient._gradient import Gradient
+from maxgradient.gradient import Gradient
 from maxgradient.rule import GradientRule
 
 TEXT = "Lorem nulla consequat enim adipisicing excepteur nostrud pariatur est. \
@@ -25,21 +26,22 @@ def gen_random_group() -> Group:
     def syntax() -> Syntax:
         """Generate the syntax for a random gradient."""
         code = Syntax(
-            f"""import maxgradient as mg
+            f"""from maxgradient import Gradient
+from rich.console inmport Console
 
 TEXT = "{TEXT}"
 
-console = mg.Console()
+console = Console()
 
 console.print(
-    mg.Gradient(TEXT)
+    Gradient(TEXT)
 )""",
             "python",
             theme="dracula",
             line_numbers=True,
             indent_guides=False,
             word_wrap=True,
-            # background_color="#222222",
+            background_color="#222222",
             padding=(1, 2),
         )
         code.stylize_range("italic #83DDF0", (5, 13), (5, 20))  # Console
@@ -87,8 +89,8 @@ the available options present in the `",
 
     def syntax() -> Syntax:
         """Generate the syntax for a rainbow gradient."""
-        code_str: str = """console = mg.Console()
-console.gradient(TEXT, rainbow=True, style="bold")"""
+        code_str: str = """console = Console()
+console.print(Gradient(TEXT, rainbow=True, style="bold"))"""
         code: Syntax = Syntax(
             code_str,
             "python",
@@ -143,10 +145,10 @@ the ",
     def syntax() -> Syntax:
         """Generate the syntax for a red, orange, yellow gradient."""
         code = Syntax(
-            """console = mg.Console()
+            """console = Console()
 
 console.print(
-    mg.Gradient(
+    Gradient(
         TEXT,
         colors=["red", "orange", "yellow"],
         style="bold italic",
@@ -189,7 +191,7 @@ def gen_cool_group() -> Group:
     def explination() -> Text:
         """Generate the explination for a cool gradient."""
         return Text(
-            "You can also use any valid X11 color name, hex code, or rgb value \
+            "You can also use any valid CSS3 color name, hex code, or rgb value \
 to create a gradient. In the following example we'll use a combination of all three \
 to create a cool gradient.",
             style="#ffffff",
@@ -198,10 +200,10 @@ to create a cool gradient.",
     def syntax() -> Syntax:
         """Generate the syntax for a cool gradient."""
         code = Syntax(
-            """console = mg.Console()
+            """console = Console()
 
 console.print(
-    mg.Gradient(
+    Gradient(
         TEXT,
         colors=[
             "#00ffff",
@@ -341,25 +343,23 @@ def generate_panels() -> Iterable[Panel]:
     )
 
 
-def main() -> None:
+if __name__ == "__main__":  # pragma: no cover
     """Run the main function."""
-    from maxgradient.console import Console  # noqa: F811
+    from pathlib import Path
+    from rich.console import Console
 
     console = Console(record=True)
     console.line(2)
-    console.gradient_rule("[b]Gradient Color Examples[/]")
+    console.print(GradientRule("[b]Gradient Color Examples[/]"))
     console.line(2)
-    
+
     for panel in generate_panels():
         console.print(panel, justify="center", width=console.width)
         console.line(2)
 
     console.line()
-    console.save_svg(
-        "docs/img/main_examples.svg",
-        title="MaxGradient Examples",
-    )
-
-
-if __name__ == "__main__":
-    main()
+    svg = console.export_svg(title="MaxGradient Examples")
+    with open(
+        Path.cwd() / "docs" / "img" / "main_examples.svg", "wt", encoding="utf-8"
+    ) as file:
+        file.write(svg)
