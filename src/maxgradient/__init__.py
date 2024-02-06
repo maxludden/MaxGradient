@@ -13,8 +13,13 @@ from os import environ
 from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
-from rich.console import (Console, JustifyMethod, OverflowMethod,
-                          RenderableType, RenderResult)
+from rich.console import (
+    Console,
+    JustifyMethod,
+    OverflowMethod,
+    RenderableType,
+    RenderResult,
+)
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.progress import Progress, Task
@@ -65,11 +70,7 @@ if __name__ == "__main__":
             text="MaxGradient is a python library for printing gradients in the terminal.",
             rainbow=True,
             justify="center",
-            style="bold"
-        )
-    )
-    console.line(2)
-            style="bold"
+            style="bold",
         )
     )
     console.line(2)
