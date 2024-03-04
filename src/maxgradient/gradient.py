@@ -10,16 +10,17 @@ from pydantic_extra_types.color import ColorType
 from rich import get_console
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
-from rich.style import Style, StyleType
 from rich.panel import Panel
+from rich.style import Style, StyleType
 from rich.text import Span, Text
 from rich.traceback import install as tr_install
+from snoop import snoop
+from cheap_repr import register_repr, normal_repr
 
 from maxgradient._simple_gradient import SimpleGradient
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList
 from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
-
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -115,17 +116,17 @@ class Gradient(Text):
         """
 
         self.verbose = verbose or False
-        self.text = text
+        self.text = text  # type: ignore
         self.hues = hues
         self.justify = justify or DEFAULT_JUSTIFY
         self.overflow = overflow or DEFAULT_OVERFLOW
         self.style = Style.parse(style) if isinstance(style, str) else style
-        self.colors = self.validate_colors(colors, rainbow=rainbow)
+        self.colors = self.validate_colors(colors or [], rainbow=rainbow)  # type: ignore
         if len(self.colors) > 2:
             self.hues = len(self.colors)
         else:
             self.hues = hues
-        self.verbose: bool = verbose
+        self.verbose = verbose
 
         super().__init__(
             text=self.text,
@@ -164,16 +165,13 @@ class Gradient(Text):
             None
         """
         if isinstance(value, Text):
-            sanitized_text = strip_control_codes(value.plain)
-            self._length = len(sanitized_text)
-            self._text = sanitized_text
+            self._length = value._length
+            self._text = value._text
             self._spans = value.spans
         elif isinstance(value, str):
-            # if value == "":
-            #     raise ValueError("Text cannot be empty.")
             sanitized_text = strip_control_codes(value)
             self._length = len(sanitized_text)
-            self._text = sanitized_text
+            self._text = list(sanitized_text)
         elif value is None:
             raise ValueError("Text cannot be None.")
         else:
@@ -197,37 +195,37 @@ class Gradient(Text):
             raise ValueError("Gradient must have at least two colors.")
         self._hues = hues
 
-    @property
-    def justify(self) -> str:
-        """The justify method of the gradient."""
-        if self._justify is not None:
-            return self._justify
-        return DEFAULT_JUSTIFY
+    # @property
+    # def justify(self) -> JustifyMethod:
+    #     """The justify method of the gradient."""
+    #     if self._justify is not None:
+    #         return self._justify
+    #     return DEFAULT_JUSTIFY
 
-    @justify.setter
-    def justify(self, justify: JustifyMethod) -> None:
-        """Set the justify method of the gradient.
+    # @justify.setter
+    # def justify(self, justify: JustifyMethod) -> None:
+    #     """Set the justify method of the gradient.
 
-        Args:
-            justify (JustifyMethod): The justify method of the gradient.
-        """
-        self._justify = justify
+    #     Args:
+    #         justify (JustifyMethod): The justify method of the gradient.
+    #     """
+    #     self._justify = justify
 
-    @property
-    def overflow(self) -> str:
-        """The overflow method of the gradient."""
-        if self._overflow is not None:
-            return self._overflow
-        return DEFAULT_OVERFLOW
+    # @property
+    # def overflow(self) -> str:
+    #     """The overflow method of the gradient."""
+    #     if self._overflow is not None:
+    #         return self._overflow
+    #     return DEFAULT_OVERFLOW
 
-    @overflow.setter
-    def overflow(self, overflow: OverflowMethod) -> None:
-        """Set the overflow method of the gradient.
+    # @overflow.setter
+    # def overflow(self, overflow: OverflowMethod) -> None:
+    #     """Set the overflow method of the gradient.
 
-        Args:
-            overflow (OverflowMethod): The overflow method of the gradient.
-        """
-        self._overflow = overflow
+    #     Args:
+    #         overflow (OverflowMethod): The overflow method of the gradient.
+    #     """
+    #     self._overflow = overflow
 
     @property
     def no_wrap(self) -> Optional[bool]:
@@ -246,42 +244,42 @@ class Gradient(Text):
         """
         self._no_wrap = no_wrap
 
-    @property
-    def style(self) -> Style:
-        """The style of the gradient."""
-        return self._style
+    # @property
+    # def style(self) -> Style:
+    #     """The style of the gradient."""
+    #     return self._style
 
-    @style.setter
-    def style(self, style: StyleType) -> None:
-        """
-        Setter for the style attribute.
+    # @style.setter
+    # def style(self, style: StyleType) -> None:
+    #     """
+    #     Setter for the style attribute.
 
-        Args:
-            style (StyleType): The value to set for the style attribute.
-        """
-        if style is None:
-            self._style = Style.null()
-        elif isinstance(style, rich.style.Style):
-            self._style = style
-        else:
-            self._style = Style.parse(style)
+    #     Args:
+    #         style (StyleType): The value to set for the style attribute.
+    #     """
+    #     if style is None:
+    #         self._style = Style.null()
+    #     elif isinstance(style, rich.style.Style):
+    #         self._style = style
+    #     else:
+    #         self._style = Style.parse(style)
 
-    @property
-    def end(self) -> Optional[str]:
-        """The end character of the gradient."""
-        try:
-            return self._end
-        except AttributeError:
-            return "\n"
+    # @property
+    # def end(self) -> Optional[str]:
+    #     """The end character of the gradient."""
+    #     try:
+    #         return self._end
+    #     except AttributeError:
+    #         return "\n"
 
-    @end.setter
-    def end(self, end: Optional[str]) -> None:
-        """Set the end character of the gradient.
+    # @end.setter
+    # def end(self, end: Optional[str]) -> None:
+    #     """Set the end character of the gradient.
 
-        Args:
-            end (str): The end character of the gradient.
-        """
-        self._end = end
+    #     Args:
+    #         end (str): The end character of the gradient.
+    #     """
+    #     self._end = end
 
     @property
     def colors(self) -> List[Color]:
@@ -320,7 +318,7 @@ class Gradient(Text):
             PydanticCustomError: If any of the colors are invalid.
         """
         _colors: List[Color] = []
-        if colors is None:
+        if colors is None or colors == []:
             if not rainbow:
                 color_list = ColorList(self.hues)
                 for index, color in enumerate(color_list):
@@ -358,8 +356,23 @@ class Gradient(Text):
                 if self.verbose:
                     console.log(f"[green]Generated {self.hues} colors:[/]", _colors)
                 return _colors
-        elif isinstance(colors, (List, Tuple)):
+        elif isinstance(colors, tuple):
             for color in colors:
+                try:
+                    color = Color(color)
+                except PydanticCustomError as pce:
+                    raise pce
+                else:
+                    _colors.append(color)
+            if self.verbose:
+                console.log(
+                    f"[green]Validated [/][b i #00ff00]{len(colors)}[/][green] colors:[/]",
+                    _colors,
+                )
+            assert len(_colors) >= 2, "Gradient must have at least two colors."
+            return _colors
+        elif isinstance(colors, list):
+            for color in colors:  # type: ignore
                 try:
                     color = Color(color)
                 except PydanticCustomError as pce:
@@ -428,7 +441,8 @@ class Gradient(Text):
             text = self.text
         else:
             raise TypeError(f"Text must be a string or list, not {type(self.text)}")
-        for index, (start, end) in enumerate(slices, 1):
+        
+        for index, (start, end) in enumerate(slices, 1): # type: ignore
             substring = text[start:end]
             substrings.append(substring)
             if self.verbose:
@@ -445,12 +459,12 @@ class Gradient(Text):
         subgradients: List[SimpleGradient] = []
 
         for index, substring in enumerate(substrings):
-            color1 = self.colors[index]
-            color2 = self.colors[index + 1]
+            color_1 = self.colors[index]
+            color_2 = self.colors[index + 1]
             gradient = SimpleGradient(
                 substring,  # type: ignore
-                color1=color1,
-                color2=color2,
+                color1=color_1.hex,
+                color2=color_2.hex,
                 justify=self.justify,  # type: ignore
                 overflow=self.overflow,  # type: ignore
                 style=self.style,
@@ -525,25 +539,25 @@ class Gradient(Text):
             console = Console(width=60)
         gradient = Gradient(
             "The quick brown fox jumps over the lazy dog.",
-            colors=["magenta", "purple", "blueviolet"],
+            colors=["magenta", "purple", "violet"]
         )
         panel_content = Text.assemble(
             gradient,
             Text("\n\nThis gradient starts with "),
-            Text("magenta", style = "b #ff00ff"),
+            Text("magenta", style="b #ff00ff"),
             Text(". It fades to "),
-            Text("purple", style = "b #af00ff"),
-            Text(", and ends in "), 
-            Text("blueviolet", style = "b #5f00ff"),
+            Text("purple", style="b #af00ff"),
+            Text(", and ends in "),
+            Text("violet", style="b #5f00ff"),
             Text("."),
-            justify="center"
+            justify="center",
         )
         console.line(2)
         console.print(
             Panel(
                 panel_content,
                 title="[b #ffffff]Named Gradient[/]",
-                padding=(1,4),
+                padding=(1, 4),
             ),
             justify="center",
         )
@@ -577,7 +591,7 @@ class Gradient(Text):
                     justify="center",
                 ),
                 title="[b #ffffff]Random Gradient[/b #ffffff]",
-                padding=(1,4)
+                padding=(1, 4),
             ),
             justify="center",
         )
@@ -614,7 +628,7 @@ class Gradient(Text):
                     justify="center",
                 ),
                 title=Gradient("Rainbow Gradient", rainbow=True),
-                padding=(1,4)
+                padding=(1, 4),
             ),
             justify="center",
         )
@@ -629,10 +643,10 @@ class Gradient(Text):
         Gradient.rainbow_gradient_example()
 
 
+register_repr(Gradient)(normal_repr)
 if __name__ == "__main__":  # pragma: no cover
+    from lorem_text import lorem
     from rich.console import Console
     from rich.traceback import install as tr_install
-
-    from lorem_text import lorem
 
     Gradient.example()

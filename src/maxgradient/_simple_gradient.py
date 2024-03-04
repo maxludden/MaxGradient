@@ -1,4 +1,5 @@
 """Generate a simple gradient"""
+
 # ruff: noqa: F401
 import re
 from functools import partial
@@ -7,8 +8,6 @@ from typing import Any, Dict, Generator, Iterable, List, Literal, Optional, Tupl
 
 import rich.style
 from cheap_repr import normal_repr, register_repr
-from maxgradient.color import Color, PyColorType
-from maxgradient.theme import GradientTheme
 from rich._pick import pick_bool
 from rich.cells import cell_len
 from rich.console import Console, ConsoleOptions, JustifyMethod, OverflowMethod
@@ -19,6 +18,9 @@ from rich.style import Style, StyleType
 from rich.text import Span, Text
 from rich.traceback import install as tr_install
 from snoop import spy
+
+from maxgradient.color import Color, PyColorType
+from maxgradient.theme import GradientTheme
 
 GradientMethod = Literal["default", "list", "mono", "rainbow"]
 DEFAULT_JUSTIFY: JustifyMethod = "default"
@@ -53,7 +55,7 @@ class SimpleGradient(Text):
         "_style",
         "_spans",
         "end",
-        "verbose"
+        "verbose",
     )
 
     def __init__(
@@ -68,10 +70,10 @@ class SimpleGradient(Text):
         style: StyleType = Style.null(),
         end: str = "",
         spans: Optional[List[Span]] = None,
-        verbose: bool = False
+        verbose: bool = False,
     ) -> None:
         self.verbose = verbose
-        self.text = text
+        self.text = text  # type: ignore
         _style = Style.parse(style) if isinstance(style, str) else style
 
         super().__init__(
@@ -85,9 +87,9 @@ class SimpleGradient(Text):
         )
 
         if not isinstance(color1, Color):
-            color1 = Color(color1)
+            color1 = Color(color1) # type: ignore
         if not isinstance(color2, Color):
-            color2 = Color(color2)
+            color2 = Color(color2) # type: ignore
 
         self.color1 = Color(color1)
         self.color2 = Color(color2)
@@ -135,21 +137,21 @@ class SimpleGradient(Text):
             value = "".join(value)
         if isinstance(value, Text):
             sanitized_text = strip_control_codes(value.plain)
-            self._length = len(sanitized_text)
-            self._text = sanitized_text
+            self._length = value._length
+            self._text = value._text
             self._spans = value.spans
         elif isinstance(value, str):
             if value == "":
                 raise ValueError("Text cannot be empty.")
             sanitized_text = strip_control_codes(value)
             self._length = len(sanitized_text)
-            self._text = sanitized_text
+            self._text = sanitized_text  # type: ignore
         elif value is None:
             raise ValueError("Text cannot be None.")
         else:
             raise TypeError(f"Text must be a string or Text, not {type(value)}")
 
-    @property
+    @property  # type: ignore
     def style(self) -> Style:
         """The style of the gradient."""
         return self._style
@@ -163,7 +165,7 @@ class SimpleGradient(Text):
             style (StyleType): The value to set for the style attribute.
         """
         if style is None:
-            self._style = Style.null()
+            self._style: Style = Style.null()
         elif isinstance(style, rich.style.Style):
             self._style = style
         else:

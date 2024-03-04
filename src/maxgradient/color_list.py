@@ -4,14 +4,15 @@ from pathlib import Path
 from random import choice, randint
 from typing import Any, List, Tuple
 
-from maxgradient.color import Color
-from maxgradient.spectrum import Spectrum
 from rich.columns import Columns
 from rich.console import Console
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install
+
+from maxgradient.color import Color
+from maxgradient.spectrum import Spectrum
 
 console = Console()
 tr_install(console=console)
@@ -65,7 +66,7 @@ class ColorList(List[Color]):
     def __call__(self) -> List[Color]:
         return [next(self) for _ in range(self.hues)]
 
-    def __getitem__(self, index: int) -> Color:
+    def __getitem__(self, index: int) -> Color:  # type: ignore
         return Color(self.COLORS[index])
 
     def __getattribute__(self, __name: str) -> Any:
@@ -102,9 +103,7 @@ class ColorList(List[Color]):
             name = color.name.capitalize()
             table.add_row(
                 Text(" " * 10, style=color.bg_style),
-                Text(
-                    name, style=color.style
-                ),
+                Text(name, style=color.style),
                 Text(color.hex.upper(), style=color.style),
                 Text(color.rgb, style=color.style),
             )

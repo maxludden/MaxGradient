@@ -12,21 +12,13 @@ from __future__ import annotations
 import math
 import re
 from colorsys import hls_to_rgb, rgb_to_hls
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Generator,
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    Union,
-    cast,
-)
 from itertools import cycle
 from random import randint
+from typing import (Any, Callable, Dict, Generator, List, Literal, Optional,
+                    Tuple, Union, cast)
 
+# from snoop import snoop # type: ignore
+from cheap_repr import normal_repr, register_repr  # type: ignore
 from pydantic import GetJsonSchemaHandler
 from pydantic._internal import _repr
 from pydantic.json_schema import JsonSchemaValue
@@ -36,20 +28,21 @@ from pydantic_extra_types.color import Color as PyColor
 from pydantic_extra_types.color import ColorType as PyColorType
 from rich.color import Color as RichColor
 from rich.color import ColorParseError, blend_rgb
-from rich.console import Console
-from rich.traceback import install as tr_install
 from rich.color_triplet import ColorTriplet
+from rich.console import Console
 from rich.style import Style
 from rich.table import Table
 from rich.text import Text
-# from snoop import snoop
-# from cheap_repr import register_repr, normal_repr
+from rich.traceback import install as tr_install
+
 from maxgradient.log import log
 
-ColorTuple=Union[Tuple[int, int, int], Tuple[int, int, int, float]]
-ColorType=Union[ColorTuple, str, 'Color', PyColorType, RichColor]
+GradientColorTuple=Union[Tuple[int, int, int], Tuple[int, int, int, float]]
+ColorType=Union[GradientColorTuple, str, 'Color', PyColorType, RichColor]
 HslColorTuple = Union[Tuple[float, float, float], Tuple[float, float, float, float]]
-VERBOSE: bool = True
+VERBOSE: bool = False
+
+register_repr(Console)(normal_repr)
 
 def get_console() -> Console:
     console = Console()
@@ -58,7 +51,7 @@ def get_console() -> Console:
 
 
 
-class RGBA:
+class GradientRGBA:
     """
     Internal use only as a representation of a color.
     """
@@ -82,7 +75,7 @@ class RGBA:
         return self._tuple[item]
 
     def __eq__(self, other: Any) -> bool:
-        return isinstance(other, RGBA) and self._tuple == other._tuple
+        return isinstance(other, GradientRGBA) and self._tuple == other._tuple
 
     @property
     def triplet(self) -> ColorTriplet:
@@ -98,7 +91,7 @@ class RGBA:
         )
 
     @classmethod
-    def from_triplet(cls, triplet: ColorTriplet) -> RGBA:
+    def from_triplet(cls, triplet: ColorTriplet) -> GradientRGBA:
         """Create an RGBA from a ColorTriplet."""
         return cls(
             red=triplet.red / 255,
@@ -108,7 +101,7 @@ class RGBA:
         )
 
     @classmethod
-    def from_rgb(cls, rgb: str) -> RGBA:
+    def from_rgb(cls, rgb: str) -> GradientRGBA:
         """Create an RGBA from RGB color code."""
         rgb_match = re.match(
             r"r?g?b?\((?P<red>\d+), ?(?P<green>\d+), ?(?P<blue>\d+)\)", rgb
@@ -152,7 +145,7 @@ class RGBA:
             ]
         )
 
-
+register_repr(GradientRGBA)(normal_repr)
 # these are not compiled here to avoid import slowdown, they'll be compiled the first time they're used, then cached
 _r_255 = r"(\d{1,3}(?:\.\d+)?)"
 _r_comma = r"\s*,\s*"
@@ -179,7 +172,7 @@ repeat_colors = {int(c * 2, 16) for c in "0123456789abcdef"}
 rads = 2 * math.pi
 
 
-class Color(PyColor):
+class Color:
     """
     Represents a color.
     """
@@ -187,8 +180,8 @@ class Color(PyColor):
     __slots__ = "_original", "_rgba"
 
     def __init__(self, value: ColorType) -> None:
-        self._rgba: RGBA
-        self._original: ColorType
+        self._rgba: GradientRGBA = GradientRGBA(0,0,0,1)
+        self._original: ColorType = value
 
         if isinstance(value, (tuple, list)):
             self._rgba = self.parse_tuple(value)
@@ -198,12 +191,12 @@ class Color(PyColor):
 
         elif isinstance(value, PyColor):
             r,g,b,a = value._rgba._tuple
-            self._rgba = RGBA(r,g,b,a)
+            self._rgba = GradientRGBA(r,g,b,a)
             self._original = value._original
             
         elif isinstance(value, Color):
             self._rgba = value._rgba
-            self._orginial = value._original
+            self._original = value._original
 
         elif isinstance(value, RichColor):
             self._rgba = self.parse_rich_color(value)
@@ -256,7 +249,7 @@ class Color(PyColor):
         else:
             assert triplet, "ColorTriplet must not be None"
             red, green, blue = triplet.red, triplet.green, triplet.blue
-            rgba = RGBA(
+            rgba = GradientRGBA(
                 red=red / 255.0, green=green / 255.0, blue=blue / 255.0, alpha=None
             )
             return cls(rgba.triplet.hex)
@@ -410,7 +403,7 @@ class Color(PyColor):
 
         def rgb_to_hsv(color: Color) -> Tuple[float, float, float]:
             """Convert an RGB color to HSV."""
-            rgba: RGBA = color._rgba
+            rgba: GradientRGBA = color._rgba
             h, s, v = colorsys.rgb_to_hsv(r=rgba.red, g=rgba.green, b=rgba.blue)
             return h, s, v
 
@@ -483,17 +476,18 @@ class Color(PyColor):
 
     @classmethod
     def __get_pydantic_json_schema__(
-        cls, core_schema: core_schema.CoreSchema, handler: GetJsonSchemaHandler
-    ) -> JsonSchemaValue:
+        cls,
+        core_schema: core_schema.CoreSchema,
+        handler: GetJsonSchemaHandler) -> JsonSchemaValue:
         field_schema: dict[str, Any] = {}
         field_schema.update(type="string", format="color")
         return field_schema
 
-    def original(self) -> ColorType:
+    def original(self) -> ColorType: # type: ignore
         """
         Original value passed to `Color`.
         """
-        return self._original
+        return self._original # type: ignore
 
     @property
     def name(self) -> str:
@@ -503,9 +497,10 @@ class Color(PyColor):
         Returns:
             str: The color name.
         """
-        return self.as_named(fallback=True)
+        return str(self.as_named(fallback=True))
 
-    def as_named(self, *, fallback: bool = True) -> str:
+
+    def as_named(self, *, fallback: bool = True, verbose: bool = VERBOSE) -> str:
         """
         Returns the name of the color if it can be found in `COLORS_BY_VALUE` dictionary,
         otherwise returns the hexadecimal representation of the color or raises `ValueError`.
@@ -522,10 +517,10 @@ class Color(PyColor):
         """
         if self._rgba.alpha is None:
             rgb = cast(Tuple[int, int, int], self.as_rgb_tuple())
-            if VERBOSE:
+            if verbose:
                 console=Console(color_system="truecolor")
                 tr_install(console=console)
-                console.log("Entered Color.as_named()", log_locals=True)
+                # console.log("Entered Color.as_named()", log_locals=True)
             try:
                 return COLORS_BY_VALUE[rgb]
             except KeyError as e:
@@ -590,11 +585,11 @@ class Color(PyColor):
             )
 
     @property
-    def rgb_tuple(self) -> ColorTuple:
+    def rgb_tuple(self) -> GradientColorTuple:
         """Return the color as an RGB or RGBA tuple."""
         return self.as_rgb_tuple()
 
-    def as_rgb_tuple(self, *, alpha: bool | None = None) -> ColorTuple:
+    def as_rgb_tuple(self, *, alpha: bool | None = None) -> GradientColorTuple:
         """
         Returns the color as an RGB or RGBA tuple.
 
@@ -699,10 +694,10 @@ class Color(PyColor):
         return cls(__input_value)
 
     def __str__(self) -> str:
-        return self.as_named(fallback=True)
+        return str(self.as_named(fallback=True))
 
     def __repr__(self) -> str:
-        return self.as_named(fallback=True)
+        return F"Color{self._original}"
 
     def __repr_args__(self) -> _repr.ReprArgs:
         return [(None, self.as_named(fallback=True))] + [("rgb", self.as_rgb_tuple())]
@@ -714,7 +709,7 @@ class Color(PyColor):
         return hash(self.as_rgb_tuple())
 
     @classmethod
-    def parse_rich_color(cls, value: RichColor) -> RGBA:
+    def parse_rich_color(cls, value: RichColor) -> GradientRGBA:
         """
         Parse a RichColor to an RGBA tuple.
 
@@ -732,7 +727,7 @@ class Color(PyColor):
         return cls.ints_to_rgba(triplet.red, triplet.green, triplet.blue, None)
 
     @classmethod
-    def parse_tuple(cls, value: tuple[Any, ...]) -> RGBA:
+    def parse_tuple(cls, value: tuple[Any, ...]) -> GradientRGBA:
         """Parse a tuple or list to get RGBA values.
 
         Args:
@@ -746,10 +741,10 @@ class Color(PyColor):
         """
         if len(value) == 3:
             r, g, b = (cls.parse_color_value(v) for v in value)
-            return RGBA(r, g, b, None)
+            return GradientRGBA(r, g, b, None)
         elif len(value) == 4:
             r, g, b = (cls.parse_color_value(v) for v in value[:3])
-            return RGBA(r, g, b, cls.parse_float_alpha(value[3]))
+            return GradientRGBA(r, g, b, cls.parse_float_alpha(value[3]))
         else:
             raise PydanticCustomError(
                 "color_error",
@@ -758,7 +753,7 @@ class Color(PyColor):
 
 
     @classmethod
-    def parse_str(cls, value: str) -> RGBA:
+    def parse_str(cls, value: str) -> GradientRGBA:
         """
         Parse a string representing a color to an RGBA tuple.
 
@@ -826,7 +821,7 @@ class Color(PyColor):
             return cls.parse_hsl(*m.groups())  # type: ignore
 
         if value_lower == "transparent":
-            return RGBA(0, 0, 0, 0)
+            return GradientRGBA(0, 0, 0, 0)
         raise PydanticCustomError(
             "color_error",
             "value is not a valid color: string not recognised as a valid color"
@@ -839,7 +834,7 @@ class Color(PyColor):
         green: int | str,
         blue: int | str,
         alpha: float | None = None,
-    ) -> RGBA:
+    ) -> GradientRGBA:
         """
         Converts integer or string values for RGB color and an optional alpha value to an `RGBA` object.
 
@@ -852,7 +847,7 @@ class Color(PyColor):
         Returns:
             An instance of the `RGBA` class with the corresponding color and alpha values.
         """
-        return RGBA(
+        return GradientRGBA(
             cls.parse_color_value(red),
             cls.parse_color_value(green),
             cls.parse_color_value(blue),
@@ -930,7 +925,7 @@ class Color(PyColor):
     @classmethod
     def parse_hsl(
         cls, h: str, h_units: str, sat: str, light: str, alpha: float | None = None
-    ) -> RGBA:
+    ) -> GradientRGBA:
         """
         Parse raw hue, saturation, lightness, and alpha values and convert to RGBA.
 
@@ -958,7 +953,7 @@ class Color(PyColor):
             h_value = h_value % 1
 
         r, g, b = hls_to_rgb(h_value, l_value, s_value)
-        return RGBA(r, g, b, cls.parse_float_alpha(alpha))
+        return GradientRGBA(r, g, b, cls.parse_float_alpha(alpha))
 
     @staticmethod
     def float_to_255(c: float) -> int:
@@ -1111,6 +1106,8 @@ class Color(PyColor):
             except TypeError:
                 pass
 
+
+register_repr(Color)(normal_repr)
 
 COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "magenta": (255, 0, 255),

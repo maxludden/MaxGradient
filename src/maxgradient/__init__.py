@@ -8,6 +8,7 @@ MaxGradient is a python library built on top of the great \
     extendable. It is also designed to be used as a library \
     or as a command line tool.
 """
+
 # ruff: noqa: F401
 from os import environ
 from typing import TYPE_CHECKING

@@ -12,7 +12,7 @@ from typing_extensions import Annotated
 
 from maxgradient.gradient import Gradient
 
-app = Typer(name="gradient", help="Print a gradient.")
+app = Typer(name="gradient", help="Print text to the console in a gradient of colors.")
 
 valid_colors = [
     "magenta",
@@ -29,10 +29,28 @@ valid_colors = [
     "yellow",
     "orange",
     "darkorange",
-    "tomato",
     "red",
     "deeppink",
     "hotpink",
+]
+
+VALID_HEX = [
+    "#ff00ff", # 1 - magenta
+    "#af00ff", # 2 - violet
+    "#5f00ff", # 3 - purple
+    "#0000ff", # 4 - blue
+    "#005fff", # 5 - dodgerblue
+    "#00afff", # 6 - deepskyblue
+    "#00ffff", # 7 - cyan
+    "#00ffaf", # 8 - springgreen
+    "#00ff00", # 10 - lime
+    "#5fff00", # 11 - greenyellow
+    "#ffff00", # 12 - yellow
+    "#ffaf00", # 13 - orange
+    "#ff5f00", # 14 - darkorange
+    "#ff0000", # 15 - red
+    "#ff005f", # 16 - deeppink
+    "#ff00af" ## 17 - hotpink
 ]
 
 
@@ -106,7 +124,7 @@ default, left, center, right",
             case_sensitive=False,
             autocompletion=complete_color,
             help="Colors to use in the gradient. Valid colors include: \
-magenta, violet, purple, blue, dodgerblue, deepskyblue, lightskyblue, cyan, lime, yellow, orange, \
+magenta, violet, purple, blue, dodgerblue, deepskyblue, cyan, lime, yellow, orange, darkorange\
 and red.",
         ),
     ] = None,
@@ -133,6 +151,8 @@ and red.",
     """Print gradient colored text to the console."""
     console = Console()
     err_console = Console(stderr=True)
+
+    # Text
     if text:
         if text == "":
             err_console.print(
@@ -140,6 +160,7 @@ and red.",
             )
             raise Exit(code=1)
 
+    # verify that the text
     if isinstance(style, list):
         style = " ".join(style)
 
@@ -171,8 +192,7 @@ and red.",
 
     if panel:
         console.print(
-            Panel(gradient, border_style="dim"),
-            justify=justify  # type: ignore
+            Panel(gradient, border_style="dim"), justify=justify  # type: ignore
         )
     else:
         console.print(gradient, justify=justify)  # type: ignore

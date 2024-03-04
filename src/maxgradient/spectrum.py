@@ -80,9 +80,8 @@ class Spectrum(List[Color]):
     )
 
     def __init__(self) -> None:
-        global COLORS
-        COLORS = [Color.parse(hex) for hex in self.HEX]
-        super().__init__(COLORS)
+        self.COLORS: List[Color] = [Color.parse(hex) for hex in self.HEX]
+        super().__init__(self.COLORS)
 
     def __rich__(self) -> Table:
         table = Table(
@@ -94,7 +93,7 @@ class Spectrum(List[Color]):
             show_footer=False,
             show_header=True,
         )
-        for color in COLORS:
+        for color in self.COLORS:
             assert color.triplet, "ColorTriplet must not be None"
             triplet = color.triplet
             hex_str = triplet.hex.upper()
