@@ -13,7 +13,7 @@
         <div class="badges">
             <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Python-3.9 | 3.10 | 3.11 | 3.12 -blue?logo=python" alt="PyPI - MaxGradient"></a>
             <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/PyPI-MaxGradient-blue?" alt="PyPI - MaxGradient"></a>
-            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.2.19-bbbbbb" alt="Version 0.2.19"></a>
+            <a href="https://GitHub.com/maxludden/maxgradient"><img  class="badge" src="https://img.shields.io/badge/Version-0.3.0-bbbbbb" alt="Version 0.3.0"></a>
             <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/9edad3968817816b87e7fbbefa224a7145c2593e5e4e6fa57f39a707c2fbe389/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
         </div>
         <div id="spacer"></div>
@@ -25,7 +25,7 @@
                 <li><span class="g2">GradientRule</span> - A Rich Renderable that prints a horizontal rule to the console in gradient color.</li>
             </ul>
             <p>MaxGradient also expands the <a href="https://github.com/Textualize/rich/blob/master/rich/color.py">rich.color.Color</a> class to include generating colors from CSS3 named colors, as well as 3 digit hex color codes.</p>
-            <p>MaxGradient is a work in progress. It is currently in version 0.2.19. It is not yet feature complete, but it is usable. I am currently working on adding more features and improving the code. If you have any suggestions, please feel free to open an issue on <a href="https://GitHub.com/maxludden/maxgradient" title="GitHub.com/maxludden/maxgradient">GitHub</a>.</p>
+            <p>MaxGradient is a work in progress. It is currently in version 0.3.0. It is not yet feature complete, but it is usable. I am currently working on adding more features and improving the code. If you have any suggestions, please feel free to open an issue on <a href="https://GitHub.com/maxludden/maxgradient" title="GitHub.com/maxludden/maxgradient">GitHub</a>.</p>
         </div>
         <div id="spacer"></div>
 

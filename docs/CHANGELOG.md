@@ -1,5 +1,14 @@
 # Changelog
 
+# v0.3.0
+
+<span class="highlight">March 3, 2024</span> | Updated Gradient and Color
+
+### <u>Version Changes</u>
+
+- Updated `Color` class to work with `rich` v11.0.0
+- Updated `Gradient` class to work with `rich` v11.0.0
+- Updated cli.py to work with above changes
 
 ## v0.2.19
 

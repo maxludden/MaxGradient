@@ -727,7 +727,7 @@ class Color:
         return cls.ints_to_rgba(triplet.red, triplet.green, triplet.blue, None)
 
     @classmethod
-    def parse_tuple(cls, value: tuple[Any, ...]) -> GradientRGBA:
+    def parse_tuple(cls, value: tuple[Any, ...]|List[Any]) -> GradientRGBA:
         """Parse a tuple or list to get RGBA values.
 
         Args:

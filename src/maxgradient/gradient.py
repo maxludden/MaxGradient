@@ -66,7 +66,9 @@ class Gradient(Text):
         "_hues",
         "_justify",
         "_no_wrap",
+        "overflow",
         "_overflow",
+        "style",
         "_style",
         "_spans",
         "_rainbow",
@@ -195,21 +197,21 @@ class Gradient(Text):
             raise ValueError("Gradient must have at least two colors.")
         self._hues = hues
 
-    # @property
-    # def justify(self) -> JustifyMethod:
-    #     """The justify method of the gradient."""
-    #     if self._justify is not None:
-    #         return self._justify
-    #     return DEFAULT_JUSTIFY
+    @property
+    def justify(self) -> JustifyMethod:
+        """The justify method of the gradient."""
+        if self._justify is not None:
+            return self._justify # type: ignore
+        return DEFAULT_JUSTIFY
 
-    # @justify.setter
-    # def justify(self, justify: JustifyMethod) -> None:
-    #     """Set the justify method of the gradient.
+    @justify.setter
+    def justify(self, justify: JustifyMethod) -> None:
+        """Set the justify method of the gradient.
 
-    #     Args:
-    #         justify (JustifyMethod): The justify method of the gradient.
-    #     """
-    #     self._justify = justify
+        Args:
+            justify (JustifyMethod): The justify method of the gradient.
+        """
+        self._justify = justify
 
     # @property
     # def overflow(self) -> str:
