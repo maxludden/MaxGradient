@@ -156,7 +156,7 @@ and red.",
     if text:
         if text == "":
             err_console.print(
-                "[bold italic red]Error:[/bold italic red] No text provided."
+                "[bold italic red]Error:[/bold italic red] No text provided.[/]"
             )
             raise Exit(code=1)
 
@@ -174,7 +174,7 @@ and red.",
             raise Exit(code=1)
 
     if colors:
-        gradient = Gradient(
+        gradient_result: Gradient = Gradient(
             text=text,
             colors=colors,  # type: ignore
             style=style,
@@ -183,19 +183,19 @@ and red.",
         )
 
     elif rainbow:
-        gradient = Gradient(text=text, style=style, rainbow=rainbow)
+        gradient_result = Gradient(text=text, style=style, rainbow=rainbow)
     else:
-        gradient = Gradient(text=text, style=style)
+        gradient_result = Gradient(text=text, style=style)
     if verbose:
-        inspect(gradient)
+        inspect(gradient_result)
     console.line()
 
     if panel:
         console.print(
-            Panel(gradient, border_style="dim"), justify=justify  # type: ignore
+            Panel(gradient_result, border_style="dim"), justify=justify  # type: ignore
         )
     else:
-        console.print(gradient, justify=justify)  # type: ignore
+        console.print(gradient_result, justify=justify)  # type: ignore
     console.line()
 
 

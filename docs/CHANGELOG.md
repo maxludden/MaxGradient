@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.3.1
+
+<span class="highlight">March 3, 2024</span> | Updated Gradient and Color
+
+- Unable to fix 'gradient' CLI.
+
 # v0.3.0
 
 <span class="highlight">March 3, 2024</span> | Updated Gradient and Color

@@ -1,6 +1,6 @@
 [project]
 name = "maxgradient"
-version = "0.3.0"
+version = "0.3.1"
 description = "MaxGradient automates the printing gradient colored text to the console."
 authors = [{ name = "Max Ludden", email = "dev@maxludden.com" }]
 dependencies = [
@@ -31,7 +31,7 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [project.scripts]
-gradient = "src.maxgradient.cli:app"
+gradient = "maxgradient.cli:app"
 
 
 [tool.setuptools.packages.find]
