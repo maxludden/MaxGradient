@@ -166,7 +166,7 @@ and red.",
 
     if justify:
         justify = justify
-        if justify not in ["default", "left", "center", "right"]:
+        if justify not in ["default", "left", "center", "right", "full"]:
             error_msg = "[b italic red]Error:[/] Invalid justify method: "
             err_console.print(
                 f"{error_msg}{justify}. Valid methods include: `default`, `left`, `center`, `right`"
@@ -176,7 +176,7 @@ and red.",
     if colors:
         gradient_result: Gradient = Gradient(
             text=text,
-            colors=colors,  # type: ignore
+            colors=[color for color in colors],
             style=style,
             rainbow=rainbow,
             justify=justify,  # type: ignore

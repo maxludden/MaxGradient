@@ -4,6 +4,7 @@
 from typing import Iterable
 
 from lorem_text import lorem
+from maxgradient.theme import GRADIENT_TERMINAL_THEME
 from rich.console import Group, NewLine
 from rich.panel import Panel
 from rich.syntax import Syntax
@@ -62,28 +63,58 @@ def gen_rainbow_group() -> Group:
     def explination() -> Text:
         """Generate the explination for a rainbow gradient."""
         text = [
+            Gradient("Gradient ", style="bold"),
+            Text("subclasses ", style="#ffffff"),
+            Text("rich.text.Text", style="b i #83DDF0 on #333333"),
+            Text(" which means we don't have to settle\nfor ", style="#ffffff"),
+            Gradient("*plain gradient colored text*! ", style="bold"),
+            Text("Subclassing ", style="#ffffff"),
+            Text("rich.text.Text", style="b i #83DDF0 on #333333"),
             Text(
-                "That's not the simplest way to do it though... The ", style="#ffffff"
-            ),
-            Text("Console", style="bold #83DDF0"),
-            Text(" object has a `", style="#ffffff"),
-            Text("gradient", style="italic #50FA7B"),
-            Text(
-                "` classmethod to automate creating a gradient with all of \
-the available options present in the `",
+                " allows us similarly style our gradiet text. The keyword ",
                 style="#ffffff",
             ),
-            Text("Gradient", style="bold #83DDF0"),
-            Text("` class.", style="#ffffff"),
-            Text("\n\nIn the following example we'll use the ", style="#ffffff"),
-            Text("rainbow", style="bold #FFB86C"),
-            Text(" keyword argument to create a rainbow gradient.", style="#ffffff"),
+            Text("style", style="b i #FFB86C on #333333"),
             Text(
-                "\n\nNote: that in this example we are also using the ",
-                style="i #aaaaaa",
+                " accepts a variety of styles to apply to a gradient:\n\n ",
+                style="#ffffff",
             ),
-            Text("style", style="italic bold #FFB86C"),
-            Text(" keyword argument to make the gradient bold.", style="i #aaaaaa"),
+            Gradient("● italic", style="italic"),
+            Text("\n\n ", style="#ffffff"),
+            Gradient("● bold", style="bold"),
+            Text("\n\n ", style="#ffffff"),
+            Gradient("● underline", style="underline"),
+            Text("\n\n ", style="#ffffff"),
+            Gradient("● or all three!", style="bold italic underline"),
+            Text("\n\nBut ", style="#ffffff"),
+            Text("rich.text.Text", style="bold #83DDF0 on #333333"),
+            Text("'s ", style="#ffffff"),
+            Text("style", style="b i #FFB86C on #333333"),
+            Text(
+                " keyword allows the user to apply a single color to their text...\n\n",
+                style="#ffffff",
+            ),
+            Text("So ", style="#ffffff"),
+            Gradient("Gradient", style="b"),
+            Text(" has a ", style="#ffffff"),
+            Text("rainbow", style="b i #FFB86C on #333333"),
+            Text(" flag! Setting the ", style="#ffffff"),
+            Text("rainbow", style="b i #FFB86C on #333333"),
+            Text(" boolean to ", style="#ffffff"),
+            Text("True", style="b i #8E47DE on #333333"),
+            Text(
+                " will generate a significantly more colorful gradient ",
+                style="#ffffff",
+            ),
+            Text(
+                "(It actually will generate a random gradient that spans the entire spectrum of colors.",
+                style="i #888888",
+            ),
+            Text("\n\nIn the following example, we'll use both the ", style="#ffffff"),
+            Text("style", style="b i #FFB86C on #333333"),
+            Text(" & ", style="#ffffff"),
+            Text("rainbow", style="b i #FFB86C on #333333"),
+            Text(" keyword arguments to make our console gayer than Ru Paul:", style="#ffffff"),
         ]
         return Text.assemble(*text)
 
@@ -102,8 +133,12 @@ console.print(Gradient(TEXT, rainbow=True, style="bold"))"""
             padding=(1, 2),
             start_line=10,
         )
-        code.stylize_range("italic #83DDF0", (1, 13), (1, 20))  # Console
-        code.stylize_range("#50FA7B", (2, 7), (2, 16))  # gradient
+        code.stylize_range("italic #83DDF0", (1, 10), (1, 17))  # Console
+        code.stylize_range("#83DDF0", (2, 14), (2, 22))  # Gradinet
+        code.stylize_range("#50FA7B", (2, 8), (2, 13))  # print
+        code.stylize_range("b #00afff", (2, 22), (2, 23))
+        code.stylize_range("b #00afff", (2, 55), (2, 56))
+        code.stylize_range("bold #FFB86C", (2, 23), (2, 27))  # style
 
         return code
 
@@ -129,7 +164,7 @@ def gen_red_orange_yellow_group() -> Group:
         """Generate the explination for a red, orange, yellow gradient."""
         text = [
             Text(
-                "You're not just stuck to creating random or rainbow gradients.\
+                "You're not just stuck creating random or rainbow gradients.\
  If you would like more control of the gradient, simply pass the Gradient object \
 the ",
                 style="#ffffff",
@@ -161,7 +196,7 @@ console.print(
             word_wrap=True,
             start_line=12,
         )
-        code.stylize_range("italic #83DDF0", (1, 13), (1, 20))  # Console
+        code.stylize_range("italic #83DDF0", (1, 10), (1, 17))  # Console
         code.stylize_range("#50FA7B", (3, 7), (3, 13))  # print
         code.stylize_range("italic #83DDF0", (4, 7), (4, 15))  # Gradient
         return code
@@ -224,9 +259,11 @@ console.print(
             word_wrap=True,
             padding=(1, 2),
         )
+        
         code.stylize_range("italic #83DDF0", (1, 13), (1, 20))  # Console
-        code.stylize_range("#50FA7B", (3, 7), (3, 16))  # print
+        code.stylize_range("#50FA7B", (3, 8), (3, 16))  # print
         code.stylize_range("italic #83DDF0", (4, 7), (4, 15))  # Gradient
+        
         return code
 
     def gradient() -> Gradient:
@@ -346,6 +383,7 @@ def generate_panels() -> Iterable[Panel]:
 if __name__ == "__main__":  # pragma: no cover
     """Run the main function."""
     from pathlib import Path
+
     from rich.console import Console
 
     console = Console(record=True)

@@ -8,12 +8,6 @@ MaxGradient is a python library built on top of the great \
     extendable. It is also designed to be used as a library \
     or as a command line tool.
 """
-
-# ruff: noqa: F401
-from os import environ
-from typing import TYPE_CHECKING
-
-from dotenv import load_dotenv
 from rich.console import (
     Console,
     JustifyMethod,
@@ -26,7 +20,6 @@ from rich.panel import Panel
 from rich.progress import Progress, Task
 from rich.style import Style, StyleType
 from rich.text import Span, Text, TextType
-from rich.traceback import install as tr_install
 
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList

@@ -51,7 +51,7 @@ pip install maxgradient
 
 <h2><span class="pdm-wipe">Quick Start</span></h2>
 
-The basic usage of MaxGradient is as a RichRenderable. Like any other RichRenderable, it can be printed to the console using the <span style="color:lime;">print</span><span style="color:#DAF97A;">()</span> method of a <span style="color:lime;">rich</span>.<span style="color:#ffffff;">console</span>.<span style="color:#B8DDEBPus;">Console</span><span class="white">()</span> object.
+The core of MaxGradient is the `Maxgradient.gradient.Gradient` class. Like any other RichRenderable, it can be printed to the console using the <span style="color:lime;">print</span><span style="color:#DAF97A;">()</span> method of a <span style="color:lime;">rich</span>.<span style="color:#ffffff;">console</span>.<span style="color:#B8DDEBPus;">Console</span><span class="white">()</span> object.
 
 <h2 class="pdm-wipe">Example</h2>
 
@@ -70,7 +70,23 @@ console.print(
 
 <h2><span class="cool-wipe">Gradient with Color</span></h2>
 
-<p>MaxGradient easily make random gradients that require no more than the text you wish to color, it can also be used to make gradients with specific colors. The <span class="green">gradient</span><span class="white">()</span> method takes a string of text as well as a list of colors. The number of colors in the list determines the number of colors in the gradient. The gradient will be evenly distributed between the colors in the list. The gradient will be applied to the text in the order it is given in the list.</p>
+<p>MaxGradient automates the task of printing gradient colored text to the console. Just using the `Gradient` class constructo will print whatever is passed to it in a random but smooth color spectrum. In other words:</p>
+
+```python
+# Import the Console class from rich
+from rich.console import Console
+
+# Import the Gradient class from maxgradient
+from maxgradient import Gradient #, Console (you can also import the console from maxgradient)
+
+# Initialize a console
+console = Console(record=True)
+console.print(
+    Gradient("Is this gay enough yet?!")
+    justify="center"
+)
+```
+ it can also be used to make gradients with specific colors. The <span class="green">gradient</span><span class="white">()</span> method takes a string of text as well as a list of colors. The number of colors in the list determines the number of colors in the gradient. The gradient will be evenly distributed between the colors in the list. The gradient will be applied to the text in the order it is given in the list.</p>
 
 <p>MaxGradient accepts the following as </p>
 <ul>

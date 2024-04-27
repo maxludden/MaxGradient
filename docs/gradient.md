@@ -6,7 +6,20 @@ If you need more control over the gradient, you can pass a list of colors to the
 
 ## Example 1: Random Gradient
 
-![Random Gradient Example](img/random_gradient.svg)
+You need very little code to create a gradient with random colors. Just pass a string to the gradient and you're done.
+
+```python
+from rich.console import Console
+from maxgradient.gradient import Gradient
+
+console = Console()
+
+console.print(Gradient("Hello, World!" justify="center"))
+```
+
+---
+
+![Hello, world](img/hello_world.svg)
 
 ## Example 2: Rainbow Gradient
 

@@ -184,6 +184,9 @@ tr:nth-child(even) {
   background: #321744;
 }
 .md-ellipsis,
+.md-source__icon,
+.md-icon,
+.md-source__fact,
 .md-source__repository,
 .md-icon,
 .md-source__icon,

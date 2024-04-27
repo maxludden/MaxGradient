@@ -38,8 +38,8 @@ class Spectrum(List[Color]):
     )
 
     HEX = (
-        "#FF00FF",
-        "#AF00FF",
+        "#ff00ff",
+        "rgb(175, 0, 255)",
         "#5F00FF",
         "#0000FF",
         "#0055FF",

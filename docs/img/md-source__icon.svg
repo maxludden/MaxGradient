@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!
+    Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License -
+    https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+    Copyright 2023 Fonticons, Inc.-->
+    <defs>
+        <linearGradient id='a' gradientUnits='objectBoundingBox' x1='0' y1='0' x2='1' y2='1'>
+            <stop offset='0' stop-color='#ff00ff'>
+                <animate attributeName="stop-color"
+                    values="#ff00ff;#af00ff;#5f00ff;#0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;"
+                    dur="20s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset='.5' stop-color='#af00ff'>
+                <animate attributeName="stop-color"
+                    values="#af00ff;#5f00ff;#0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;#af00ff;"
+                    dur="20s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset='1' stop-color='orange'>
+                <animate attributeName="stop-color"
+                    values="#5f00ff;#0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;#af00ff;#5f00ff;"
+                    dur="20s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5"
+                to="360 .5 .5"
+                dur="20s" repeatCount="indefinite" />
+        </linearGradient>
+        <linearGradient id='b' gradientUnits='objectBoundingBox' x1='0' y1='1' x2='1' y2='1'>
+            <stop offset='0' stop-color='#ff00af'>
+                <animate attributeName="stop-color"
+                    values="#ff00af;#ff00ff;#af00ff;#5f00ff;#0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;#ff00af;"
+                    dur="20s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <stop offset='1' stop-color='#af00ff' stop-opacity="0">
+                <animate attributeName="stop-color"
+                    values="#af00ff;#5f00ff;#0000ff;#0088ff;#00ffff;#00ff00;#ffff00;#ff8800;#ff0000;#ff00ff;#af00ff"
+                    dur="20s" repeatCount="indefinite">
+                </animate>
+            </stop>
+            <animateTransform attributeName="gradientTransform" type="rotate"
+                values="360 .5 .5;0 .5 .5" class="ignore"
+                dur="10s" repeatCount="indefinite" />
+        </linearGradient>
+        <style>
+            .black_border {
+            stroke-width: 1px;
+            stroke: #000;
+            fill: none;
+            }
+
+            .cls-1, .cls-2, .cls-3 {
+            stroke-width: 0px;
+            }
+
+            .cls-2 {
+            fill: #ccc;
+            }
+
+            .cls-3 {
+            fill: #fff;
+            }
+        </style>
+    </defs>
+        <path fill='url(#a)' d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path>
+        <path fill='url(#b)' d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path>
+</svg>

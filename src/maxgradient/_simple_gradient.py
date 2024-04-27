@@ -1,6 +1,5 @@
 """Generate a simple gradient"""
 
-# ruff: noqa: F401
 import re
 from functools import partial
 from operator import itemgetter
@@ -17,7 +16,6 @@ from rich.segment import Segment
 from rich.style import Style, StyleType
 from rich.text import Span, Text
 from rich.traceback import install as tr_install
-from snoop import spy
 
 from maxgradient.color import Color, PyColorType
 from maxgradient.theme import GradientTheme
@@ -87,9 +85,9 @@ class SimpleGradient(Text):
         )
 
         if not isinstance(color1, Color):
-            color1 = Color(color1) # type: ignore
+            color1 = Color(color1)  # type: ignore
         if not isinstance(color2, Color):
-            color2 = Color(color2) # type: ignore
+            color2 = Color(color2)  # type: ignore
 
         self.color1 = Color(color1)
         self.color2 = Color(color2)

@@ -1,9 +1,8 @@
 """Rule class for maxgradient package."""
-# ruff: noqa: F401
-from typing import List, Literal, Optional, Union
-from pathlib import Path
 
-from loguru import logger as log
+from pathlib import Path
+from typing import List, Literal, Optional, Union
+
 from rich.align import AlignMethod
 from rich.cells import cell_len, set_cell_size
 from rich.console import Console, ConsoleOptions, RenderResult
@@ -14,7 +13,6 @@ from rich.text import Text
 from maxgradient.color import Color
 from maxgradient.color_list import ColorList
 from maxgradient.gradient import Gradient
-from maxgradient.theme import GRADIENT_TERMINAL_THEME, GradientTheme
 
 # # from maxgradient.log import log
 Thickness = Literal["thin", "medium", "thick"]
@@ -260,10 +258,7 @@ class GradientRule(JupyterMixin):
         except IndexError:
             title = "Rule Example"
 
-        console = Console(
-            width=60,
-            record=True
-        )
+        console = Console(width=60, record=True)
 
         console.line(2)
         console.print("[u b #ffffff]Rule Examples[/]", justify="center")
@@ -303,8 +298,8 @@ class GradientRule(JupyterMixin):
         svg = console.export_svg(
             title="MaxGradient",
             # theme=GRADIENT_TERMINAL_THEME,
-            unique_id="Gradient Rule"
-            )
+            unique_id="Gradient Rule",
+        )
 
         if save:
             with open(path, "wt") as file:

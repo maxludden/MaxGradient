@@ -1,12 +1,11 @@
-# ruff: noqa: F401
+
 from itertools import cycle
 from pathlib import Path
-from random import choice, randint
+from random import randint
 from typing import Any, List, Tuple
 
 from rich.columns import Columns
 from rich.console import Console
-from rich.style import Style
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import install as tr_install

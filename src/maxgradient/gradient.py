@@ -1,21 +1,16 @@
-# ruff: noqa: F401
 import re
 from pathlib import Path
-from typing import List, Literal, Optional, Tuple
+from typing import List, Literal, Optional, Tuple, TypeAlias, Union
 
 import numpy as np
-import rich.style
 from pydantic_core import PydanticCustomError
 from pydantic_extra_types.color import ColorType
-from rich import get_console
 from rich.console import Console, JustifyMethod, OverflowMethod
 from rich.control import strip_control_codes
 from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.text import Span, Text
 from rich.traceback import install as tr_install
-from snoop import snoop
-from cheap_repr import register_repr, normal_repr
 
 from maxgradient._simple_gradient import SimpleGradient
 from maxgradient.color import Color
@@ -27,34 +22,47 @@ DEFAULT_JUSTIFY: JustifyMethod = "default"
 DEFAULT_OVERFLOW: OverflowMethod = "fold"
 WHITESPACE_REGEX = re.compile(r"^\s+$")
 
+
 console = Console(theme=GradientTheme().theme)
 tr_install(console=console, show_locals=True)
 VERBOSE: bool = False
+
+GradientColors: TypeAlias = Union[
+    Optional[List[ColorType]],
+    Optional[List[Color]],
+    Optional[List[str]],
+    Optional[ColorType],
+    Optional[Color],
+    Optional[str],
+]
 
 
 class Gradient(Text):
     """Text styled with gradient color.
 
-        Args:
-            text (text): The text to print. Defaults to `""`.\n
-            colors (List[Optional[Color|Tuple|str|int]]): A list of colors to use \
-                for the gradient. Defaults to None.\n
-            rainbow (bool): Whether to print the gradient text in rainbow colors\
-                  across the spectrum. Defaults to False.\n
-            hues (int): The number of colors in the gradient. Defaults to `3`.\n
-            style (StyleType): The style of the gradient text. Defaults to None.\n
-            verbose (bool): Whether to print verbose output. Defaults to False.
-            justify (Optional[JustifyMethod]): Justify method: "left", "center",\
-                "full", "right". Defaults to None.\n
-            overflow (Optional[OverflowMethod]):  Overflow method: "crop", "fold", \
-                "ellipsis". Defaults to None.\n
-            end (str, optional): Character to end text with. Defaults to "\\\\n".\n
-            no_wrap (bool, optional): Disable text wrapping, or None for default.\
-                Defaults to None.\n
-            tab_size (int): Number of spaces per tab, or `None` to use\
-                `console.tab_size`. Defaults to 4.\n
-            spans (List[Span], optional): A list of predefined style spans.\
-                Defaults to None.\n
+    Args:
+        text ( `str` | `rich.text.Text` ): The text to print. Defaults to `""`.
+        colors ( `GradientColors`, optional ): An optional list of colors [1]_ from 
+            which to make the Gradient. Defaults to None.
+        rainbow ( `bool` ): Whether to print the gradient text in rainbow colors
+            across the spectrum. Defaults to False.
+        hues ( `int` ): The number of colors in the gradient. Defaults to `3`.
+        style ( `StyleType` ): The style of the gradient text. Defaults to None.
+        verbose ( `bool` ): Whether to print verbose output. Defaults to False.
+        justify ( `JustifyMethod`, optional): Justify method: "left", "center",
+            "full", "right". Defaults to None.
+        overflow (Optional[OverflowMethod]):  Overflow method: "crop", "fold", 
+            "ellipsis". Defaults to None.
+        end (str, optional): Character to end text with. Defaults to "\\\\n".
+        no_wrap (bool, optional): Disable text wrapping, or None for default.
+            Defaults to None.
+        tab_size (int): Number of spaces per tab, or `None` to use
+            `console.tab_size`. Defaults to 4.
+        spans (List[Span], optional): A list of predefined style spans.
+            Defaults to None.
+
+            
+            .. [1] colors: List[Optional[Color|Tuple|str|int]
     """
 
     __slots__ = [
@@ -78,13 +86,13 @@ class Gradient(Text):
     def __init__(
         self,
         text: Optional[str | Text] = "",
-        colors: Optional[List[ColorType | Color]] = None,
+        colors: GradientColors = None,
         *,
         rainbow: bool = False,
         hues: int = 4,
         style: StyleType = Style.null(),
-        justify: Optional[JustifyMethod] = None,
-        overflow: Optional[OverflowMethod] = None,
+        justify: Optional[JustifyMethod] = DEFAULT_JUSTIFY,
+        overflow: Optional[OverflowMethod] = DEFAULT_OVERFLOW,
         no_wrap: Optional[bool] = None,
         end: Optional[str] = "\n",
         tab_size: Optional[int] = 4,
@@ -197,12 +205,12 @@ class Gradient(Text):
             raise ValueError("Gradient must have at least two colors.")
         self._hues = hues
 
-    @property
+    @property  # type: ignore
     def justify(self) -> JustifyMethod:
         """The justify method of the gradient."""
-        if self._justify is not None:
-            return self._justify # type: ignore
-        return DEFAULT_JUSTIFY
+        if not hasattr(self, "_justify"):
+            return DEFAULT_JUSTIFY
+        return self._justify  # type: ignore
 
     @justify.setter
     def justify(self, justify: JustifyMethod) -> None:
@@ -212,22 +220,6 @@ class Gradient(Text):
             justify (JustifyMethod): The justify method of the gradient.
         """
         self._justify = justify
-
-    # @property
-    # def overflow(self) -> str:
-    #     """The overflow method of the gradient."""
-    #     if self._overflow is not None:
-    #         return self._overflow
-    #     return DEFAULT_OVERFLOW
-
-    # @overflow.setter
-    # def overflow(self, overflow: OverflowMethod) -> None:
-    #     """Set the overflow method of the gradient.
-
-    #     Args:
-    #         overflow (OverflowMethod): The overflow method of the gradient.
-    #     """
-    #     self._overflow = overflow
 
     @property
     def no_wrap(self) -> Optional[bool]:
@@ -245,43 +237,6 @@ class Gradient(Text):
             no_wrap (bool): Whether to wrap the gradient text.
         """
         self._no_wrap = no_wrap
-
-    # @property
-    # def style(self) -> Style:
-    #     """The style of the gradient."""
-    #     return self._style
-
-    # @style.setter
-    # def style(self, style: StyleType) -> None:
-    #     """
-    #     Setter for the style attribute.
-
-    #     Args:
-    #         style (StyleType): The value to set for the style attribute.
-    #     """
-    #     if style is None:
-    #         self._style = Style.null()
-    #     elif isinstance(style, rich.style.Style):
-    #         self._style = style
-    #     else:
-    #         self._style = Style.parse(style)
-
-    # @property
-    # def end(self) -> Optional[str]:
-    #     """The end character of the gradient."""
-    #     try:
-    #         return self._end
-    #     except AttributeError:
-    #         return "\n"
-
-    # @end.setter
-    # def end(self, end: Optional[str]) -> None:
-    #     """Set the end character of the gradient.
-
-    #     Args:
-    #         end (str): The end character of the gradient.
-    #     """
-    #     self._end = end
 
     @property
     def colors(self) -> List[Color]:
@@ -428,32 +383,42 @@ class Gradient(Text):
         return indexes
 
     def generate_substrings(self, indexes: List[List[int]]) -> List[str]:
+        """Split the text into substrings based on the indexes.
+
+        Args:
+            indexes (List[List[int]]): The indexes to split the text on.
+
+        Returns:
+            List[str]: The list of substrings.
+        """
         substrings: List[str] = []
         slices: List[Tuple[int, int]] = []
+
+        # For each index get the first and last element
         for index in indexes:
             start = index[0]
             end = index[-1] + 1
-            slices.append((start, end))
-            if self.verbose:
-                console.log(f"Start: {start}", f"End: {end}")
+            slices.append((start, end))  #  # Slice the text
 
+        # If the text is a list, join it into a single string
         if isinstance(self.text, list):
             text = " ".join(self.text)
         elif isinstance(self.text, str):
             text = self.text
         else:
             raise TypeError(f"Text must be a string or list, not {type(self.text)}")
-        
-        for index, (start, end) in enumerate(slices, 1): # type: ignore
+
+        # split the text into substrings
+        for index, (start, end) in enumerate(slices, 1):  # type: ignore
             substring = text[start:end]
             substrings.append(substring)
-            if self.verbose:
-                console.rule(f"Substring {index}")
-                console.print(substring)
         return substrings
 
     def generate_subgradients(self, substrings: List[str]) -> List[SimpleGradient]:
         """Generate simple gradients.
+
+        Args:
+            substrings (List[str]): The substrings to generate gradients for.
 
         Returns:
             List[SimpleGradient]: The list of simple gradients.
@@ -461,22 +426,25 @@ class Gradient(Text):
         subgradients: List[SimpleGradient] = []
 
         for index, substring in enumerate(substrings):
+            # Get the colors for the gradient
             color_1 = self.colors[index]
             color_2 = self.colors[index + 1]
+
+            assert self.overflow is not None, "Overflow must be set."
+
+            # Create a simple gradient
             gradient = SimpleGradient(
                 substring,  # type: ignore
                 color1=color_1.hex,
                 color2=color_2.hex,
-                justify=self.justify,  # type: ignore
-                overflow=self.overflow,  # type: ignore
+                justify=self.justify,
+                overflow=self.overflow,
                 style=self.style,
                 no_wrap=self.no_wrap or False,
                 end=self.end or "\n",
                 spans=self.spans,
             )
-            if self.verbose:
-                console.print(f"[b i dim]Index {index}[/]")
-                console.print(gradient)
+
             subgradients.append(gradient)
         return subgradients
 
@@ -491,10 +459,7 @@ class Gradient(Text):
         """
         result = Text()
         for gradient in subgradients:
-            if self.verbose:
-                console.print(gradient)
             result.append(gradient)
-
         return result
 
     def as_text(self) -> Text:
@@ -541,7 +506,7 @@ class Gradient(Text):
             console = Console(width=60)
         gradient = Gradient(
             "The quick brown fox jumps over the lazy dog.",
-            colors=["magenta", "purple", "violet"]
+            colors=["magenta", "purple", "violet"],
         )
         panel_content = Text.assemble(
             gradient,
@@ -645,9 +610,7 @@ class Gradient(Text):
         Gradient.rainbow_gradient_example()
 
 
-register_repr(Gradient)(normal_repr)
 if __name__ == "__main__":  # pragma: no cover
-    from lorem_text import lorem
     from rich.console import Console
     from rich.traceback import install as tr_install
 

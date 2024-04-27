@@ -7,6 +7,7 @@ A few colors have multiple names referring to the sames colors, eg. `grey` and `
 In these cases the _last_ color when sorted alphabetically takes preferences,
 eg. `Color((0, 255, 255)).as_named() == 'cyan'` because "cyan" comes after "aqua".
 """
+
 from __future__ import annotations
 
 import math
@@ -14,16 +15,23 @@ import re
 from colorsys import hls_to_rgb, rgb_to_hls
 from itertools import cycle
 from random import randint
-from typing import (Any, Callable, Dict, Generator, List, Literal, Optional,
-                    Tuple, Union, cast)
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    Union,
+    cast,
+)
 
-# from snoop import snoop # type: ignore
-from cheap_repr import normal_repr, register_repr  # type: ignore
 from pydantic import GetJsonSchemaHandler
 from pydantic._internal import _repr
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, PydanticCustomError, core_schema
-# from pydantic_extra_types.color import RGBA as PyRGBA
 from pydantic_extra_types.color import Color as PyColor
 from pydantic_extra_types.color import ColorType as PyColorType
 from rich.color import Color as RichColor
@@ -37,18 +45,16 @@ from rich.traceback import install as tr_install
 
 from maxgradient.log import log
 
-GradientColorTuple=Union[Tuple[int, int, int], Tuple[int, int, int, float]]
-ColorType=Union[GradientColorTuple, str, 'Color', PyColorType, RichColor]
+GradientColorTuple = Union[Tuple[int, int, int], Tuple[int, int, int, float]]
+ColorType = Union[GradientColorTuple, str, "Color", PyColorType, RichColor]
 HslColorTuple = Union[Tuple[float, float, float], Tuple[float, float, float, float]]
 VERBOSE: bool = False
 
-register_repr(Console)(normal_repr)
 
 def get_console() -> Console:
     console = Console()
     tr_install(console=console, show_locals=True)
     return console
-
 
 
 class GradientRGBA:
@@ -145,7 +151,7 @@ class GradientRGBA:
             ]
         )
 
-register_repr(GradientRGBA)(normal_repr)
+
 # these are not compiled here to avoid import slowdown, they'll be compiled the first time they're used, then cached
 _r_255 = r"(\d{1,3}(?:\.\d+)?)"
 _r_comma = r"\s*,\s*"
@@ -180,7 +186,7 @@ class Color:
     __slots__ = "_original", "_rgba"
 
     def __init__(self, value: ColorType) -> None:
-        self._rgba: GradientRGBA = GradientRGBA(0,0,0,1)
+        self._rgba: GradientRGBA = GradientRGBA(0, 0, 0, 1)
         self._original: ColorType = value
 
         if isinstance(value, (tuple, list)):
@@ -190,10 +196,10 @@ class Color:
             self._rgba = self.parse_str(value)
 
         elif isinstance(value, PyColor):
-            r,g,b,a = value._rgba._tuple
-            self._rgba = GradientRGBA(r,g,b,a)
+            r, g, b, a = value._rgba._tuple
+            self._rgba = GradientRGBA(r, g, b, a)
             self._original = value._original
-            
+
         elif isinstance(value, Color):
             self._rgba = value._rgba
             self._original = value._original
@@ -476,18 +482,17 @@ class Color:
 
     @classmethod
     def __get_pydantic_json_schema__(
-        cls,
-        core_schema: core_schema.CoreSchema,
-        handler: GetJsonSchemaHandler) -> JsonSchemaValue:
+        cls, core_schema: core_schema.CoreSchema, handler: GetJsonSchemaHandler
+    ) -> JsonSchemaValue:
         field_schema: dict[str, Any] = {}
         field_schema.update(type="string", format="color")
         return field_schema
 
-    def original(self) -> ColorType: # type: ignore
+    def original(self) -> ColorType:  # type: ignore
         """
         Original value passed to `Color`.
         """
-        return self._original # type: ignore
+        return self._original  # type: ignore
 
     @property
     def name(self) -> str:
@@ -498,7 +503,6 @@ class Color:
             str: The color name.
         """
         return str(self.as_named(fallback=True))
-
 
     def as_named(self, *, fallback: bool = True, verbose: bool = VERBOSE) -> str:
         """
@@ -518,7 +522,7 @@ class Color:
         if self._rgba.alpha is None:
             rgb = cast(Tuple[int, int, int], self.as_rgb_tuple())
             if verbose:
-                console=Console(color_system="truecolor")
+                console = Console(color_system="truecolor")
                 tr_install(console=console)
                 # console.log("Entered Color.as_named()", log_locals=True)
             try:
@@ -697,7 +701,7 @@ class Color:
         return str(self.as_named(fallback=True))
 
     def __repr__(self) -> str:
-        return F"Color{self._original}"
+        return f"Color{self._original}"
 
     def __repr_args__(self) -> _repr.ReprArgs:
         return [(None, self.as_named(fallback=True))] + [("rgb", self.as_rgb_tuple())]
@@ -727,7 +731,7 @@ class Color:
         return cls.ints_to_rgba(triplet.red, triplet.green, triplet.blue, None)
 
     @classmethod
-    def parse_tuple(cls, value: tuple[Any, ...]|List[Any]) -> GradientRGBA:
+    def parse_tuple(cls, value: tuple[Any, ...] | List[Any]) -> GradientRGBA:
         """Parse a tuple or list to get RGBA values.
 
         Args:
@@ -750,7 +754,6 @@ class Color:
                 "color_error",
                 "value is not a valid color: tuples must have length 3 or 4",
             )
-
 
     @classmethod
     def parse_str(cls, value: str) -> GradientRGBA:
@@ -776,7 +779,7 @@ class Color:
             ValueError: If the input string cannot be parsed to an RGBA tuple.
         """
         log.debug(f"Entered Color.parse_str({value})")
-            
+
         value_lower = value.lower()
         log.debug(f"value_lower: {value_lower}")
         try:
@@ -824,7 +827,7 @@ class Color:
             return GradientRGBA(0, 0, 0, 0)
         raise PydanticCustomError(
             "color_error",
-            "value is not a valid color: string not recognised as a valid color"
+            "value is not a valid color: string not recognised as a valid color",
         )
 
     @classmethod
@@ -969,7 +972,9 @@ class Color:
         return round(c * 255)
 
     @classmethod
-    def generate_table(cls, title: str, show_index: bool = True, caption: Optional[Text] = None) -> Table:
+    def generate_table(
+        cls, title: str, show_index: bool = True, caption: Optional[Text] = None
+    ) -> Table:
         """
         Generate a table to display colors.
 
@@ -982,10 +987,7 @@ class Color:
         """
         color_title = cls.colortitle(title)
         table = Table(
-            title=color_title,
-            expand=False,
-            caption=caption,
-            caption_justify='right'
+            title=color_title, expand=False, caption=caption, caption_justify="right"
         )
         if show_index:
             table.add_column(cls.colortitle("Index"), style="bold", justify="right")
@@ -994,7 +996,6 @@ class Color:
         table.add_column(cls.colortitle("Hex"), style="bold", justify="left")
         table.add_column(cls.colortitle("RGB"), style="bold", justify="left")
         return table
-
 
     @classmethod
     def colortitle(cls, title: str) -> Text:
@@ -1019,19 +1020,18 @@ class Color:
                 "#FF8700",
                 "#FF4B00",
                 "#FF0000",
-                "#FF005F"
+                "#FF005F",
             ]
         )
         color_title = Text()
-        #randomize
-        for _ in range(randint(0,16)):
+        # randomize
+        for _ in range(randint(0, 16)):
             next(COLORS)
         for index in range(length):
             char: str = title_list[index]
             color: str = next(COLORS)
             color_title.append(Text(char, style=f"bold {color}"))
         return color_title
-
 
     @classmethod
     def color_table(
@@ -1041,7 +1041,7 @@ class Color:
         end: int,
         caption: Optional[Text] = None,
         *,
-        show_index: bool = False
+        show_index: bool = False,
     ) -> Table:
         table = cls.generate_table(title, show_index, caption)
         for index, (key, _) in enumerate(COLORS_BY_NAME.items()):
@@ -1086,8 +1086,16 @@ class Color:
         console = Console(record=True) if record else Console()
 
         def table_generator() -> Generator:
-            tables: List[Tuple[str, int, int,Optional[Text]]] = [
-                ("Gradient Colors", 0, 17, Text("These colors have been adapted to make naming easier.", style='i d #ffffff')),
+            tables: List[Tuple[str, int, int, Optional[Text]]] = [
+                (
+                    "Gradient Colors",
+                    0,
+                    17,
+                    Text(
+                        "These colors have been adapted to make naming easier.",
+                        style="i d #ffffff",
+                    ),
+                ),
                 ("CSS3 Colors", 18, 147, None),
                 ("Rich Colors", 148, 342, None),
             ]
@@ -1106,8 +1114,6 @@ class Color:
             except TypeError:
                 pass
 
-
-register_repr(Color)(normal_repr)
 
 COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
     "magenta": (255, 0, 255),
@@ -1436,7 +1442,7 @@ COLORS_BY_NAME: Dict[str, Tuple[int, int, int]] = {
 }
 
 COLORS_BY_VALUE = {v: k for k, v in COLORS_BY_NAME.items()}
-# register_repr(Color)(normal_repr)
+
 
 if __name__ == "__main__":  # pragma: no cover
     Color.example(record=True)

@@ -1,8 +1,10 @@
+from typing import List
+
 from rich.console import Console
 from rich.terminal_theme import TerminalTheme
 from rich.panel import Panel
 
-from maxgradient import Gradient
+from maxgradient.gradient import Gradient
 
 GRADIENT_TERMINAL_THEME = TerminalTheme(
     background=(0, 0, 0),
@@ -31,11 +33,11 @@ GRADIENT_TERMINAL_THEME = TerminalTheme(
 
 console = Console(record=True, width=80)
 
-colors=["red", "orange", "yellow", "green", "cyan"]
+colors: List[str] = ["red", "orange", "yellow", "green", "cyan"]
 
 gradient = Gradient(
     "Gradients are awesome!",
-    colors = colors,
+    colors=colors,
     justify="center",
     style="bold",
 )

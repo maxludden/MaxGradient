@@ -1,16 +1,12 @@
 from __future__ import annotations
 
-# ruff: noqa: F401
-from os import getenv
 from pathlib import Path
-from typing import Any, Optional
 
-# from loguru import logger
 import loguru
 from dotenv import load_dotenv
-from rich.console import Console, ConsoleOptions, Group, JustifyMethod, OverflowMethod
+from rich.console import Console
 from rich.style import Style
-from rich.text import Text, TextType
+from rich.text import Text
 
 logger = loguru.logger
 
