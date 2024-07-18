@@ -17,43 +17,55 @@
             <a href="https://pdm.fming.dev/"><img class="badge" src="https://camo.githubusercontent.com/9edad3968817816b87e7fbbefa224a7145c2593e5e4e6fa57f39a707c2fbe389/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f70646d2d6d616e616765642d626c756576696f6c6574"></a>
         </div>
         <div id="spacer"></div>
-        <div class="gradient-border" id="box">
-            <div id="title">MaxGradient</div>
-            <p>MaxGradient automates printing gradient colored text to the console. It's built upon the great <a href="https://github.com/Textualize/rich" title="GitHub.com/textualize/rich">rich library</a>. It contains two new Rich Renderables that can be printed by a <a href="https://github.com/Textualize/rich/blob/master/rich/console.py">rich.console.Console</a> object:</p>
-            <ul>
-                <li><span class="g1">Gradient</span> - A Rich Renderable that prints Text with a gradient of colors to the console.</li>
-                <li><span class="g2">GradientRule</span> - A Rich Renderable that prints a horizontal rule to the console in gradient color.</li>
-            </ul>
-            <p>MaxGradient also expands the <a href="https://github.com/Textualize/rich/blob/master/rich/color.py">rich.color.Color</a> class to include generating colors from CSS3 named colors, as well as 3 digit hex color codes.</p>
-            <p>MaxGradient is a work in progress. It is currently in version 0.3.1. It is not yet feature complete, but it is usable. I am currently working on adding more features and improving the code. If you have any suggestions, please feel free to open an issue on <a href="https://GitHub.com/maxludden/maxgradient" title="GitHub.com/maxludden/maxgradient">GitHub</a>.</p>
-        </div>
-        <div id="spacer"></div>
 
-<h1 class="g1">Installation</h1>
+## MaxGradient (*see [`rich-gradient`](https://GitHub.com/maxludden/rich-gradient)*)
 
-MaxGradient can be installed from PyPi using your favorite python package manager:
+MaxGradient was a learning project I gave myself on how to automates printing gradient colored text to the console. It has been archived in favor of my new repository [`rich-gradient`](https://GitHub.com/maxludden/rich-gradient). [`rich-gradient`](https://GitHub.com/maxludden/rich-gradient) is a similar but smaller and more preformant version of MaxGradient. MaxGradient and rich-gradient are built upon the great [rich]("https://github.com/Textualize/rich"). They both contains two new Rich Renderables that can be printed by a [`rich.console.Console`](https://github.com/Textualize/rich/blob/master/rich/console.py):
 
-<h2><span class="pdm-recommended">PDM (Recommended)</span></h2>
+- Gradient: A Rich Renderable that prints Text with a gradient of colors to the console.
+- GradientRule</span> - A Rich Renderable that prints a horizontal rule to the console in gradient color.
 
-```shell
-pdm add maxgradient
-```
+MaxGradient also expands the <a href="https://github.com/Textualize/rich/blob/master/rich/color.py">rich.color.Color</a> class to include generating colors from CSS3 named colors, as well as 3 digit hex color codes. [`rich-gradient`](https://GitHub.com/maxludden/rich-gradient) on the other hand, uses [`Pydantic-extra-types.color.Color`](https://github.com/pydantic/pydantic-extra-types/blob/main/pydantic_extra_types/color.py) class directly to provide the same flexibility, reducing the overhead and speading up the generation of gradients.
 
-<h2><span class="pdm-wipe">PIP</span></h2>
+MaxGradient is an archived project and I recommend giving [`rich-gradient`](https://GitHub.com/maxludden/rich-gradient) a shot, if you like using MaxGradient. It's a more efficient, less egocentric library that does the exact same thing as MaxGradient (*It even uses the same class names*).
+
+# Installation
+
+~MaxGradient can be installed from PyPi using your favorite python package manager:~
+Just install [`rich-gradient`](https://GitHub.com/maxludden/rich-gradient) instead:
+
+## Rye *(recommended)*
 
 ```shell
-pip install maxgradient
+rye add rich-gradient
 ```
 
-<hr>
+## Pip
 
-<h1 class="g1">Usage</h1>
+```shell
+pip install rich-gradient
+```
 
-<h2><span class="pdm-wipe">Quick Start</span></h2>
+#### ~PDM *(recommended)*~
+
+    ```shell
+    ̶p̶d̶m̶ ̶a̶d̶d̶ ̶m̶a̶x̶g̶r̶a̶d̶i̶e̶n̶t̶
+    ```
+
+#### ~Pip~
+
+    ```shell
+    ̶p̶i̶p̶ ̶i̶n̶s̶t̶a̶l̶l̶ ̶m̶a̶x̶g̶r̶a̶d̶i̶e̶n̶t̶
+    ```
+
+---
+# Usage
+
+## Quick Start
 
 The basic usage of MaxGradient is as a RichRenderable. Like any other RichRenderable, it can be printed to the console using the <span style="color:lime;">print</span><span style="color:#DAF97A;">()</span> method of a <span style="color:lime;">rich</span>.<span style="color:#ffffff;">console</span>.<span style="color:#B8DDEBPus;">Console</span><span class="white">()</span> object.
 
-<h2 class="pdm-wipe">Example</h2>
+## Example
 
 ```python
 #imports
